@@ -1,0 +1,54 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "app/master"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "app/master"
+    ]) %>
+<% end -%>
+
+<div id="input_area" style="padding:5px;">
+  <%= form_tag({:action=>'update'}) %>
+    <table style="width:100%">
+       <tr>
+         <td colspan=2>
+           <!-- 入力フォーム -->
+           <%= render :partial => 'input_table' %>
+         </td>
+       </tr>
+       <tr>
+         <td style="text-align:right;">
+           <input id="update_button" type="submit" class="submit_small" value="登録" onclick="return ClickUpdateButton()" />
+           <input id="cancel_button" type="button" class="submit_small" value="戻る" onclick="ClickCancel()" />
+         </td>
+      </tr>
+    </table>
+  </form>
+</div>
+
+
+<script type="text/javascript">
+<!--
+  /*
+   * 登録
+   */
+  function ClickUpdateButton(){
+    //入力チェック
+    result = CheckValidateFacilityGroup();
+    if (!result) {
+      return result;
+    }
+    return true;
+  }
+  /*
+   * 閉じる
+   */
+  function ClickCancel(){
+    document.location = "/master/facility_group/index";
+  }
+-->
+</script>

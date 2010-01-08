@@ -1,0 +1,7 @@
+<% unless @board_list.size() == 0 %>
+  <% @board_list.each do |board| %>
+    <option value="<%= board.id %>"><%= board.title %></option>
+  <% end %>
+<% else %>
+  <option value="">&nbsp;</option>
+<% end %>

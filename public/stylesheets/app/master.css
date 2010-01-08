@@ -1,0 +1,214 @@
+/******************************************
+ * システム管理メニュー
+ ******************************************/
+
+.master_table1 {
+  border:                       1px solid #000;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+  width:                        1000px;
+}
+.master_table1_title {
+  background-image:             url('/images/background/title_bg.gif');
+  background-repeat:            repeat-x;
+  border-collapse:              collapse;
+  color:                        #000000;
+  height:                       20px;
+  margin:                       0px;
+  padding:                      0px;
+}
+.master_table1_cell_bordered {
+  border:                       1px solid #000;
+  border-collapse:              collapse;
+  padding:                      1px 0px;
+}
+.master_table2 {
+  border:                       1px solid #000;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+  width:                        1000px;
+}
+.master_table2_title {
+  border:                       1px solid #000;
+  background-color:             #add4e9;
+  font-weight:                  bold;
+  padding-left:                 10px;
+  width:                        30%;
+  height:                       30px;
+  text-align:                   left;
+}
+.master_table2_content {
+  border:                       1px solid #000;
+  background-color:             white;
+  padding:                      5px 5px 5px 10px;;
+  width:                        70%;
+  text-align:                   left;
+}
+.master_table3 {
+  border:                       0;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+  width:                        1000px;
+  text-align:                   left;
+}
+
+.master_table_button {
+  width:                        1000px;
+  margin:                       10px 0px 0px 10px;
+}
+
+.master_tree1 {
+  border:                       1px solid #000;
+  text-align:                   left;
+  overflow-y:                   scroll;
+  width:                        280px;
+  height:                       170px;
+  padding:                      5px 0px 5px 0px;
+}
+
+.master_tree2 {
+  border:                       1px solid #000;
+  text-align:                   left;
+  overflow-y:                   scroll;
+  width:                        280px;
+  height:                       170px;
+  padding:                      5px 0px 5px 0px;
+}
+
+.master_selectbox1 {
+  border:                       1px solid #000;
+  width:                        280px;
+  height:                       300px;
+  padding:                      5px 0px 5px 0px;
+  text-indent:                  5px;
+}
+
+.master_selectbox2 {
+  border:                       1px solid #000;
+  width:                        280px;
+  height:                       180px;
+  text-indent:                  5px;
+}
+
+.master_selectbox3 {
+  border:                       1px solid #000;
+  width:                        280px;
+  height:                       50px;
+  text-indent:                  5px;
+}
+
+.master_selectbox4 {
+  border:                       1px solid #000;
+  width:                        180px;
+  height:                       180px;
+  text-indent:                  5px;
+}
+
+.master_selectbox5 {
+  border:                       1px solid #000;
+  width:                        500px;
+  height:                       180px;
+  text-indent:                  5px;
+}
+
+.enote_general_table1 {
+  border:                       1px solid #b2b2b2;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_header {
+  border-collapse:              collapse;
+  color:                        #ffffff;
+  height:                       30px;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_footer {
+  background-color:             #ffffff;
+  border-collapse:              collapse;
+  color:                        cornsilk;
+  height:                       30px;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_title {
+/*  background-image:             url('../../../images/table1_header.gif'); */
+  background-image:             url('../../../images/titleback01.gif');
+  background-repeat:            repeat-x;
+  border-collapse:              collapse;
+/*  color:                        #4a4a4a; */
+  color:                        #000000;
+  height:                       20px;
+  margin:                       0px;
+  padding:                      0px;
+}
+
+.enote_general_table1_cell_bordered {
+  border:                       1px solid #b2b2b2;
+  border-collapse:              collapse;
+  padding:                      1px 0px;
+}
+
+.master_gadget{
+    width:295px;
+    float:left;
+    margin:10px;
+    padding: 0px;
+    border: 1px solid #CCCCCC;
+    background-color: #f3f3f3;
+/* 角丸にするCSS　ただし、IEでは無効
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+*/
+}
+/* ガジェット風のボックス用タイトルエリア */
+div.master_gadget_title{
+    width:100%;
+    height:25px;
+    color:#fff;
+    margin:0px;
+    padding-top:2px;
+    text-indent:6px;
+    background-image:url('/images/background/title_bg.gif');
+    background-repeat:repeat-x;
+/* 角丸にするCSS　ただし、IEでは無効
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+*/
+}
+/* ガジェット風のボックス用メインエリア */
+.master_gadget_body{
+    width:100%;
+    padding:5px;
+    text-indent:5px;
+}
+
+
+.e_note_content_title {
+  background-image:             url('../../../images/arrow_blue.gif');
+  background-repeat:            no-repeat;
+  font-size:                    18px;
+  font-weight:                  bold;
+  color:                        #0000ff;
+  text-indent:                  25px;
+  background-position:          5px 40%;
+  vertical-align:               middle;
+}
+.enote_general_table1_odd {
+  background-color:             #eeffcc;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_even {
+  background-color:             #ffffff;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+}

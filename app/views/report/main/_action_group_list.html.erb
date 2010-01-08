@@ -1,0 +1,5 @@
+<% unless action_group_list.nil? %>
+  <% action_group_list.each do |m_action_group| %>
+    <option value="<%= m_action_group.action_group_cd %>"><%= m_action_group.action_group_name %></option>
+  <% end %>
+<% end %>

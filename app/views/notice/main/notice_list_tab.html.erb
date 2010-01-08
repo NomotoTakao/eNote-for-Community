@@ -1,0 +1,94 @@
+<%# お知らせ %>
+
+<input type="hidden" id="message_id_def" value="<%=@message_id_def%>" />
+<table class="frame_2pain">
+  <tr>
+    <td class="frame_2pain_left">
+      <div class="gadget" style="width:240px;">
+        <div id="" class="gadget_title" style="">
+          <h3 style=""><img src="/images/icons/icon_notice.gif" align="top" style="margin-right:5px;">お知らせーIndex</h3>
+        </div>
+        <%# お知らせINDEX %>
+        <div class="tree_box" id="notice_index" style="height:200px;overflow-y:scroll;">
+          <%= render :partial=>"notice_index", :locals=>{:id=>@id} %>
+        </div>
+      </div>
+      <div class="gadget" style="width:240px;">
+        <div id="" class="gadget_title" style="">
+          <h3 style=""><img src="/images/icons/icon_notice.gif" align="top" style="margin-right:5px;">お知らせ内を検索</h3>
+        </div>
+        <% form_remote_tag :update=>"notice_list", :url=>{:action=>:notice_list} do %>
+          <div class="gadget_body">登録日の指定：<br>
+            <table>
+              <tr>
+                <td>
+                  <%= text_field_tag 'date_from','',{:size => 10, :class=>"ime_off", :style => "height:20px;width:90px;"} %>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:center;">〜</td>
+              </tr>
+              <tr>
+                <td>
+                  <%= text_field_tag 'date_to','',{:size => 10, :class=>"ime_off", :style => "height:20px;width:90px;"} %>
+                </td>
+              </tr>
+            </table>
+            <br>
+                                あいまい検索：<br>
+            <%= text_field_tag 'keyword','',{:class=>"ime_on", :size => 20, :style => "height:20px;width:150px;margin:0px;"} %><br />
+			<input type="checkbox" name="owner" />あなた自身の投稿だけを対象にする
+            <%= submit_tag "検索", :class => "submit_small", :style => "margin:0px;" %>
+          </div>
+        <% end %>
+      </div>
+    </td>
+    <td class="frame_2pain_right" align="center">
+      <%# 右領域%>
+      <div id="notice_list"></div>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  /*
+   * ドキュメントのロード時に実行される処理
+   */
+  $(document).ready(function(){
+  	$("#tab_index").val("");
+	// index.html.erbのhiddenフィールドから、メニューで選択されたお知らせカテゴリの値を取得する。
+    id = $("#category").val();
+	
+    // お知らせINDEXを読み込む
+    url = "/notice/main/notice_index/";
+	// 選択されているカテゴリがある場合、そのIDをパラメータに加える。
+    url += id;
+
+    setCalendar($("#date_from"));
+    setCalendar($("#date_to"));
+
+    // お知らせ一覧を読み込む
+	// 但し、自動遷移の場合はスキップ
+	if($("#auto").val() == ""){
+      url = "/notice/main/notice_list";
+      // 選択されているカテゴリがある場合、そのIDをパラメタに加える。
+      url += "?id=" + id;
+      m_id = $("#message_id_def").val();
+      if(m_id != ""){
+        url += "&message_id_def=" + m_id;
+      }
+      $("#notice_list").load(url);
+    }
+  });
+
+  /*
+   * お知らせINDEXの項目が選択されたとき(クリックされたとき)に発生するイベントを登録する。
+   */
+  $('.head_index').click(
+    function(){
+      bgChange($(this).find('a'), $(".head_index").find('a'));
+    }
+  );   
+  -->
+</script>

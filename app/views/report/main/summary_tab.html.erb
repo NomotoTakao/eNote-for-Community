@@ -1,0 +1,108 @@
+<table cellspacing="10px;">
+  <tr>
+    <td>
+      <table>
+        <tr>
+          <td>総括コメント</td>
+        </tr>
+        <tr>
+          <td>
+            <textarea id="summary_comment" class="ime_on" rows="8" cols="40"></textarea>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td>
+      <table>
+        <tr>
+          <td>上司コメント</td>
+        </tr>
+        <tr>
+          <td>
+            <textarea id="superior_comment" rows="8" cols="40" readonly tabindex="-1"></textarea>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td style="vertical-align:top;">
+      <table>
+        <tr>
+          <td class="enote_general_table1_cell_bordered" style="width:80px;font-weight:bold;text-align:center;background-color:#66FFFF">活動時間計</td>
+          <td class="enote_general_table1_cell_bordered" style="width:80px;">
+            <span id="summary_total_time" />&nbsp;時間
+          </td>
+        </tr>
+        <tr>
+          <td class="enote_general_table1_cell_bordered" style="width:80px;font-weight:bold;text-align:center;background-color:#66FFFF">売上金額計</td>
+          <td class="enote_general_table1_cell_bordered" style="width:80px;">
+            <span id="summary_total_sales"/>&nbsp;円
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td style="vertical-align:bottom;">
+      <input type="button" id="summary_register_button" class="submit_small" value="登録" />
+    </td>
+  </tr>
+</table>
+<input type="hidden" id="summary_authenticity_token" value="<%=form_authenticity_token %>" />
+<script type="text/javascript">
+  <!--
+    $("#summary_register_button").click(
+      function(){
+        var comment = $("#summary_comment").val();
+        var superior_comment = $("#superior_comment").val();
+        var authenticity_token = $("#authenticity_token").val();
+        var report_date = $("#input_report_date").val();
+        jQuery.ajax(
+          {
+            type : "POST",
+            url  : "/report/main/register_summary",
+            data :
+              "cmt=" + comment + "&s_cmt=" + superior_comment + "&d=" + report_date + "&authenticity_token=" + authenticity_token,
+            success :
+              function(data, dataType){
+                alert("登録しました");
+              },
+            error :
+              function(){
+                alert("通信エラー")
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    $(document).ready(
+      function(){
+        $("#summary_total_time").html($("#tmp_report_total_time").val());
+        $("#summary_total_sales").html($("#tmp_report_total_sales").val());
+
+        report_date = $("#input_report_date").val();
+        // 総括コメント・上司確認コメントを取得する。
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/report/main/summary_comment",
+            data :
+              {
+                date : report_date
+              },
+            success :
+              function(data, dataType){
+                $("#summary_comment").parent().after(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+  //-->
+</script>

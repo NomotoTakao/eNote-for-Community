@@ -1,0 +1,115 @@
+<div id="address_<%= @type %>_<%= @count %>" title="<%= @title %>">
+  <table>
+    <tr>
+      <td>検索したい人の名前の一部を入力してください。</td>
+    </tr>
+    <tr>
+      <td>
+        <input type="text" id="keyword_<%= @type %>_<%= @count %>" value="" size="35" />
+        <input type="button" id="btnSearch_<%= @type %>_<%= @count %>" class="submit_small" value="検索" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input type="hidden" id="selected_cd_dialog_<%= @type %>_<%= @count %>" />
+        <input type="hidden" id="selected_name_dialog_<%= @type %>_<%= @count %>" />
+        <select id="seletUser_<%= @type %>_<%= @count %>" size="13" style="width:300px;">
+        </select>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<script type="text/javascript">
+  <!--
+    $("#btnSearch_<%= @type %>_<%= @count %>").click(
+      function(){
+        address_search();
+      }
+    );
+
+    function address_search(){
+      keyword = $("#keyword_<%= @type %>_<%= @count %>").val();
+
+      jQuery.ajax(
+        {
+          type : "GET",
+          url  : "/common/address_search/address_list",
+          data :
+            {
+              gid : "<%= @type %>",
+              keyword : keyword
+            },
+          success :
+            function(data, dataType){
+              $("#seletUser_<%= @type %>_<%= @count %>").html(data);
+            },
+          error :
+            function(){
+              alert("通信エラー");
+              $("#keyword_<%= @type %>_<%= @count %>").attr("send", "0");
+            },
+          complete :
+            function(){
+            }
+        }
+      );
+    }
+
+    $("#seletUser_<%= @type %>_<%= @count %>").change(
+      function(){
+        selected_cd = $(this).val();
+        selected_text = $("#seletUser_<%= @type %>_<%= @count %> option:selected").text();
+        selected_text_array = selected_text.split("(");
+        selected_name    = selected_text_array[0];
+        $("#selected_cd_dialog_<%= @type %>_<%= @count %>").val(selected_cd);
+        $("#selected_name_dialog_<%= @type %>_<%= @count %>").val(selected_name);
+    }
+    );
+
+    $(document).ready(
+      function(){
+        $("#address_<%= @type %>_<%= @count %>").dialog(
+          {
+            modal: true,
+            autoOpen: false,
+            height: 370,
+            width: 340,
+            buttons:
+              {
+                "ＯＫ":
+                  function(){
+                    address = $("#selected_cd_dialog_<%= @type %>_<%= @count %>").val();
+                    name = $("#selected_name_dialog_<%= @type %>_<%= @count %>").val();
+                    if (name != "") { //選択された場合
+                      <% unless @cd_field.nil? or @cd_field.empty? %>
+                        $("#<%= @cd_field %>").val($("#selected_cd_dialog_<%= @type %>_<%= @count %>").val());
+                      <% end %>
+                      <% unless @name_field.nil? or @name_field.empty? %>
+                        $("#<%= @name_field %>").val('"' + name.replace(/^[\s　]+|[\s　]+$/g, '') + '" <' + address + '>');
+                      <% end %>
+                      $("#keyword_<%= @type %>_<%= @count %>").val("");
+                      $("#seletUser_<%= @type %>_<%= @count %>").html("");
+                      $("#selected_cd_dialog_<%= @type %>_<%= @count %>").val("");
+                      $("#selected_name_dialog_<%= @type %>_<%= @count %>").val("");
+                    }
+                    $(this).dialog("close");
+                  },
+                "キャンセル":
+                  function(){
+                    $("#keyword_<%= @type %>_<%= @count %>").val("");
+                    $("#seletUser_<%= @type %>_<%= @count %>").html("");
+                    $("#selected_cd_dialog_<%= @type %>_<%= @count %>").val("");
+                    $("#selected_name_dialog_<%= @type %>_<%= @count %>").val("");
+                    $(this).dialog("close");
+                  }
+              }
+          }
+        );
+
+        $("#address_<%= @type %>_<%= @count %>").dialog("open");
+        address_search();
+      }
+    );
+  //-->
+</script>

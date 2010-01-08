@@ -1,0 +1,18 @@
+<input type="hidden" id="tmp_date" value="<%= @d_report.action_date unless @d_report.nil? %>" />
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        var date = $("#tmp_date").val();
+        if(date!=""){
+          $("#button_next").attr("disabled", "");
+          $("#comment_report_date").val(date);
+          get_comment_list();
+        }else{
+          $("#button_next").attr("disabled", "disabled");
+        }
+      }
+    );
+  //-->
+</script>

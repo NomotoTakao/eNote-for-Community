@@ -1,0 +1,2 @@
+module Master::NoticeHelper
+end

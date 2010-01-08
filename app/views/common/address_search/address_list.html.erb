@@ -1,0 +1,28 @@
+<% unless @address_list.nil? %>
+  <% name_length = 0%>
+  <% @address_list.each do |address| %>
+    <% name_length = address.name.strip.size if name_length.to_i < address.name.strip.size %>
+  <% end %>
+  <% @address_list.each do |address| %>
+    <%
+      org_name = ""
+      unless address.org_name1.nil?
+        org_name += address.org_name1
+      end
+      unless address.org_name2.nil?
+        org_name += address.org_name2
+      end
+      unless address.org_name3
+        org_name += address.org_name3
+      end
+      unless address.org_name4
+        org_name += address.org_name4
+      end
+    %>
+	<%
+      spaces = ""
+      (name_length + 2 - address.name.gsub(" ", "").size)/2.times {|i| spaces += "　"}
+    %>
+    <option value="<%= address.email_address1 %>"><%= address.name + spaces + "(" + org_name + ")" %></option>
+  <% end %>
+<% end %>

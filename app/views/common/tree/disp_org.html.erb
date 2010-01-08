@@ -1,0 +1,104 @@
+  <div style="border:0px;background-color:white;text-align:left;overflow-y:scroll;height:250px;">
+    <ul id="sosiki_browser" class="orgtree">
+      <% @m_orgs.each do |org| %>
+		<% children = MOrg.get_org_list org.org_lvl.to_i + 1, org.org_cd %>
+        <%
+          li_class = ""
+          if children.length == 0
+            li_class = ""
+          else
+            li_class = "closed"
+          end
+        %>
+        <li class="<%= li_class %>">
+          <span id="org_<%= org.org_cd %>" class="folder org_span">
+            <font class="org_font">
+              <%= org.org_name1 %>
+            </font>
+          </span>
+		  <% unless children.length < 0 %>
+		    <ul></ul>
+		  <% end %>
+      <% end %>
+    </ul>
+  </div>
+  
+<script type="text/javascript">
+  <!--
+    /*
+     * 初期処理
+     */
+    $(document).ready(
+      function(){
+        //組織ツリーを構成
+        $("#sosiki_browser").treeview();
+      }
+    );
+
+
+    //組織ツリーにクリックイベントを定義する
+    $(".org_span").click(
+      function(){
+        bgChange($(this).children(), $(".org_font"));
+        org_cd = $(this).attr("id").replace("org_", "");
+        
+		// ユーザー選択エリアにユーザーを表示する処理
+        var value = $(this).attr("id").replace("org_", "");
+        jQuery("#org_users_area").load("/common/tree/disp_org_user?org_cd=" + value);
+		
+        // ツリーの子要素を取得する処理
+        val_id = $(this).attr("id");
+        get_tree(val_id);
+      }
+    );
+
+    /*
+     * ツリーの+/-ボタンクリック時
+     */
+    $(".hitarea").click(
+      function(){
+        if($(this).attr("class").indexOf("collapsable-hitarea") != -1){
+          // ツリーを開く
+          val_id = $(this).next().attr("id");
+          get_tree(val_id);
+        }else{
+          // ツリーを閉じる
+          $(this).attr("class", $(this).attr("class").replace("collapsable", "expansable"));
+        }
+      }
+    );
+
+	/*
+	 * 非同期通信により、ツリーの下位要素を取得する処理
+	 * @param id - クリックされたHTML要素のID 
+	 */
+    function get_tree(id){
+      if($("#" + id).next().html() == ""){
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/common/tree/tmp_list",
+            data :
+              {
+                org_cd : id.replace("org_", "")
+              },
+            success :
+              function(data, dataType){
+                if ($("#" + id).next().html() == "") {
+                  $("#" + id).after(data);
+                }
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){
+                $("#tmp_ul").attr("id", "");
+              }
+          }
+        );
+      }
+	}
+  //-->
+</script>

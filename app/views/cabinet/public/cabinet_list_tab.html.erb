@@ -1,0 +1,77 @@
+<!-- キャビネット -->
+<table class="frame_2pain">
+  <tr>
+    <td class="frame_2pain_left">
+      <div class="gadget" style="width:240px;">
+        <div id="" class="gadget_title" style="">
+          <h3 style="color:blue;"><img src="/images/icons/icon_cabinet.gif" align="top" style="margin-right:5px;">共有キャビネット</h3>
+        </div>
+        <%# 共有キャビネットツリー %>
+        <div class="tree_box" style="height:200px;overflow-y: scroll">
+          <%= render :partial=>"public_cabinet", :locals=>{:heads=>@heads, :idx=>"0"}%>
+        </div>
+      </div>
+      <div class="gadget" style="width:240px;">
+        <div id="" class="gadget_title" style="">
+          <h3 style="color:blue;"><img src="/images/icons/icon_cabinet.gif" align="top" style="margin-right:5px;">共有キャビネット内を検索</h3>
+        </div>
+        <% form_remote_tag :update=>"cabinet_list", :url=>{:action=>:cabinet_list} do %>
+          <div class="gadget_body">登録日の指定：<br>
+            <table border="0">
+              <tr>
+                <td>
+                  <%= text_field_tag 'date_from','',{:class=>"ime_off", :size => 10, :style => "height:20px;width:90px;"} %>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:center;">
+                                              〜
+                </td>
+              </tr>
+              <tr>
+                <td>
+				  <%= text_field_tag 'date_to','',{:class=>"ime_off", :size => 10, :style => "height:20px;width:90px;"} %>
+                </td>
+              </tr>
+            </table>
+            <br>
+                               あいまい検索：<br>
+            <%= text_field_tag 'keyword','',{:class=>"ime_on", :size => 20, :style => "height:20px;width:150px;margin:0px;"} %>
+			<%= hidden_field "category_id", "" %>
+            <%= submit_tag "検索", :class => "submit_small", :style => "margin:0px;", :onClick=>"clearSelectedCabinet();" %>
+          </div>
+        <% end %>
+      </div>
+    </td>
+    <td class="frame_2pain_right">
+      <div id="cabinet_list"></div>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+
+        $(document).scrollTop = 0;
+        var auto = $("#auto").val();
+        // 自動遷移が指定されていれば、この処理は実行しない
+        if(auto == ""){
+          url = "/cabinet/public/cabinet_list?cabinet_kbn=2";
+          $("#cabinet_list").load(url);
+        }else{
+          auto = auto.split("_");
+          if(auto.length == 2){
+            target = auto[0] + "_" + auto[1];
+            $("#" + target).click();
+          }
+        }
+
+        // カレンダー
+        setCalendar(jQuery("#date_from"));
+        setCalendar(jQuery("#date_to"));
+      }
+    );
+  //-->
+</script>

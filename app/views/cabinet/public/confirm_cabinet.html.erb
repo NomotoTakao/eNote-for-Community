@@ -1,0 +1,34 @@
+<input type="hidden" id="count" value="<%= @d_cabinet_bodies_list.length %>" />
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        var count = $("#count").val();
+        if(count > 0){
+          alert("キャビネットにデータが保存されています。\nキャビネットを削除するには、データを先に削除してください。");
+        }else{
+          if(confirm("削除しますか？")){
+            jQuery.ajax(
+              {
+                type: "GET",
+                data:{head_id: head_id},
+                url: "/cabinet/public/delete_cabinet",
+                success:
+                  function(){
+                    url = "/cabinet/public/sectional_cabinet";
+                    $('#public_cabinet').load(url);
+                    $("#d_cabinet_body_d_cabinet_head_id").val("");
+                  },
+                error:
+                  function(){
+                    alert("通信エラー");
+                  }
+              }
+            );
+          }
+        }
+      }
+    );
+  //-->
+</script>

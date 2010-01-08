@@ -1,0 +1,21 @@
+<input type="hidden" id="admin_flg" value="<%= current_m_user.admin_flg %>" />
+<div id="setting_contents" />
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        var admin_flg = $("#admin_flg").val();
+        var url = "";
+/*
+        if(admin_flg==1){
+          url = "/report/main/setting_admin";
+        }else{
+*/
+          url = "/report/main/setting_superior";
+//        }
+        $("#setting_contents").load(url);
+      }
+    );
+  //-->
+</script>

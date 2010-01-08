@@ -1,0 +1,187 @@
+<!-- グループ条件選択 -->
+<!-- 社員 -->
+<% if @address_kbn.to_s == '1' %>
+  <div style="border:0px;background-color:white;text-align:left;overflow-y:scroll;height:170px;">
+    <ul id="sosiki_browser" class="orgtree">
+      <%
+        prev_org = nil
+        prev_org_lvl = 1
+        li_class = "closed"
+        li_close_tag = ""
+        span_class = "folder"
+        style = ""
+      %>
+      <% @m_orgs.each do |org| %>
+        <% children = MOrg.get_org_list org.org_lvl.to_i + 1, org.org_cd %>
+        <%
+          li_class = ""
+          if children.length == 0
+            li_class = ""
+          else
+            li_class = "closed"
+          end
+        %>
+        <li class="<%= li_class %>">
+          <span id="org_<%= org.org_cd %>" class="folder org_span">
+            <font class="org_font">
+              <%= org.org_name1 %>
+            </font>
+          </span>
+        <% unless children.length < 0 %>
+          <ul></ul>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+
+<!-- プロジェクト -->
+<% elsif @address_kbn.to_s == '2' %>
+  <div>
+    <select id="address_condition" name="address_condition" size=10 style="width:240px;border:0px;" onclick="ClickConditionProject();">
+      <% for project in @m_projects %>
+        <option value = <%=project.id%>><%=project.name%></option>
+      <% end %>
+    </select>
+  </div>
+
+<!-- 共用グループ -->
+<% elsif @address_kbn.to_s == '8' %>
+  <div>
+    <select id="address_condition" name="address_condition" size=10 style="width:240px;border:0px;" onclick="ClickConditionPublic();">
+      <% for group in @d_address_group %>
+        <option value = <%=group.id%>><%=group.title%></option>
+      <% end %>
+    </select>
+  </div>
+
+<!-- 個人用 -->
+<% elsif @address_kbn.to_s == '9' %>
+  <div>
+    <select id="address_condition" name="address_condition" size=10 style="width:240px;border:0px;" onclick="ClickConditionPersonal();">
+      <option value = 0>全て</option>
+      <% for group in @d_address_group %>
+        <option value = <%=group.id%>><%=group.title%></option>
+      <% end %>
+    </select>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+<!--
+    /*
+     * 初期処理
+     */
+    $(document).ready(function(){
+      // 公開対象組織ツリーを構成
+      $("#sosiki_browser").treeview();
+    });
+
+    /*
+     * 条件「プロジェクト」選択時の処理
+     */
+    function ClickConditionProject(){
+        // jQueryでの処理
+        $.ajax({
+            type:'get',
+            url:'/address/group/undecided_member?gid=0&gkbn=' + <%=@address_kbn%> + '&proid=' + $("#address_condition").val(),
+            success:
+                function(request){
+                    // 受信結果を選択候補領エリアに反映させます。
+                    $('#enote_address_group_undecide').html(request);
+                }
+        });
+    }
+
+    /*
+     * 条件「共用グループ」選択時の処理
+     */
+    function ClickConditionPublic(){
+        // jQueryでの処理
+        $.ajax({
+            type:'get',
+            url:'/address/group/undecided_member?&gid=' + $("#address_condition").val() + '&gkbn=' + <%=@address_kbn%>,
+            success:
+                function(request){
+                    // 受信結果を右領域に反映させます。
+                    $('#enote_address_group_undecide').html(request);
+                }
+        });
+    }
+
+    /*
+     * 条件「個人」選択時の処理
+     */
+    function ClickConditionPersonal(){
+        // jQueryでの処理
+        $.ajax({
+            type:'get',
+            url:'/address/group/undecided_member?&gid=' + $("#address_condition").val() + '&gkbn=' + <%=@address_kbn%>,
+            success:
+                function(request){
+                    // 受信結果を選択候補領エリアに反映させます。
+                    $('#enote_address_group_undecide').html(request);
+                }
+        });
+    }
+
+    /*
+     * ツリーの組織名クリック時
+     */
+    $(".org_span").click(
+      function(){
+        val_id = $(this).attr("id");
+        bgChange($("#" + val_id).children(), $(".org_font"));
+		
+        get_tree(val_id);
+      }
+    );
+
+    /*
+     * ツリーの+/-ボタンクリック時
+     */
+    $(".hitarea").click(
+      function(){
+        if($(this).attr("class").indexOf("collapsable-hitarea") != -1){
+          val_id = $(this).next().attr("id");
+          get_tree(val_id);
+        }else{    
+          $(this).attr("class", $(this).attr("class").replace("collapsable", "expansable"));
+        }
+      }
+    );
+	
+	/*
+	 * 非同期通信により、ツリーの下位要素を取得する処理
+	 * @param id - クリックされたHTML要素のID 
+	 */
+    function get_tree(id){
+      if ($("#" + id).next().html() == "") {
+        jQuery.ajax(
+          {
+            type : "GET",
+            url : "/address/group/tmp_list",
+            data :
+              {
+                org_cd: id.replace("org_", "")
+              },
+            success :
+              function(data, dataType){
+                if ($("#" + id).next().html() == "") {
+                  $("#" + id).after(data);
+                }
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){
+                // tmp_list.html.erbは使いまわされるので、ID:tmp_ulが重複しないように値をクリアする。
+                $("#tmp_ul").attr("id", "");
+              }
+          }
+        );
+	  }
+    }
+  //-->
+</script>

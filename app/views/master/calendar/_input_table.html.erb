@@ -1,0 +1,51 @@
+<!-- エラー -->
+<% err = flash[:calendar_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<table class="master_table2" style="margin:10px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">日付&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_calendars[day]',@m_calendars.day, {:size => 10, :style => "width:120px;"} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">休日またはイベント名称</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_calendars[name]', @m_calendars.name,  {:size => 100, :maxlength => 20} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">休日またはイベント</td>
+    <td class="master_table2_content">
+      <select id="select_holiday_flg" name="select_holiday_flg" style="width:250px">
+          <% if @m_calendars.holiday_flg.to_i == 0 %>
+            <option value = 0 selected>0 : 休日</option>
+            <option value = 1>1 : イベント</option>
+          <% else %>
+            <option value = 0>0 : 休日</option>
+            <option value = 1 selected>1 : イベント</option>
+          <% end %>
+      </select>
+    </td>
+  </tr>
+</table>
+<%= hidden_field_tag 'm_calendars[id]', @m_calendars.id %>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期設定
+  */
+  $(document).ready(function(){
+    // カレンダー
+    setCalendar(jQuery("#m_calendars_day"));
+  });
+-->
+</script>

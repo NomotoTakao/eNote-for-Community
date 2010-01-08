@@ -1,0 +1,5 @@
+<% unless @user_list.nil? %>
+  <% @user_list.each do |user| %>
+    <option value="<%= user.email_address1 %>"><%= user.name %></option>
+  <% end %>
+<% end %>

@@ -1,0 +1,126 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "app/master"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "app/master"
+    ]) %>
+<% end -%>
+
+<table style="width:100%;;">
+  <tr>
+    <td style="text-align:left;"><font style="font-weight:bold;">ログ検索条件</font></td>
+    <td style="text-align:right;">
+      <input type="button" class="submit_large" onClick="ClickBackToMasterList();" value="マスタ一覧へ戻る" />
+    </td>
+  </tr>
+</table>
+<table class="admin_pages_edit_table" cellspacing="0" cellpadding="1">
+  <tr>
+    <td class="admin_pages_edit_table_title">日付</td>
+    <td class="admin_pages_edit_table_content">
+      <input type="text" id="date_from" style="height:20px;width:90px;" />
+      <input type="hidden" id="date_from_h" value="" />～
+      <input type="text" id="date_to" style="height:20px;width:90px;" />
+      <input type="hidden" id="date_to_h" value="" />
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">操作者</td>
+    <td class="admin_pages_edit_table_content">
+      <input type="text" id="manipulate_user_name", style="height:20px;width:200px;" />
+      <input type="hidden" id="manipulate_user_name_h" value="" />
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">対象テーブル</td>
+    <td class="admin_pages_edit_table_content">
+      <input type="text" id="table_name" style="height:20px;width:100px;" />
+      <input type="hidden" id="table_name_h" value="" />
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">対象レコードID</td>
+    <td class="admin_pages_edit_table_content">
+      <input type="text" id="manipulate_id" style="heigtht:20px;width:30px;" />
+      <input type="hidden" id="manipulate_id_h" value="" />
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">操作</td>
+    <td class="admin_pages_edit_table_content">
+      <select id="manipulate_name">
+        <option value="">&nbsp;</option>
+        <option value="INSERT">INSERT</option>
+        <option value="UPDATE">UPDATE</option>
+        <option value="DELETE">DELETE</option>
+      </select>
+      <input type="hidden" id="manipulate_name_h" value="" />
+    </td>
+  </tr>
+</table>
+<table style="width:740px;">
+  <tr>
+    <td style="text-align:right;">
+      <input type="button" value="検索" onClick="log_search();" />
+    </td>
+  </tr>
+</table>
+<br />
+
+<div id="log_list"></div>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        setCalendar($("#date_from"));
+        setCalendar($("#date_to"));
+        
+        log_search();
+      }
+    );
+    
+    /*
+     * 
+     */
+    function log_search(){
+      jQuery.ajax(
+        {
+          type     : "GET",
+          url      : "/master/log/log_list",
+          data     :
+            {
+              date_from            : $("#date_from").val(),
+              date_to              : $("#date_to").val(),
+              manipulate_user_name : $("#manipulate_user_name").val(),
+              table_name           : $("#table_name").val(),
+              manipulate_id        : $("#manipulate_id").val(),
+              manipulate_name      : $("#manipulate_name").val()
+            },
+          success  :
+            function(data, dataType){
+              $("#log_list").html(data);
+            },
+          error    :
+            function(){
+              alert("通信エラー");
+            },
+          complete :
+            function(){
+              $("#date_from_h").val($("#date_from").val());
+              $("#date_to_h").val($("#date_to").val());
+              $("#manipulate_user_name_h").val($("#manipulate_user_name").val());
+              $("#table_name_h").val($("#table_name").val());
+              $("#manipulate_id_h").val($("#manipulate_id").val());
+              $("#manipulate_name_h").val($("#manipulate_name").val());
+            }
+        }
+      );
+    }
+  //-->
+</script>

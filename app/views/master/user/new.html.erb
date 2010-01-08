@@ -1,0 +1,61 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "app/master"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "app/master"
+    ]) %>
+<% end -%>
+
+<div id="input_area" style="padding:5px;">
+  <%= form_tag({:action=>'create'}) %>
+    <table style="width:100%">
+       <tr>
+         <td style="text-align:right;">
+           <input id="create_button" type="submit" class="submit_small" value="登録" onclick="return ClickCreateButton()" />
+           <input id="cancel_button" type="button" class="submit_small" value="戻る" onclick="ClickCancel()" />
+         </td>
+       </tr>
+       <tr>
+         <td colspan=2>
+           <!-- 入力フォーム -->
+           <%= render :partial => 'input_table' %>
+         </td>
+       </tr>
+       <tr>
+         <td style="text-align:right;">
+           <input id="create_button" type="submit" class="submit_small" value="登録" onclick="return ClickCreateButton()" />
+           <input id="cancel_button" type="button" class="submit_small" value="戻る" onclick="ClickCancel()" />
+         </td>
+       </tr>
+    </table>
+  </form>
+</div>
+
+<script type="text/javascript">
+<!--
+  /*
+   * 登録
+   */
+  function ClickCreateButton(){
+    //入力チェック
+    result = CheckValidateUser();
+    if (!result) {
+      return result;
+    }
+    return true;
+  }
+  /*
+   * 閉じる
+   */
+  function ClickCancel(){
+    document.location = "/master/user/index";
+  }
+-->
+</script>

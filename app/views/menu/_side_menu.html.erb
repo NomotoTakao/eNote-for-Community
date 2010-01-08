@@ -1,0 +1,34 @@
+<div id="home_top_menu" class="gadget_menu" style="">
+	<ul style="list-style:none;margin:0px;padding:0px;">
+		<% @side_menus[:system].each do |menu| %>
+			<li>
+				<%= image_tag "menu/#{menu.icon}", :class => "shortcut_image", :align => "top" %>
+				<%= link_to(menu.title, menu.url, :target => menu.target) %>
+			</li>
+		<% end %>
+	</ul>
+</div>
+<div id="home_top_menu" class="gadget_menu" style="">
+	<ul style="list-style:none;margin:0px;padding:0px;">
+		<% @side_menus[:inside].each do |menu| %>
+			<li>
+				<%= image_tag "menu/menu_webapp.gif", :class => "shortcut_image", :align => "top" %>
+				<% if menu.notice_flg.to_i == 2 %>
+					<%= link_to(menu.title, menu.url + current_m_user.user_cd.to_s, :target => menu.target) %>
+				<% else %>
+                                        <%= link_to(menu.title, menu.url, :target => menu.target) %>
+				<% end %>
+			</li>
+		<% end %>
+	</ul>
+</div>
+<div id="home_top_menu" class="gadget_menu" style="">
+	<ul style="list-style:none;margin:0px;padding:0px;">
+		<% @side_menus[:outside].each do |menu| %>
+			<li>
+				<%= image_tag "menu/menu_net_service.gif", :class => "shortcut_image", :align => "top" %>
+				<%= link_to(menu.title, menu.url, :target => menu.target) %>
+			</li>
+		<% end %>
+	</ul>
+</div>

@@ -1,0 +1,295 @@
+  <div class="e_note_general_frame_borderless" style="width:100%;">
+    <table class="enote_app_title" style="width:100%;">
+      <tr style="vertical-align:middle;">
+        <td class="e_note_content_title" style="width:30%;">
+          <%= h("活動内容検索") %>
+        </td>
+        <td style="text-align:center;">検索条件を指定してください。</td>
+        <td style="width:30%;">
+        </td>
+      </tr>
+    </table>
+  </div>
+<table>
+  <tr>
+    <td rowspan="5" style="width:200px;">
+      <div style="border:1px solid black;background-color:#fff;text-align:left;height:150px;overflow-y:auto;">
+        <%= render :partial=>"org_tree", :locals=>{:org_list=>@org_list} %>
+      </div>
+    </td>
+    <td>
+      <img class="enote_title_block" src="/images/widget_ico_on.gif"/>日付：
+    </td>
+    <td>
+      <input type="text" id="search_date_from" class="ime_off" size="10" />&nbsp;~&nbsp;<input type="text" id="search_date_to" class="ime_off" size="10" />
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <img class="enote_title_block" src="/images/widget_ico_on.gif"/>活動のコメント：
+    </td>
+    <td>
+      <input type="text" id="search_comment" class="ime_on" size="40" />
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <img class="enote_title_block" src="/images/widget_ico_on.gif"/>面談相手：
+    </td>
+    <td>
+      <select id="search_action_target_select" size="1" style="width:200px;">
+        <option value="">&nbsp;</option>
+        <% unless @action_target_list.nil? %>
+          <% @action_target_list.each do |m_action_target| %>
+            <option value="<%= m_action_target.action_target_cd %>"><%= m_action_target.action_target_name %></option>
+          <% end %>
+        <% end %>
+      </select>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <img class="enote_title_block" src="/images/widget_ico_on.gif"/>活動分類：
+    </td>
+    <td>
+      <select id="search_action_group_select" size="1" style="width:200px;">
+        <option value="">&nbsp;</option>
+        <% unless @action_group_list.nil? %>
+          <% @action_group_list.each do |m_action_group| %>
+            <option value="<%= m_action_group.action_group_cd %>"><%= m_action_group.action_group_name %></option>
+          <% end %>
+        <% end %>
+      </select>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <img class="enote_title_block" src="/images/widget_ico_on.gif"/>活動詳細：
+    </td>
+    <td>
+      <select id="search_action_select" size="1" style="width:200px;">
+        <option value="">&nbsp;</option>
+      </select>
+    </td>
+    <td>
+<!--
+      <input type="button" id="button_csv" class="submit_large" value="CSV出力" />
+-->&nbsp;
+      <input type="button" id="button_search" class="submit_large" value="検索" />
+    </td>
+  </tr>
+</table>
+
+<table style="width:940px;">
+  <tr>
+    <td>
+      <table class="enote_general_table1_cell_bordered">
+        <tr class="enote_general_table1_title">
+          <th class="enote_general_table1_cell_bordered" style="width:20px;text-align:center;">&nbsp;</th>
+          <th class="enote_general_table1_cell_bordered" style="width:50px;text-align:center;">行</th>
+          <th class="enote_general_table1_cell_bordered search_date" style="width:100px;text-align:center;">日付</th>
+          <th class="enote_general_table1_cell_bordered search_tanto" style="width:120px;text-align:center;">担当者</th>
+          <th class="enote_general_table1_cell_bordered search_customer" style="width:120px;text-align:center;">得意先</th>
+          <th class="enote_general_table1_cell_bordered" style="width:120px;text-align:center;">対象者</th>
+          <th class="enote_general_table1_cell_bordered" style="width:120px;text-align:center;">活動分類</th>
+          <th class="enote_general_table1_cell_bordered" style="width:120px;text-align:center;">活動詳細</th>
+          <th class="enote_general_table1_cell_bordered" style="width:120px;text-align:center;">活動時間・金額</th>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div id="search_list" style="overflow-y:scroll;height:200px;width:918px;"></div>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    /**
+     * 「活動分類」セレクトボックスのチェンジイベント
+     */
+    $("#search_action_group_select").change(
+      function(){
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/report/main/action_list",
+            data :
+              {
+                action_group_cd : $(this).val()
+              },
+            success :
+              function(data, dataType){
+                $("#search_action_select").html("<option value=''>&nbsp;</option>"+data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     * 「検索」ボタンのクリックイベント
+     */
+    $("#button_search").click(
+      function(){
+        search_report("");
+      }
+    );
+
+    /**
+     * 「CSV出力」ボタンのクリックイベント
+     */
+    $("#button_csv").click(
+      function(){
+        var date_from = $("#search_date_from").val();
+        var date_to = $("#search_date_to").val();
+        var comment = $("#search_comment").val();
+        var action_target = $("#search_action_target_select").val();
+        var action_group = $("#search_action_group_select").val();
+        var action = $("#search_action_select").val();
+        var authenticity_token = $("#authenticity_token").val();
+
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/report/main/output_csv",
+            data :
+              "date_from=" + date_from + "&date_to=" + date_to + "&comment=" + comment + "&target_cd=" + action_target + "&group_cd=" + action_group + "&action_cd=" + action + "&authenticity_token=" + authenticity_token,
+            success :
+              function(data, dataType){
+
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     * 画面をロードしたときに発生するイベント
+     */
+    $(document).ready(
+      function(){
+        setCalendar($("#search_date_from"));
+        setCalendar($("#search_date_to"));
+      }
+    );
+
+    /**
+     * 日報一覧の日付にマウスカーソルを合わせた時に発生するイベント
+     */
+    $(".search_date").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /**
+     * 日報一覧の日付をクリックしたときに発生するイベント
+     */
+    $(".search_date").click(
+      function(){
+        if($("#search_list").html() != ""){
+          search_report("action_date");
+        }
+      }
+    );
+
+    $(".search_tanto").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    $(".search_tanto").click(
+      function(){
+        search_report("user_cd");
+      }
+    );
+
+    $(".search_customer").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    $(".search_customer").click(
+      function(){
+        search_report("company_cd");
+      }
+    );
+
+    function search_report(order){
+
+      var org_cd = $("#org_cd").val();
+      var user_cd = $("#user_cd").val();
+      var date_from = $("#search_date_from").val();
+      var date_to = $("#search_date_to").val();
+      var comment = $("#search_comment").val();
+      var action_target = $("#search_action_target_select").val();
+      var action_group = $("#search_action_group_select").val();
+      var action = $("#search_action_select").val();
+      var current_order = $("#current_order").val();
+
+      if(org_cd != "" || user_cd != ""){
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/report/main/search_list",
+            data :
+              {
+                org_cd        : org_cd,
+                user_cd       : user_cd,
+                date_from     : date_from,
+                date_to       : date_to,
+                comment       : comment,
+                target_cd     : action_target,
+                group_cd      : action_group,
+                action_cd     : action,
+                current_order : current_order,
+                order         : order
+              },
+            success :
+              function(data, dataType){
+                $("#search_list").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }else{
+        alert("画面左のツリーから、日報検索対象となる組織または人を選択してください。");
+      }
+    }
+  //-->
+</script>

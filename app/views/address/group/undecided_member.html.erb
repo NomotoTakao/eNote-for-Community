@@ -1,0 +1,16 @@
+<% options = "" %>
+<% if !@addresses_undecide.nil? %>
+  <% @addresses_undecide.each do |member|%>
+    <!-- 社員,プロジェクト,共用 -->
+    <% if @address_kbn == '1' || @address_kbn == '2' || @address_kbn == '8' %>
+      <% options += "<option value=#{member.id} >#{member.name}(#{member.org_name})</options>" %>
+    <% else %>
+      <% if member.email_address1 != "" %>
+        <% options += "<option value=#{member.id} >#{member.name}(#{member.email_address1})</options>" %>
+      <% else %>
+        <% options += "<option value=#{member.id} >#{member.name}</options>" %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+<%= select_tag('undecided_member[]', options, :size=>10, :multiple=>true, :style=>'width:280px;height:300px;border:1px solid black;') %>

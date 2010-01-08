@@ -1,0 +1,87 @@
+<%# コメント検索結果 %>
+
+<h3>検索条件</h3>
+<input type="hidden" id="board_id_" value="<%= @board_id %>" />
+<input type="hidden" id="thread_id_" value="<%= @thread_id %>" />
+<input type="hidden" id="condition_date_from" value="<%= @date_from%>" />
+<input type="hidden" id="condition_date_to" value="<%= @date_to %>" />
+<input type="hidden" id="condition_keyword" value="<%= @keyword %>" />
+<table class="bbs_head_table" style="width: 660px; text-align: left;">
+　　<tbody>
+	<% unless @board_id.empty? %>
+      <tr>
+        <td class="bbs_head_table_t">
+          <h3>検索対象の掲示板：</h3>
+        </td>
+        <td class="bbs_head_table_t_noimg" style="text-align: left;">
+          <%= @board_list[@board_id.to_i] %>
+        </td>
+      </tr>
+	<% end %>
+	<% unless @thread_id.empty? %>
+      <tr>
+        <td class="bbs_head_table_t">
+          <h3>検索対象のトピック：</h3>
+        </td>
+        <td class="bbs_head_table_t_noimg" style="text-align: left;">
+          <%= @thread_list[@thread_id.to_i] %>
+        </td>
+      </tr>
+	<% end %>
+    <% unless @date_from.empty? %>
+      <tr>
+        <td class="bbs_head_table_t">
+          <h3>投稿日(自)：<%#= @thread.title %></h3>
+        </td>
+        <td class="bbs_head_table_t_noimg" style="text-align: left;">
+          <%= @date_from %>
+        </td>
+      </tr>
+    <% end %>
+    <% unless @date_to.empty? %>
+      <tr>
+        <td class="bbs_head_table_t">
+          <h3>投稿日(至)：<%#= @thread.title %></h3>
+        </td>
+        <td class="bbs_head_table_t_noimg" style="text-align: left;">
+          <%= @date_to %>
+        </td>
+      </tr>
+    <% end %>
+    <% unless @keyword.empty? %>
+      <tr>
+        <td class="bbs_head_table_t">
+          <h3>検索語：<%#= @thread.title %></h3>
+        </td>
+        <td class="bbs_head_table_t_noimg" style="text-align: left;">
+          <%= @keyword %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+<div id="comment_search_list">
+</div>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+
+        board_id = $("#board_id_").val();
+//alert("comment_search_list-board_id:" + board_id);
+		thread_id = $("#thread_id_").val();
+//alert("comment_search_list-thrad_id:" + thread_id);
+        date_from = $("#condition_date_from").val();
+		date_to = $("#condition_date_to").val();
+		keyword = encodeURI($("#condition_keyword").val());
+		url = "/bbs/main/comment_search_list?board_id=:board_id&thread_id=:thread_id&date_from=:date_from&date_to=:date_to&keyword=:keyword";
+		url = url.replace(":board_id", board_id).replace(":thread_id", thread_id).replace(":date_from", date_from).replace(":date_to", date_to).replace(":keyword", keyword);
+        
+		$("#comment_search_list").load(url);
+      }
+    );
+  //-->
+</script>

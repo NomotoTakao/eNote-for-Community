@@ -1,0 +1,210 @@
+
+<%
+  options = ""
+  hidden_value = ""
+
+  @section_list.each do |section|
+    options += "<option value='#{section.private_org_cd}'>#{section.title}</option>"
+    hidden_value += "_" + section.private_org_cd + "_,"
+  end
+%>
+<table>
+  <tr>
+    <td>
+      <input type="hidden" id="selected_org" value="" />
+      <div style="border: 1px solid black;width:200px;height:215px;background-color:white;overflow-y:scroll;">
+        <ul id="org_tree" class="filetree">
+          <%
+            prev_org = nil
+            prev_org_lvl = 1
+            li_class = "closed"
+            li_close_tag = ""
+            span_class = "folder"
+            style = ""
+          %>
+
+          <% @org_list.each do |org| %>
+             <% prev_org_lvl = prev_org.org_lvl unless prev_org.nil?%>
+            <% if prev_org_lvl < org.org_lvl %>
+              <ul>
+            <% elsif prev_org_lvl > org.org_lvl %>
+              <!-- 組織レベルの差を求めて、何段階上の階層に移動するかを判断 -->
+              <% t = prev_org_lvl - org.org_lvl %>
+              <% if t == 1 %>
+                </ul>
+              <% elsif t == 2 %>
+                </ul></ul>
+              <% elsif t == 3%>
+                </ul></ul></ul>
+              <% end %>
+            <% end %>
+            <% prev_org = org %>
+            <%
+              org_name = ""
+              if org.org_lvl == 1
+                li_class = "closed"
+                li_close_tag = ""
+                span_class = "folder"
+                style = ""
+                org_name = org.org_name1
+              elsif org.org_lvl == 2
+                li_class = "closed"
+                li_close_tag = ""
+                span_class = "folder"
+                style = ""
+                org_name = org.org_name2
+              elsif org.org_lvl == 3
+                li_class = ""
+                li_close_tag = ""
+                span_class = "folder"
+                style = ""
+                style = ""
+                org_name = org.org_name3
+              elsif org.org_lvl == 4
+                span_class = "folder"
+                style = ""
+                org_name = org.org_name4
+              end
+             if org_name == "-"
+              next
+              end
+            %>
+            <li class="<%= li_class %>" style="<%= style %>">
+              <span class="<%= span_class %>" style="text-align:left;">
+                <font id="org_<%= org.org_cd %>" class="org_leaf">
+                  <%= org_name %>
+                </font>
+              </span>
+            <%= li_close_tag %>
+          <% end %>
+        </ul>
+      </div>
+    </td>
+    <td valign="middle">
+      <span id="org_add">&gt;</span>
+      <br />
+      <br />
+      <span id="org_delete">&lt;</span>
+    </td>
+    <td>
+      <div style="border:1px solid black;width:200px;height:215px;background-color:#fff;text-align:left;">
+        <%= select_tag("org_list", options, :size=>13, :style=>'width:200px;height:215px;border:0;', :multiple=>true) %>
+        <%= hidden_field "selected_org_list", nil, :value=>hidden_value %>
+        <%= hidden_field "deleted_org_list", nil, :value=>"" %>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        $("#org_tree").treeview();
+      }
+    );
+
+    $(".org_leaf").click(
+      function(){
+        tid = "#" + $(this).attr("id");
+        value = $(tid).attr("id").replace("org_", "");
+        bgChange($(tid), $(".org_leaf"));
+        name = $(this).text();
+        $("#selected_org").val(trim(name) + "," + trim(value));
+      }
+    );
+
+    $(".org_leaf").mouseover(
+      function(){
+        $(this).css("cursor", "pointer");
+      }
+    );
+
+    $(".org_leaf").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    $("#org_add").mouseover(
+      function(){
+        $(this).css("cursor", "pointer");
+      }
+    );
+
+    $("#org_add").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    $("#org_add").click(
+      function(){
+
+            element = $("#selected_org").val().split(",");
+            // すでに同じものがあれば追加はしない。
+            if($("#selected_org_list_").val().indexOf("_" + element[1] + "_,") == -1){
+              // セレクトボックスに項目を追加する
+              $("#org_list").append($('<option>').attr({value:element[1]}).text(element[0]));
+              // 選択された項目のhiddenフィールドに組織CDを追加する。
+              $("#selected_org_list_").val($('#selected_org_list_').val() + "_" + element[1] + "_,");
+              // 削除する組織CDの要素に追加するものと同じ値がある場合は空白と置き換える。
+              $("#deleted_org_list_").val($("#deleted_org_list_").val().replace("_" + element[1] + "_,", ""));
+            }
+
+      }
+    );
+
+    $("#org_delete").mouseover(
+      function(){
+        $(this).css("cursor", "pointer");
+      }
+    );
+
+    $("#org_delete").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    $("#org_delete").click(
+      function(){            txt = "";
+            val = "";
+            arrayText = "";
+            arrayVal = "";
+            txtDeletedTxt = ""
+            // セレクトボックスで選択されている組織の名称とCDをCSV形式で取得する。
+            $("#org_list option:selected").each(
+              function(){
+                txt += $(this).html() + ",";
+                val += $(this).val() + ",";
+              }
+            );
+            arrayText = txt.split(",");
+            arrayVal = val.split(",");
+            txtSelectedTxt = $("#selected_org_list_").val();
+            arraySelectedTxt = txtSelectedTxt.split(",");
+
+            for(i=0; i<arrayVal.length-1; i++){
+              txtDeletedTxt += "_" + arrayVal[i] + "_,"
+              txtSelectedTxt = txtSelectedTxt.replace("_" + arrayVal[i] + "_,", "");
+            }
+            $("#deleted_org_list_").val($("#deleted_org_list_").val() + txtDeletedTxt);
+            $("#selected_org_list_").val(txtSelectedTxt);
+            $("#org_list option:selected").remove();
+
+      }
+    );
+
+    /*
+     * 引数に渡された文字列の前後の空白を除去します。
+     *
+     * @param str - 前後に空白を含む文字列
+     *
+     * @return 前後の空白を除去した文字列
+     */
+    function trim(str){
+      return str.replace(/^[ ]+|[ ]+$/g, '');
+    }
+  //-->
+</script>

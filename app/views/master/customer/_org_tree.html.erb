@@ -1,0 +1,84 @@
+<input type="hidden" id="org_cd" value="" />
+<input type="hidden" id="user_cd" value="" />
+<% unless org_list.nil? %>
+  <ul id="org_tree" class="orgtree">
+    <% org_list.each do |org| %>
+      <li class="closed">
+        <span id="org_<%= org.org_lvl %>_<%= org.org_cd %>" class="folder org report_tree">
+          <font>
+            <%= org.org_name1 %>
+          </font>
+        </span>
+        <ul></ul>
+    <% end %>
+  </ul>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    $(".org").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+    $(".org").click(
+      function(){
+        bgChange($(this).children(), $(".report_tree").children());
+        var id = $(this).attr("id");
+        var org_lvl = "";
+        var org_cd = "";
+        if(id != ""){
+          var array_id = id.split("_");
+          org_lvl = array_id[1];
+          org_cd = array_id[2];
+        }
+        $("#org_cd").val(org_cd);
+        if(org_lvl!="" && org_cd!="" && ($("#" + id).next().html() == null || $("#" + id).next().html() == "")){
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/master/customer/tmp_list",
+              data :
+                {
+                  org_lvl : org_lvl,
+                  org_cd  : org_cd
+                },
+              success :
+                function(data, dataType){
+                  $("#"+id).after(data);
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){}
+            }
+          );
+        }
+      }
+    );
+
+    /**
+     * ツリーの+/-ボタンがクリックされたときに発生するイベントです。
+     */
+    $(".hitarea").click(
+      function(){
+//        if ($(this).next().attr("data") == 0 && $(this).next().next().html() == "") {
+          $(this).next().click();
+          // ツリーの+/-ボタンの記号を'+'から'-'に変更する。(クラスの属性を置き換える)
+          $(this).attr("class", $(this).attr("class").replace("expandable", "collapsable"));
+//        }
+      }
+    );
+
+    $(document).ready(
+      function(){
+        $("#org_tree").treeview();
+      }
+    );
+  //-->
+</script>

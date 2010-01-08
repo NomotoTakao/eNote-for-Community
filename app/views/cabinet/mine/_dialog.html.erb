@@ -1,0 +1,96 @@
+<%# 詳細ダイアログ %>
+
+<%
+  title = ""
+  body = ""
+  file_name = ""
+  file_size = ""
+  download_url = ""
+  update_at = ""
+  expiration_at = ""
+
+  unless @cabinet.nil?
+    title = @cabinet.title
+    body = @cabinet.body
+    updated_at = @cabinet.updated_at.strftime("%Y/%m/%d %H:%M")
+    if @head.default_enable_day != 0
+      expiration_at = (@head.default_enable_day - (Time.now.to_i - @cabinet.post_date.to_i)/60/60/24)
+      expiration_color = expiration_at<=5 ? "red" : "black"
+      expiration_at = "残り" + expiration_at.to_s + "日"
+    end
+    unless @cabinet_file.nil?
+      file_name = @cabinet_file.file_name
+      file_size = @cabinet_file.file_size
+      if file_size < 1024
+        file_size = file_size.to_s + " Byte"
+      elsif file_size < 1024 * 1024
+        file_size = sprintf("%10.2f", file_size / 1024.0) + " KB" 
+      else
+        file_size = sprintf("%10.2f", file_size / 1024.0 / 1024) + " MB"
+      end
+      download_url = "/cabinet/mine/download?cabinet_id=" + @cabinet_file.d_cabinet_body_id.to_s
+    end
+  end
+%>
+
+<a id="dialog_download" href="<%= download_url %>"></a>
+
+<table class="enote_general_table1" style="width:460px;">
+  <tr class="enote_general_table1_title">
+    <th colspan="3" class="enote_general_table1_cell_bordered">タイトル</th>
+  </tr>
+  <tr style="height:30px;">
+    <td colspan="3" class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= title %></td>
+  </tr>
+  <tr class="enote_general_table1_title">
+    <th colspan="3" class="enote_general_table1_cell_bordered">ファイルの説明</th>
+  </tr>
+  <tr style="height:30px;">
+    <td colspan="3" valign="top" class="enote_general_table1_cell_bordered" style="padding-left:5px;height:200px;">
+      <%= body%>
+    </td>
+  </tr>
+  <tr class="enote_general_table1_title">
+    <th colspan="3" class="enote_general_table1_cell_bordered">ファイル名</th>
+  </tr>
+  <tr style="height:30px;">
+    <td colspan="3" class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= file_name %></td>
+  </tr>
+  <tr class="enote_general_table1_title">
+    <th style="width:33%;" class="enote_general_table1_cell_bordered">サイズ</th>
+    <th style="width:33%;" class="enote_general_table1_cell_bordered">更新日時</th>
+    <th style="width:33%;" class="enote_general_table1_cell_bordered">有効期限</th>
+  </tr>
+  <tr style="height:30px;">
+    <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= file_size %></td>
+    <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= updated_at %></td>
+    <td class="enote_general_table1_cell_bordered" style="text-align:center;color:<%= expiration_color %>;"><%= expiration_at %></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(function(){
+      $("#dialog").dialog({
+        bgiframe: true,
+        modal: true,
+        autoOpen: false,
+        height: 500,
+        width: 500,
+        buttons: {
+          "ダウンロード":
+		    function() {
+              if ($("#dialog_download").attr('href') != "") {
+                $("#dialog_download").click();
+                open($("#dialog_download").attr('href'));
+              }
+            },
+          "閉じる":
+		    function() {
+              $(this).dialog('close');
+            }
+        }
+      });
+	});
+  //-->
+</script>

@@ -1,0 +1,41 @@
+<div id="" class="gadget_title" style="">
+    <h3 style=""><img src="/images/icons/icon_notice.gif" align="top" style="margin-right:5px;"><%= @gadget_title %></h3>
+</div>
+
+
+<div id="" class="gadget_body" style="">
+  <table cellpadding="0" cellspacing="0" style="width:100%;">
+    <% @kbn99_list.each do |kbn99| %>
+      <tr>
+        <td class="" style="width:88%;height:20px;">
+           <% if kbn99.post_date.to_date >= (Date.today - 5) %>
+             <img src="/images/icons/icon_balloon_new.gif" align="top" class="gadget_table_icon">
+           <% else %>
+             <img src="/images/icons/icon_balloon.gif" align="top" class="gadget_table_icon">
+           <% end %>
+          <%= link_to "【#{kbn99.d_notice_head.title}】#{kbn99.title}", {:controller => "notice/main", :action => "index", :id => kbn99.d_notice_head_id, :message_id_def=>kbn99.id} %>
+        </td>
+        <td align="right" class="" style="width:12%;">
+          <%= datetime_strftime(kbn99.post_date) %>&nbsp;&nbsp;
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <table cellpadding="0" cellspacing="0" style="width:100%;">
+    <tr style="text-align:center;">
+      <td colspan="2" style="text-align:center;">
+      <% if @kbn99_list.size > 0 %>
+        <%= will_paginate @kbn99_list, :renderer => RemoteLinkRenderer,
+                                       :update =>"mypage_kbn99",
+                                       :params=> {
+                                                   :action => 'gadget_kbn99'
+                                                 },
+                                       :prev_label => "<<前へ",
+                                       :next_label => "次へ>>",
+                                       :method => :get
+        %>
+      <% end %>
+      </td>
+    </tr>
+  </table>
+</div>

@@ -1,0 +1,85 @@
+<!-- エラー -->
+<% err = flash[:address_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<!-- 連絡先追加 -->
+<%= form_remote_tag :update=>"enote_address_main", :url=>{:action=>:create} %>
+  <table style="width:100%;">
+    <tr>
+      <td style="width:50%; text-align:left;">
+      <input id="d_address_new" type="submit" class="submit lh_valid_button" value="登録" onclick="return ClickNewButton()" />
+      </td>
+      <td style="width:50%; text-align:right;">
+        <input id="back_to_list" type="button" class="submit_large" value="一覧へ戻る" onclick="ClickBackToList()" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="width:100%;">
+        <%= render :partial => 'form' %>
+      </td>
+    </tr>
+    <tr>
+      <td style="width:50%; text-align:left;">
+      <input id="d_address_new" type="submit" class="submit lh_valid_button" value="登録" onclick="return ClickNewButton()" />
+      </td>
+      <td style="width:50%; text-align:right;">
+        <input id="back_to_list" type="button" class="submit_large" value="一覧へ戻る" onclick="ClickBackToList()" />
+      </td>
+    </tr>
+  </table>
+  <input type="hidden" id="result_flg" name="result_flg" value=<%=@result_flg%>>
+</form>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    if ($("#result_flg").val() == 1) {
+      alert("登録が完了しました。");
+    }
+  });
+
+  /*
+   * 登録
+   */
+  function ClickNewButton(){
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+    //続けて作業するか確認
+    result = confirm("続けて登録を行う場合は「ＯＫ」\n登録終了の場合は「キャンセル」を押してください。");
+    if (result) {
+      $("#next_form").val(2); //新規登録画面へ
+    }
+    else {
+      $("#next_form").val(1); //一覧画面へ
+    }
+  }
+
+  /*
+   * 一覧へ戻る
+   */
+  function ClickBackToList(){
+    // jQueryでの処理
+    $.ajax({
+      type:'get',
+      url:'/address/main/addrs_list?gid=0&gkbn=9',
+      success:
+        function(request){
+          // 受信結果を一覧エリアに反映させます。
+          $('#enote_address_main').html(request);
+        }
+    });
+  }
+-->
+</script>

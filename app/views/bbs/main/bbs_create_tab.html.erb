@@ -1,0 +1,65 @@
+<%# 「掲示板を新規作成」タブ %>
+
+<div id="cont_1">
+  <h3 style="text-align:left;margin-left:20px;">新しい掲示板を作成する</h3>
+  <div id="bbs_create"></div>
+</div>
+
+
+<%= form_remote_tag :update=>"right_pane", :url=>{:action => 'bbs_create'} %>
+  <table border="0" cellpadding="0" cellspacing="10" style="margin-left:30px;">
+    <tr>
+      <!--
+      <td style="width:250px;text-align:left;">
+        <b>公開対象の選択</b>
+      </td>
+      <td style="width:20px;">&nbsp;</td>
+	  -->
+      <td style="width:300px;text-align:left;">
+        <b>公開対象組織の選択</b>
+      </td>
+    </tr>
+    <tr>
+      <!--
+      <td valign="top" style="text-align:left;padding-left:15px;">
+        <%#= radio_button("blog_article", "published_flg", "3") %>組織を選択<br>
+        <%#= radio_button("blog_article", "published_flg", "2") %>参加プロジェクトを選択<br>
+      </td>
+      <td>
+      </td>
+	  -->
+      <td valign="top" style="text-align:left;">
+        <div style="height:150px;width:300px;border:1px solid black;background-color:white;text-align:left;overflow-y:scroll">
+		  <%= hidden_field "d_bbs_auths", "org_cd" %>
+          <%= render :partial=>"org_tree" %>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <div class="enote_form_table" style="margin-left:40px;width:660px;text-align:left;">
+    <div style="height:30px;width:160px;" class="enote_form_table_title">
+      掲示板の名前
+    </div>
+    <div style="height:30px;width:475px;text-align:left;" class="enote_form_table_cell_bordered">
+      <%= text_field "d_bbs_boards", 'title' %>
+    </div>
+    <div class="enote_form_table_title" style="height:100px;width:160px;">
+      掲示板の説明
+    </div>
+    <div class="enote_form_table_cell_bordered" style="height:100px;width:475px;text-align:left;">
+      <%= text_area 'd_bbs_boards', 'memo', {:cols => 40, :rows => 5 }  %>
+    </div>
+  </div>
+  <div style="clear:both;text-align:left;margin-left:40px;margin-top:30px;">
+    <%= submit_tag '作成する',{:class => 'submit'} %>
+  </div>
+</form>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+      }
+    );
+  //-->
+</script>

@@ -1,0 +1,259 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/blockUI/jquery.blockUI.js",
+      "jquery/tooltip/jquery.tooltip.js",
+      "jquery/timer/jquery.timer.js",
+      "app/schedule"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/tooltip/jquery.tooltip.css",
+      "app/schedule"
+    ]) %>
+<% end -%>
+
+<div id="input_area">
+<% form_for :reserve, :url => { :action => "update" }, :html => {:id => "form_reserve", :method => :put, :style => "margin-top:3px;"} do |f| %>
+  <table style="width: 700px;">
+    <!-- ボタン -->
+    <tr>
+      <!-- Web日報の場合 -->
+      <% if @reserve.plan_kbn == 99 %>
+        <% num = 2 %>
+        <td style="width: 670px;"></td>
+        <td style="width: 30px;">
+          <input id="schedule_cancel" type="submit" class="submit_small" value="戻る" onclick="ClickCancelButton()" />
+        </td>
+      <!-- Web日報でない場合 -->
+      <% else %>
+        <!-- 繰り返しがない場合 -->
+        <% if params[:repeat_flg] == '0' %>
+          <% num = 4 %>
+          <td style="width: 610px;"></td>
+          <td style="width: 30px;">
+            <input id="schedule_update1" type="submit" class="submit_small" value="登録" onclick="return ClickUpdate1Button()" />
+          </td>
+          <td style="width: 30px;">
+            <input id="schedule_delete" type="submit" class="submit_small" value="削除" onclick="return ClickDelete5Button()" />
+          </td>
+          <td style="width: 30px;">
+            <input id="schedule_cancel" type="submit" class="submit_small" value="戻る" onclick="ClickCancelButton()" />
+          </td>
+        <!-- 繰り返しがある場合 -->
+        <% else %>
+          <% num = 6 %>
+          <td style="width: 310px;"></td>
+          <td style="width: 90px;">
+            <input id="schedule_update2" type="submit" class="submit_large" value="この予定を更新" onclick="return ClickUpdate2Button()" style="font-size:0.75em;" />
+          </td>
+          <td style="width: 90px;">
+            <input id="schedule_update4" type="submit" class="submit_large" value="この予定以降を更新" onclick="return ClickUpdate4Button()" style="font-size:0.75em;" />
+          </td>
+          <td style="width: 90px;">
+            <input id="schedule_delete" type="submit" class="submit_large" value="この予定を削除" onclick="return ClickDelete5Button()" style="font-size:0.75em;" />
+          </td>
+          <td style="width: 90px;">
+            <input id="schedule_delete" type="submit" class="submit_large" value="この予定以降を削除" onclick="return ClickDelete6Button()" style="font-size:0.75em;" />
+          </td>
+          <td style="width: 30px;">
+            <input id="schedule_cancel" type="submit" class="submit_small" value="戻る" onclick="ClickCancelButton()" style="font-size:0.8em;" />
+          </td>
+        <% end %>
+      <% end %>
+    </tr>
+    <!-- 内容 -->
+    <tr>
+      <td colspan=<%=num%> style="width: 700px;">
+        <%= f.hidden_field :id %>
+        <!-- 入力フォーム -->
+        <%= render :partial => 'input_table' %>
+      </td>
+    </tr>
+    <!-- ボタン -->
+    <tr>
+      <!-- Web日報の場合 -->
+      <% if @reserve.plan_kbn == 99 %>
+        <% num = 2 %>
+        <td style="width: 670px;"></td>
+        <td style="width: 30px;">
+          <input id="schedule_cancel" type="submit" class="submit_small" value="戻る" onclick="ClickCancelButton()" />
+        </td>
+      <!-- Web日報でない場合 -->
+      <% else %>
+        <!-- 繰り返しがない場合 -->
+        <% if params[:repeat_flg] == '0' %>
+          <% num = 4 %>
+          <td style="width: 610px;"></td>
+          <td style="width: 30px;">
+            <input id="schedule_update1" type="submit" class="submit_small" value="登録" onclick="return ClickUpdate1Button()" />
+          </td>
+          <td style="width: 30px;">
+            <input id="schedule_delete" type="submit" class="submit_small" value="削除" onclick="return ClickDelete5Button()" />
+          </td>
+          <td style="width: 30px;">
+            <input id="schedule_cancel" type="submit" class="submit_small" value="戻る" onclick="ClickCancelButton()" />
+          </td>
+        <!-- 繰り返しがある場合 -->
+        <% else %>
+          <% num = 6 %>
+          <td style="width: 310px;"></td>
+          <td style="width: 90px;">
+            <input id="schedule_update2" type="submit" class="submit_large" value="この予定を更新" onclick="return ClickUpdate2Button()" style="font-size:0.75em;" />
+          </td>
+          <td style="width: 90px;">
+            <input id="schedule_update4" type="submit" class="submit_large" value="この予定以降を更新" onclick="return ClickUpdate4Button()" style="font-size:0.75em;" />
+          </td>
+          <td style="width: 90px;">
+            <input id="schedule_delete" type="submit" class="submit_large" value="この予定を削除" onclick="return ClickDelete5Button()" style="font-size:0.75em;" />
+          </td>
+          <td style="width: 90px;">
+            <input id="schedule_delete" type="submit" class="submit_large" value="この予定以降を削除" onclick="return ClickDelete6Button()" style="font-size:0.75em;" />
+          </td>
+          <td style="width: 30px;">
+            <input id="schedule_cancel" type="submit" class="submit_small" value="戻る" onclick="ClickCancelButton()" style="font-size:0.75em;" />
+          </td>
+        <% end %>
+      <% end %>
+    </tr>
+  </table>
+</div>
+<% end %>
+
+<script type="text/javascript">
+<!--
+  /*
+   * 登録
+   */
+  function ClickUpdate1Button(){
+    //確認ダイアログ
+    if (!confirm("更新してよろしいですか？")) {
+      return false;
+    }
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+    //更新データ確認
+    CheckUpdateData();
+    if (!result) {
+      return result;
+    }
+    //ボタンモード
+    $("#select_button").val(1);
+    //処理中メッセージを表示
+    LoadBlockUi();
+  }
+
+  /*
+   * この予定のみ更新
+   */
+  function ClickUpdate2Button(){
+    //確認ダイアログ
+    if (!confirm("更新してよろしいですか？")) {
+      return false;
+    }
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+    //更新データ確認
+    CheckUpdateData();
+    if (!result) {
+      return result;
+    }
+    //ボタンモード
+    $("#select_button").val(2);
+    //処理中メッセージを表示
+    LoadBlockUi();
+  }
+
+  /*
+   * 全ての予定を更新
+   */
+  function ClickUpdate3Button(){
+    //確認ダイアログ
+    if (!confirm("更新してよろしいですか？")) {
+      return false;
+    }
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+    //更新データ確認
+    CheckUpdateData();
+    if (!result) {
+      return result;
+    }
+    //ボタンモード
+    $("#select_button").val(3);
+    //処理中メッセージを表示
+    LoadBlockUi();
+  }
+
+  /*
+   * この予定以降を全て更新
+   */
+  function ClickUpdate4Button(){
+    //確認ダイアログ
+    if (!confirm("更新してよろしいですか？")) {
+      return false;
+    }
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+    //更新データ確認
+    CheckUpdateData();
+    if (!result) {
+      return result;
+    }
+    //ボタンモード
+    $("#select_button").val(4);
+    //処理中メッセージを表示
+    LoadBlockUi();
+  }
+
+  /*
+   * 削除/この予定を削除
+   */
+  function ClickDelete5Button(){
+    //ボタンモード
+    $("#select_button").val(5);
+    //確認ダイアログ
+    if (!confirm("削除してよろしいですか？")) {
+      return false;
+    }
+    //処理中メッセージを表示
+    LoadBlockUi();
+  }
+  /*
+   * この予定以降を削除
+   */
+  function ClickDelete6Button(){
+    //ボタンモード
+    $("#select_button").val(6);
+    //確認ダイアログ
+    if (!confirm("削除してよろしいですか？")) {
+      return false;
+    }
+    //処理中メッセージを表示
+    LoadBlockUi();
+  }
+
+  /*
+   * 戻る
+   */
+  function ClickCancelButton(){
+    //ボタンモード
+    $("#select_button").val(99);
+  }
+
+-->
+</script>

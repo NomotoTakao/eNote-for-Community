@@ -1,0 +1,20 @@
+<% options = "" %>
+
+<!-- 2階層目を表示 -->
+<% if @target_level == 2 %>
+  <% if !@second_notice_list.nil? %>
+    <% @second_notice_list.each do |data|%>
+      <% options += "<option value=#{data.d_notice_head_id} >#{data.title}</options>" %>
+    <% end %>
+  <% end %>
+  <%= select_tag('decided_second_notice', options, :size=>5, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickSecondNotice();') %>
+
+<!-- 3階層目を表示 -->
+<% elsif @target_level == 3 %>
+  <% if !@third_notice_list.nil? %>
+    <% @third_notice_list.each do |data|%>
+      <% options += "<option value=#{data.d_notice_head_id} >#{data.title}</options>" %>
+    <% end %>
+  <% end %>
+  <%= select_tag('decided_third_notice', options, :size=>5, :multiple=>false, :style=>'width:300px;') %>
+<% end %>

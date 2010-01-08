@@ -1,0 +1,304 @@
+<!-- エラー -->
+<% if !flash[:duplicate_msg].nil? && flash[:duplicate_msg] != "" %>
+  <table style="width:100%;">
+    <tr style="color:red;">
+      <td>下記の施設が既に予約されていた為、予約できませんでした。<br>詳細は、マイページをご覧ください。</td>
+    </tr>
+    <tr style="color:red;">
+      <td><%= flash[:duplicate_msg] %></td>
+    </tr>
+    <tr style="height:5px;"></tr>
+  </table>
+<% end -%>
+
+<!-- ヘッダ -->
+<table cellpadding="1" cellspacing="0" style="width:100%;">
+  <tr>
+    <!-- 開始日 -->
+    <% start_day = @week_list[0][0] %>
+    <% end_date = start_day + 6 %>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "schedule_list",
+      :url => {:action => "week", :week => (start_day - 7).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
+    </td>
+    <td style="width:30px;">
+      <%=button_to_remote("今週", :update => "schedule_list", :url => {:action => "week", :other_checked_id => @other_checked_id})%>
+    </td>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "schedule_list",
+      :url => {:action => "week", :week => (start_day + 7).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
+    </td>
+    <td style="width:250px;">
+      <%= start_day.year.to_s %>年<%= start_day.month.to_s %>月<%= start_day.day.to_s %>日
+                     ～
+      <%= end_date.year.to_s %>年<%= end_date.month.to_s %>月<%= end_date.day.to_s %>日
+    </td>
+    <td>&nbsp;</td>
+    <!-- 他の予定エリア -->
+    <td style="width:250px;">
+      <select id="belong_list_h" name="belong_list_h" style="width:250px;z-index:-10;" onchange="SelectOtherGroup(0);">
+        <% for i in 0..(@belong_list.size - 1) %>
+          <% belong = @belong_list[i] %>
+          <% if @other_checked_id == i %>
+            <option value = <%=i%> selected><%=belong[2]%></option>
+          <% else %>
+            <option value = <%=i%>><%=belong[2]%></option>
+          <% end %>
+        <% end %>
+      </select>
+    </td>
+    <td>&nbsp;</td>
+    <!-- 印刷 -->
+    <td style="width:70px;">
+      <!-- 秘書機能を持つ人が秘書機能を選択した場合 -->
+      <% if @secretaries_flg == 1 && @other_checked_id == 0 %>
+        <a href="/schedule/reserve/secretary_print?start_day=<%=start_day.strftime("%Y%m%d")%>" target="_blank">印刷画面へ</a>
+      <% end %>
+    </td>
+    <td>&nbsp;</td>
+    <td style="width:20px;">
+      <%=button_to("日", :action => "index_day", :other_checked_id => @other_checked_id)%>
+    </td>
+    <td style="width:20px;">
+      <%=button_to("週", :action => "index_week", :other_checked_id => @other_checked_id)%>
+    </td>
+    <td style="width:20px;">
+      <%=button_to("月", :action => "index_month")%>
+    </td>
+    <td style="width:50px;"><%=button_to("予定リスト", :action => "index_list")%></td>
+  </tr>
+</table>
+
+<!-- 内容 -->
+<table class="calendar" border="0" cellspacing="0" cellpadding="0">
+  <tr class="dayName">
+    <th>名前</th>
+    <!-- 日付 -->
+    <% wdays = ["日", "月", "火", "水", "木", "金", "土"] %>
+    <% for day in @week_list %>
+      <% day_disp = day[0].day.to_s + "日(" + wdays[day[0].wday] + ")" %>
+      <th>
+        <a href="#" onClick="dialog_reserve_open_ins('encodeURIComponent(<%=day[0]%>)', '')">
+          <!-- 本日の場合 -->
+          <% if Date.today == day[0] %>
+            <div class="today_cell_title">
+          <% end %>
+          <%=day_disp%>
+          <% if Date.today == day[0] %>
+            </div>
+          <% end %>
+        </a>
+        <!-- 祝日の場合 -->
+        <% if !@holiday_hash[day[0]][0].nil? %>
+          <div class="holiday_message" style="color:red;"><%=@holiday_hash[day[0]][0]%></div>
+        <% end %>
+        <!-- イベント日の場合 -->
+        <% if !@event_hash[day[0]][0].nil? %>
+          <div class="event_message" style="color:blue;"><%=@event_hash[day[0]][0]%></div>
+        <% end %>
+      </th>
+    <% end %>
+  </tr>
+  <!-- メンバごとに処理を行う -->
+  <!-- member[0]:社員コード, member[1]:社員名, [2]:日付に紐付くスケジュールリスト -->
+  <% for member in @member_list %>
+    <tr>
+      <td class="week" style="width:80px;vertical-align:middle;">
+        <div class='calendar_week_cell_body'>
+          <!-- 秘書機能データの場合 -->
+          <% if (!@secretaries_user_hash[member[0]][0].nil?) %>
+            <a href="#" onClick="dialog_reserve_open_ins('encodeURIComponent(<%=session[:week_start_date].to_date%>)', '<%=member[0]%>')">
+          <% end %>
+          <%=member[1]%>
+          <% if (!@secretaries_user_hash[member[0]][0].nil?) %>
+            </a>
+          <% end %>
+        </div>
+      </td>
+      <!-- 日曜日から土曜日(開始日は設定により異なる)のスケジュールを設定する -->
+      <% for i in 0..6 %>
+        <% class_name = "week" %>
+        <% if @week_list[i][0].wday == 0 || @week_list[i][0].wday == 6 %>
+          <% class_name = "week weekendDay" %>
+        <% elsif !@holiday_hash[@week_list[i][0]][0].nil? %>
+          <% class_name = "week holiday" %>
+        <% elsif !@event_hash[@week_list[i][0]][0].nil? %>
+          <% class_name = "week event" %>
+        <% end %>
+
+        <td class="<%=class_name%>" style="vertical-align:top;"><div class='calendar_week_cell_body'>
+          <!-- schedule[0]:日付, [1]:スケジュールリスト -->
+          <!-- 日付ごとのスケジュールを設定 -->
+          <% match_count = 0 %>
+          <% for schedule in member[2] %>
+            <% reserve = schedule[1] %>
+            <!-- 該当日付の場合 -->
+            <% target_day = schedule[0] %>
+            <% if target_day == @week_list[i][0] %>
+              <% match_count = match_count + 1 %>
+              <table><tr><td>
+                <!-- 本人または秘書機能データの場合(リンク指定) -->
+                <% if !@secretaries_user_hash[reserve.user_cd][0].nil? %>
+                  <% if reserve.repeat_schedule_id.nil? %>
+                    <% repeat_flg = '0' %>
+                  <% else %>
+                    <% repeat_flg = '1' %>
+                  <% end %>
+                  <a href="#" class="memo_disp" title="<%=reserve.memo%>" style="text-decoration:none;"
+                  onclick="dialog_reserve_open_edit('<%=reserve.id%>', '<%=repeat_flg%>', '<%=reserve.user_cd%>'); return false;">
+                <% end %>
+                <span>◆</span>
+                <!-- 色指定 -->
+                <% if !@plan_color_list[reserve.plan_kbn][0].nil? %>
+                  <span style=<%="color:" + @plan_color_list[reserve.plan_kbn][0] + ";"%>>
+                <% else %>
+                  <span style="color:'#000000';">
+                <% end %>
+                <!-- 時間指定の場合 -->
+                <% if reserve.plan_allday_flg == 0 %>
+                  <!-- 開始日の場合 -->
+                  <% if target_day == reserve.plan_date_from %>
+                    <%=reserve.plan_time_from.strftime("%H:%M")%>-
+                    <!-- 終了日と同日の場合 -->
+                    <% if target_day == reserve.plan_date_to %>
+                      <%=reserve.plan_time_to.strftime("%H:%M")%>
+                    <% end %>
+                    <br>
+                  <!-- 終了日の場合 -->
+                  <% elsif target_day == reserve.plan_date_to %>
+                    -<%=reserve.plan_time_to.strftime("%H:%M")%><br>
+                  <% end %>
+                <% else %>
+                                                   終日<br>
+                <% end %>
+                <!-- 本人の場合 -->
+                <% if reserve.user_cd == current_m_user.user_cd %>
+                  <%=reserve.title%>
+                <% else %>
+                  <!-- 非公開の場合 -->
+                  <% if reserve.public_kbn == 2 %>
+                    [予定あり]
+                  <% else %>
+                    <%=reserve.title%>
+                  <% end %>
+                <% end %>
+                </span>
+                <br>
+                <!-- 本人または秘書機能データの場合(リンク指定) -->
+                <% if !@secretaries_user_hash[reserve.user_cd][0].nil? %>
+                  </a>
+                <% end %>
+              </td></tr></table>
+            <% end %>
+          <% end %>
+          <!-- 日付と一致するデータがなかった場合 -->
+          <% if match_count == 0 %>
+            &nbsp;
+          <% end %>
+        </div></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<!-- フッタ -->
+<table cellpadding="1" cellspacing="0" style="width:100%;">
+  <tr>
+    <!-- 開始日 -->
+    <% start_day = @week_list[0][0] %>
+    <% end_date = start_day + 6 %>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "schedule_list",
+      :url => {:action => "week", :week => (start_day - 7).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
+    </td>
+    <td style="width:30px;">
+      <%=button_to_remote("今週", :update => "schedule_list", :url => {:action => "week", :other_checked_id => @other_checked_id})%>
+    </td>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "schedule_list",
+      :url => {:action => "week", :week => (start_day + 7).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
+    </td>
+    <td style="width:250px;">
+      <%= start_day.year.to_s %>年<%= start_day.month.to_s %>月<%= start_day.day.to_s %>日
+                     ～
+      <%= end_date.year.to_s %>年<%= end_date.month.to_s %>月<%= end_date.day.to_s %>日
+    </td>
+    <td>&nbsp;</td>
+    <!-- 他の予定エリア -->
+    <td style="width:250px;">
+      <select id="belong_list_f" name="belong_list_f" style="width:250px;z-index:-10;" onchange="SelectOtherGroup(1);">
+        <% for i in 0..(@belong_list.size - 1) %>
+          <% belong = @belong_list[i] %>
+          <% if @other_checked_id == i %>
+            <option value = <%=i%> selected><%=belong[2]%></option>
+          <% else %>
+            <option value = <%=i%>><%=belong[2]%></option>
+          <% end %>
+        <% end %>
+      </select>
+    </td>
+    <td>&nbsp;</td>
+    <!-- 印刷 -->
+    <td style="width:70px;">
+      <!-- 秘書機能を持つ人が秘書機能を選択した場合 -->
+      <% if @secretaries_flg == 1 && @other_checked_id == 0 %>
+        <a href="/schedule/reserve/secretary_print?start_day=<%=start_day.strftime("%Y%m%d")%>" target="_blank">印刷画面へ</a>
+      <% end %>
+    </td>
+    <td>&nbsp;</td>
+    <td style="width:20px;">
+      <%=button_to("日", :action => "index_day", :other_checked_id => @other_checked_id)%>
+    </td>
+    <td style="width:20px;">
+      <%=button_to("週", :action => "index_week", :other_checked_id => @other_checked_id)%>
+    </td>
+    <td style="width:20px;">
+      <%=button_to("月", :action => "index_month")%>
+    </td>
+    <td style="width:50px;"><%=button_to("予定リスト", :action => "index_list")%></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+<!--
+  /*
+  * タイマーの処理内容
+  */
+  function timers(){
+    // jQueryでの処理
+    $.ajax({
+        type:'get',
+        url:"/schedule/reserve/week?other_checked_id=" + <%=@other_checked_id%> + "&week=" + <%=session[:week_start_date]%>,
+        success:
+            function(request){
+                // 受信結果を一覧エリアに反映させます。
+                $('#schedule_list').html(request);
+            }
+    });
+  }
+
+  /*
+   * その他予定選択時の処理
+   */
+  function SelectOtherGroup(click_flg){
+    //ヘッダ
+    if (click_flg == 0) {
+      other_checked_id = $("#belong_list_h").val();
+    //フッタ
+    } else {
+      other_checked_id = $("#belong_list_f").val();
+    }
+
+    // jQueryでの処理
+    $.ajax({
+        type:'get',
+        url:'/schedule/reserve/week?&other_checked_id=' + other_checked_id + '&week=' + <%=session[:week_start_date]%>,
+        success:
+            function(request){
+                // 受信結果を一覧エリアに反映させます。
+                $('#schedule_list').html(request);
+            }
+    });
+  }
+-->
+</script>

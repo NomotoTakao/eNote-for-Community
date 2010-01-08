@@ -1,0 +1,78 @@
+<!-- エラー -->
+<% err = flash[:project_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<table class="master_table2" style="margin:10px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">プロジェクト名称&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_projects[name]', @m_projects.name,  {:size => 100, :maxlength => 80} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">プロジェクト略称</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_projects[name_short]', @m_projects.name_short,  {:size => 50, :maxlength => 32} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">開始日&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_projects[enable_date_from]',@m_projects.enable_date_from, {:size => 10, :style => "width:120px;"} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">終了日&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_projects[enable_date_to]',@m_projects.enable_date_to, {:size => 10, :style => "width:120px;"} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">有効フラグ</td>
+    <td class="master_table2_content">
+    <table>
+      <tr>
+        <td style="width:250px;">
+          <select id="m_projects[enable_flg]" name="m_projects[enable_flg]" style="width:150px">
+            <% if @m_projects.enable_flg == 0 %>
+              <option value = 0 selected>0：有効</option>
+              <option value = 1>1：無効</option>
+            <% else %>
+              <option value = 0>0：有効</option>
+              <option value = 1 selected>1：無効</option>
+            <% end %>
+          </select>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">備考</td>
+    <td class="master_table2_content">
+      <%= text_area_tag 'm_projects[memo]', @m_projects.memo,  {:cols => 60, :rows => 5} %>
+    </td>
+  </tr>
+
+
+</table>
+<%= hidden_field_tag 'm_projects[id]', @m_projects.id %>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期設定
+  */
+  $(document).ready(function(){
+    // カレンダー
+    setCalendar(jQuery("#m_projects_enable_date_from"));
+    setCalendar(jQuery("#m_projects_enable_date_to"));
+  });
+-->
+</script>

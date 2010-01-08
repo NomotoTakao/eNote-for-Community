@@ -1,0 +1,127 @@
+<!-- ヘッダ -->
+<table cellpadding="1" cellspacing="0" style="width:100%;">
+  <tr>
+    <!-- 開始日 -->
+    <% start_day = @week_list[0][0] %>
+    <% end_date = start_day + 6 %>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "mypage_schedule",
+      :url => {:action => "gadget_schedule", :week => (start_day - 7).strftime("%Y%m%d")}) %></a>
+    </td>
+    <td style="width:30px;">
+      <%=button_to_remote("今週", :update => "mypage_schedule", :url => {:action => "gadget_schedule"})%>
+    </td>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "mypage_schedule",
+      :url => {:action => "gadget_schedule", :week => (start_day + 7).strftime("%Y%m%d")}) %></a>
+    </td>
+    <td style="width:250px;">
+      <%= start_day.year.to_s %>年<%= start_day.month.to_s %>月<%= start_day.day.to_s %>日
+                     ～
+      <%= end_date.year.to_s %>年<%= end_date.month.to_s %>月<%= end_date.day.to_s %>日
+    </td>
+    <td style="width:620px;"></td>
+  </tr>
+</table>
+<!-- 内容 -->
+<table class="calendar" border="0" cellspacing="0" cellpadding="0">
+  <tr class="dayName">
+    <!-- 日付 -->
+    <% wdays = ["日", "月", "火", "水", "木", "金", "土"] %>
+    <% for day in @week_list %>
+      <% day_disp = day[0].day.to_s + "日(" + wdays[day[0].wday] + ")" %>
+      <th>
+        <a href="#" onClick="dialog_reserve_open_ins('encodeURIComponent(<%=day[0]%>)')">
+          <!-- 本日の場合 -->
+          <% if Date.today == day[0] %>
+            <div class="today_cell_title">
+          <% end %>
+          <%=day_disp%>
+          <% if Date.today == day[0] %>
+            </div>
+          <% end %>
+        </a>
+        <!-- 祝日の場合 -->
+        <% if !@holiday_hash[day[0]][0].nil? %>
+          <div class="holiday_message" style="color:red;"><%=@holiday_hash[day[0]][0]%></div>
+        <% end %>
+        <!-- イベント日の場合 -->
+        <% if !@event_hash[day[0]][0].nil? %>
+          <div class="event_message" style="color:blue;"><%=@event_hash[day[0]][0]%></div>
+        <% end %>
+      </th>
+    <% end %>
+  </tr>
+  <!-- メンバごとに処理を行う -->
+  <!-- member[0]:社員コード, member[1]:社員名, [2]:日付に紐付くスケジュールリスト -->
+  <% for member in @member_list %>
+    <tr>
+      <!-- 日曜日から土曜日(開始日は設定により異なる)のスケジュールを設定する -->
+      <% for i in 0..6 %>
+        <% class_name = "week" %>
+        <% if @week_list[i][0].wday == 0 || @week_list[i][0].wday == 6 %>
+          <% class_name = "week weekendDay" %>
+        <% elsif !@holiday_hash[@week_list[i][0]][0].nil? %>
+          <% class_name = "week holiday" %>
+        <% elsif !@event_hash[@week_list[i][0]][0].nil? %>
+          <% class_name = "week event" %>
+        <% end %>
+
+        <td class="<%=class_name%>" style="vertical-align:top;"><div class='calendar_week_cell_body'>
+          <!-- schedule[0]:日付, [1]:スケジュールリスト -->
+          <!-- 日付ごとのスケジュールを設定 -->
+          <% match_count = 0 %>
+          <% for schedule in member[2] %>
+            <% reserve = schedule[1] %>
+            <!-- 該当日付の場合 -->
+            <% target_day = schedule[0] %>
+            <% if target_day == @week_list[i][0] %>
+              <% match_count = match_count + 1 %>
+              <table><tr><td>
+                <a href="#" class="memo_disp" title="<%=reserve.memo%>" style="text-decoration:none;"
+                onclick="dialog_reserve_open_edit('<%=reserve.id%>'); return false;">
+                  <span>◆</span>
+                  <!-- 色指定 -->
+                  <% if !@plan_color_list[reserve.plan_kbn][0].nil? %>
+                    <span style=<%="color:" + @plan_color_list[reserve.plan_kbn][0] + ";"%>>
+                  <% else %>
+                    <span style="color:'#000000';">
+                  <% end %>
+                  <!-- 時間指定の場合 -->
+                  <% if reserve.plan_allday_flg == 0 %>
+                    <!-- 開始日の場合 -->
+                    <% if target_day == reserve.plan_date_from %>
+                      <%=reserve.plan_time_from.strftime("%H:%M")%>-
+                      <!-- 終了日と同日の場合 -->
+                      <% if target_day == reserve.plan_date_to %>
+                        <%=reserve.plan_time_to.strftime("%H:%M")%>
+                      <% end %>
+                      <br>
+                    <!-- 終了日の場合 -->
+                    <% elsif target_day == reserve.plan_date_to %>
+                      -<%=reserve.plan_time_to.strftime("%H:%M")%><br>
+                    <% end %>
+                  <% else %>
+                                                     終日<br>
+                  <% end %>
+                  <%=reserve.title%>
+                  </span>
+                  <br>
+                </td></tr></table>
+              </a>
+            <% end %>
+          <% end %>
+          <!-- 日付と一致するデータがなかった場合 -->
+          <% if match_count == 0 %>
+            &nbsp;
+          <% end %>
+        </div></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<script type="text/javascript">
+<!--
+-->
+</script>

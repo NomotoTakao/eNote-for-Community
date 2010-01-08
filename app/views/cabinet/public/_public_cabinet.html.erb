@@ -1,0 +1,269 @@
+<!-- 共有キャビネット -->
+
+<%
+  unless @index.nil?
+    idx = @index
+  end
+  id = "info_browser" + idx
+
+  unless @heads.nil?
+    heads = @heads
+  end
+%>
+
+<% if idx == "1" %>
+  <%= hidden_field 'd_cabinet_body', 'd_cabinet_head_id' %>
+<% end %>
+<%= hidden_field 'selectedCabinet', '' %>
+
+<%
+  li_class = ""
+  span_class = ""
+  font_class = ""
+%>
+
+<% unless @sectional_cabinet_indices.nil? %>
+  <% @sectional_cabinet_indices.each do |sectional_cabinet|%>
+    <ul class="filetree">
+      <li class="closed">
+        <span class="folder">
+          <%= sectional_cabinet.title%>
+        </span>
+        <% children = DCabinetIndex.get_cabinet_indices 2, sectional_cabinet.d_cabinet_head_id, 1, current_m_user.user_cd  %>
+        <% unless children.nil? or children.length == 0 %>
+          <ul>
+            <% children.each do |child| %>
+              <li class="closed">
+                <span class="file">
+                  <font id="2_<%= child.d_cabinet_head_id %>" class="subcabinet">
+                    <%= child.title %>
+                  </font>
+                </span>
+                <% grandchildren = DCabinetIndex.get_cabinet_indices 2, child.d_cabinet_head_id, 1, current_m_user.user_cd %>
+                <% unless grandchildren.nil? or grandchildren.length == 0 %>
+                  <ul>
+                    <% grandchildren.each do |grandchild| %>
+                      <li class="">
+                        <span class="file">
+                          <font id="2_<%= grandchild.d_cabinet_head_id %>" class="subcabinet">
+                            <%= grandchild.title %>
+                          </font>
+                        </span>
+                    <% end %>
+                  </ul>
+                <% end %>
+            <% end %>
+          </ul>
+        <% end %>
+    </ul>
+  <% end%>
+<% end%>
+
+<% unless @project_cabinet_indices.nil? %>
+  <ul class="filetree">
+    <li class="closed">
+      <span class="folder">プロジェクト</span>
+        <ul>
+          <% @project_cabinet_indices.each do |project_cabinet| %>
+
+            <%
+                li_class = ""
+                span_class = "file"
+                font_class = "subcabinet"
+            %>
+            <li class="<%= li_class %>">
+              <span class="<%= span_class %>">
+                <font id="<%= project_cabinet.cabinet_kbn %>_<%= project_cabinet.id %>" class="<%= font_class %>">
+                  <%= project_cabinet.title %>
+                </font>
+              </span>
+
+          <% end %>
+        </ul>
+  </ul>
+<% end %>
+
+<% unless @company_cabinet_indices.nil? %>
+  <ul class="filetree">
+    <li class="closed">
+      <span class="folder" kbn="1">全社</span>
+        <ul>
+          <% @company_cabinet_indices.each do |company_cabinet| %>
+            <% children = DCabinetIndex.find(:all, :conditions=>{:delf=>0, :cabinet_kbn=>1, :parent_cabinet_head_id=>company_cabinet.d_cabinet_head_id}, :order=>"order_display ASC") %>
+            <%
+              if children.length < 1
+                li_class = ""
+                span_class = "file"
+                font_class = "subcabinet"
+              else
+                li_class = "closed"
+                span_class = "folder"
+                font_class=children.length
+              end
+            %>
+            <li class="<%= li_class %>">
+              <span class="<%= span_class %>">
+                <font id="<%= company_cabinet.cabinet_kbn %>_<%= company_cabinet.d_cabinet_head_id %>" class="<%= font_class %>">
+                  <%= company_cabinet.title %>
+                </font>
+              </span>
+              <% unless children.length == 0 %>
+                <ul>
+                  <% children.each do |child| %>
+                    <% grandchildren = DCabinetIndex.find(:all, :conditions=>{:delf=>0, :cabinet_kbn=>1, :parent_cabinet_head_id=>child.d_cabinet_head_id}, :order=>" order_display ASC") %>
+                    <%
+                      if grandchildren.length < 1
+                        li_class = ""
+                        span_class = "file"
+                        font_class = "subcabinet"
+                      else
+                        li_class = "closed"
+                        span_class = "folder"
+                        font_class=children.length
+                      end
+                    %>
+                    <li class="<%= li_class %>">
+                      <span class="<%= span_class %>">
+                        <font id="<%= child.cabinet_kbn %>_<%= child.d_cabinet_head_id %>" class="<%= font_class %>">
+                          <%= child.title %>
+                        </font>
+                      </span>
+                      <% unless grandchildren.nil? or grandchildren.length == 0 %>
+                        <ul>
+                          <% grandchildren.each do |grandchild| %>
+                            <%
+                              li_class = ""
+                              span_class = "file"
+                              font_class = "subcabinet"
+                            %>
+                            <li class="<%= li_class %>">
+                              <span class="<%= span_class %>">
+                                <font id="<%= grandchild.cabinet_kbn %>_<%= grandchild.d_cabinet_head_id %>" class="<%= font_class %>">
+                                  <%= grandchild.title %>
+                                </font>
+                              </span>
+                          <% end %>
+                        </ul>
+                    <% end %>
+                  <% end %>
+                </ul>
+            <% end %>
+          <% end %>
+        </ul>
+  </ul>
+<% end %>
+<div id="tmp_list" style="display:none;"></div>
+
+<script type="text/javascript">
+  <!--
+    /*
+     * 画面ロード時に実行されるイベント
+     */
+    $(document).ready(
+      function(){
+        $(".filetree").treeview();
+
+        var auto = $("#auto").val();
+        if (auto != "") {
+          var auto = auto.split("_");
+          var site_kbn = auto[0];
+          var site_id = auto[1];
+
+          var target_id = "cabinet_" + auto[0] + "_" + auto[1];
+
+          if (site_kbn != "") {
+            if (site_kbn == "1") {
+              $("span:contains('全社')").click();
+            }else if (site_kbn == "3") {
+              $("span:contains('プロジェクト')").click();
+            }else {}
+          }
+
+          if (site_id != "") {
+            //$("#1_4").parent().click();
+            $("span:contains('営業関係')").click();
+            $("font:contains('翔子ちゃんニュース')").click();
+            $("#cabinet_1_26").click();
+          }
+
+          if(auto.length == 3){
+            $("#cabinet_list").load("/cabinet/public/cabinet_detail/" + auto[2]);
+          }
+        }
+      }
+    );
+
+
+    /*
+     * ツリーの+/-ボタンがクリックされたときに発生するイベントです。
+     */
+    $(".hitarea").click(
+      function(){
+        if ($(this).next().attr("data") == "0" && $(this).next().next().html() == "") {
+          $(this).next().click();
+          // ツリーの+/-ボタンの記号を'+'から'-'に変更する。(クラスの属性を置き換える)
+          $(this).attr("class", $(this).attr("class").replace("expandable", "collapsable"));
+        }
+      }
+    );
+
+    $(".subcabinet").mouseover(
+      function(){
+        $(this).css("cursor", "pointer");
+      }
+    );
+
+    $(".subcabinet").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    $(".subcabinet").click(
+      function(){
+        attr_id = $(this).attr("id").split("_");
+        bgChange($(this), $(".subcabinet"));
+        jQuery.ajax(
+          {
+            type: "GET",
+            url: "/cabinet/public/cabinet_list",
+            data:
+              {
+                cabinet_id: attr_id[1]
+              },
+            success:
+              function(data, dataType){
+                $("#cabinet_list").html(data);
+//				if (id.indexOf("#") == -1) {
+//                  id = "#" + id
+//                }
+//                $(id).after(data);
+              },
+            error:
+              function(){
+                alert("通信エラー");
+              },
+            complete:
+              function(){
+                $("#selectedCabinet_").val(attr_id[1]);
+//                $(id).attr("data", "1");
+//                $("#tmp_list").html("");
+              }
+          }
+        );
+      }
+    );
+
+
+    /*
+     * 選択されているキャビネットをクリアします。
+     */
+    function clearSelectedCabinet(){
+      cls = $(".cabinet_index")
+      cls.css('background-color', '#FFFFFF');
+      cls.css('color', '#000000');
+
+    $("#selectedCabinet_").val("");
+    }
+  //-->
+</script>

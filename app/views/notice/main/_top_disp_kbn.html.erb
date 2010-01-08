@@ -1,0 +1,51 @@
+<table border="0" cellpadding="0" cellspacing="0" style="">
+  <tr>
+    <td style="">
+      <%
+        count = 0
+        inc = 0
+        checked = ""
+      %>
+      <% @notice_bodies_top_disp_kbn.each do |kbn| %>
+        <%# if count == 4 %>
+	      <!-- </td></tr><tr><td style="padding-left:15px;"> -->
+          <%# count = 0 %>
+        <%# end %>
+        <%
+          # 区分マスタで、「表示なし」の区分IDは"6"になっているが、
+          # 「表示なし」はd_notice_bodiesテーブルでは"99"で表すことになっているので、
+          # 「表示なし」のvalueを"99"にする。
+		  if kbn.kbn_id == 6
+            kbn.kbn_id = 99
+          end
+
+          if top_disp_kbn
+            if kbn.kbn_id == top_disp_kbn
+              checked = "checked"
+            else
+              checked = ""
+            end
+          else
+            if kbn.kbn_id == kbn.value_int
+              checked = "checked"
+            else
+              checked = ""
+            end
+          end
+        %>
+        <%= radio_button("d_notice_body", "top_disp_kbn", kbn.kbn_id, :checked=>checked) %><%= kbn.name %>
+        <% count += 1 %>
+      <% end %>
+    </td>
+  </tr>
+</table>
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        $(":checkbox").css("border", "0");
+        $(":radio").css("border", "0");
+      }
+    );
+  //-->
+</script>

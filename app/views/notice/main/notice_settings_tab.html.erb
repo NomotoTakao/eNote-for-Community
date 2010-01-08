@@ -1,0 +1,28 @@
+<!-- 設定タブ -->
+
+<% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "app/notice"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "app/notice"
+    ]) %>
+<% end -%>
+<div id="notice_setting"></div>
+
+<script type="text/javascript">
+  <!--
+  $(document).ready(
+    function(){
+      url = "/notice/main/notice_settings/";
+      $("#notice_setting").load(url);
+    }
+  );
+  //-->
+</script>

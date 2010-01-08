@@ -1,0 +1,8 @@
+<% options = "" %>
+<% if !@other_member_undecide.nil? && @other_member_undecide.size > 0 %>
+  <% @other_member_undecide.each do |member|%>
+    <% options += "<option value=#{member[0]} >#{member[1]}</options>" %>
+  <% end %>
+<% end %>
+<%= select_tag('undecided_member[]', options, :size=>4, :multiple=>true, :style=>'width:250px;height:90px;border:1px solid black;') %>
+<input type="hidden" id="other_checked_id" name="other_checked_id" value=<%=@other_checked_id%> />

@@ -1,0 +1,40 @@
+<table>
+  <tr>
+    <th style="width:45%;"></th>
+    <th style="width:10%;"></th>
+    <th style="width:45%; text-align:left;">選択したメンバー</th>
+  </tr>
+  <tr>
+    <!-- 選択候補エリア -->
+    <td align="center" valign="top">
+      <div id="undecided">
+        <%= select_tag('undecided_member', "", :size=>10, :multiple=>true, :class=>'master_selectbox1') %>
+      </div>
+    </td>
+    <!-- 矢印 -->
+    <td align="center" style="width:100px;">
+      <input id="btn_move_right" type="button" value=">" style="border:0px;" onclick="ClickAddDecided('undecided_member','decided_member')" class="submit_small" />
+    <br><br>
+      <input id="btn_move_left" type="button" value="<" style="border:0px;" onclick="ClickAddUnDecided('undecided_member','decided_member')" class="submit_small" />
+    </td>
+    <!-- 選択決定エリア -->
+    <td align="center" valign="top">
+      <div id="decided">
+        <%= select_tag('decided_member', "", :size=>10, :multiple=>true, :class=>'master_selectbox1') %>
+      </div>
+    </td>
+  </tr>
+</table>
+<input type="hidden" id="decided_member_all" name="decided_member_all[]" />
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    //選択決定エリアを表示
+    $("#decided").load("/master/project_user/decided_member?project_id=" + $("#project_id").val());
+  });
+-->
+</script>

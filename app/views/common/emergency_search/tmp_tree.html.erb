@@ -1,0 +1,151 @@
+<ul id="tmp_tree" class="orgtree">
+  <% unless @org_list.nil? %>
+    <% @org_list.each_with_index do |org, i| %>
+      <% children = MOrg.get_org_list org.org_lvl.to_i+1, org.org_cd %>
+      <li class="closed">
+        <span id="org_<%= @count %>_<%= org.org_lvl %>_o<%= org.org_cd %>" class="folder org_folder">
+          <font class="font_dialog">
+            <%
+              org_name = ""
+              if org.org_lvl.to_i == 1
+                org_name = org.org_name1
+              elsif org.org_lvl.to_i == 2
+                org_name = org.org_name2
+              elsif org.org_lvl.to_i == 3
+                org_name = org.org_name3
+              elsif org.org_lvl.to_i == 4
+                org_name = org.org_name4
+              end
+            %>
+            <%= org_name %>
+          </font>
+    </span>
+      <% unless children.nil? or children.size == 0 %>
+        <ul></ul>
+      <% end %>
+    <% end %>
+  <% end %>
+
+<script type="text/javascript">
+  <!--
+    /*
+     *
+     */
+    $(".org_folder").mouseover(
+      function(){
+        $(this).css("cursor", "pointer");
+      }
+    );
+
+    /*
+     *
+     */
+    $(".org_folder").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /*
+     * ツリーの+/-ボタンクリック時
+     */
+    $(".hitarea").click(
+      function(){
+        if($(this).attr("class").indexOf("collapsable-hitarea") != -1){
+          // ツリーを開く
+          val_id = $(this).next().attr("id");
+          getTree(val_id);
+        }else{
+          // ツリーを閉じる
+          $(this).attr("class", $(this).attr("class").replace("collapsable", "expansable"));
+        }
+      }
+    );
+
+    /*
+     *
+     *
+     */
+    $(".org_folder").click(
+      function(){
+        id = $(this).attr("id").replace("o_", "");
+        if(id != ""){
+          org_array = id.split("_");
+          org_lvl = org_array[2];
+          org_cd = org_array[3].replace("o", "");
+        }
+        // 選択された組織の下部組織一覧を取得する。
+        getTree(id);
+
+        // 選択された組織に所属するユーザーの一覧を取得する。
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/common/emergency_search/user_list",
+            data :
+              {
+                org_cd : org_cd
+              },
+            success :
+              function(data, dataType){
+                $("#user_list_<%= @count %>").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    function getTree(id){
+      if(id != ""){
+        org_array = id.split("_");
+        org_lvl = org_array[2];
+        org_cd = org_array[3].replace("o", "");
+      }
+      bgChange($("#" + id).children(), $(".font_dialog"));
+      jQuery.ajax(
+        {
+          type : "GET",
+          url  : "/common/emergency_search/tmp_tree",
+          data :
+            {
+              org_lvl : Number(org_lvl) + 1 ,
+              org_cd      : org_cd,
+              count  : "<%= @count %>",
+              type    : ""
+            },
+          success :
+            function(data, dataType){
+              if($("#" + id).next().html() == ""){
+                $("#" + id).after(data);
+              }
+            },
+          error :
+            function(){
+              alert("通信エラー");
+            },
+          complete :
+            function(){}
+        }
+      );
+    }
+
+
+    /*
+     *
+     */
+    $(document).ready(
+      function(){
+        // ｊQueryの機能でリストをツリーに変換します。
+        $("#tmp_tree").treeview();
+        // tmp_tree.html.erbは再利用されるので、リストのidが重複しないようにidをクリアします。
+        $("#tmp_tree").attr("id", "");
+      }
+    );
+  //-->
+</script>

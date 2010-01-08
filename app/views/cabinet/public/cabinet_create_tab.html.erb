@@ -1,0 +1,19 @@
+<%# 新規保存 %>
+
+<div id="cabinet_create"></div>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        var edit_id = $("#edit_id").val();
+		$("#cabinet_id").val("");
+        var url = "/cabinet/public/cabinet_create?edit_id=";
+        if(edit_id != ""){
+          url += edit_id
+        }
+        $("#cabinet_create").load(url);
+      }
+    );
+  //>
+</script>

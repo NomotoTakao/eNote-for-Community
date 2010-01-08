@@ -1,0 +1,96 @@
+
+<ul id="tmp_browser" class="filetree">
+<% unless @tmp_o_list.nil? %>
+  <% @tmp_o_list.each do |org| %>
+  <% children = MOrg.get_org_list org.org_lvl+1, org.org_cd %>
+    <%
+      li_class = ""
+      unless children.nil? or children.length == 0
+        li_class = ""
+      else
+        li_class = "closed"
+      end
+    %>
+    <li class="<%= li_class %>">
+      <span class="folder blogger<%=@org_lvl%>"  id="o_<%=org.org_cd%>" data="0">
+          <%=h blogger_org_name org %>
+      </span>
+      <% unless (children.nil? or children.length == 0) and @tmp_u_hash[org.org_cd].length == 0 %>
+        <ul></ul>
+      <% end %>
+  <% end %>
+<% end %>
+
+<% unless @tmp_u_list.nil? %>
+  <% @tmp_u_list.each do |user| %>
+    <li>
+      <span class="file">
+        <%= link_to_remote user.user_name,
+                           :update=>"right_pane",
+                           :url=>{:action=>:blog_list,
+                                  :user_cd=>user.user_cd
+                                 }
+        %>
+      </span>
+    </li>
+  <% end %>
+<% end %>
+</ul>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        $(".blogger<%= @org_lvl %>").click(
+          function(){
+            id = $(this).attr("id");
+            // 組織だったら、下の階層を取りに行く。個人だったら、ブログ表示領域を更新する。(組織/個人は、idの接頭辞で判断する。)
+            if (id.indexOf("o_") > -1) {
+              // 直下階層の要素を持っていない場合にのみ、サーバーにとりに行く。
+              if($(this).next().html() == ""){
+                jQuery.ajax({
+                  type: "GET",
+                  url: "/blog/view/tmp_list",
+                  data: {tmp_id: id},
+                  success:
+                    function(data, dataType){
+                      if ($(id).html() == null) {
+                        $("#tmp_list").html(data);
+                        if (id.indexOf("#") == -1) {
+                          id = "#" + id;
+                        }
+                        $(id).after(data);
+                      }
+                    },
+                  error: function(){}
+                });
+                // 配下のデータが取得済みであることを判断するためのフラグを立てます。
+                // 連続してリクエストを投げてしまうことへの対処です。
+                $(this).attr("data", "1");
+              }
+            }
+          }
+        );
+
+//		$(".blogger<%=@org_lvl%>").unbind("click");
+        $("#tmp_browser").treeview();
+        $("#tmp_browser").css("display", "block");
+        $("#tmp_browser").attr("id", "");
+
+        /*
+         * ツリーの+/-ボタンがクリックされたときに発生するイベントです。
+         */
+        $(".hitarea").click(
+          function(){
+            if ($(this).next().attr("data") == 0 && $(this).next().next().html() == "") {
+              $(this).next().click();
+              // ツリーの+/-ボタンの記号を'+'から'-'に変更する。(クラスの属性を置き換える)
+              $(this).attr("class", $(this).attr("class").replace("expandable", "collapsable"));
+            }
+           }
+        );
+      }
+    );
+
+  //-->
+</script>

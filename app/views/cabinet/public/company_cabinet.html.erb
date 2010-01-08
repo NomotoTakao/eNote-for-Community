@@ -1,0 +1,51 @@
+<!-- 保存するキャビネットの種類 - 全社キャビネット -->
+
+<div id="company_list" style="border: 1px solid black; background-color: rgb(255, 255, 255); text-align: left; height: 150px; overflow-y: auto;"></div>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function (){
+        jQuery.ajax(
+          {
+            type: "GET",
+            url: "/cabinet/public/tmp_list",
+            data:
+              {
+                kbn: 1,
+                auth: 2
+              },
+            success:
+              function(data, dataType){
+                $("#tmp_list").html(data);
+                $("#company_list").html(data);
+              },
+            error:
+              function(){
+                alert("通信エラー");
+              },
+            complete:
+              function(){
+                // この画面で独自のイベントを定義するため、以前のイベントを削除する。
+                $(".cabinet").unbind('click');
+                // この画面で定義する新たなclickイベント
+                $(".cabinet").click(
+                  function(){
+                    id = $(this).attr("id");
+                    $("#d_cabinet_body_d_cabinet_head_id").val(id.replace("c_", ""));
+                    $("#selectedCabinetName").val($(this).text().replace(/^\s+|\s+$/g, ""));
+                    bgChange($(this), $(".cabinet"));
+                  }
+                );
+                //TODO 選択されているキャビネットの背景色を反転させる
+                selector = $("#d_cabinet_body_d_cabinet_head_id").val();
+                if (selector != "") {
+                  bgChange($("#c_" + selector), $(".cabinet"));
+                }
+              }
+          }
+        );
+      }
+    );
+  //-->
+</script>

@@ -1,0 +1,44 @@
+<!-- 保存するキャビネットの種類 - プロジェクトキャビネット -->
+
+<div id="project_list" style="border: 1px solid black; background-color: rgb(255, 255, 255); text-align: left; height: 150px; overflow-y: auto;"></div>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function (){
+        jQuery.ajax(
+          {
+            type: "GET",
+            url: "/cabinet/public/tmp_list",
+            data: {kbn: 3          },
+            success:
+              function(data, dataType){
+                $("#tmp_list").html(data);
+                $("#project_list").html(data);
+              },
+            error:
+              function(){
+                alert("通信エラー");
+              },
+            complete:
+              function(){
+			  	// この画面で独自のイベントを定義するため、以前のイベントを削除する。
+                $(".cabinet").unbind('click');
+				// この画面で定義する新たなclickイベント
+                $(".cabinet").click(
+                  function(){
+                    id = $(this).attr("id");
+                    $("#head_id_").val(id.replace("c_", ""));
+                    bgChange($(this), $(".cabinet"));
+                  }
+                );
+
+              }
+          }
+        );
+
+
+      }
+    );
+  -->
+</script>

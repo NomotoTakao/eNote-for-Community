@@ -1,0 +1,38 @@
+<table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+  <tr>
+    <td align="center" valign="top">
+      <!-- 選択候補エリア -->
+      <div class="gadget_body" id="enote_address_group_undecide">
+        <%= select_tag('undecided_member[]', "", :size=>10, :multiple=>true, :style=>'width:280px;height:300px;border:1px solid black;') %>
+      </div>
+    </td>
+    <!-- 矢印 -->
+    <td align="center" style="width:100px;">
+      <input id="btn_move_all_right" type="button" value=">>" style="border:0px;" onclick="ClickMoveAllMember(0)" class="submit_small" />
+      <input id="btn_move_right" type="button" value=">" style="border:0px;" onclick="ClickMoveMember(0)" class="submit_small" />
+      <input id="btn_move_left" type="button" value="<" style="border:0px;" onclick="ClickMoveMember(1)" class="submit_small" />
+      <input id="btn_move_all_left" type="button" value="<<" style="border:0px;" onclick="ClickMoveAllMember(1)" class="submit_small" />
+    </td>
+    <td align="center" valign="top">
+      <!-- 選択決定エリア -->
+      <div class="gadget_body" id="enote_address_group_decide">
+        <% options = "" %>
+           <% if !@addresses_decide.nil? %>
+             <% @addresses_decide.each do |member|%>
+             <% options += "<option value=#{member.id} >#{member.name}</options>" %>
+           <% end %>
+         <% end %>
+         <%= select_tag('decided_member[]', options, :size=>10, :multiple=>true, :style=>'width:280px;height:300px;border:1px solid black;') %>
+      </div>
+    </td>
+  </tr>
+</table>
+<input type="hidden" id="decided_member_old" name="decided_member_old[]" />
+<input type="hidden" id="decided_member_new" name="decided_member_new[]" />
+<% if @d_address_group.nil? %>
+  <input type="hidden" id="title" name="title" value="" />
+<% else %>
+  <input type="hidden" id="title" name="title" value="<%=@d_address_group.title%>" />
+<% end %>
+<input type="hidden" id="title_old" name="title_old" />
+<input type="hidden" id="address_group_all" name="address_group_all[]" />

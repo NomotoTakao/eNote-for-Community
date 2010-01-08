@@ -1,0 +1,30 @@
+/******************************************
+ * サイト内検索Settings
+ ******************************************/
+
+.search_table_title {
+  background-repeat:            no-repeat;
+  text-indent:                  15px;
+  background-position:          5px 40%;
+  border:                       1px solid #95b3de;
+  background-color:             #95b3de;
+  border-collapse:              collapse;
+  color:                        white;
+  height:                       25px;
+  width:                        700px;
+  padding:                      1px 0px 1px 10px;
+  padding-left:                 0px;
+  text-align:                   left;
+}
+
+.search_table_contents_title {
+  background-repeat:            no-repeat;
+  padding-left:                 10px;
+  text-align:                   left;
+}
+
+.search_table_contents_body {
+  background-repeat:            no-repeat;
+  padding-left:                 30px;
+  text-align:                   left;
+}

@@ -1,0 +1,78 @@
+<% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "app/bookmark"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "app/bookmark",
+    ]) %>
+<% end -%>
+
+<!-- エラー -->
+<% if !flash[:bookmark_err_msg].nil? && flash[:bookmark_err_msg] != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= flash[:bookmark_err_msg] %></td>
+    </tr>
+  </table>
+<% end %>
+
+<div style="padding:5px;">
+  <!-- カテゴリ選択 -->
+  <table style="margin:10px 0px 0px 10px;">
+    <tr>
+      <td style="width:250px;">
+        <select id="categories" name="categories" style="width:250px;" onchange="SelectCategories();">
+          <% for i in 0..(@categories.size - 1) %>
+            <% category = @categories[i] %>
+            <option value = <%=category.id%>><%=category.title%></option>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+  </table>
+
+  <!-- 一覧 -->
+  <div id="bookmark_list"></div>
+</div>
+
+<div id="dialog_ins" title="リンク集の登録"></div>
+<div id="dialog_upd" title="リンク集の編集"></div>
+
+<script type="text/javascript">
+  <!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    //ダイアログ
+    dialog_bookmark_ins();
+    dialog_bookmark_upd();
+    //一覧表示
+    $("#bookmark_list").load(
+    "/bookmark/setting/bookmark_list?&category_id=" + $("#categories").val(),
+    "",
+    function() {
+    });
+  });
+
+  /*
+   * カテゴリ選択時の処理
+   */
+  function SelectCategories(){
+    // jQueryでの処理
+    $.ajax({
+        type:'get',
+        url:'/bookmark/setting/bookmark_list?&category_id=' + $("#categories").val(),
+        success:
+            function(request){
+                // 受信結果を一覧エリアに反映させます。
+                $('#bookmark_list').html(request);
+            }
+    });
+  }
+  -->
+</script>

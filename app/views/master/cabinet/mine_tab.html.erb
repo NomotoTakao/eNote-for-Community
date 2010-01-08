@@ -1,0 +1,151 @@
+
+<% form_remote_tag :update=>"mine_info", :url=>{:action=>:save_mine_info} do %>
+  <table style="width:100%;">
+    <tr>
+      <td style="text-align:left;">
+        <table style="width:100%;">
+          <tr>
+            <td style="text-align:left;">Webメモリの設定をおこないたい人の名前または社員番号を入力してください。(一部でも可)</td>
+            <td style="text-align:right;">
+              <input type="button" class="submit_large" onClick="ClickBackToMasterList();" value="マスタ一覧へ戻る" />
+            </td>
+          </tr>
+        <table>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">
+        <table>
+          <tr>
+            <td style="text-align:left;">名前または社員番号：<input type="text" id="keyword" />
+            <input type="button" class="submit_small" value="選択" onClick="return get_user_list();" /></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">
+              <!-- 検索された人の一覧を表示する。(セレクトボックス) -->
+              <div id="user_list" style="width:200px;height:80px;">
+                <select id="select_user" size="5" style="width:200px;">
+                  <option>&nbsp;</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align:left;">
+              <%= hidden_field :d_cabinet_heads, :private_user_cd %>
+              <div id="mine_info">
+                <%= render :partial=>"mine_info" %>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align:right;">
+              <input type="submit" class="submit_small" value="登録" onClick="return btnRegist();" />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    /*
+     * 入力された検索語に対応するユーザーの一覧を取得する。
+     */
+    function get_user_list(){
+      keyword = $("#keyword").val();
+      if(keyword != ""){
+        jQuery.ajax(
+          {
+            type: "GET",
+            url : "/master/cabinet/user_list",
+            data:
+              {
+                keyword : keyword
+              },
+            success:
+              function(data, dataType){
+                $("#select_user").html(data);
+//                alert("情報を更新しました。");
+              },
+            error:
+              function(){
+                alert("通信エラー");
+              },
+            complete:
+              function(){}
+          }
+        );
+      }
+    }
+
+
+    $("#select_user").change(
+      function(){
+        get_user_info();
+      }
+    );
+
+    /*
+     * ユーザー一覧セレクトボックスで選択したユーザーの情報を取得する。
+     */
+    function get_user_info(){
+      user_cd = $("#select_user").val();
+      if(user_cd != ""){
+        jQuery.ajax(
+          {
+            type: "GET",
+            url:  "/master/cabinet/_mine_info",
+            data:
+              {
+                user_cd : user_cd
+              },
+            success:
+              function(data, dataType){
+                $("#mine_info").html(data);
+                $("#d_cabinet_heads_private_user_cd").val(user_cd);
+              },
+            error:
+              function(){
+                alert("通信エラー");
+              },
+            complete:
+              function(){}
+          }
+        );
+      }
+    }
+
+    /*
+     * 「登録」ボタンがクリックされたときの処理
+     */
+    function btnRegist(){
+      result = checkInput();
+      if(!result){
+        return result;
+      }
+    }
+
+    /*
+     * 入力チェックをおこなう
+     */
+    function checkInput(){
+      if($("#select_user").val() == null){
+      alert("ユーザーを選択してください。");
+        return false;
+    }
+
+      if(!inValueChk($("#d_cabinet_heads_default_enable_day").val(), 0, 0, 1, 0, 0, "最大保存日数")){
+        return false;
+    }
+
+      if(!inValueChk($("#d_cabinet_heads_max_disk_size").val(), 0, 0, 1, 0, 0, "最大保存容量")){
+        return false;
+      }
+
+    return true;
+    }
+  //-->
+</script>

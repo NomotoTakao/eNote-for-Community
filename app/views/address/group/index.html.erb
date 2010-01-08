@@ -1,0 +1,229 @@
+<% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "app/address"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "app/address"
+    ]) %>
+<% end -%>
+
+<% if params[:mode].to_s == '0' %>
+  <%= form_tag :action => 'create' %>
+<% else %>
+  <%= form_tag :action => 'update', :gid=>params[:gid] %>
+<% end %>
+<div style="padding:5px;">
+<table class="frame_2pain">
+  <tr>
+    <td style="font-size:12pt;text-align:left" colspan=2>
+      <b>グループ名</b>
+      <% if @d_address_group.nil? %>
+        <%= text_field 'd_address_group','title',{:size => 20, :style => "width:200px;", :class => 'enote_blog_subject_text ime_on' } %>
+      <% else %>
+        <%= text_field 'd_address_group','title',{:size => 20, :style => "width:200px;", :class => 'enote_blog_subject_text ime_on' } %>
+      <% end %>
+    </td>
+  </tr>
+  <tr style="height:20px;"></tr>
+  <tr>
+    <td style="width:35%;">
+      <div>
+        <table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+          <tr>
+            <td style="font-size:10pt;width:45%;text-align:left;">
+              <b>メンバーの選択</b>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </td>
+    <td style="width:65%;">
+      <div>
+        <table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+          <tr>
+            <td style="font-size:10pt;width:45%;text-align:left;">
+            </td>
+            <td style="width:10%;text-align:left;">
+            </td>
+            <td style="font-size:10pt;width:45%;text-align:left;">
+              <b>選択したメンバー</b>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <!-- 左側エリア(条件選択) -->
+    <td style="width:35%;">
+      <div class="gadget" style="width:240px;">
+        <div id="" class="gadget_title" style="">
+          <h3 style=""><img src="/images/icons/icon_address.gif" align="top" style="margin-right:5px;">アドレス帳</h3>
+        </div>
+        <!-- 条件選択エリア -->
+        <div class="gadget_body">
+          <select id="gkbn" name="gkbn" style="width:120px;" onchange="SelectGroupList()">
+            <option value = "1">社内宛先</option>
+            <option value = "2">プロジェクト</option>
+            <option value = "8">共用グループ</option>
+            <option value = "9" selected>個人用</option>
+          </select>
+        </div>
+        <!-- 条件詳細エリア -->
+        <div id="enote_address_group_condition"></div>
+      </div>
+      <br><br>
+      <!-- 検索エリア -->
+      <div class="gadget" style="width:240px;">
+        <div id="" class="gadget_title" style="">
+          <h3 style=""><img src="/images/icons/icon_address.gif" align="top" style="margin-right:5px;">アドレス帳を検索</h3>
+        </div>
+        <div class="gadget_body">あいまい検索：<br>
+          <%= text_field_tag 'sword','',{:size => 20, :class => "ime_on", :style => "height:20px;width:150px;margin:0px;"} %>
+          <input id="select_word" type="button" class="submit_small" value="検索" onclick="ClickSelectWord()" />
+        </div>
+      </div>
+    </td>
+    <!-- 右側エリア(グループ選択) -->
+    <td style="width:65%;">
+      <!-- 選択決定エリア -->
+      <div class="gadget_body" id="enote_address_group_decide">
+    </td>
+  </tr>
+  <tr style="height:20px;"></tr>
+  <tr>
+    <td style="width:35%;">
+      <div style="text-align:left;">
+        <input id="back_to_address" type="button" class="submit_large" value="アドレス帳に戻る" onclick="ClickBackToAddress()" />
+      </div>
+    </td>
+    <td style="text-align:center;" style="width:65%;">
+      <% if params[:mode].to_s == '0' %>
+        <input id="enote_address_group_new_button" type="submit" class="submit lh_valid_button" value="登録" onclick="return ClickNewButton()" />
+      <% else %>
+        <input id="enote_address_group_verify_button" type="submit" class="submit lh_valid_button" value="登録" onclick="return ClickVerifyButton('<%= params[:gid] %>')" />
+      <% end %>
+    </td>
+  </tr>
+</table>
+</div>
+</form>
+
+<script type="text/javascript">
+<!--
+  /*
+  * ページロード時に右領域に選択決定リストを表示します。
+  * (グループ更新時に、特定のグループが選択されていた場合のみ)
+  */
+  $("#enote_address_group_decide").load("/address/group/decided_member?mode=" + <%=params[:mode]%> + "&gid=" + <%=params[:gid]%>, function() {
+    //グループ名を更新
+    $("#d_address_group_title").val($("#title").val());
+
+    //選択決定エリアのデータを全て取得
+    var dBox = document.getElementById("decided_member_");
+    var member = new Array(dBox.length);
+    for (var i = 0; i < dBox.options.length; i++) {
+      member[i] = dBox.options[i].value;
+    }
+    document.getElementById("decided_member_old").value = member;    //初期状態を保持
+    document.getElementById("decided_member_new").value = member;    //更新時のメンバーを格納
+
+    //グループ名を取得
+    $("#title_old").val($("#d_address_group_title").val());          //初期状態を保持
+  });
+
+  /*
+  * ページロード時にグループ領域にリスト(メーカー/社員/プロジェクト/共用グループ/個人)を表示します。
+  */
+  $("#enote_address_group_condition").load("/address/group/condition?&gkbn=" + $("#gkbn").val());
+
+  /*
+   * グループ(メーカー/社員/プロジェクト/共用グループ/個人)選択時の処理
+   */
+  function SelectGroupList(){
+    // jQueryでの処理
+    $.ajax({
+      type:'get',
+      url:'/address/group/condition?&gkbn=' + $("#gkbn").val(),
+      success:
+        function(request){
+          // 受信結果を一覧エリアに反映させます。
+          $('#enote_address_group_condition').html(request);
+        }
+    });
+  }
+
+  /*
+   * アドレス帳に戻る
+   */
+  function ClickBackToAddress(){
+    document.location = "/address/main";
+  }
+
+  /*
+   * 追加ボタン押下時の処理
+   */
+  function ClickNewButton(){
+    //確認ダイアログ
+    result = confirm("登録して宜しいですか？");
+    if (!result) {
+      return result;
+    }
+    //入力チェック
+    result = CheckGroupValidate();
+    if (!result) {
+      return result;
+    }
+    //追加データ確認
+    result = CheckGroupNewData();
+    if (!result) {
+      return result;
+    }
+  }
+
+  /*
+   * 更新ボタン押下時の処理
+   */
+  function ClickVerifyButton(gid){
+    //確認ダイアログ
+    result = confirm("更新して宜しいですか？");
+    if (!result) {
+      return result;
+    }
+    //入力チェック
+    result = CheckGroupValidate();
+    if (!result) {
+      return result;
+    }
+    //更新データ確認
+    result = CheckGroupUpdateData();
+    if (!result) {
+      return result;
+    }
+  }
+
+  /*
+   * あいまい検索時の処理
+   */
+  function ClickSelectWord(){
+    // jQueryでの処理
+    $.ajax({
+      type:'get',
+      url:'/address/group/undecided_member?&sword=' + encodeURIComponent($("#sword").val()),
+      success:
+        function(request){
+            // 受信結果を一覧エリアに反映させます。
+            $('#enote_address_group_undecide').html(request);
+        }
+    });
+  }
+
+-->
+</script>
+

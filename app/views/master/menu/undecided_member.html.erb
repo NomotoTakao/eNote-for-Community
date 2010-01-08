@@ -1,0 +1,10 @@
+<!-- 選択候補エリア -->
+<% options = "" %>
+<% if !@member_undecide.nil? %>
+  <% @member_undecide.each do |member|%>
+    <% options += "<option value=#{member.user_cd} >#{member.user_name}</options>" %>
+  <% end %>
+<% end %>
+<%= select_tag('undecided_member', options, :size=>5, :multiple=>false, :class=>'master_selectbox2') %>
+<%= hidden_field_tag 'decided_auth_org_cd', @org_cd %>
+<%= hidden_field_tag 'decided_auth_org_name', @org_name %>

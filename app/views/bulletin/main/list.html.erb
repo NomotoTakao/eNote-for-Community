@@ -1,0 +1,73 @@
+<table class="frame_2pain" style="">
+<tr>
+<!-- 左側エリア -->
+<td class="frame_2pain_left" style="">
+  <div class="gadget" style="width:240px;">
+    <div id="" class="gadget_title" style="">
+      <h3 style=""><img src="/images/icons/icon_bulletin.gif" align="top" style="margin-right:5px;">回覧板の状態</h3>
+    </div>
+    <!-- 条件選択エリア -->
+    <div class="gadget_body">
+    <div style="border:0px;background-color:white;text-align:left;height:100px;">
+      <ul id="answer_kbn_browser" class="foldertree">
+          <li><span id="folder_0" class="close_folder"><font id="answer_kbn_0" class="folder_answer_kbn">未読(<%=@unread_count%>)</font></span></li>
+          <li><span id="folder_1" class="close_folder"><font id="answer_kbn_1" class="folder_answer_kbn">既読</font></span></li>
+          <li><span id="folder_2" class="close_folder"><font id="answer_kbn_2" class="folder_answer_kbn">期限切れ</font></span></li>
+          <li><span id="folder_3" class="close_folder"><font id="answer_kbn_3" class="folder_answer_kbn">作成したもの</font></span></li>
+    </ul>
+    </div>
+    </div>
+  </div>
+  <br><br>
+  <!-- 検索エリア -->
+  <div class="gadget" style="width:240px;">
+    <div id="" class="gadget_title" style="">
+      <h3 style=""><img src="/images/icons/icon_bulletin.gif" align="top" style="margin-right:5px;">回覧板を検索</h3>
+    </div>
+  <div class="gadget_body">あいまい検索：<br>
+    <%= text_field_tag 'sword','',{:size => 20, :style => "height:20px;width:150px;margin:0px;"} %>
+    <%= button_to_function "検索", "bulletin_search($('#sword').val());", :class => "submit_small", :style => "margin:0px;" %>
+  </div>
+  </div>
+</td>
+<!-- 右側エリア -->
+<td class="frame_2pain_right" style="">
+  <div id="bulletin_area"></div>
+</td>
+</tr>
+</table>
+<input type="hidden" id="kbn_id" name="kbn_id" value=<%=@kbn_id%>>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        // カテゴリーツリーを構成
+        $("#answer_kbn_browser").treeview();
+
+        // カテゴリーツリーにクリックイベントを定義する
+        $(".folder_answer_kbn").click(
+          function(){
+            //背景色変更
+            value = $(this).attr("id").replace("answer_kbn_", "");
+            bgChange($(this), $(".folder_answer_kbn"));
+            // フォルダアイコンを制御
+            prefix = "folder_";
+            target_span = prefix + value;
+            folderChange(target_span, prefix, value);
+            // 画面遷移
+            $("#bulletin_area").load("/bulletin/main/bulletin_list?kbn_id=" + value);
+          }
+        );
+
+        // 指定のフォルダをクリックした状態にする(あいまい検索の場合は未読フォルダ)
+        if ($("#kbn_id").val() == 9) {
+          $("#kbn_id").val(0);
+        }
+        target_kbn = "#answer_kbn_" + $("#kbn_id").val();
+        $(target_kbn).click();
+      }
+    );
+  //-->
+</script>
+

@@ -1,0 +1,59 @@
+<table>
+  <tr>
+    <!-- 組織ツリー -->
+    <td style="vertical-align:top;" rowspan=2>
+      <div id="tree_org"></div>
+    </td>
+    <!-- 矢印(主所属) -->
+    <td align="center" style="width:30px;">
+      <input id="btn_move_right" type="button" value=">" style="border:0px;"
+        onclick="ClickAddMainBelong($('#decided_org_cd').val(), $('#decided_org_name').val())" />
+    </td>
+    <!-- 選択決定エリア(主所属) -->
+    <td>
+                主所属&nbsp;<span style="color:red;font-weight:bold;">（必須）</span><br>
+      <%= text_field_tag 'm_users[main_belong_name]', @main_belong_name,  {:readonly => "readonly"} %>
+    </td>
+  </tr>
+  <tr>
+    <!-- 矢印(兼任所属) -->
+    <td align="center" style="width:30px;">
+      <input id="btn_move_right" type="button" value=">" style="border:0px;"
+        onclick="ClickAddDecidedOrg($('#decided_org_cd').val(), $('#decided_org_name').val(), 'decided_sub_org')" />
+    </td>
+    <!-- 選択決定エリア(兼任所属) -->
+    <td>
+                兼任所属<br>
+      <div id="select_sub_org">
+        <% options = "" %>
+        <% if !@sub_belong.nil? %>
+          <% @sub_belong.each do |belong|%>
+            <% options += "<option value=#{belong[0]} >#{belong[1]}</options>" %>
+          <% end %>
+        <% end %>
+        <%= select_tag('decided_sub_org', options, :size=>5, :multiple=>true, :class=>'master_selectbox3') %>
+        <input id="delete_button" type="button" class="submit_small" value="削除" onclick="ClickDeleteButton('decided_sub_org')" />
+      </div>
+    </td>
+</table>
+<%= hidden_field_tag 'm_users[main_belong_cd]', @main_belong_cd %>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期設定
+  */
+  $(document).ready(function(){
+    // 組織ツリーを表示
+    $("#tree_org").load("/master/user/tree_org");
+  });
+
+  /*
+   * 削除
+   */
+  function ClickDeleteButton(fromElement){
+    //選択された要素を削除する
+    DeleteElement(fromElement);
+  }
+-->
+</script>

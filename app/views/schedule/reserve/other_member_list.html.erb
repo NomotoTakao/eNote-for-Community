@@ -1,0 +1,83 @@
+<table border="0" cellpadding="0" cellspacing="0" style="width:600px;">
+  <tr>
+    <td style="font-size:10pt;width:45%;text-align:left;">
+      <b>メンバーの選択</b>
+    </td>
+    <td style="width:10%;text-align:left;">
+    </td>
+    <td style="font-size:10pt;width:45%;text-align:left;">
+      <b>選択したメンバー</b>
+    </td>
+  </tr>
+  <tr>
+    <td style="font-size:10pt;width:45%;text-align:center;vertical-align:middle;">
+      <!-- 選択候補エリア -->
+      <div class="admin_pages_edit_select_box" id="other_member_undecide">
+        <%= select_tag('undecided_member[]', "", :size=>4, :multiple=>true, :style=>'width:250px;height:90px;border:1px solid black;') %>
+      </div>
+    </td>
+    <td style="font-size:10pt;width:10%;text-align:center;vertical-align:middle;">
+      <input id="btn_move_all_right" type="button" value=">>" style="border:0px;" onclick="ClickMoveAllMember(0)" class="submit_small" />
+      <input id="btn_move_right" type="button" value=">" style="border:0px;" onclick="ClickMoveMember(0)" class="submit_small" />
+      <input id="btn_move_left" type="button" value="<" style="border:0px;" onclick="ClickMoveMember(1)" class="submit_small" />
+      <input id="btn_move_all_left" type="button" value="<<" style="border:0px;" onclick="ClickMoveAllMember(1)" class="submit_small" />
+    </td>
+    <td style="font-size:10pt;width:45%;text-align:center;vertical-align:middle;">
+      <!-- 選択決定エリア -->
+      <table>
+        <tr>
+          <td>
+            <div class="admin_pages_edit_select_box" id="other_member_decide">
+              <% options = "" %>
+              <% if !@other_member_decide.nil? && @other_member_decide.size > 0 %>
+                <% @other_member_decide.each do |member|%>
+                  <% options += "<option value=#{member[0]} >#{member[1]}</options>" %>
+                <% end %>
+              <% end %>
+              <%= select_tag('decided_member[]', options, :size=>4, :multiple=>true, :style=>'width:250px;height:90px;border:1px solid black;') %>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <tr class="alert_message">
+    <td colspan=2></td>
+    <td style="text-align:left;">
+      <!-- 同時登録データの場合 -->
+      <% if !@other_member_decide.nil? && @other_member_decide.size > 0 %>
+<!-- <input class="check" id="own_delete_flg" type="checkbox" name="own_delete_flg" />自分をメンバーから外す  -->
+      <% end %>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan=3>
+      <div>※複数選択する際は、Ctrlキーを押しながらメンバーを選択してください。</div>
+    </td>
+  </tr>
+</table>
+
+<input type="hidden" id="decided_member_old" name="decided_member_old[]" />
+<input type="hidden" id="decided_member_new" name="decided_member_new[]" />
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期設定
+  */
+  $(document).ready(function(){
+    //選択決定エリアのデータを全て取得
+    var dBox = document.getElementById("decided_member_");
+    var member = new Array(dBox.length);
+    for (var i = 0; i < dBox.options.length; i++) {
+        member[i] = dBox.options[i].value;
+    }
+    document.getElementById("decided_member_old").value = member;    //初期状態を保持
+    document.getElementById("decided_member_new").value = member;    //更新時のメンバーを格納
+    //選択候補エリアにメンバーを表示(更新時の表示用)
+    SelectOtherGroup(0);
+  });
+-->
+</script>

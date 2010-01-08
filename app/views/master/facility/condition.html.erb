@@ -1,0 +1,79 @@
+<div style="text-align:left;"><h3>検索条件</h3></div>
+<!-- 施設グループ選択リスト -->
+<% if @m_facility_groups.size > 0 %>
+  <table class="master_table3">
+    <tr style="text-align:left;">
+      <td style="width:100px;">施設グループ</td>
+      <td style="width:250px;">
+        <select id="facility_group_cd" name="facility_group_cd" style="width:250px">
+          <% for facility_list in @m_facility_groups %>
+            <option value = <%=facility_list.facility_group_cd%>><%=facility_list.name%></option>
+          <% end %>
+        </select>
+      </td>
+      <td style="width:650px;"></td>
+    </tr>
+  </table>
+<% end %>
+<!-- 拠点選択リスト -->
+<% if @m_places.size > 0 %>
+  <table class="master_table3">
+    <tr style="text-align:left;">
+      <td style="width:100px;">拠点</td>
+      <td style="width:250px;">
+        <select id="select_place_cd" name="select_place_cd" style="width:250px">
+          <option value = "-1">―</option>
+          <% for place in @m_places %>
+            <option value = <%=place.place_cd%>><%=place.place_cd%>：<%=place.name%></option>
+          <% end %>
+        </select>
+      </td>
+      <td style="width:650px;"></td>
+    </tr>
+  </table>
+<% end %>
+<!-- 組織選択リスト -->
+<% if @m_orgs.size > 0 %>
+  <table class="master_table3">
+    <tr style="text-align:left;">
+      <td style="width:100px;">組織</td>
+      <td style="width:250px;">
+        <select id="select_org_cd" name="select_org_cd" style="width:250px">
+          <option value = "-1">―</option>
+          <option value = "0">0:指定なし</option>
+          <% for org in @m_orgs %>
+            <option value = <%=org.org_cd%>><%=org.org_cd%>：<%=org.org_name%></option>
+          <% end %>
+        </select>
+      </td>
+      <td style="width:650px;"></td>
+    </tr>
+  </table>
+<% end %>
+<!-- ボタン -->
+<div style="text-align:right;">
+  <input id="select_button" type="submit" class="submit_small" value="検索" onclick="ClickSelectCondition()" />
+  <input id="back_list_button" type="button" class="submit_large" value="マスタ一覧へ戻る" onclick="ClickBackToMasterList()" />
+</div>
+
+<hr style="clear:both;" />
+
+<script type="text/javascript">
+<!--
+  /*
+   * 検索
+   */
+  function ClickSelectCondition(){
+    //jQueryでの処理
+    $.ajax({
+      type:'get',
+      url:"/master/facility/master_list?facility_group_cd=" + $("#facility_group_cd").val()
+        + "&place_cd=" + $("#select_place_cd").val() + "&org_cd=" + $("#select_org_cd").val(),
+      success:
+        function(request){
+          $('#master_list').html(request);
+        }
+    });
+  }
+-->
+</script>

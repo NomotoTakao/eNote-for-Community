@@ -1,0 +1,131 @@
+<!-- エラー -->
+<% err = flash[:address_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<table class="enote_general_table1" style="width:700px;">
+  <tr class="enote_general_table1_title" style="width:100%;">
+    <!-- 社員 -->
+    <% if @address_kbn == '1' %>
+      <th style="width:80pt" class="address_list_cell_bordered">所属</th>
+      <th style="width:80pt" class="address_list_cell_bordered">名前</th>
+    <!-- プロジェクト-->
+    <% elsif @address_kbn == '2' %>
+      <th style="width:80pt" class="address_list_cell_bordered">所属</th>
+      <th style="width:80pt" class="address_list_cell_bordered">名前</th>
+    <!-- 共用 -->
+    <% elsif @address_kbn == '8' %>
+      <th style="width:80pt" class="address_list_cell_bordered">所属</th>
+      <th style="width:80pt" class="address_list_cell_bordered">名前</th>
+    <!-- 個人 -->
+    <% elsif @address_kbn == '9' %>
+      <!-- 全て -->
+      <% if params[:gid].nil? || params[:gid] == "" || params[:gid].to_s == '0' %>
+        <th style="width:160pt" class="address_list_cell_bordered">名前</th>
+      <!-- 全て以外 -->
+      <% else %>
+        <th style="width:80pt" class="address_list_cell_bordered">グループ名</th>
+        <th style="width:80pt" class="address_list_cell_bordered">名前</th>
+      <% end %>
+    <!-- 初期状態(未選択) -->
+    <% else %>
+      <th style="width:160pt" class="address_list_cell_bordered">名前</th>
+    <% end %>
+    <th style="width:180pt" class="address_list_cell_bordered">メールアドレス</th>
+    <th style="width:90pt" class="address_list_cell_bordered">携帯番号</th>
+    <th style="width:130pt" class="address_list_cell_bordered">携帯メールアドレス</th>
+  </tr>
+
+<% for address in @addresses %>
+  <tr style="height:30px;">
+    <!-- 社員 -->
+    <% if @address_kbn == '1' %>
+      <td class="address_list_cell_bordered"><%= address.org_name %></td>
+    <!-- プロジェクト-->
+    <% elsif @address_kbn == '2' %>
+      <td class="address_list_cell_bordered"><%= address.org_name %></td>
+    <!-- 共用 -->
+    <% elsif @address_kbn == '8' %>
+      <td class="address_list_cell_bordered"><%= address.org_name %></td>
+    <!-- 個人(全て以外) -->
+    <% elsif @address_kbn == '9' %>
+      <% if !(params[:gid].nil? || params[:gid] == "" || params[:gid].to_s == '0') %>
+        <td class="address_list_cell_bordered">&nbsp;<%= params[:gnm] %></td>
+      <% end %>
+    <% end %>
+    <!-- 名前 -->
+    <td class="address_list_cell_bordered">&nbsp;
+      <a href="#"
+        onclick="ClickEditLink('<%= address.send(:id) %>', '<%= @gid %>', '<%= @address_kbn %>', '<%= @orgcd %>', '<%= @proid %>', '<%= @sword %>')">
+        <%=h address.send(:name) %>
+      </a>
+    </td>
+    <!-- メールアドレス -->
+    <td class="address_list_cell_bordered">&nbsp;
+      <% email_address1 = address.send(:email_address1) %>
+      <% if !email_address1.nil? && email_address1.strip != "" %>
+        <a href="mailto:<%= email_address1 %>">
+          <%= email_address1 %>
+        </a>
+      <% end %>
+    </td>
+    <!-- 携帯電話 -->
+    <td class="address_list_cell_bordered">&nbsp;<%=h address.send(:mobile_no) %></td>
+    <!-- 携帯メールアドレス -->
+    <td class="address_list_cell_bordered">&nbsp;
+      <% mobile_address = address.send(:mobile_address) %>
+      <% if !mobile_address.nil? && mobile_address.strip != "" %>
+        <a href="#"
+          onclick="open_mail_edit_window('/webmail/main/mail_edit?to_addr=' + '<%= mobile_address %>');">
+          <%=h mobile_address %>
+        </a>
+      <% end %>
+    </td>
+  </tr>
+<% end %>
+</table>
+<table style="border:0px;width:660px;">
+  <tr>
+    <td style="text-align:center;padding-left:10px;">
+    <%= will_paginate @addresses, :renderer => RemoteLinkRenderer,
+                                  :update => 'enote_address_main',
+                                  :params=> { :action => 'addrs_list',
+                                              :gid => @gid,
+                                              :address_kbn => @address_kbn,
+                                              :orgcd => @orgcd,
+                                              :proid => @proid,
+                                              :sword => @sword,
+                                              :result_flg => 0
+                                            },
+                                  :prev_label => "<<前へ",
+                                  :next_label => "次へ>>",
+                                  :method => :get %>
+    </td>
+  </tr>
+</table>
+<input type="hidden" id="result_flg" name="result_flg" value=<%=@result_flg%>>
+<input type="hidden" id="result_mode" name="result_mode" value=<%=@result_mode%>>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    if ($("#result_flg").val() == 1) {
+      if ($("#result_mode").val() == 1) {
+        alert("登録が完了しました。");
+      } else if ($("#result_mode").val() == 2) {
+        alert("更新が完了しました。");
+      } else if ($("#result_mode").val() == 3) {
+        alert("削除が完了しました。");
+      }
+    }
+  });
+-->
+</script>

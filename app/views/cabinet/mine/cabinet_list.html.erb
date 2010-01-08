@@ -1,0 +1,115 @@
+<%# 個人キャビネット一覧 %>
+
+<!-- 使用容量の表示色設定 -->
+<% font_color = "black" %>
+<% if @over_flg == 1 %>
+  <% font_color = "red" %>
+<% end %>
+
+<table cellpadding="0" cellspacing="0" style="width:960px;;margin:5px 0px 10px 0px;">
+  <tr>
+    <td align="left">
+      <% if @over_flg == 0 %>
+        <%= button_to_function("新規", "new_dialog();", :id => "button_", :class => "submit_small", :style => "margin:0px;") %>
+      <% end %>
+    </td>
+    <td align="right">
+      <font color=<%=font_color%>>使用容量：<%= total_file_size(@total_size_mb) %>MB</font>&nbsp;／&nbsp;最大容量：<%= @head.max_disk_size %>MB
+    </td>
+  </tr>
+</table>
+<table class="enote_general_table1">
+  <tr class="enote_general_table1_title">
+    <th style="width:250pt" class="enote_general_table1_cell_bordered header" order="title" mode="<%= @next_mode_title %>">タイトル<%=h order_mark(@next_mode_title) %></th>
+    <th style="width:150pt" class="enote_general_table1_cell_bordered header" order="file_name" mode="<%= @next_mode_file_name %>">ファイル名<%=h order_mark(@next_mode_file_name) %></th>
+    <th style="width:100pt" class="enote_general_table1_cell_bordered header" order="post_date" mode="<%= @next_mode_post_date %>">更新日時<%=h order_mark(@next_mode_post_date) %></th>
+    <th style="width:70pt" class="enote_general_table1_cell_bordered header" order="expiration" mode="<%= @next_mode_expiration %>">有効期限<%=h order_mark2(@next_mode_expiration) %></th>
+    <th style="width:90pt" class="enote_general_table1_cell_bordered header" order="file_size" mode="<%= @next_mode_file_size %>">サイズ<%=h order_mark(@next_mode_file_size) %></th>
+    <th style="width:70pt" class="enote_general_table1_cell_bordered header">&nbsp;</th>
+  </tr>
+  <% @cabinet_list.each do |cabinet| %>
+    <tr style="height:30px;">
+      <td class="enote_general_table1_cell_bordered" style="padding-left:5px;text-align:left;"><%= cabinet.title %></td>
+      <td class="enote_general_table1_cell_bordered" style="padding-left:5px;text-align:left;"><%= cabinet.d_cabinet_files[0].file_name %></td>
+      <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= datetime_strftime(cabinet.post_date) %></td>
+      <%= expiration(@head.default_enable_day, cabinet.post_date) %>
+      <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= format_file_size(cabinet.d_cabinet_files[0].file_size) %></td>
+      <td class="enote_general_table1_cell_bordered" style="text-align:center;">
+        <%= link_to_remote '<img src="/images/icons/icon_file.gif">', :update=>'dialog',
+                                                                      :url=>{:action=>:dialog,
+                                                                             :cabinet_id=>cabinet.id},
+                                                                      :complete=>'open_dialog();'
+        %>
+        <% unless @cabinet_files[cabinet.id].nil? %>
+          <%= link_to '<img src="/images/icons/icon_attachment.gif" />', :action=>:download, :cabinet_id=>cabinet.id %>
+        <% end %>
+        <%= link_to_remote(image_tag("/images/icons/icon_trash.gif"), :update=>'cabinet_list',
+                                                                      :url=>{:action=>"delete",
+                                                                             :cabinet_id=>cabinet.id},
+                                                                      :confirm=>"削除してよろしいですか？",
+                                                                      :class =>"submit")
+        %>
+     </td>
+    </tr>
+  <% end %>
+</table>
+<table style="width:100%;">
+  <tr>
+    <td style="text-align:center;padding-left:10px;">
+      <%= will_paginate(@cabinet_list, :renderer => RemoteLinkRenderer,
+                                       :update => 'cabinet_list',
+                                       :params=> { :action => 'cabinet_list'},
+                                       :prev_label => "<<前へ",
+                                       :next_label => "次へ>>",
+                                       :method => :get ) if @cabinet_list.size > 0
+       %>
+    </td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0" style="width:960px;;margin:15px 0px 10px 0px;">
+  <tr>
+    <td align="left">
+      <% if @over_flg == 0 %>
+        <%= button_to_function("新規", "new_dialog();", :id => "button_", :class => "submit_small", :style => "margin:0px;") %>
+      <% end %>
+    </td>
+    <td align="right">
+      <font color=<%=font_color%>>使用容量：<%= total_file_size(@total_size_mb) %>MB</font>&nbsp;／&nbsp;最大容量：<%= @head.max_disk_size %>MB
+    </td>
+  </tr>
+</table>
+<div style="text-align:center;">
+  <img name="logo" src="/images/icons/icon_kakeru.gif" border="0" alt="" align="right"/>
+</div>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        $(".header").mouseover(
+          function(){
+            $(this).css("cursor", "pointer");
+          }
+        );
+
+    $(".header").mouseout(
+          function(){
+            $(this).css("cursor", "default");
+          }
+        );
+
+    $(".header").click(
+          function(){
+            order = $(this).attr("order");
+            mode = $(this).attr("mode");
+
+            url = "/cabinet/mine/cabinet_list?order=:order&mode=:mode";
+      url = url.replace(":order", order).replace(":mode", mode);
+
+            $("#cabinet_list").load(url);
+          }
+        );
+      }
+    );
+  //-->
+</script>

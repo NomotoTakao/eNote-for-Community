@@ -1,0 +1,51 @@
+<!-- 登録エリア -->
+<table style="border:0px;width:100%;margin:10px 0px 0px 10px;">
+  <tr>
+    <td align="left" valign="top" style="height:22px;">
+      <img src="/images/icons/rss_url_entry.gif" style="margin:0px;" align="middle">
+      <%= text_field_tag "bookmark_url_new", "", :style => "margin:0px;width:500px;height:20px;" %><span id="enote_bookmark_setting_msg"></span>
+      <%= button_to_function "登録", "dialog_bookmark_open_ins()", :class => 'submit' %>
+    </td>
+    <td align="right" valign="top" style="height:22px;">
+      <%= button_to_function "マスタ一覧へ戻る", "ClickBackToMasterList()", :class => 'submit_large' %>
+    </td>
+    <td style="width:5px"></td>
+  </tr>
+</table>
+
+<table class="enote_general_table1" style="margin:10px 0px 0px 10px;">
+  <tr class="enote_general_table1_title">
+    <th style="width:600pt" class="enote_general_table1_cell_bordered">
+      リンク
+    </th>
+    <th style="width:80pt" class="enote_general_table1_cell_bordered">
+      更新日時
+    </th>
+    <th style="width:80pt" class="enote_general_table1_cell_bordered">
+      編集/削除
+    </th>
+  </tr>
+  <% @bookmarks.each do |bookmark| %>
+    <tr style="height:50px;">
+      <td class="enote_general_table1_cell_bordered" style="padding-left:5px;text-align:left;">
+        <h3><%= link_to bookmark.title, bookmark.url, :target => "_blank" %></h3>
+        <span style="padding-left:10px;"><%= bookmark.url %></span>
+      </td>
+      <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= bookmark.updated_at.strftime("%Y/%m/%d") %></td>
+      <td class="enote_general_table1_cell_bordered" style="text-align:center;">
+        <a href="#" onclick="dialog_bookmark_open_upd(<%=bookmark.id%>)" ><img src="/images/icons/icon_entry.gif"></a>
+        <%= link_to(image_tag("icons/icon_trash.gif"), {:action => "delete", :id => bookmark.id}, {:confirm => "削除してよろしいですか？"}) %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+  });
+-->
+</script>

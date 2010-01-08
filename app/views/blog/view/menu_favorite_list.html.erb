@@ -1,0 +1,45 @@
+<div id="blog_bloger_list_head"></div>
+<div id="blog_bloger_list_body">
+  <div style="border:1px solid black;background-color:#fff;text-align:left;">
+    <ul id="favorite_browser" class="filetree">
+      <li>
+        <span class="file">
+          <%= link_to_remote current_m_user.name + "のブログ",
+                             :update=>"right_pane",
+                             :url=>{:action=>:blog_list,
+                                    :user_cd=>current_m_user.user_cd
+                                   }
+          %>
+        </span>
+      </li>
+      <% @favorite_list.each do |favorite| %>
+        <li>
+          <span class="file">
+            <%= link_to_remote favorite.d_blog_head.title,
+                               :update=>"right_pane",
+                               :url=>{:action=>:blog_list,
+                                      :user_cd=>favorite.d_blog_head.user_cd
+                                     }
+            %>
+            <%=
+              link_to_remote "[×]",
+                             :update=>"blog_menu_favorite_list",
+                             :url=>{:controller=>"entry",
+                                    :action=>:favorite_delete,
+                                    :favorite_id=>favorite.id
+                                   },
+                             :confirm=>"削除してよろしいですか？"
+            %>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+<div id="blog_bloger_list_foot"></div>
+
+<script type="text/javascript">
+  <!--
+  $("#favorite_browser").treeview();
+  -->
+</script>

@@ -1,0 +1,78 @@
+<input type="hidden" id="success" value="<%= @result %>" />
+<table>
+  <tr>
+    <td>
+      <table class="master_table2" style="width:650px;">
+        <tr>
+          <td class="master_table2_title">NEWアイコン表示期間</td>
+          <td class="master_table2_content">
+            <%= hidden_field :m_blog_settings, :new_icon_days, :size=>3, :maxlength=>3 %>
+            <select id="select_new_icon_days">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>日
+          </td>
+        </tr>
+        <tr>
+          <td class="master_table2_title">頁最大表示件数</td>
+          <td class="master_table2_content">
+            <%= hidden_field :m_blog_settings, :page_max_count, :size=>3, :maxlength=>3 %>
+            <select id="select_page_max_count">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>件
+          </td>
+        </tr>
+      </table>
+	</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="text-align:right;">
+      <input type="submit" class="submit_small" value="登録" />
+    </td>
+  </tr>
+</table>
+
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        if($("#success").val() == "1"){
+          alert("登録が完了しました。");
+        }
+
+        new_icon_days = $("#m_blog_settings_new_icon_days").val();
+        condition = "option[value='" + new_icon_days + "']";
+        $("#select_new_icon_days").children(condition).attr("selected", true);
+
+        page_max_count = $("#m_blog_settings_page_max_count").val();
+        condition = "option[value='" + page_max_count + "']";
+        $("#select_page_max_count").children(condition).attr("selected", true);
+      }
+    );
+	
+    $("#select_new_icon_days").change(
+      function(){
+        $("#m_blog_settings_new_icon_days").val($(this).val());
+      }
+    );
+
+    $("#select_page_max_count").change(
+      function(){
+        $("#m_blog_settings_page_max_count").val($(this).val());
+      }
+    );
+
+  //-->
+</script>

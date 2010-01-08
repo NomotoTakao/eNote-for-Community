@@ -1,0 +1,102 @@
+<table class="admin_pages_edit_table" cellpadding="1" cellspacing="0" style="width:700px;margin-left:10px;">
+    <tr>
+      <td class="admin_pages_edit_table_title" style="width:120px;">タイトル</td>
+      <td class="admin_pages_edit_table_content" style="width:570px;text-align:left;"><%= @bulletin_head.title %></td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">回覧期間</td>
+      <td class="admin_pages_edit_table_content" style="text-align:left;">
+		<table border="0" cellpadding="0" cellspacing="0" style="margin-left:0px;">
+	  	<tr>
+            <td><%= datetime_strftime_bulletin(@bulletin_head.bulletin_date_from.to_date) %></td>
+            <td align="center" width="50">〜</td>
+            <td><%= datetime_strftime(@bulletin_head.bulletin_date_to.to_date) %></td>
+      	</tr>
+		</table>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">内容</td>
+      <td class="admin_pages_edit_table_content" style="text-align:left;">
+        <div style="width:550px;overflow-x:auto;">
+          <%= @bulletin_head.body %>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">発信者</td>
+      <td class="admin_pages_edit_table_content" style="text-align:left;"><%= @bulletin_head.post_user_name %></td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">発信日時</td>
+      <td class="admin_pages_edit_table_content" style="text-align:left;"><%= datetime_strftime(@bulletin_head.created_at) %></td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">添付ファイル</td>
+      <td class="admin_pages_edit_table_content" style="text-align:left;">
+        <% unless @bulletin_head.d_bulletin_file.nil? %>
+		  <% bulletin_file_reverse = @bulletin_head.d_bulletin_file.reverse %>
+		  <% bulletin_file_reverse.each do |file| %>
+            <%= link_to file.file_name,
+                        :action=>:download,
+                        :id=>file.id
+            %>&nbsp;
+		  <% end %>
+        <% end %>
+      </td>
+    </tr>
+</table>
+<hr>
+<% if @bulletin_body.answer_kbn == 0 %>
+<%= form_tag({:action=>'checked'}, {:id => 'form_bulletin_checked'}) %>
+  <%= hidden_field 'bulletin_body','id' %>
+  <table class="admin_pages_edit_table" cellpadding="1" cellspacing="0" style="width:700px;margin-left:10px;">
+    <tr>
+      <td class="admin_pages_edit_table_title" style="width:120px;">回答・コメント</td>
+      <td class="admin_pages_edit_table_content" style="width:570px;text-align:left;">
+		<%= text_area 'bulletin_body', 'comment', {:cols => 40, :rows => 10, :class => 'enote_blog_body_text' }  %>	  
+	  </td>
+    </tr>
+  </table>
+<table style="border:0px;width:100%;">
+  <tr>
+    <td align="center">
+      <%= button_to_function '確認する', "SaveAnswerBulletin();", {:class => 'submit'} %>
+    </td>
+  </tr>
+</table>
+</form>
+<% end %>
+
+<% p "★@bulletin_head.post_user_cd" + @bulletin_head.post_user_cd %>
+<% p "★current_m_user.user_cd:" + current_m_user.user_cd %>
+<% if @bulletin_head.answer_public_kbn == 1 or @bulletin_head.post_user_cd == current_m_user.user_cd %>
+<hr>
+<table class="enote_general_table1">
+  <tr class="enote_general_table1_title">
+    <th style="width:100px" class="enote_general_table1_cell_bordered">氏名</th>
+    <th style="width:80px" class="enote_general_table1_cell_bordered">確認日</th>
+    <th style="width:500px" class="enote_general_table1_cell_bordered">回答・コメント</th>
+  </tr>
+  <% @bulletin_bodies.each do |bulletin_body| %>
+    <tr style="height:30px;">
+      <td class="enote_general_table1_cell_bordered" style="text-align:left;"><%= MUser.get_user_name(bulletin_body.user_cd) %></td>
+	  <% if bulletin_body.answer_kbn == 1 %>
+      	<td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= datetime_strftime(bulletin_body.answer_date) %></td>
+	  <% else %>
+      	<td class="enote_general_table1_cell_bordered" style="text-align:center;">未回答</td>
+	  <% end %>
+      <td class="enote_general_table1_cell_bordered" style="text-align:left;"><%= bulletin_body.comment %></td>
+    </tr>
+  <% end %>
+</table>
+<% end %>
+<script type="text/javascript">
+  <!--
+    $(document).ready(function(){
+        $(document).scrollTop = 0;
+      }
+    );
+	
+  //-->
+</script>

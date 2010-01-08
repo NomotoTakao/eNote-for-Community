@@ -1,0 +1,35 @@
+<!-- エラー -->
+<% err = flash[:ngword_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<table class="master_table2" style="margin:10px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">ＮＧワード&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_ngwords[ng_word]', @m_ngwords.ng_word,  {:size => 100, :maxlength => 20} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">代替ワード</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_ngwords[substitute_word]', @m_ngwords.substitute_word,  {:size => 100, :maxlength => 20} %>
+    </td>
+  </tr>
+</table>
+<%= hidden_field_tag 'm_ngwords[id]', @m_ngwords.id %>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期設定
+  */
+  $(document).ready(function(){
+  });
+-->
+</script>

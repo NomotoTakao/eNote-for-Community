@@ -1,0 +1,63 @@
+<!-- 詳細 -->
+<table style="width:100%;text-align:left;">
+  <tr>
+    <td><h4>【キャビネットの追加/修正/削除】</h4></td>
+  </tr>
+  <tr>
+    <td>
+      <div id="select_cabinet">
+        <% options = "" %>
+        <% if !@edit_cabinet_list.nil? %>
+          <% @edit_cabinet_list.each do |data|%>
+            <% options += "<option value=#{data.d_cabinet_head_id} >#{data.title}</options>" %>
+          <% end %>
+        <% end %>
+        <%= select_tag('decided_select_cabinet', options, :size=>5, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickTargetCabinet();') %>
+      </div>
+    </td>
+  </tr>
+</table>
+<br>
+<!-- 該当データ表示エリア -->
+<table style="width:100%;">
+  <tr>
+    <td>
+      <div id="detail_company_cabinet">
+        <div id="detail_company_cabinet"></div>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<input type="hidden" id="head_id" name="head_id" value=0>
+<input type="hidden" id="parent_index_type" name="parent_index_type" value=<%=@parent_index_type%>>
+
+<script type="text/javascript">
+<!--
+/*
+* 初期化
+*/
+$(document).ready(function(){
+  //空の詳細エリアを表示
+  $("#detail_company_cabinet").load("/master/cabinet/detail_company_cabinet?head_id=0");
+});
+
+/*
+ * 該当キャビネットクリック時の処理
+ */
+function ClickTargetCabinet(){
+  head_id = $("#decided_select_cabinet").val();
+  //ヘッダIDをhiddenに格納
+  $("#head_id").val(head_id);
+  //該当データを表示
+  $.ajax({
+    type: 'get',
+    url: '/master/cabinet/detail_company_cabinet?head_id=' + head_id,
+    success:
+      function(request){
+        $('#detail_company_cabinet').html(request);
+      }
+  });
+}
+-->
+</script>

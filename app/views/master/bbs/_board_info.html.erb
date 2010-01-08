@@ -1,0 +1,94 @@
+<input type="hidden" id="success_board" value="<%= @result %>" />
+<table>
+  <tr>
+    <td style="text-align:left;">
+      <table class="master_table2" style="width:400px;">
+        <tr>
+          <td class="master_table2_title" style="width:50px;">タイトル<font style="weight:bold;color:red">(必須)</font></td>
+          <td class="master_table2_content">
+            <%= hidden_field :d_bbs_boards, :id %>
+            <%= text_field :d_bbs_boards, :title %>
+          </td>
+        </tr>
+        <tr>
+          <td class="master_table2_title" style="vertical-align:top;">メモ</td>
+          <td class="master_table2_content">
+            <%= text_area :d_bbs_boards, :memo, :rows=>5, :cols=>30 %>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" style="text-align:right;">
+      <input type="button" class="submit_small" value="クリア" onClick="btnBoardClear();" />
+      <input type="submit" class="submit_small" value="登録" onClick="return checkBoardInput();" />
+      <input type="button" class="submit_small" value="削除" onClick="btnBoardDelete();" />
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    /*
+     * 画面ロード時に実行されるイベント
+     */
+    $(document).ready(
+      function(){
+        if($("#success_board").val() == "1"){
+          alert("登録が完了しました。");
+        }
+      }
+    );
+
+    /*
+     * 入力チェック
+     */
+    function checkBoardInput(){
+      if(!inValueChk($("#d_bbs_boards_title").val(), 99, 0, 1, 0, 0, "名称")){
+        return false;
+	  }
+    }
+
+    /*
+     * 「クリア」ボタンが押下された時の処理
+     */
+    function btnBoardClear(){
+      $("#d_bbs_board_id").val("");
+      $("#d_bbs_boards_title").val("");
+      $("#d_bbs_boards_memo").val("");
+	}
+
+    /*
+     * 「削除」ボタンが押下された時の処理
+     */
+    function btnBoardDelete(){
+      id = $("#d_bbs_board_id").val();
+      if(id != ""){
+	  	if (confirm("削除してもよろしいですか？")) {
+          jQuery.ajax(
+            {
+              type: "GET",
+              url: "/master/bbs/delete_board_info",
+              data:
+                {
+                  id: id
+                },
+              success:
+                function(data, dataType){
+                  $("#select_board").html(data);
+                },
+              error:
+                function(){
+                  alert("通信エラー");
+                },
+              complete:
+                function(){
+                }
+            }
+          );
+		}
+      }
+    }
+  //-->
+</script>

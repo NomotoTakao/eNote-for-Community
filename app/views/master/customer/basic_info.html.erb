@@ -1,0 +1,571 @@
+<table style="width:100%;">
+  <tr>
+    <td>
+      <input type="button" name="button_register" class="submit_large" value="登録" />
+      <input type="button" name="button_edit" class="submit_large" value="編集" />
+      <input type="button" name="button_delete" class="submit_large" value="削除" />
+      <input type="button" name="button_cancel" class="submit_large" value="キャンセル" />
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <table class="admin_pages_edit_table" cellspacing="0" cellpadding="1" style="width:90%;">
+        <tr>
+          <td class="admin_pages_edit_table_title" style="width:20%;">得意先コード&nbsp;
+            <% if @m_customer.company_cd.nil? or @m_customer.company_cd.empty? %>
+              <span style="color:red;">（必須）</span>
+            <% end %>
+          </td>
+          <td class="admin_pages_edit_table_content" colspan="3">
+            <% if @m_customer.company_cd.nil? or @m_customer.company_cd.empty? %>
+              <%= text_field :m_customer, :company_cd, :class=>"ime_off", :size=>"10" %>
+            <% else %>
+              <%= @m_customer.company_cd %>
+              <%= hidden_field :m_customer, :company_cd %>&nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >得意先カナ名称</td>
+          <td class="admin_pages_edit_table_content" colspan="3">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :kana, :class=>"ime_on", :size=>"50" %>
+            <% else %>
+              <%= @m_customer.kana %>&nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">得意先正式名称&nbsp;
+            <% if @edit_flg != "0" %>
+              <span style="color:red;">（必須）</span>
+            <% end %>
+          </td>
+          <td class="admin_pages_edit_table_content" colspan="3">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :name, :class=>"ime_on", :size=>"50" %>
+            <% else %>
+              <%= @m_customer.name %>&nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >得意先略名称
+          </td>
+          <td class="admin_pages_edit_table_content" colspan="3">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :short_name, :class=>"ime_on", :size=>"30" %>
+            <% else %>
+              <%= @m_customer.short_name %>&nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >代表者</td>
+          <td class="admin_pages_edit_table_content" colspan="3">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :president_name, :class=>"ime_on", :size=>"50" %>
+            <% else %>
+              <%= @m_customer.president_name %>&nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >担当者</td>
+          <td class="admin_pages_edit_table_content" colspan="3">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :tanto_name, :class=>"ime_on", :size=>"50" %>
+            <% else %>
+              <%= @m_customer.tanto_name %>&nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >郵便番号</td>
+          <td class="admin_pages_edit_table_content" colspan="3">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :zip_cd, :class=>"ime_off", :size=>"10" %>
+            <% else %>
+              <%= @m_customer.zip_cd %>&nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >住所</td>
+          <td class="admin_pages_edit_table_content" colspan="3">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :address1, :class=>"ime_on", :size=>"80" %>
+            <% else %>
+              <%= @m_customer.address1 %>&nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >電話番号１</td>
+          <td class="admin_pages_edit_table_content" colspan="3">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :tel1, :class=>"ime_off", :size=>"15" %>
+            <% else %>
+              <%= @m_customer.tel1 %>&nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >電話番号２</td>
+          <td class="admin_pages_edit_table_content" style="width:30%;">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :tel2, :class=>"ime_off", :size=>"15" %>
+            <% else %>
+              <%= @m_customer.tel2 %>&nbsp;
+            <% end %>
+          </td>
+          <td class="admin_pages_edit_table_title" style="width:20%;">FAX番号</td>
+          <td class="admin_pages_edit_table_content">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :fax, :class=>"ime_off", :size=>"15" %>
+            <% else %>
+              <%= @m_customer.fax %>&nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >メールアドレス</td>
+          <td class="admin_pages_edit_table_content">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :mail_address, :class=>"ime_off", :size=>"30" %>
+            <% else %>
+              <a href="mailto:<%= @m_customer.mail_address %>"><%= @m_customer.mail_address %></a>&nbsp;
+            <% end %>
+          </td>
+          <td class="admin_pages_edit_table_title" >ホームページアドレス</td>
+          <td class="admin_pages_edit_table_content">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :url, :class=>"ime_off", :size=>"30" %>
+            <% else %>
+              <a href="<%= @m_customer.url %>"><%= @m_customer.url %></a>&nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >年商</td>
+          <td class="admin_pages_edit_table_content" style="text-align:right;">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :nensyo, :class=>"ime_off", :size=>"10", :style=>"text-align:right;" %>
+            <% else %>
+              <%= format_money @m_customer.nensyo %>
+            <% end %>円
+          </td>
+          <td class="admin_pages_edit_table_title" >経常利益</td>
+          <td class="admin_pages_edit_table_content" style="text-align:right;">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :keijo, :class=>"ime_off", :size=>"10", :style=>"text-align:right;" %>
+            <% else %>
+              <%= format_money @m_customer.keijo %>
+            <% end %>円
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >年間取引額</td>
+          <td class="admin_pages_edit_table_content" style="text-align:right;">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :sales, :class=>"ime_off", :size=>"10", :style=>"text-align:right;" %>
+            <% else %>
+              <%= format_money @m_customer.sales %>
+            <% end %>円
+          </td>
+          <td class="admin_pages_edit_table_title" >年間粗利額</td>
+          <td class="admin_pages_edit_table_content" style="text-align:right;">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :arari, :class=>"ime_off", :size=>"10", :style=>"text-align:right;" %>
+            <% else %>
+              <%= format_money @m_customer.arari %>
+            <% end %>円
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >従業員数</td>
+          <td class="admin_pages_edit_table_content" style="text-align:right;">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :number_of_employees, :class=>"ime_off", :size=>"5", :style=>"text-align:right;" %>
+            <% else %>
+              <%= format_person @m_customer.number_of_employees %>
+            <% end %>人
+          </td>
+          <td class="admin_pages_edit_table_title" >与信</td>
+          <td class="admin_pages_edit_table_content" style="text-align:right;">
+            <% if @edit_flg != "0" %>
+              <%= text_field :m_customer, :yoshin, :class=>"ime_off", :size=>"10", :style=>"text-align:right;" %>
+            <% else %>
+              <%= format_money @m_customer.yoshin %>
+            <% end %>円
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title" >備考</td>
+          <td class="admin_pages_edit_table_content" colspan="3">
+            <% if @edit_flg != "0" %>
+              <%= text_area :m_customer, :memo, :class=>"ime_on", :rows=>"5", :cols=>"50" %>
+            <% else %>
+              <%= @m_customer.memo %>&nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <% unless @m_customer.created_at.nil? %>
+          <tr>
+            <td class="admin_pages_edit_table_title" >登録日</td>
+            <td class="admin_pages_edit_table_content" style="text-align:right;">
+              <%= datetime_strftime @m_customer.created_at %>
+            </td>
+            <td class="admin_pages_edit_table_title" >更新日</td>
+            <td class="admin_pages_edit_table_content" style="text-align:right;">
+              <%= datetime_strftime @m_customer.updated_at %>
+            </td>
+          </tr>
+          <tr>
+            <td class="admin_pages_edit_table_title" >編集者</td>
+            <td class="admin_pages_edit_table_content">
+              <%= user_name @m_customer.updated_user_cd %>
+            </td>
+            <td class="admin_pages_edit_table_title" >削除</td>
+            <td class="admin_pages_edit_table_content">
+              <%= hidden_field :m_customer, :delf %>
+              <% if @edit_flg != "0" %>
+                <input type="checkbox" id="m_customer_delf" name="[m_customer][delf]" value="1" />
+              <% else %>
+                <%= delete_flag @m_customer.delf %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <table style="width:100%;">
+        <tr>
+          <td colspan="3" style="text-align:center;">作業対応者</td>
+        </tr>
+        <tr>
+          <td id="employee_area" style="text-align:right;">
+            <select id="employee_list_select" size="8" style="width:150px;" multiple>
+              <% unless @user_list.nil? %>
+                <% @user_list.each do |user| %>
+                  <option value="<%= user.user_cd %>"><%= user.name %></option>
+                <% end %>
+              <% end %>
+            </select>
+          </td>
+          <td id="button_area" style="text-align:center;">
+            <input type="button" id="add_staff_button" class="submit_small" value=">" />
+            <br />
+            <input type="button" id="remove_staff_button" class="submit_small" value="<" />
+          </td>
+          <td id="selected_area" style="text-align:left;">
+            <select id="selected_list_select" size="8" style="width:150px;" multiple>
+              <% selected_list = "" %>
+              <% unless @worker_list.nil? %>
+                <% @worker_list.each do |worker| %>
+                  <option value="<%= worker.user_cd %>"><%= user_name worker.user_cd %></option>
+                  <%
+                    unless selected_list.empty?
+                      selected_list += ","
+                    end
+                    selected_list += worker.user_cd
+                  %>
+                <% end %>
+              <% end %>
+            </select>
+            <input type="hidden" id="selected_list" value="<%= selected_list %>" />
+            <input type="hidden" id="deleted_list" value="" />
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    /**
+     *
+     */
+    $("input[name='button_register']").click(
+      function(){
+        var customer_id = $("#customer_id").val();
+        var company_cd = $("#m_customer_company_cd").val();
+        var kana = $("#m_customer_kana").val();
+        var name = $("#m_customer_name").val();
+        var short_name = $("#m_customer_short_name").val();
+        var president_name = $("#m_customer_president_name").val();
+        var tanto_name = $("#m_customer_tanto_name").val();
+        var zip_cd = $("#m_customer_zip_cd").val();
+        var address1 = $("#m_customer_address1").val();
+        var tel1 = $("#m_customer_tel1").val();
+        var tel2 = $("#m_customer_tel2").val();
+        var fax = $("#m_customer_fax").val();
+        var mail_address = $("#m_customer_mail_address").val();
+        var url = $("#m_customer_url").val();
+        var nensyo = $("#m_customer_nensyo").val();
+        var keijo = $("#m_customer_keijo").val();
+        var sales = $("#m_customer_sales").val();
+        var arari = $("#m_customer_arari").val();
+        var number_of_employees = $("#m_customer_number_of_employees").val();
+        var yoshin = $("#m_customer_yoshin").val();
+        var memo = $("#m_customer_memo").val();
+        var delf = $("#m_customer_delf").val();
+        var selected_list = $("#selected_list").val();
+        var deleted_list = $("#deleted_list").val();
+        var authenticity_token = $("#authenticity_token").val();
+        // 入力チェック
+        if (!inValueChk($("#m_customer_company_cd").val(),99,0,1,0,0,"得意先コード")) {
+          return false;
+        }
+        if (!inValueChk($("#m_customer_name").val(),99,0,1,0,0,"得意先正式名称")) {
+          return false;
+        }
+
+        jQuery.ajax(
+          {
+            type : "POST",
+            url  : "/master/customer/register",
+            data :
+              "customer_id=" + customer_id + "&" +
+              "company_cd=" + company_cd + "&" +
+              "kana=" + kana + "&" +
+              "name=" + name + "&" +
+              "short_name=" + short_name +"&" +
+              "president_name=" + president_name + "&" +
+              "tanto_name=" + tanto_name +"&" +
+              "zip_cd=" + zip_cd + "&" +
+              "address1=" + address1 + "&" +
+              "tel1=" + tel1 + "&" +
+              "tel2=" + tel2 + "&" +
+              "fax=" + fax + "&" +
+              "mail_address=" + mail_address + "&" +
+              "url=" + url + "&" +
+              "nensyo=" + nensyo + "&" +
+              "keijo=" + keijo + "&" +
+              "sales=" + sales + "&" +
+              "arari=" + arari + "&" +
+              "number_of_employees=" + "&" +
+              "yoshin=" + yoshin + "&" +
+              "memo=" + memo + "&" +
+              "delf=" + delf + "&" +
+              "selected_list=" + selected_list + "&" +
+              "deleted_list=" + deleted_list + "&" +
+              "authenticity_token=" + authenticity_token + "&",
+            success :
+              function(data, dataType){
+                alert("登録しました。");
+                customer_info_close();
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     *
+     */
+    $("input[name='button_edit']").click(
+      function(){
+        var company_cd = $("#company_cd").val();
+        $("#edit_flg").val("1");
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/master/customer/basic_info",
+            data :
+              {
+                company_cd : company_cd,
+                edit_flg   : 1
+              },
+            success :
+              function(data, dataType){
+                $("#basic_info").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     *
+     */
+    $("input[name='button_delete']").click(
+      function(){
+        var company_cd = $("#company_cd").val();
+        var customer_id = $("#customer_id").val();
+
+        if(customer_id!=""){
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/master/customer/delete",
+              data :
+                {
+                  id : customer_id
+                },
+              success :
+                function(data, dataType){
+                  alert("削除しました。");
+                  customer_info_close();
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){}
+            }
+          );
+        }
+      }
+    );
+
+    /**
+     *
+     */
+    $("input[name='button_cancel']").click(
+      function(){
+        var company_cd = $("#company_cd").val();
+        var edit_flg = $("#edit_flg").val();
+
+        if(company_cd == ""){
+          $("button:contains('閉じる')").click();
+        }else{
+          if(edit_flg == "0"){
+            $("button:contains('閉じる')").click();
+          }else{
+            $("#edit_flg").val(0);
+            var company_cd = $("#company_cd").val();
+            var edit_flg = $("#edit_flg").val();
+            jQuery.ajax(
+              {
+                type : "GET",
+                url  : "/master/customer/basic_info",
+                data :
+                  {
+                    company_cd : company_cd,
+                    edit_flg   : edit_flg
+                  },
+                success :
+                  function(data, dataType){
+                    $("#basic_info").html(data);
+                  },
+                error :
+                  function(){
+                    alert("通信エラー");
+                  },
+                complete :
+                  function(){}
+              }
+            );
+          }
+        }
+      }
+    );
+
+    /**
+     *
+     */
+    $("#add_staff_button").click(
+      function(){
+        var employee_list = $("#employee_list_select").val();
+        $("#employee_list_select option:selected").each(
+          function(){
+            var value = $(this).val();
+            var text = $(this).text();
+
+            // deleted_listに追加しようとする要素があれば削除する。
+            if($("#deleted_list").val().indexOf(value) > -1){
+              $("#deleted_list").val($("#deleted_list").val().replace(value, ""));
+            }
+            // selected_listに追加しようとする要素がなければ追加する。
+            if($("#selected_list").val().indexOf(value) == -1){
+              var option = "<option value='" + value + "'>" + text + "</option>";
+              $("#selected_list_select").html($("#selected_list_select").html() + option);
+              $("#selected_list").val($("#selected_list").val() + "," + value);
+              $(this).remove();
+            }
+          }
+        );
+      }
+    );
+
+    /**
+     *
+     */
+    $("#remove_staff_button").click(
+      function(){
+        $("#selected_list_select option:selected").each(
+          function(){
+            var value = $(this).val();
+            var text = $(this).text();
+            // selected_listにあれば削除して、deleted_listに追加する。
+            if($("#selected_list").val().indexOf(value) > -1){
+              $("#selected_list").val($("#selected_list").val().replace(value, ""));
+              $("#deleted_list").val($("#deleted_list").val() + "," + value);
+              $(this).remove();
+              var option = "<option value='" + value + "'>" + text + "</option";
+              $("#employee_list_select").html($("#employee_list_select").html() + option);
+            }
+          }
+        );
+      }
+    );
+
+    /**
+     *
+     */
+    $(document).ready(
+      function(){
+        var company_cd = $("#company_cd").val();
+        var edit_flg = $("#edit_flg").val();
+        if(company_cd == ""){
+          $("#employee_area").css("display", "");
+          $("#button_area").css("display", "");
+          $("#selected_area").css("text-align", "left");
+          $("input[name='button_register']").css("display", "inline");
+          $("input[name='button_edit']").css("display", "none");
+          $("input[name='button_delete']").css("display", "none");
+          $("input[name='button_cancel']").css("display", "none");
+        }else{
+          if(edit_flg == "0"){
+            $("input[name='button_cancel']").val("閉じる");
+            $("#employee_area").css("display", "none");
+            $("#button_area").css("display", "none");
+            $("#selected_area").css("text-align", "center");
+            $("input[name='button_register']").css("display", "none");
+            $("input[name='button_edit']").css("display", "inline");
+          }else{
+            $("input[name='button_cancel']").val("キャンセル");
+            $("#employee_area").css("display", "");
+            $("#button_area").css("display", "");
+            $("#selected_area").css("text-align", "left");
+            $("input[name='button_register']").css("display", "inline");
+            $("input[name='button_edit']").css("display", "none");
+          }
+          $("input[name='button_delete']").css("display", "inline");
+          $("input[name='button_cancel']").css("display", "inline");
+        }
+      }
+    );
+  //-->
+</script>

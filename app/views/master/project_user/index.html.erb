@@ -1,0 +1,87 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "app/master"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "app/master"
+    ]) %>
+<% end -%>
+
+<div style="padding:5px;">
+  <!-- エラー -->
+  <% err = flash[:project_user_err_msg] %>
+  <% if !err.nil? && err != "" %>
+    <table style="margin:10px 0px 0px 10px;">
+      <tr style="color:red;">
+        <td><%= err %></td>
+      </tr>
+    </table>
+  <% end %>
+
+  <%= form_tag({:action=>'update'}) %>
+    <!-- プロジェクトリスト -->
+    <% if @m_projects.size > 0 %>
+      <table style="margin:0px 0px 0px 10px;">
+        <tr>
+          <td style="width:250px;">
+            <select id="project_id" name="project_id" style="width:250px" onchange="SelectProject();">
+              <% for project_list in @m_projects %>
+                <option value = <%=project_list.id%>><%=project_list.name%></option>
+              <% end %>
+            </select>
+          </td>
+        </tr>
+      </table>
+    <% end %>
+
+    <!-- 有効なプロジェクトが存在しない場合 -->
+    <% if @m_projects.size == 0 %>
+      <table class="master_table_button">
+        <tr style="color:red;">
+          <td>有効なプロジェクトが存在しません。プロジェクトマスタから登録してください。</td>
+        </tr>
+        <tr>
+          <td style="text-align:right;">
+            <input id="back_list_button" type="button" class="submit_large" value="マスタ一覧へ戻る" onclick="ClickBackToMasterList()" />
+          </td>
+        </tr>
+      </table>
+    <% else %>
+      <!-- 一覧 -->
+      <div id="master_list"></div>
+    <% end %>
+  </form>
+</div>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    //一覧を表示
+    $("#master_list").load("/master/project_user/master_list?project_id=" + $("#project_id").val());
+  });
+
+  /*
+   * プロジェクト選択時の処理
+   */
+  function SelectProject(){
+    //jQueryでの処理
+    $.ajax({
+      type:'get',
+      url:"/master/project_user/master_list?project_id=" + $("#project_id").val(),
+      success:
+        function(request){
+          $('#master_list').html(request);
+        }
+    });
+  }
+-->
+</script>

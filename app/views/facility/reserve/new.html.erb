@@ -1,0 +1,59 @@
+<div id="input_area">
+<% form_for :reserve, :url => { :action => "create" }, :html => {:id => "form_reserve", :method => :post} do |f| %>
+  <table style="width: 700px;">
+    <tr>
+      <td style="width: 640px;"></td>
+      <td style="width: 30px;">
+        <input id="facility_new" type="submit" class="submit_small" value="登録" onclick="return ClickNewButton()" />
+      </td>
+      <td style="width: 30px;">
+        <input id="facility_cancel" type="submit" class="submit_small" value="閉じる" onclick="ClickCancelButton()" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" style="width: 700px;">
+        <input type="hidden" id="reserve_id" name="reserve_id" value=0 />
+        <!-- 入力フォーム -->
+        <%= render :partial => 'input_table' %>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 640px;"></td>
+      <td style="width: 30px;">
+        <input id="facility_new" type="submit" class="submit_small" value="登録" onclick="return ClickNewButton()" />
+      </td>
+      <td style="width: 30px;">
+        <input id="facility_cancel" type="submit" class="submit_small" value="閉じる" onclick="ClickCancelButton()" />
+      </td>
+    </tr>
+  </table>
+</div>
+<% end %>
+
+<script type="text/javascript">
+<!--
+  /*
+   * 登録
+   */
+  function ClickNewButton(){
+    //確認ダイアログ
+    if (!confirm("登録してよろしいですか？")) {
+      return false;
+    }
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+    //ボタンモード
+    $("#select_button").val(0);
+  }
+
+  /*
+   * 中止
+   */
+  function ClickCancelButton(){
+    $("#select_button").val(99);
+  }
+-->
+</script>

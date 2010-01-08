@@ -1,0 +1,255 @@
+<!-- tab_indexに値がある場合、画面遷移を行う。 -->
+<input type="hidden" id="next_tab" value="<%= @tab_index %>" />
+<%
+  options = ""
+  hidden_value = ""
+  unless @d_notice_body.nil?
+    org_name = ""
+    org_code = ""
+    @d_notice_body.d_notice_public_orgs.each do |org|
+      if org.org_cd == "0"
+        org_name = "全社"
+        org_code = "0"
+      else
+        org_name = @org_table[org.org_cd]
+        org_code = org.org_cd
+      end
+      options += "<option value=#{org_code}>#{org_name}</option>"
+      hidden_value += "_" + org_code + "_,"
+    end
+  end
+%>
+<% form_tag url_for(:action=>:create), :multipart => true, :target=>"notice_create_form_upload_frame" do %>
+  <%= hidden_field :d_notice_body, :id %>
+  <table class="admin_pages_edit_table" cellpadding="1" cellspacing="0" style="width:960px;margin-left:20px;">
+    <tr>
+      <td class="admin_pages_edit_table_title">お知らせボードの選択<span style="color: red;">（必須）</span></td>
+      <td class="admin_pages_edit_table_content">
+          <!-- お知らせボードの選択 -->
+          <%= render :partial=>"notice_board_select" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">公開対象組織の選択<span style="color: red;">（必須）</span></td>
+      <td class="admin_pages_edit_table_content">
+          <!-- 公開対象組織の選択 -->
+        <table>
+          <tr>
+            <td>
+          <div id="public_org_select" />
+            </td>
+      <td style="vertical-align:middle;">
+        <input type="button" id="public_org_add" class="submit_small" value=">" />
+        <br />
+        <br />
+        <input type="button" id="public_org_delete" class="submit_small" value="<" />
+      </td>
+      <td valign="top" text-align="left">
+        <div style="border:1px solid black;width:150px;height:210px;background-color:#fff;text-align:left;">
+          <%= select_tag("public_org_list", options, :size=>13, :style=>'width:100%;height:100%;border:0;', :multiple=>true) %>
+          <input type="hidden" id="selected_public_org_list" name="selected_public_org_list" value="<%= hidden_value %>" />
+          <input type="hidden" id="deleted_public_org_list" name="deleted_public_org_list" value="" />
+        </div>
+      </td>
+    </tr>
+  </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">公開期間<span style="color: red;">（必須）</span></td>
+      <td class="admin_pages_edit_table_content">
+          <!-- 公開期間  -->
+          <table border="0" cellpadding="0" cellspacing="0" style="">
+            <tr>
+              <td><%= text_field 'd_notice_body','public_date_from',{:class=>"ime_off", :size => 10, :style => "width:120px;"} %></td>
+              <td align="center" width="30">～</td>
+              <td><%= text_field 'd_notice_body','public_date_to',{:class=>"ime_off", :value=>@d_notice_body.public_date_to, :size => 10, :style => "width:120px;"} %></td>
+              <td align="center" width="30">&nbsp;</td>
+              <td>
+                <!-- 「非公開にする」 -->
+                <%
+                  checked = ""
+                  if @d_notice_body.public_flg == 1
+                    checked = "checked"
+                  end
+                %>
+                <%= check_box("d_notice_body", "public_flg", :value=>@d_notice_body.public_flg, :checked=>checked) %>非公開にする
+              </td>
+            </tr>
+          </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">TOP表示区分</td>
+      <td class="admin_pages_edit_table_content">
+      <!-- 「TOP表示区分」 -->
+          <%= render :partial=>"top_disp_kbn", :locals=>{:notice_bodies_top_disp_kbn=>@d_notice_body_bodies_top_disp_kbn, :top_disp_kbn=>@d_notice_body.top_disp_kbn} %>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">ホットトピック</td>
+      <td class="admin_pages_edit_table_content">
+      <!-- 「ホットトピック」 -->
+      <%= render :partial=>"hottopic", :locals=>{:hottopic_kbn=>@hot_topic_kbn, :hottopic_flg=>@d_notice_body.hottopic_flg} %>
+      </td>
+    </tr>
+      <tr>
+      <td class="admin_pages_edit_table_title">タイトル<span style="color: red;">（必須）</span></td>
+      <td class="admin_pages_edit_table_content">
+          <%= text_field 'd_notice_body','title',{:size => 60, :maxlength => 40, :style => "width:680px;height:25px;font-size:1.5em;", :class => 'enote_blog_subject_text ime_on' } %>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">本文の内容</td>
+      <td class="admin_pages_edit_table_content">
+      <%= fckeditor_textarea 'd_notice_body', 'body', {:toolbarSet => "Simple", :width=>'100%', :height=>'500px', :class =>'enote_blog_body_text ime_on'} %>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">添付ファイル</td>
+      <td class="admin_pages_edit_table_content">
+          <div id="attachment_file">
+            <%= render :partial=>"attachment_file" %>
+          </div>
+      </td>
+    </tr>
+  </table>
+    <table style="border:0px;width:100%;">
+      <tr>
+        <td style="text-align:left;padding-left:10px;">
+          <%= submit_tag '登録',{:class => 'submit', :onclick => 'return ClickContributeButton()'} %>
+        </td>
+        <td>&nbsp;</td>
+        <td style="text-align:right;padding-right:10px;">
+          <input type="button" class="submit_large" value="一覧に戻る" onClick="returnNoticeIndex(<%= @d_notice_body.d_notice_head_id %>);" />
+        </td>
+      </tr>
+    </table>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    /*
+     * ">"ボタンにマウスカーソルを合わせたとき、離したときに発生するイベント
+     */
+    $("#public_org_add").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /*
+     * ">"ボタンをクリックしたときに発生するイベント
+     */
+    $("#public_org_add").click(
+      function(){
+        // ツリーで選択されている組織の名称とコードが格納されているテキストフィールドから、値を取得する。
+        element = $("#public_org_cd").val().split(",");
+        // 既に同じ項目が選択されていないかチェックして、追加されていなければ右セレクトボックスに追加する。
+        if($("#selected_public_org_list").val().indexOf("_" + element[1]) == -1){
+          // option要素のvalue属性にelement[1]を、テキストをelement[0]にしてセレクトボックスに追加
+          $("#public_org_list").append($('<option>').attr({value:element[1]}).text(element[0]));
+          // 選択されている項目のコードをhiddenフィールドに格納する。
+          $("#selected_public_org_list").val($('#selected_public_org_list').val() + "_" + element[1] + "_,");
+          // 選択されている項目のコードが削除用のリストに存在すれば、消去する。
+          $("#deleted_public_org_list").val($("#deleted_public_org_list").val().replace("_" + element[1] + "_,", ""));
+        }
+      }
+    );
+
+    /*
+     *  "<"ボタンにマウスカーソルを合わせたとき・離したときに発生するイベント
+     */
+    $("#public_org_delete").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /*
+     *  "<"ボタンをクリックしたときに発生するイベント
+     */
+    $("#public_org_delete").click(
+      function(){
+        txt = "";
+        val = "";
+        arrayText = "";
+        arrayVal = "";
+        txtDeletedTxt = ""
+        $("#public_org_list option:selected").each(
+          function(){
+            txt += $(this).html() + ",";
+            val += $(this).val() + ",";
+          }
+        );
+        arrayText = txt.split(",");
+        arrayVal = val.split(",");
+        txtSelectedTxt = $("#selected_public_org_list").val();
+        arraySelectedTxt = txtSelectedTxt.split(",");
+
+        for(i=0; i<arrayVal.length-1; i++){
+          txtDeletedTxt += "_" + arrayVal[i] + "_,"
+          txtSelectedTxt = txtSelectedTxt.replace("_" + arrayVal[i] + "_,", "");
+        }
+        $("#deleted_public_org_list").val($("#deleted_public_org_list").val() + txtDeletedTxt);
+        $("#selected_public_org_list").val(txtSelectedTxt);
+        $("#public_org_list option:selected").remove();
+      }
+    );
+
+    /*
+     * 「登録」ボタンが押下された時の処理。
+     * 入力チェックを行います。
+     */
+    function ClickContributeButton(){
+      //確認ダイアログ
+      result = confirm("登録して宜しいですか？");
+      if (!result) {
+        return result;
+      }
+      //入力チェック
+      result = CheckValidate();
+      if (!result) {
+        return result;
+      }
+    }
+
+    /*
+     * 「戻る」アンカーが押下された時の処理。
+     * 「お知らせ」タブを表示します。
+     */
+    function returnNoticeIndex(id){
+      $("a:contains('お知らせ')").click();
+      $("#auto").val(id);
+      $("#index_" + id).click();
+    }
+
+    /*
+     *
+     */
+    $(document).ready(
+      function(){
+        $(document).scrollTop = 0;
+        // 遷移先が指定されている場合は画面遷移する。
+        var next_tab = $("#next_tab").val();
+        if(next_tab != ""){
+          showTab(0);
+        }
+
+        // カレンダー
+        setCalendar(jQuery("#d_notice_body_public_date_from"));
+        setCalendar(jQuery("#d_notice_body_public_date_to"));
+
+        // 公開対象組織ツリーをロードする。
+        $("#public_org_select").load("/common/public_org/index");
+
+        $("#auto").val("");
+      }
+    );
+  //-->
+</script>

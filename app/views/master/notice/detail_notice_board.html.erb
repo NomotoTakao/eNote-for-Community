@@ -1,0 +1,239 @@
+<!-- 該当データ表示エリア -->
+<table class="master_table2" style="width:100%;">
+  <tr>
+    <td class="master_table2_title">タイトル&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field :target_notice_data, :title, :maxlength => 40, :size => 40, :class => "ime_on" %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">表示順（参照用）&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field :target_notice_data, :sort_no, :maxlength => 3, :size => 5, :class => "ime_off" %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">表示順（新規作成用）&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field :target_notice_data, :etcint2, :maxlength => 3, :size => 5, :class => "ime_off" %>&nbsp;&nbsp;※階層が「f」の場合は0を指定してください。
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">階層&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <select id="index_type" name="index_type" style="width:250px;">
+        <% msg_f = "f：下階層にボードが存在する" %>
+        <% msg_b = "b：下階層にボードが存在しない" %>
+        <% if @target_notice_data.nil? || @target_notice_data.index_type == 'f' %>
+          <option value='f' selected><%=msg_f%></option>
+          <option value='b'><%=msg_b%></option>
+        <% else %>
+          <option value='f'><%=msg_f%></option>
+          <option value='b' selected><%=msg_b%></option>
+        <% end %>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title" rowspan=4>参照/書き込み権限<br><br>※指定しない場合は<br>全員が権限を持つ設定になります。</td>
+    <td class="master_table2_content">
+      <table style="100%;">
+        <tr>
+          <th style="width:50%;text-align:left;">組織の選択</th>
+          <th style="width:50%;text-align:left;">社員の選択</th>
+        </tr>
+        <tr>
+          <td style="vertical-align:top;">
+            <div id="tree_org"></div>
+          </td>
+          <td style="vertical-align:top;">
+            <div id="undecided" style="padding-top:3px;">
+              <%= select_tag('undecided_member', "", :size=>5, :multiple=>false, :class=>'master_selectbox2') %>
+            </div>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">
+            <input id="auth_org_button_r" type="button" class="submit_ex_large" value="組織に追加(参照)"
+              onclick="ClickAddDecidedOrg($('#decided_auth_org_cd').val(), $('#decided_auth_org_name').val(), 'decided_auth_org_r')" />
+          </td>
+          <td style="text-align:center;">
+            <input id="auth_user_button_r" type="button" class="submit_ex_large" value="社員に追加(参照)"
+              onclick="ClickAddDecided('undecided_member','decided_auth_user_r')" />
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">
+            <input id="auth_org_button_w" type="button" class="submit_ex_large" value="組織に追加(書き込み)"
+              onclick="ClickAddDecidedOrg($('#decided_auth_org_cd').val(), $('#decided_auth_org_name').val(), 'decided_auth_org_w')" />
+          </td>
+          <td style="text-align:center;">
+            <input id="auth_user_button_w" type="button" class="submit_ex_large" value="社員に追加(書き込み)"
+              onclick="ClickAddDecided('undecided_member','decided_auth_user_w')" />
+          </td>
+          <td>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_content">
+      <table style="100%;">
+        <tr>
+          <td style="text-align:left;">【参照権限】</td>
+        </tr>
+        <tr>
+          <td style="width:50%;">
+            <b>組織：</b>
+            <div id="select_auth_org_r">
+              <% options = "" %>
+              <% if !@org_auth_decide_r.nil? %>
+                <% @org_auth_decide_r.each do |org|%>
+                  <% options += "<option value=#{org[0]} >#{org[1]}</options>" %>
+                <% end %>
+              <% end %>
+              <%= select_tag('decided_auth_org_r', options, :size=>5, :multiple=>true, :class=>'master_selectbox3') %>
+              <input id="delete_button_r" type="button" class="submit_small" value="削除" onclick="ClickDeleteButton('decided_auth_org_r')" />
+            </div>
+          </td>
+          <td style="width:50%;">
+            <b>社員：</b>
+            <div id="select_auth_user_r">
+              <% options = "" %>
+              <% if !@user_auth_decide_r.nil? %>
+                <% @user_auth_decide_r.each do |member|%>
+                  <% options += "<option value=#{member[0]} >#{member[1]}</options>" %>
+                <% end %>
+              <% end %>
+              <%= select_tag('decided_auth_user_r', options, :size=>5, :multiple=>true, :class=>'master_selectbox3') %>
+              <input id="delete_button_r" type="button" class="submit_small" value="削除" onclick="ClickDeleteButton('decided_auth_user_r')" />
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_content">
+      <table style="100%;">
+        <tr><td>【書き込み権限】</td></tr>
+        <tr>
+          <td style="width:50%;">
+            <b>組織：</b>
+            <div id="select_auth_org_w">
+              <% options = "" %>
+              <% if !@org_auth_decide_w.nil? %>
+                <% @org_auth_decide_w.each do |org|%>
+                  <% options += "<option value=#{org[0]} >#{org[1]}</options>" %>
+                <% end %>
+              <% end %>
+              <%= select_tag('decided_auth_org_w', options, :size=>5, :multiple=>true, :class=>'master_selectbox3') %>
+              <input id="delete_button_w" type="button" class="submit_small" value="削除" onclick="ClickDeleteButton('decided_auth_org_w')" />
+            </div>
+          </td>
+          <td style="width:50%;">
+            <b>社員：</b>
+            <div id="select_auth_user_w">
+              <% options = "" %>
+              <% if !@user_auth_decide_w.nil? %>
+                <% @user_auth_decide_w.each do |member|%>
+                  <% options += "<option value=#{member[0]} >#{member[1]}</options>" %>
+                <% end %>
+              <% end %>
+              <%= select_tag('decided_auth_user_w', options, :size=>5, :multiple=>true, :class=>'master_selectbox3') %>
+              <input id="delete_button_w" type="button" class="submit_small" value="削除" onclick="ClickDeleteButton('decided_auth_user_w')" />
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<br>
+<table>
+  <tr style="text-align:center;">
+    <td>
+      <!-- ボタンの活性非活性を制御 -->
+      <% if @head_id.nil? || @head_id == "" || @head_id.to_s == "0" %>
+        <% disabled = "disabled" %>
+      <% else %>
+        <% disabled = "" %>
+      <% end %>
+      <input type="submit" id="insert_notice" name="insert_notice" value="追加" class="submit_small" onclick="return ClickSubmitButton(1);">
+      <input type="submit" id="update_notice" name="update_notice" value="更新" class="submit_small" onclick="return ClickSubmitButton(2);" <%=disabled%>>
+      <input type="submit" id="delete_notice" name="delete_notice" value="削除" class="submit_small" onclick="return ClickSubmitButton(3);" <%=disabled%>>
+    </td>
+  </tr>
+</table>
+
+<input type="hidden" id="submit_flg" name="submit_flg">
+<input type="hidden" id="decided_auth_org_all_r" name="decided_auth_org_all_r"> <!--参照可能組織-->
+<input type="hidden" id="decided_auth_user_all_r" name="decided_auth_user_all_r"> <!--参照可能社員-->
+<input type="hidden" id="decided_auth_org_all_w" name="decided_auth_org_all_w"> <!--書き込み可能組織-->
+<input type="hidden" id="decided_auth_user_all_w" name="decided_auth_user_all_w"> <!--書き込み可能社員-->
+<% if !@target_notice_data.nil? %>
+  <input type="hidden" id="index_type_old" name="index_type_old" value=<%=@target_notice_data.index_type%>> <!--更新前のindex_type-->
+<% end %>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    //一覧を表示
+    $("#tree_org").load("/master/notice/tree_org");
+  });
+
+  /*
+   * 権限削除
+   */
+  function ClickDeleteButton(fromElement){
+    //選択された要素を削除する
+    DeleteElement(fromElement);
+  }
+
+  /*
+   * submitボタン押下
+   */
+  function ClickSubmitButton(submit_flg){
+    //ポップアップ
+    var msg = "";
+    if (submit_flg == 1) {
+      msg = "新規ボードを追加します。";
+    } else if (submit_flg == 2) {
+      msg = "ボードを更新します。";
+    } else if (submit_flg == 3) {
+      msg = "ボードを削除します。";
+    }
+    ret = confirm(msg + "宜しいですか？");
+    if (!ret) {
+      return false;
+    }
+
+    //入力チェック(追加,更新)
+    if (submit_flg == 1 || submit_flg == 2) {
+      result = CheckNoticeBoard();
+      if (!result) {
+        return result;
+      }
+    }
+
+    //処理フラグをhiddenに格納する
+    $("#submit_flg").val(submit_flg);
+
+    //権限データを全てhiddenに格納する
+    document.getElementById("decided_auth_org_all_r").value = GetAllSelectBox("decided_auth_org_r");
+    document.getElementById("decided_auth_user_all_r").value = GetAllSelectBox("decided_auth_user_r");
+    document.getElementById("decided_auth_org_all_w").value = GetAllSelectBox("decided_auth_org_w");
+    document.getElementById("decided_auth_user_all_w").value = GetAllSelectBox("decided_auth_user_w");
+
+    return true;
+  }
+-->
+</script>

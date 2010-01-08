@@ -1,0 +1,47 @@
+<% unless @search_list.nil? %>
+  <%
+    counter = 1
+    class_tr = "enote_general_table1_odd"
+    class_td = "enote_general_table1_cell_bordered"
+  %>
+  <input type="hidden" id="current_order" value="<%= @current_order %>" />
+  <table class="enote_general_table1_cell_bordered" style="width:100%;">
+    <% counter = 1%>
+    <% @search_list.each do |search| %>
+      <%
+        if counter % 2 == 0
+          class_tr = "enote_general_table1_even"
+        else
+          class_tr = "enote_general_table1_odd"
+        end
+      %>
+      <tr class="<%= class_tr %>">
+        <td class="<%= class_td %>" rowspan="2" style="width:23px;text-align:center;vertical-align:middle;">&nbsp;
+          <input type="checkbox" value="<%= search.id %>" />
+        </td>
+        <td class="<%= class_td %>" rowspan="2" style="width:51px;text-align:center;">&nbsp;<%= counter %></td>
+        <td class="<%= class_td %>" rowspan="2" style="width:100px;">&nbsp;<%= search.d_report.action_date %></td>
+        <td class="<%= class_td %>" style="width:120px;">&nbsp;<%= user_name search.d_report.user_cd %></td>
+        <td class="<%= class_td %>" style="width:120px;">&nbsp;<%= customer_name search.company_cd %></td>
+        <td class="<%= class_td %>" style="width:120px;">&nbsp;<%= action_target_name search.action_target_cd %></td>
+        <td class="<%= class_td %>" style="width:120px;">&nbsp;<%= action_group_name search.action_group_cd %></td>
+        <td class="<%= class_td %>" style="width:120px;">&nbsp;<%= action_name search.action_cd %></td>
+        <td class="<%= class_td %>" style="width:120px;text-align:center;">&nbsp;<%= search.action_time.to_f %>h/<%= search.sale_amount.to_i %>円</td>
+      </tr>
+      <tr>
+        <td class="enote_general_table1_cell_bordered" style="text-align:center;font-weight:bold;background-image:url('../../../images/titleback01.gif');">コメント</td>
+        <td class="<%= class_td %>" colspan="5">&nbsp;
+          <%= search.comment %>
+        </td>
+      </tr>
+      <% counter = counter + 1 %>
+    <% end %>
+  </table>
+  <!-- 使用された検索条件 -->
+  <input type="hidden" id="search_condition_date_from" value="<%= @date_from %>" />
+  <input type="hidden" id="search_condition_date_to"   value="<%= @date_to %>" />
+  <input type="hidden" id="search_condition_comment"   value="<%= @comment %>" />
+  <input type="hidden" id="search_condition_action_target_cd" value="<%= @action_target_cd %>" />
+  <input type="hidden" id="search_condition_action_group_cd" value="<%= @action_group_cd %>" />
+  <input type="hidden" id="search_condition_action_cd" value="<%= @action_cd %>" />
+<% end %>

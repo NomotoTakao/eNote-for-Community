@@ -1,0 +1,2 @@
+module Bookmark::MainHelper
+end

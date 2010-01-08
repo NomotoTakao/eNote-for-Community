@@ -1,0 +1,159 @@
+
+<ul id="tmp_tree" class="orgtree">
+  <% unless @org_list.nil? %>
+    <% @org_list.each_with_index do |org, i| %>
+      <% children = MOrg.get_org_list org.org_lvl.to_i+1, org.org_cd %>
+      <li class="closed">
+        <span id="org_<%= @count %>_<%= org.org_lvl %>_o<%= org.org_cd %>" class="folder org_folder">
+          <font class="font_dialog">
+            <%
+              org_name = ""
+              if org.org_lvl.to_i == 1
+                org_name = org.org_name1
+              elsif org.org_lvl.to_i == 2
+                org_name = org.org_name2
+              elsif org.org_lvl.to_i == 3
+                org_name = org.org_name3
+              elsif org.org_lvl.to_i == 4
+                org_name = org.org_name4
+              end
+            %>
+            <%= org_name %>
+          </font>
+		</span>
+        <% unless (children.nil? or children.size == 0) and @user_list_array[i].size == 0 %>
+          <ul></ul>
+        <% end %>
+    <% end %>
+    <% unless @user_list.nil? %>
+      <% @user_list.each do |user| %>
+        <li>
+          <span id="u<%= user.user_cd%>_<%= @count %>" class="file user_file">
+            <font class="font_dialog">
+              <%= user.name %>
+            </font>
+          </span>
+        </li>
+      <% end %>
+    <% end %>
+  <% end %>
+
+<script type="text/javascript">
+  <!--
+    /*
+     * 組織の項目にマウスカーソルを合わせたときにおこるイベントです。
+     * マウスカーソルの形状を指の形に変更します。
+     */
+    $(".org_folder").mouseover(
+      function(){
+        $(this).css("cursor", "pointer");
+	  }
+    );
+
+    /*
+     * 組織の項目からマウスカーソルが外れたときにおこるイベントです。
+     * マウスカーソルの形状を矢印に戻します。
+     */
+    $(".org_folder").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /*
+     * 組織の項目をクリックしたときにおこるイベントです。
+     * ダイアログ内の隠しフィールドに選択された項目の値をセットし、背景色を変更します。
+     * 非同期通信をおこない、その組織に所属する社員一覧及び下部組織の一覧を取得します。
+     */
+    $(".org_folder").click(
+      function(){
+        id = $(this).attr("id");
+		org_list = "<%= @org_list %>";
+        
+        cd = $(this).attr("id").replace("org_<%= @count %>_", "").split("_");
+        org_lvl = cd[0];
+        org_cd = cd[1].substr(1, cd[1].length-1);
+        $("#selected_cd_dialog_<%= @count %>").val(cd[1]);
+        name = $(this).children().html().replace(/^\s+|\s+$/g, "");
+        $("#selected_name_dialog_<%= @count %>").val(name);
+        if(org_cd != "" && $("#" + id).next().html() == ""){
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/common/sosiki_tree/tmp_tree",
+              data :
+                {
+                  org_lvl : Number(org_lvl) + 1 ,
+//                  target  : "<%= @target %>",
+	              cd      : org_cd,
+                  count  : "<%= @count %>",
+                  type    : ""
+                },
+              success :
+                function(data, dataType){
+                  if($("#" + id).next().html() == ""){
+                    $("#" + id).after(data);
+                  }
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){}
+            }
+          );
+          bgChange($(this).children(), $(".font_dialog"));
+        }
+      }
+    );
+
+    /*
+     * 社員の項目にマウスカーソルを合わせたときにおこるイベントです。
+     * マウスカーソルの形状を指の形に変更します。
+     */
+    $(".user_file").mouseover(
+      function(){
+        $(this).css("cursor", "pointer");
+      }
+    );
+
+    /*
+     * 社員の項目からマウスカーソルをはずした時におこるイベントです。
+     * マウスカーソルの形状を矢印に戻します。
+     */
+    $(".user_file").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /*
+     * 社員の項目をクリックしたときにおこるイベントです。
+     * ダイアログ内の隠しフィールドに選択された項目の値をセットし、背景色を変更します。
+     */
+    $(".user_file").click(
+      function(){
+        cd = $(this).attr("id").replace("_<%= @count %>", "");
+        $("#selected_cd_dialog_<%= @count %>").val(cd);
+		
+        name = $(this).children().html().replace(/^\s+|\s+$/g, "");
+        $("#selected_name_dialog_<%= @count %>").val(name);
+        
+        bgChange($(this).children(), $(".font_dialog"));
+      }
+    );
+
+    /*
+     * ファイルがロードされたときにおこるイベントです。
+     */
+    $(document).ready(
+      function(){
+        // ｊQueryの機能でリストをツリーに変換します。
+        $("#tmp_tree").treeview();
+        // tmp_tree.html.erbは再利用されるので、リストのidが重複しないようにidをクリアします。
+        $("#tmp_tree").attr("id", "");
+      }
+    );
+  //-->
+</script>

@@ -1,0 +1,39 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "app/master"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "app/master"
+    ]) %>
+<% end -%>
+
+<div style="padding:5px;">
+  <!-- エラー -->
+  <% err = flash[:secretary_err_msg] %>
+  <% if !err.nil? && err != "" %>
+    <table style="margin:10px 0px 0px 10px;">
+      <tr style="color:red;">
+        <td><%= err %></td>
+      </tr>
+    </table>
+  <% end %>
+
+  <!-- 一覧 -->
+  <div id="master_list"></div>
+</div>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    //一覧を表示
+    $("#master_list").load("/master/secretary/master_list");
+  });
+-->
+</script>

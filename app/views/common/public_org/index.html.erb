@@ -1,0 +1,112 @@
+<% unless @org_list.nil? %>
+  <div id="public_org" style="border:1px solid black;width:200px;height:215px;background-color:white;text-align:left;overflow-y:scroll;">
+    <input type="hidden" id="public_org_cd" value="<%= @public_org_cd %>" />
+    <ul id="public_org_l" class="orgtree">
+      <li class="closed">
+        <span id="org_0" class="folder org">
+          <font style="font-size:10pt;">全社</font>
+        </span>
+      <% @org_list.each do |org| %>
+        <li class="closed">
+          <span id="org_<%= org.org_cd %>" class="folder org">
+            <font style="font-size:10pt;">
+              <%= org.org_name1 %>
+            </font>
+          </span>
+          <ul></ul>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+
+    /*
+     * 画面ロード時のイベント
+     *
+     * 組織ツリーを構成する。
+     */
+    $(document).ready(
+      function(){
+        $("#public_org_l").treeview();
+      }
+    );
+
+    /*
+     * ツリーの項目にマウスカーソルを合わせた時・離した時のイベント
+     *
+     * マウスカーソルの形状を変更する。
+     */
+    $(".org").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /*
+     * ツリーの項目をクリックした時のイベント
+     *
+     * 下位の組織ツリーを取得する。
+     */
+    $(".org").click(
+      function(){
+        var id = $(this).attr("id");
+        var org_cd = id.replace("org_", "");
+        bgChange($(this).children(), $(".org").children());
+        var name = $(this).text();
+        $("#public_org_cd").val(name + "," + org_cd);
+        get_tree(id);
+      }
+    );
+
+    /*
+     * ツリーの+/-ボタンクリック時
+     */
+    $(".hitarea").click(
+      function(){
+        if($(this).attr("class").indexOf("collapsable-hitarea") != -1){
+          var val_id = $(this).next().attr("id");
+          get_tree(val_id);
+        }else{
+          $(this).attr("class", $(this).attr("class").replace("collapsable", "expansable"));
+        }
+      }
+    );
+
+    /*
+     * 組織ツリーを取得する処理
+     */
+    function get_tree(id){
+      var org_cd = id.replace("org_", "");
+      if(org_cd != "" && $("#" + id).next().html()==""){
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/common/public_org/tmp",
+            data :
+              {
+                org_cd : org_cd
+              },
+            success :
+              function(data, dataType){
+                if($("#" + id).next().html()==""){
+                  $("#" + id).after(data);
+                  $("#" + id).css("display", "block");
+                }
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    }
+  //-->
+</script>

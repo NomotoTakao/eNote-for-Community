@@ -1,0 +1,5 @@
+<% unless @detail_list.nil? %>
+  <% @detail_list.each do |detail| %>
+    <option value="<%= detail.action_cd %>"><%= detail.action_name %></option>
+  <% end %>
+<% end %>

@@ -1,0 +1,26 @@
+<input type="hidden" id="current_order" value="<%= @current_order %>" />
+<% unless @activity_reference_list.nil? %>
+  <table class="enote_general_table1" style="width:100%;">
+    <% count = 1 %>
+    <% @activity_reference_list.each do |report| %>
+      <tr>
+        <td rowspan="2" class="enote_general_table1_cell_bordered" style="width:33px;text-align:center;">
+          <input type="checkbox" value="<%= report.id %>" />
+        </td>
+        <td rowspan="2" class="enote_general_table1_cell_bordered" style="width:32px;text-align:center;">&nbsp;<%= count %></td>
+        <td rowspan="2" class="enote_general_table1_cell_bordered" style="width:10%;">&nbsp;<%= report.d_report.action_date %></td>
+        <td rowspan="1" class="enote_general_table1_cell_bordered" style="width:10%;">&nbsp;<%= user_name report.d_report.user_cd %></td>
+        <td rowspan="1" class="enote_general_table1_cell_bordered" style="width:30%;">&nbsp;<%= customer_name report.company_cd %></td>
+        <td rowspan="1" class="enote_general_table1_cell_bordered" style="width:10%;">&nbsp;<%= action_target_name report.action_target_cd %></td>
+        <td rowspan="1" class="enote_general_table1_cell_bordered" style="width:10%;">&nbsp;<%= action_group_name report.action_group_cd %></td>
+        <td rowspan="1" class="enote_general_table1_cell_bordered" style="width:10%;">&nbsp;<%= action_name report.action_cd %></td>
+        <td rowspan="1" class="enote_general_table1_cell_bordered" style="width:10%;">&nbsp;<%= report.action_time %>&nbsp;h</td>
+      </tr>
+      <tr>
+        <th style="text-align: center; font-weight: bold;background-color:#99CCFF;">コメント</th>
+        <td colspan="5" class="enote_general_table1_cell_bordered">&nbsp;<%= report.comment %></td>
+      </tr>
+      <% count += 1 %>
+    <% end %>
+  </table>
+<% end %>

@@ -1,0 +1,43 @@
+<!-- エラー -->
+<% err = flash[:position_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<table class="master_table2" style="margin:10px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">職位コード&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_positions[position_cd]', @m_positions.position_cd,  {:size => 20, :maxlength => 8} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">職位名&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_positions[name]', @m_positions.name,  {:size => 100, :maxlength => 30} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">職位順位&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_positions[rank]', @m_positions.rank,  {:size => 5, :maxlength => 2} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">表示順</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_positions[sort_no]', @m_positions.sort_no,  {:size => 5, :maxlength => 2} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">備考</td>
+    <td class="master_table2_content">
+      <%= text_area_tag 'm_positions[memo]', @m_positions.memo,  {:cols => 60, :rows => 5} %>
+    </td>
+  </tr>
+</table>
+<%= hidden_field_tag 'm_positions[id]', @m_positions.id %>

@@ -1,0 +1,313 @@
+<!-- エラー -->
+<% if !flash[:duplicate_msg].nil? && flash[:duplicate_msg] != "" %>
+  <table style="width:100%;">
+    <tr style="color:red;">
+      <td>下記の施設が既に予約されていた為、予約できませんでした。<br>詳細は、マイページをご覧ください。</td>
+    </tr>
+    <tr style="color:red;">
+      <td><%= flash[:duplicate_msg] %></td>
+    </tr>
+    <tr style="height:5px;"></tr>
+  </table>
+<% end -%>
+
+<!-- ヘッダ -->
+<table cellpadding="1" cellspacing="0" style="width:100%;">
+  <tr>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "facility_list",
+      :url => {:action => "day", :day => (@current_date - 1).strftime("%Y%m%d"), :group_checked_id => @group_checked_id}) %></a>
+    </td>
+    <td style="width:30px;">
+      <%=button_to_remote("今日", :update => "facility_list", :url => {:action => "day", :group_checked_id => @group_checked_id})%>
+    </td>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "facility_list",
+      :url => {:action => "day", :day => (@current_date + 1).strftime("%Y%m%d"), :group_checked_id => @group_checked_id}) %></a>
+    </td>
+    <td style="width:120px;"><%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月<%= @current_date.day.to_s %>日</td>
+    <!-- 祝日の場合 -->
+    <% if !@holiday_hash[@current_date][0].nil? %>
+      <td class="holiday_message" style="width:100px;text-align:left;color:red;"><%=@holiday_hash[@current_date][0]%></td>
+    <% end %>
+    <!-- イベント日の場合 -->
+    <% if !@event_hash[@current_date][0].nil? %>
+      <td class="event_message" style="width:100px;text-align:left;color:blue;"><%=@event_hash[@current_date][0]%></td>
+    <% end %>
+    <!-- 空白 -->
+    <% if @holiday_hash[@current_date][0].nil? && @event_hash[@current_date][0].nil? %>
+      <td style="width:100px;">&nbsp;</td>
+    <% end %>
+    <!-- 施設グループエリア -->
+    <td style="width:250px;">
+      <select id="facility_group_list_h" name="facility_group_list_h" style="width:170px;z-index:-10;" onchange="SelectFacilityGroup(0);">
+        <% for facility_group in @facility_group_list %>
+          <% if @group_checked_id == facility_group.facility_group_cd %>
+            <option value = <%=facility_group.facility_group_cd%> selected><%=facility_group.name%></option>
+          <% else %>
+            <option value = <%=facility_group.facility_group_cd%>><%=facility_group.name%></option>
+          <% end %>
+        <% end %>
+      </select>
+    </td>
+    <td style="width:100px;">&nbsp;</td>
+    <td style="width:20px;">
+      <%=button_to("日", :action => "index_day", :group_checked_id => @group_checked_id)%>
+    </td>
+    <td style="width:20px;">
+      <%=button_to("週", :action => "index_week", :group_checked_id => @group_checked_id)%>
+    </td>
+    <td style="width:20px;">
+      <%=button_to("月", :action => "index_month")%>
+    </td>
+    <td style="width:50px;"><%=button_to("予定リスト", :action => "index_list")%></td>
+  </tr>
+</table>
+
+<!-- 内容 -->
+<table class="calendar" border="0" cellspacing="0" cellpadding="0">
+  <!-- テーブル初期化(５分間隔) -->
+  <tr>
+    <!-- 名前エリア -->
+    <td style="width:120px;"></td>
+    <!-- 終日用備考エリア -->
+    <td style="width:200px;"></td>
+    <!-- 時間エリア -->
+    <% for i in 0..14*12-1 %>
+      <td style="width:4px;" ></td>
+    <% end %>
+  </tr>
+
+  <!-- タイトル -->
+  <tr class="timeName">
+    <th style="width:120px;">名前</th>
+    <th style="width:200px;">終日の予定</th>
+    <% for time_disp in 7..20 %>
+      <th colspan=12><a href="#" onClick="dialog_reserve_open_ins('encodeURIComponent(<%=@current_date%>)', '')"><%=time_disp%></a></th>
+    <% end %>
+  </tr>
+
+  <!-- メンバごとに処理を行う -->
+  <!-- element[0]:施設コード, element[1]:施設名, element[2]:終日予定, [3]:時間に紐付く施設リスト(終日以外) -->
+  <% for element in @element_list %>
+    <% facility_cd = element[0] %>
+    <% facility_name = element[1] %>
+    <% allday_list = element[2] %>
+    <% not_allday_list = element[3] %>
+    <!-- セルの高さ設定 -->
+    <% if not_allday_list.size <= 1 %>
+      <% height = 50 %>
+    <% elsif not_allday_list.size == 2 %>
+      <% height = 40 %>
+    <% elsif not_allday_list.size >= 3 %>
+      <% height = 30 %>
+    <% end %>
+
+    <!-- 時間ごとの施設を設定 -->
+    <!-- reserve[0]:開始時間, [1]:施設リスト -->
+
+    <!-- 1件もデータが存在しない場合(名前のみ表示) -->
+    <% if not_allday_list.nil? || not_allday_list.length == 0 %>
+      <tr>
+        <!-- 名前 -->
+        <td class="time" style="vertical-align:middle;" height=<%=height%>px width = 120px>
+          <div class='calendar_day_cell_body'>
+            <a href="#" onClick="dialog_reserve_open_ins('encodeURIComponent(<%=@day%>)', '<%=facility_cd%>')"><%=facility_name%></a>
+          </div>
+        </td>
+        <!-- 終日の予定 -->
+        <td class="time" style="vertical-align:top;" height=<%=height%>px width=200px rowspan=1>
+          <div class='calendar_day_cell_body'>
+            <% for dataAllDay in allday_list %>
+              <% if dataAllDay.repeat_facility_id.nil? %>
+                <% repeat_flg = '0' %>
+              <% else %>
+                <% repeat_flg = '1' %>
+              <% end %>
+              <a href="#" class="memo_disp" title="<%=dataAllDay.memo%>" onclick="dialog_reserve_open_edit('<%=dataAllDay.id%>', '<%=repeat_flg%>'); return false;">
+              ◆
+              <%=dataAllDay.title%>(<%=dataAllDay.create_user_name%>)
+              </a>
+              <br>
+            <% end %>
+            <!-- データが１件もない場合 -->
+            <% if allday_list.nil? || allday_list.size == 0 %>
+              &nbsp;
+            <% end %>
+          </div>
+        </td>
+        <td class="time" style="vertical-align:top;" height=<%=height%>px colspan=<%=14*12%>>
+          <div class='calendar_day_cell_body'>&nbsp;</div>
+        </td>
+      </tr>
+    <% else %>
+      <!-- 行ごとに処理を行う -->
+      <% mem_count = 0 %>
+      <% for rowArr in not_allday_list %>
+        <tr>
+        <% all_combine_count = 0 %>
+        <% plan_time_to_old = Time.parse(@current_date.strftime("%Y-%m-%d") + " 07:00") %>
+        <% row = rowArr[1] %>
+        <% for reserveArr in row %>
+          <!-- 施設ごとに処理を行う -->
+          <% reserve = reserveArr[1] %>
+          <% disp_date = reserveArr[2] %>
+          <!-- データ設定 -->
+          <!-- 名前 -->
+          <!-- 各メンバーの1行目のみ -->
+          <% if mem_count == 0 %>
+            <td class="time" style="vertical-align:middle;" height=<%=height%>px width=120px rowspan=<%=not_allday_list.size%>>
+              <div class='calendar_day_cell_body'>
+                <a href="#" onClick="dialog_reserve_open_ins('encodeURIComponent(<%=@day%>)', '<%=facility_cd%>')"><%=facility_name%></a>
+              </div>
+            </td>
+            <!-- 終日の予定 -->
+            <td class="time" style="vertical-align:top;" height=<%=height%>px width=200px rowspan=<%=not_allday_list.size%>>
+              <div class='calendar_day_cell_body'>
+                <% for dataAllDay in allday_list %>
+                  <% if dataAllDay.repeat_facility_id.nil? %>
+                    <% repeat_flg = '0' %>
+                  <% else %>
+                    <% repeat_flg = '1' %>
+                  <% end %>
+                  <a href="#" class="memo_disp" title="<%=dataAllDay.memo%>" onclick="dialog_reserve_open_edit('<%=dataAllDay.id%>', '<%=repeat_flg%>'); return false;">
+                  ◆
+                  <%=dataAllDay.title%>(<%=dataAllDay.create_user_name%>)
+                  </a>
+                  <br>
+                <% end %>
+                <!-- データが１件もない場合 -->
+                <% if allday_list.nil? || allday_list.size == 0 %>
+                  &nbsp;
+                <% end %>
+              </div>
+            </td>
+          <% end %>
+          <!-- 時間 -->
+          <!-- 開始時間までのセルを結合 -->
+          <% term1 = (reserve.plan_time_from.to_datetime - plan_time_to_old.to_datetime) * (24*60/5) %>
+
+          <% all_combine_count += term1 %>
+          <% if term1 != 0 %>
+            <td class="timeUnSelect" style="vertical-align:top;" height=<%=height%>px colspan=<%=term1%>><div class='calendar_day_cell_body'>&nbsp;</div></td>
+          <% end %>
+
+          <!-- 開始時間から終了時間までのセルを結合 -->
+          <% term2 = (reserve.plan_time_to.to_datetime - reserve.plan_time_from.to_datetime) * (24*60/5) %>
+          <% all_combine_count += term2 %>
+          <% if term2 != 0 %>
+            <td class="timeSelect" style="vertical-align:top;" height=<%=height%>px colspan=<%=term2%>><div class='calendar_day_cell_body'>
+              <% if reserve.repeat_facility_id.nil? %>
+                <% repeat_flg = '0' %>
+              <% else %>
+                <% repeat_flg = '1' %>
+              <% end %>
+              <a href="#" class="memo_disp" title="<%=reserve.memo%>" onclick="dialog_reserve_open_edit('<%=reserve.id%>', '<%=repeat_flg%>'); return false;">
+              ◆
+              <!-- 時間 -->
+              <%=disp_date%>
+              <% if disp_date != "" %>
+                <br>
+              <% end %>
+              <%=reserve.title%>(<%=reserve.create_user_name%>)
+              <br>
+              </a>
+            </div></td>
+          <% end %>
+          <% mem_count = mem_count + 1 %>
+          <% plan_time_to_old = reserve.plan_time_to %>
+        <% end %>
+        <% mem_count = mem_count + 1 %>
+        <!-- 最後まで空白セルを結合する -->
+        <% term3 = 14*12 - all_combine_count %>
+        <% if term3 != 0 %>
+          <td class="timeUnSelect" style="vertical-align:top;" height=<%=height%>px colspan=<%=term3%>><div class='calendar_day_cell_body'>&nbsp;</div></td>
+        <% end %>
+        </tr>
+      <% end %>
+    <% end %>
+  <% end %>
+</table>
+
+<!-- フッタ -->
+<table cellpadding="1" cellspacing="0" style="width:100%;">
+  <tr>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "facility_list",
+      :url => {:action => "day", :day => (@current_date - 1).strftime("%Y%m%d"), :group_checked_id => @group_checked_id}) %></a>
+    </td>
+    <td style="width:30px;">
+      <%=button_to_remote("今日", :update => "facility_list", :url => {:action => "day", :group_checked_id => @group_checked_id})%>
+    </td>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "facility_list",
+      :url => {:action => "day", :day => (@current_date + 1).strftime("%Y%m%d"), :group_checked_id => @group_checked_id}) %></a>
+    </td>
+    <td style="width:120px;"><%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月<%= @current_date.day.to_s %>日</td>
+    <!-- 祝日の場合 -->
+    <% if !@holiday_hash[@current_date][0].nil? %>
+      <td class="holiday_message" style="width:100px;text-align:left;color:red;"><%=@holiday_hash[@current_date][0]%></td>
+    <% end %>
+    <!-- イベント日の場合 -->
+    <% if !@event_hash[@current_date][0].nil? %>
+      <td class="event_message" style="width:100px;text-align:left;color:blue;"><%=@event_hash[@current_date][0]%></td>
+    <% end %>
+    <!-- 空白 -->
+    <% if @holiday_hash[@current_date][0].nil? && @event_hash[@current_date][0].nil? %>
+      <td style="width:100px;">&nbsp;</td>
+    <% end %>
+    <!-- 施設グループエリア -->
+    <td style="width:250px;">
+      <select id="facility_group_list_f" name="facility_group_list_f" style="width:170px;z-index:-10;" onchange="SelectFacilityGroup(1);">
+        <% for facility_group in @facility_group_list %>
+          <% if @group_checked_id == facility_group.facility_group_cd %>
+            <option value = <%=facility_group.facility_group_cd%> selected><%=facility_group.name%></option>
+          <% else %>
+            <option value = <%=facility_group.facility_group_cd%>><%=facility_group.name%></option>
+          <% end %>
+        <% end %>
+      </select>
+    </td>
+    <td style="width:100px;">&nbsp;</td>
+    <td style="width:20px;">
+      <%=button_to("日", :action => "index_day", :group_checked_id => @group_checked_id)%>
+    </td>
+    <td style="width:20px;">
+      <%=button_to("週", :action => "index_week", :group_checked_id => @group_checked_id)%>
+    </td>
+    <td style="width:20px;">
+      <%=button_to("月", :action => "index_month")%>
+    </td>
+    <td style="width:50px;"><%=button_to("予定リスト", :action => "index_list")%></td>
+  </tr>
+</table>
+
+<input type="hidden" id="facility_cd" name="facility_cd" value=<%=@select_facility_cd%> />
+
+<script type="text/javascript">
+<!--
+  /*
+   * 施設グループ選択時の処理
+   */
+  function SelectFacilityGroup(click_flg){
+    //ヘッダ
+    if (click_flg == 0) {
+      group_checked_id = $("#facility_group_list_h").val()
+    //フッタ
+    } else {
+      group_checked_id = $("#facility_group_list_f").val()
+    }
+
+    // jQueryでの処理
+    $.ajax({
+        type:'get',
+        url:'/facility/reserve/day?&group_checked_id=' + group_checked_id + '&day=' + <%=@day%>,
+        success:
+            function(request){
+                // 受信結果を一覧エリアに反映させます。
+                $('#facility_list').html(request);
+            }
+    });
+  }
+-->
+</script>

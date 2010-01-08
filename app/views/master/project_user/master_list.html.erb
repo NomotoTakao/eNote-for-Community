@@ -1,0 +1,58 @@
+<table style="margin:10px 0px 0px 10px;">
+  <tr>
+    <!-- 社員ツリーエリア -->
+    <td style="width:33%; vertical-align:top;">
+      <div id="tree_org"></div>
+    </td>
+    <!-- 選択メンバーエリア -->
+    <td style="width:66%; vertical-align:top;">
+        <div id="select_member"></div>
+    </td>
+  </tr>
+</table>
+
+<!-- ボタン -->
+<table class="master_table_button" style="margin-right:10px;">
+  <tr style="border:0px;">
+    <td style="text-align:left;">
+      <input id="create_button" type="submit" class="submit_small" value="登録" onclick="return ClickCreateButton()" />
+    </td>
+    <td style="text-align:right;">
+      <input id="back_list_button" type="button" class="submit_large" value="マスタ一覧へ戻る" onclick="ClickBackToMasterList()" />
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    //選択メンバーエリアを表示
+    $("#select_member").load("/master/project_user/select_member", function() {
+      //社員ツリーエリアを表示
+      $("#tree_org").load("/master/project_user/tree_org");
+    });
+  });
+
+  /*
+   * 登録
+   */
+  function ClickCreateButton(){
+    //選択決定エリアのデータを全て取得
+    var dBox = document.getElementById("decided_member");
+    var member = new Array(dBox.length);
+    for (var i = 0; i < dBox.options.length; i++) {
+      member[i] = dBox.options[i].value;
+    }
+    document.getElementById("decided_member_all").value = member;
+
+    //入力チェック
+    result = CheckValidateProjectUser();
+    if (!result) {
+      return result;
+    }
+  }
+-->
+</script>

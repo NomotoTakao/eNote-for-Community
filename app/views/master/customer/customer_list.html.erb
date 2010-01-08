@@ -1,0 +1,45 @@
+<% unless @customer_list.nil? %>
+  <table class="enote_general_table1_cell_bordered" style="width:100%;">
+    <%
+      counter = 1
+      class_tr = "enote_general_table1_odd"
+      class_td = "enote_general_table1_cell_bordered"
+    %>
+    <% @customer_list.each do |customer| %>
+      <%
+        if counter % 2 == 0
+          class_tr = "enote_general_table1_even"
+        else
+          class_tr = "enote_general_table1_odd"
+        end
+      %>
+      <tr class="<%= class_tr %>">
+        <td class="enote_general_table1_cell_bordered" style="width:10%;text-align:center;">
+          <a href="javascript:customer_anchor('<%= customer.company_cd %>');">
+            <%= customer.company_cd %>
+          </a>
+        </td>
+        <td class="enote_general_table1_cell_bordered" style="width:25%;">
+          &nbsp;<%= customer.name %>
+        </td>
+        <td class="enote_general_table1_cell_bordered" style="width:15%;">
+          &nbsp;<%= customer.tanto_name%>
+        <td class="enote_general_table1_cell_bordered" style="width:15%;">
+          &nbsp;<%= customer.tel1 %>
+        </td>
+        <td class="enote_general_table1_cell_bordered" style="width:35%;">
+          &nbsp;<a href="<%= customer.url %>" target="_blank"><%= customer.url %></a>
+        </td>
+      </tr>
+      <% counter += 1 %>
+    <% end %>
+  </table>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    function customer_anchor(arg){
+      customer_info(arg);
+    }
+  //-->
+</script>

@@ -1,0 +1,8 @@
+<!-- 選択決定エリア -->
+<% options = "" %>
+<% if !@member_decide.nil? %>
+  <% @member_decide.each do |member|%>
+    <% options += "<option value=#{member.user_cd} >#{member.user_name}</options>" %>
+  <% end %>
+<% end %>
+<%= select_tag('decided_member', options, :size=>10, :multiple=>true, :class=>'master_selectbox1') %>

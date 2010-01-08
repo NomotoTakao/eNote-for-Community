@@ -1,0 +1,17 @@
+<%# 新規投稿 %>
+
+<div id="notice_create"></div>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(function(){
+		var message_id = $("#message_id").val();
+		$("#message_id").val("")
+		var url = "/notice/main/notice_create?message_id=";
+		if(message_id != ""){
+          url += message_id
+		}
+		$("#notice_create").load(url);
+	});
+  //>
+</script>

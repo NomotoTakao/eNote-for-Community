@@ -1,0 +1,121 @@
+<!-- エラー -->
+<% err = flash[:facility_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<table class="master_table2" style="margin:10px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">施設グループコード&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <% if @m_facility_groups.size > 0 %>
+      <table>
+        <tr>
+          <td style="width:250px;">
+            <select id="select_facility_group_cd" name="select_facility_group_cd" style="width:250px">
+              <% for facility_list in @m_facility_groups %>
+                <% if @m_facilities.facility_group_cd == facility_list.facility_group_cd %>
+                  <option value = <%=facility_list.facility_group_cd%> selected><%=facility_list.name%></option>
+                <% else %>
+                  <option value = <%=facility_list.facility_group_cd%>><%=facility_list.name%></option>
+                <% end %>
+              <% end %>
+            </select>
+          </td>
+        </tr>
+      </table>
+    <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">拠点&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <% if @m_places.size > 0 %>
+        <table>
+          <tr>
+            <td style="width:250px;">
+              <select id="select_place_cd" name="select_place_cd" style="width:250px">
+                <% for place in @m_places %>
+                  <% if @m_facilities.place_cd == place.place_cd %>
+                    <option value = <%=place.place_cd%> selected><%=place.place_cd%>：<%=place.name%></option>
+                  <% else %>
+                    <option value = <%=place.place_cd%>><%=place.place_cd%>：<%=place.name%></option>
+                  <% end %>
+                <% end %>
+              </select>
+            </td>
+          </tr>
+        </table>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">組織&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <% if @m_orgs.size > 0 %>
+        <table>
+          <tr>
+            <td style="width:250px;">
+              <select id="select_org_cd" name="select_org_cd" style="width:250px">
+                <option value = 0>0：指定なし</option>
+                <% for org in @m_orgs %>
+                  <% if @m_facilities.org_cd == org.org_cd %>
+                    <option value = <%=org.org_cd%> selected><%=org.org_cd%>：<%=org.org_name%></option>
+                  <% else %>
+                    <option value = <%=org.org_cd%>><%=org.org_cd%>：<%=org.org_name%></option>
+                  <% end %>
+                <% end %>
+              </select>
+            </td>
+          </tr>
+        </table>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">施設名&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_facilities[name]', @m_facilities.name,  {:size => 100, :maxlength => 80} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">表示順</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_facilities[sort_no]', @m_facilities.sort_no,  {:size => 5, :maxlength => 2} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">備考</td>
+    <td class="master_table2_content">
+      <%= text_area_tag 'm_facilities[memo]', @m_facilities.memo,  {:cols => 60, :rows => 5} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">利用可能フラグ</td>
+    <td class="master_table2_content">
+    <table>
+      <tr>
+        <td style="width:250px;">
+          <select id="m_facilities[enable_flg]" name="m_facilities[enable_flg]" style="width:250px">
+            <% if @m_facilities.enable_flg == 0 %>
+              <option value = 0 selected>0：利用可</option>
+              <option value = 1>1：利用不可</option>
+            <% else %>
+              <option value = 0>0：利用可</option>
+              <option value = 1 selected>1：利用不可</option>
+            <% end %>
+          </select>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+
+
+</table>
+<%= hidden_field_tag 'm_facilities[id]', @m_facilities.id %>
+<%= hidden_field_tag 'm_facilities[facility_cd]', @m_facilities.facility_cd %>

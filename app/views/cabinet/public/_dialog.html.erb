@@ -1,0 +1,95 @@
+<!-- ダイアログ -->
+<%
+  id = 0
+  title = ""
+  post_org_name = ""
+  post_user_name = ""
+  post_date = ""
+  file_name = ""
+  file_size = 0
+  file_explain = ""
+
+  unless @d_cabinet_body.nil?
+    id = @d_cabinet_body.id
+    title = @d_cabinet_body.title
+    post_org_name = @orgs[@d_cabinet_body.post_org_cd]
+    post_user_name = @d_cabinet_body.post_user_name
+    post_date = @d_cabinet_body.post_date
+    unless post_date.nil?
+      post_date = post_date.strftime("%Y/%m/%d %H:%M")
+    end
+
+    unless @cabinet_file.nil?
+      file_name = @cabinet_file.file_name
+      file_explain = @cabinet_file.memo
+      file_size = @cabinet_file.file_size.to_i
+      download_url = "/cabinet/public/download/" + @cabinet_file.id.to_s
+    end
+  end
+%>
+
+<a id="dialog_download" href="<%= download_url %>"></a>
+
+<table class="enote_general_table1" style="width:460px;">
+  <tr class="enote_general_table1_title">
+    <th colspan="3" class="enote_general_table1_cell_bordered">タイトル</th>
+  </tr>
+  <tr style="height:30px;">
+    <td colspan="3" class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= title %></td>
+  </tr>
+  <!--
+  <tr class="enote_general_table1_title">
+    <th colspan="3" class="enote_general_table1_cell_bordered">ファイルの説明</th>
+  </tr>
+  <tr style="height:30px;">
+    <td colspan="3" valign="top" class="enote_general_table1_cell_bordered" style="padding-left:5px;height:200px;">
+      <%#= file_explain %>
+    </td>
+  </tr>
+  -->
+  <tr class="enote_general_table1_title">
+    <th style="width:33%;" class="enote_general_table1_cell_bordered">投稿部署</th>
+    <th style="width:33%;" class="enote_general_table1_cell_bordered">投稿者</th>
+    <th style="width:33%;" class="enote_general_table1_cell_bordered">更新日時</th>
+  </tr>
+  <tr style="height:30px;">
+    <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= post_org_name %></td>
+    <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= post_user_name %></td>
+    <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= post_date %></td>
+  </tr>
+  <tr class="enote_general_table1_title">
+    <th colspan="2" class="enote_general_table1_cell_bordered">ファイル名</th>
+    <th class="enote_general_table1_cell_bordered">サイズ</th>
+  </tr>
+  <tr style="height:30px;">
+    <td colspan="2" class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= file_name %></td>
+    <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= file_size(file_size) %></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(function (){
+      $("#dialog").dialog({
+        bgiframe: true,
+        modal: true,
+        autoOpen: false,
+        height: 260,
+        width: 500,
+        buttons: {
+          "ダウンロード":
+		  function() {
+		  	if ($("#dialog_download").attr('href') != "") {
+			  $("#dialog_download").click();
+			  open($("#dialog_download").attr('href'));
+			}
+          },
+          "閉じる":
+		  function() {
+            $(this).dialog('close');
+          }
+        }
+      });
+	});
+  -->
+</script>

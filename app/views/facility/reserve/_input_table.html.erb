@@ -1,0 +1,201 @@
+<span style=" position:absolute; top:10px; left:10px; z-index:-5;">
+<iframe width="1000" height="700" scrolling="no" frameborder="0"></iframe>
+</span>
+
+<!-- 編集不可データの場合 -->
+<% if @edit_flg == 0 %>
+<div style="z-index:-3;" class="gray_filter">
+<% else %>
+<div style="z-index:-3;">
+<% end %>
+<table class="admin_pages_edit_table" cellpadding="1" cellspacing="0">
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :facility_name, "施設名" %>&nbsp;<span style="color:red;"></span></td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <!-- 施設選択リスト -->
+      <% if @facility_list.size > 0 %>
+        <!-- 編集不可データの場合 -->
+        <% if @edit_flg == 0 %>
+          <select id="facility_cd" name="facility_cd" style="width:300px;color:gray;">
+        <% else %>
+          <select id="facility_cd" name="facility_cd" style="width:300px;color:black;">
+        <% end %>
+          <% for facility_list in @facility_list %>
+            <% if facility_list.facility_cd == @select_facility_cd %>
+              <option value = <%=facility_list.facility_cd%> selected><%=facility_list.name%><%=facility_list.case%></option>
+            <% else %>
+              <option value = <%=facility_list.facility_cd%>><%=facility_list.name%><%=facility_list.case%></option>
+            <% end %>
+          <% end %>
+        </select>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :title, "タイトル" %>&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="admin_pages_edit_table_content" colspan=2><%= text_field :reserve, :title, :maxlength => 30, :class => "ime_on", :size => 40 %></td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :plan_date_from, "開始日時" %>&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <%= text_field 'd_reserve','plan_date_from',{:value=>@reserve.plan_date_from, :size => 10, :class => "ime_off", :style => "width:120px;"} %>&nbsp;&nbsp;&nbsp;
+      <!-- 編集不可データ または 終日データの場合 -->
+      <% if @edit_flg == 0 || @reserve.plan_allday_flg == 1 %>
+        <%= time_select :reserve, :plan_time_from, {:minute_step => @time_interval, :disabled => true} %>
+      <% else %>
+        <%= time_select :reserve, :plan_time_from, {:minute_step => @time_interval, :disabled => false} %>
+      <% end %>
+      &nbsp;&nbsp;&nbsp;
+      <% if @reserve.plan_allday_flg == 1 %>
+        <%= check_box("reserve", "plan_allday_flg", :value=>1, :checked=>"checked", :class=>"check", :onclick=>"ClickAllDayCheck();") %>
+      <% else %>
+        <%= check_box("reserve", "plan_allday_flg", :value=>1, :checked=>"", :class=>"check", :onclick=>"ClickAllDayCheck();") %>
+      <% end %>
+                終日
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :plan_date_to, "終了日時" %>&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <%= text_field 'd_reserve','plan_date_to',{:value=>@reserve.plan_date_to, :size => 10, :class => "ime_off", :style => "width:120px;"} %>&nbsp;&nbsp;&nbsp;
+      <!-- 編集不可データ または 終日データの場合 -->
+      <% if @edit_flg == 0 || @reserve.plan_allday_flg == 1 %>
+        <%= time_select :reserve, :plan_time_to, {:minute_step => @time_interval, :disabled => true} %>
+      <% else %>
+        <%= time_select :reserve, :plan_time_to, {:minute_step => @time_interval, :disabled => false} %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :memo, "備考" %></td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <textarea id="memo" name="memo"  cols=80 rows=4 class="ime_on"><%=@reserve.memo%></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :repeat_flg, "繰り返し" %></td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <% if @reserve.repeat_flg == 1 %>
+        <%= check_box("reserve", "repeat_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+      <% else %>
+        <%= check_box("reserve", "repeat_flg", :value=>1, :checked=>"", :class=>"check") %>
+      <% end %>
+                繰り返し登録
+      <div style="margin-left:20px;">
+        <table border="0" cellpadding="0" cellspacing="0" style="width:500px;margin-top:5px;">
+          <tr>
+                                   終了日：<%= text_field 'd_reserve','repeat_date_to',{:value=>@reserve.repeat_date_to, :size => 10, :class => "ime_off", :style => "width:120px;"} %>
+            </td>
+          </tr>
+          <% checked1 = "" %>
+          <% checked2 = "" %>
+          <% if @reserve.repeat_interval_flg == 1 %>
+            <% checked1 = "checked" %>
+          <% elsif @reserve.repeat_interval_flg == 2 %>
+            <% checked2 = "checked" %>
+          <% end %>
+          <tr>
+            <td style="width:400px;">
+              <% options = "" %>
+              <% for i in 1..31 %>
+                <% if i == @reserve.repeat_month_value.to_i %>
+                  <% options += "<option value=#{i} selected='selected'>#{i}</options>" %>
+                <% else %>
+                  <% options += "<option value=#{i} >#{i}</options>" %>
+                <% end %>
+              <% end %>
+              <%= radio_button("reserve", "repeat_interval_flg", 1, :checked=>checked1, :class=>"check") %>毎月
+              <!-- 編集不可データの場合 -->
+              <% if @edit_flg == 0 %>
+                <%= select_tag('repeat_month_value', options, {:style=>'color:gray;'}) %>日
+              <% else %>
+                <%= select_tag('repeat_month_value', options, {:style=>'color:black;'}) %>日
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <%= radio_button("reserve", "repeat_interval_flg", 2, :checked=>checked2, :class=>"check") %>曜日指定
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px;">
+              <% if @reserve.repeat_week_sun_flg == 1 %>
+                <%= check_box("reserve", "repeat_week_sun_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+              <% else %>
+                <%= check_box("reserve", "repeat_week_sun_flg", :value=>1, :checked=>"", :class=>"check") %>
+              <% end %>
+                                     日&nbsp;
+              <% if @reserve.repeat_week_mon_flg == 1 %>
+                <%= check_box("reserve", "repeat_week_mon_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+              <% else %>
+                <%= check_box("reserve", "repeat_week_mon_flg", :value=>1, :checked=>"", :class=>"check") %>
+              <% end %>
+                                     月&nbsp;
+              <% if @reserve.repeat_week_tue_flg == 1 %>
+                <%= check_box("reserve", "repeat_week_tue_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+              <% else %>
+                <%= check_box("reserve", "repeat_week_tue_flg", :value=>1, :checked=>"", :class=>"check") %>
+              <% end %>
+                                     火&nbsp;
+              <% if @reserve.repeat_week_wed_flg == 1 %>
+                <%= check_box("reserve", "repeat_week_wed_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+              <% else %>
+                <%= check_box("reserve", "repeat_week_wed_flg", :value=>1, :checked=>"", :class=>"check") %>
+              <% end %>
+                                     水&nbsp;
+              <% if @reserve.repeat_week_thu_flg == 1 %>
+                <%= check_box("reserve", "repeat_week_thu_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+              <% else %>
+                <%= check_box("reserve", "repeat_week_thu_flg", :value=>1, :checked=>"", :class=>"check") %>
+              <% end %>
+                                     木&nbsp;
+              <% if @reserve.repeat_week_fri_flg == 1 %>
+                <%= check_box("reserve", "repeat_week_fri_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+              <% else %>
+                <%= check_box("reserve", "repeat_week_fri_flg", :value=>1, :checked=>"", :class=>"check") %>
+              <% end %>
+                                     金&nbsp;
+              <% if @reserve.repeat_week_sat_flg == 1 %>
+                <%= check_box("reserve", "repeat_week_sat_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+              <% else %>
+                <%= check_box("reserve", "repeat_week_sat_flg", :value=>1, :checked=>"", :class=>"check") %>
+              <% end %>
+                                     土&nbsp;
+            </td>
+          </tr>
+        </table>
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :reserve_user_name, "登録者" %></td>
+    <td class="admin_pages_edit_table_content" colspan=2><%=@reserve.reserve_user_name%>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :updated_at, "最終更新日" %></td>
+    <td class="admin_pages_edit_table_content" colspan=2><%=h datetime_strftime(@reserve.updated_at) %></td>
+  </tr>
+</table>
+</div>
+
+<%= hidden_field_tag 'select_date', @reserve.plan_date_from %>
+<%= hidden_field_tag 'schedule_id', @reserve.d_schedule_id %>
+<%= hidden_field_tag 'select_button', 0 %>
+<%= hidden_field_tag 'repeat_date_to', @reserve.repeat_date_to %>
+<%= hidden_field_tag 'term_colon', @term_colon %>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期設定
+  */
+  $(document).ready(function(){
+    // カレンダー
+    setCalendar(jQuery("#d_reserve_plan_date_from"));
+    setCalendar(jQuery("#d_reserve_plan_date_to"));
+    setCalendar(jQuery("#d_reserve_repeat_date_to"));
+  });
+-->
+</script>

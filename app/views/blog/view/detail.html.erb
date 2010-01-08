@@ -1,0 +1,32 @@
+<!-- ブログ記事詳細 -->
+
+<h3 class="vblog_article_subject">
+  <%= @title %>
+</h3>
+<div class="vblog_article">
+  <div class="vblog_article_head">
+  <h3 id="article_title" class="vblog_article_subject" style="text-align:left;">
+    <%= @blog.send(:title) %>
+  </h3>
+  <div class="vblog_atricle_head_meta">
+    <%= disp_meta(@blog) %>
+  </div>
+  </div>
+  <div class="vblog_article_body" style="width:700px;text-align:left;overflow-x:auto;">
+    <%= @blog.send(:body) %>
+  </div><br />
+  <div class="vblog_article_foot">
+  </div>	
+</div>
+<br />
+
+<script type="text/javascript">
+  <!--
+    $("document").ready(
+      function(){
+	  	// パン屑リストの表示を更新
+        $("#breadcrumbs").html($(".vblog_article_subject").html() + " ＞ " + $("#article_title").html());
+      }
+    );
+  //-->
+</script>

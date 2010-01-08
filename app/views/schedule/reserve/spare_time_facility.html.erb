@@ -1,0 +1,233 @@
+<span style=" position:absolute; top:10px; left:10px; z-index:-1;">
+<iframe width="1000" height="700" scrolling="no" frameborder="0"></iframe>
+</span>
+
+<div id="spare_time_facility_list" style="z-index:3">
+  <!-- 表示データが存在しない場合 -->
+  <% if @element_list.size == 0 %>
+    利用できる施設が存在しません。
+  <% else %>
+    <!--日付選択-->
+    <table cellpadding="1" cellspacing="0" style="width:100%;">
+      <tr>
+        <td style="width:15px;">
+          <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "spare_time_facility_list",
+          :url => {:action => "spare_time_facility", :day => (@current_date - 1).strftime("%Y%m%d"), :select_proxy_user_cd => @proxy_user_cd,
+                   :facility_group_cd => @facility_group_cd, :select_facility_list => @select_facility_list}) %></a>
+        </td>
+        <td style="width:30px;">
+          <%=button_to_remote("今日", :update => "spare_time_facility_list", :url => {:action => "spare_time_facility", :select_proxy_user_cd => @proxy_user_cd,
+                              :facility_group_cd => @facility_group_cd, :select_facility_list => @select_facility_list})%>
+        </td>
+        <td style="width:15px;">
+          <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "spare_time_facility_list",
+          :url => {:action => "spare_time_facility", :day => (@current_date + 1).strftime("%Y%m%d"), :select_proxy_user_cd => @proxy_user_cd,
+                   :facility_group_cd => @facility_group_cd, :select_facility_list => @select_facility_list}) %></a>
+        </td>
+        <td style="width:120px;"><%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月<%= @current_date.day.to_s %>日</td>
+        &nbsp;&nbsp;
+        <td style="width:120px;">
+          <input type="hidden" id="select_date_facility" name="select_date_facility" value=<%=@current_date.strftime("%Y-%m-%d")%> onchange="changeSpareDate()">
+        </td>
+        <td style="width:700px;">
+      </tr>
+    </table>
+    <br><br>
+    <!--施設-->
+    <b>施設</b>
+    <table class="calendar" border="0" cellspacing="0" cellpadding="0">
+      <!-- テーブル初期化(５分間隔) -->
+      <tr>
+        <!-- 選択エリア -->
+        <td style="width:30px;"></td>
+        <!-- 名前エリア -->
+        <td style="width:120px;"></td>
+        <!-- 終日用備考エリア -->
+        <td style="width:170px;"></td>
+        <!-- 時間エリア -->
+        <% for i in 0..14*12-1 %>
+          <td style="width:4px;" ></td>
+        <% end %>
+      </tr>
+
+      <!-- タイトル -->
+      <tr class="timeName">
+        <th style="width:30px;" rowspan=2>選択</th>
+        <th style="width:120px;" rowspan=2>名前</th>
+        <th style="width:170px;" rowspan=2>終日の予定</th>
+      <th style="border-bottom:1px solid #dcdcdc;" colspan=<%=14*12%>>利用状況(時間)</th>
+      </tr>
+      <tr class="timeName">
+        <% for time_disp in 7..20 %>
+          <th colspan=12><%=time_disp%></th>
+        <% end %>
+      </tr>
+
+      <!-- 施設ごとに処理を行う -->
+      <!-- element[0]:施設コード, element[1]:施設名, element[2]:終日予定, [3]:時間に紐付く施設リスト(終日以外) -->
+      <% for element in @element_list %>
+        <% facility_cd = element[0] %>
+        <% facility_name = element[1] %>
+        <% allday_list = element[2] %>
+        <% not_allday_list = element[3] %>
+        <!-- セルの高さ設定 -->
+        <% if not_allday_list.size <= 1 %>
+          <% height = 50 %>
+        <% elsif not_allday_list.size == 2 %>
+          <% height = 40 %>
+        <% elsif not_allday_list.size >= 3 %>
+          <% height = 30 %>
+        <% end %>
+
+        <!-- 時間ごとの施設を設定 -->
+        <!-- reserve[0]:開始時間, [1]:施設リスト -->
+
+        <!-- 1件もデータが存在しない場合(名前のみ表示) -->
+        <% if not_allday_list.nil? || not_allday_list.length == 0 %>
+          <tr>
+            <!-- 選択 -->
+            <td class="schedule_checkbox" style="width:30px;">
+              <% if (!@select_facility_hash[facility_cd][0].nil?) %>
+                <input class="check check_facility_cd" id="facilitis_<%=facility_cd%>" type="checkbox" name="facilitis[<%=facility_cd%>]" checked />
+              <% else %>
+                <input class="check check_facility_cd" id="facilitis_<%=facility_cd%>" type="checkbox" name="facilitis[<%=facility_cd%>]" />
+              <% end %>
+            </td>
+            <!-- 名前 -->
+            <td class="time" style="vertical-align:middle;" height=<%=height%>px width = 120px>
+              <div class='calendar_day_cell_body'>
+                <%=facility_name%>
+              </div>
+            </td>
+            <!-- 終日の予定 -->
+            <td class="time" style="vertical-align:top;" height=<%=height%>px width=170px rowspan=1>
+              <div class='calendar_day_cell_body'>
+                <% for dataAllDay in allday_list %>
+                  <div class="facility_create" title="登録者：<%=dataAllDay.create_user_name%>">◆<%=dataAllDay.title%></div>
+                  <br>
+                <% end %>
+                <!-- データが１件もない場合 -->
+                <% if allday_list.nil? || allday_list.size == 0 %>
+                  &nbsp;
+                <% end %>
+              </div>
+            </td>
+            <td class="time" style="vertical-align:top;" height=<%=height%>px colspan=<%=14*12%>>
+              <div class='calendar_day_cell_body'>&nbsp;</div>
+            </td>
+          </tr>
+        <% else %>
+          <!-- 行ごとに処理を行う -->
+          <% mem_count = 0 %>
+          <% for rowArr in not_allday_list %>
+            <tr>
+            <% all_combine_count = 0 %>
+            <% plan_time_to_old = Time.parse(@current_date.strftime("%Y-%m-%d") + " 07:00") %>
+            <% row = rowArr[1] %>
+            <% for reserveArr in row %>
+              <!-- 施設ごとに処理を行う -->
+              <% reserve = reserveArr[1] %>
+              <% disp_date = reserveArr[2] %>
+              <!-- データ設定 -->
+              <!-- 名前 -->
+              <!-- 各施設の1行目のみ -->
+              <% if mem_count == 0 %>
+                <td class="schedule_checkbox" style="width:30px;">
+                  <% if (!@select_facility_hash[facility_cd][0].nil?) %>
+                    <input class="check check_facility_cd" id="facilitis_<%=facility_cd%>" type="checkbox" name="facilitis[<%=facility_cd%>]" checked />
+                  <% else %>
+                    <input class="check check_facility_cd" id="facilitis_<%=facility_cd%>" type="checkbox" name="facilitis[<%=facility_cd%>]" />
+                  <% end %>
+                </td>
+                <td class="time" style="vertical-align:middle;" height=<%=height%>px width=120px rowspan=<%=not_allday_list.size%>>
+                  <div class='calendar_day_cell_body'>
+                    <%=facility_name%>
+                  </div>
+                </td>
+                <!-- 終日の予定 -->
+                <td class="time" style="vertical-align:top;" height=<%=height%>px width=170px rowspan=<%=not_allday_list.size%>>
+                  <div class='calendar_day_cell_body'>
+                    <% for dataAllDay in allday_list %>
+                      <div class="facility_create" title="登録者：<%=dataAllDay.create_user_name%>">◆<%=dataAllDay.title%></div>
+                      <br>
+                    <% end %>
+                    <!-- データが１件もない場合 -->
+                    <% if allday_list.nil? || allday_list.size == 0 %>
+                      &nbsp;
+                    <% end %>
+                  </div>
+                </td>
+              <% end %>
+              <!-- 時間 -->
+              <!-- 開始時間までのセルを結合 -->
+              <% term1 = (reserve.plan_time_from.to_datetime - plan_time_to_old.to_datetime) * (24*60/5) %>
+
+              <% all_combine_count += term1 %>
+              <% if term1 != 0 %>
+                <td class="timeUnSelect" style="vertical-align:top;" height=<%=height%>px colspan=<%=term1%>><div class='calendar_day_cell_body'>&nbsp;</div></td>
+              <% end %>
+
+              <!-- 開始時間から終了時間までのセルを結合 -->
+              <% term2 = (reserve.plan_time_to.to_datetime - reserve.plan_time_from.to_datetime) * (24*60/5) %>
+              <% all_combine_count += term2 %>
+              <% if term2 != 0 %>
+                <td class="timeSelect" style="vertical-align:top;" height=<%=height%>px colspan=<%=term2%>>
+                  <div class='calendar_day_cell_body facility_create' title="登録者：<%=reserve.create_user_name%>">◆
+                    <!-- 時間 -->
+                    <%=disp_date%>&nbsp;
+                    <% if disp_date != "" %>
+                      <br>
+                    <% end %>
+                    <%=reserve.title%>
+                    <br>
+                  </div>
+                </td>
+              <% end %>
+              <% mem_count = mem_count + 1 %>
+              <% plan_time_to_old = reserve.plan_time_to %>
+            <% end %>
+            <% mem_count = mem_count + 1 %>
+            <!-- 最後まで空白セルを結合する -->
+            <% term3 = 14*12 - all_combine_count %>
+            <% if term3 != 0 %>
+              <td class="timeUnSelect" style="vertical-align:top;" height=<%=height%>px colspan=<%=term3%>><div class='calendar_day_cell_body'>&nbsp;</div></td>
+            <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+    </table>
+  <% end %>
+</div>
+<input type="hidden" id="facility_group_cd" name="facility_group_cd" value=<%=@facility_group_cd%>>
+<input type="hidden" id="select_facility_list" name="select_facility_list" value=<%=@select_facility_list%>>
+<input type="hidden" id="facility_all_list_colon" name="facility_all_list_colon" value=<%=@facility_all_list_colon%>>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期設定
+  */
+  $(document).ready(function(){
+    // カレンダー
+    setCalendar(jQuery("#select_date_facility"));
+  });
+
+  /*
+  * カレンダーからの日付指定時
+  */
+  function changeSpareDate() {
+    // jQueryでの処理
+    $.ajax({
+        type:'get',
+        url:'/schedule/reserve/spare_time_facility?&day=' + $("#select_date_facility").val() + "&select_proxy_user_cd=" + <%=@proxy_user_cd%>
+             + "&facility_group_cd=" + $("#facility_group_cd").val() + "&select_facility_list=" + $("#select_facility_list").val(),
+        success:
+            function(request){
+                // 受信結果を一覧エリアに反映させます。
+                $('#spare_time_facility_list').html(request);
+            }
+    });
+  }
+-->
+</script>

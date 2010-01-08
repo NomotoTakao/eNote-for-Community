@@ -1,0 +1,66 @@
+
+<input type="hidden" id="sub_directory" name="sub_directory" value="<%= current_m_user.user_cd %>" />
+<input type="hidden" id="blog_title" value="<%= @d_blog_body.d_blog_head.title %>" />
+<input type="hidden" id="article_title" value="<%= @d_blog_body.title %>" />
+
+<% form_tag url_for(:action => :created) do %>
+  <h3 style="text-align:left;margin-left:4px;">記事のタイトル</h3>
+  <div class="enote_blog_subject">
+    <%= text_field 'd_blog_body', 'title', {:size => 45, :maxlength => 40, :class => 'enote_blog_subject_text ime_on'} %>
+  </div>
+  <br>
+  <div style="text-align:left;margin-left:4px;">
+    <%= public_checkbox(@d_blog_body) %>公開する
+  </div>
+  <h3 style="text-align:left;margin-left:4px;">本文の内容</h3>
+  <div class="enote_blog_body">
+    <%= fckeditor_textarea 'd_blog_body', 'body', {:toolbarSet => "Simple", :width=>'100%', :height=>'500px', :class =>'enote_blog_body_text ime_on'} %>
+  </div>
+  <%= hidden_field 'd_blog_body', 'id'  %>
+  <%= hidden_field_tag 'blog_edit_flag', @blog_edit_flag  %>
+  <div style="clear:both;margin-top:30px;">
+    <table style="border:0px;width:660px;">
+      <tr>
+        <td style="text-align:left;padding-left:10px;">
+          <br>キーワード(複数のキーワードを入力する場合は、','で区切ってください。)<br>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align:left;padding-left:10px;">
+		  <%
+           value = ""
+           blog = @d_blog_body
+           blog.d_blog_tags.each do |tag|
+             unless value.empty?
+               value += ","
+             end
+             value += tag.category
+           end
+          %>
+          <%= text_area 'categories', nil, :class=>"ime_on", :size => "40x3", :value=>value, :style=>"ime-mode:active;" %>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="text-align:left;padding-left:10px;">
+          <%= submit_tag '更新する',{:class => 'submit', :onclick => 'return ClickContributeButton()'} %>
+        </td>
+        <td>&nbsp;</td>
+        <td style="text-align:right;padding-right:10px;">
+          <%= button_to '戻る',{:controller => 'view', :action => 'top'},{:class => 'submit_small'} %>
+        </td>
+      </tr>
+    </table>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+      }
+    );
+  //-->
+</script>

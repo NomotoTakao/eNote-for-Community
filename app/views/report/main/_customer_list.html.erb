@@ -1,0 +1,5 @@
+<% unless customer_list.nil? %>
+  <% customer_list.each do |customer| %>
+    <option value="<%= customer.company_cd %>"><%= customer.name %></option>
+  <% end %>
+<% end %>

@@ -1,0 +1,113 @@
+<!-- お知らせINDEX 階層は再帰的に呼び出したい -->
+
+<ul id="index_list" class="filetree">
+<%
+  span_class = ""
+  li_class = ""
+  font_clas = ""
+%>
+<% @index_list.each do |index| %>
+  <% children = DNoticeIndex.get_index_list(index.d_notice_head_id, current_m_user.user_cd, 1) %>
+  <%
+    if children.length == 0
+      li_class = ""
+      span_class = "file"
+      font_class = "index"
+    else
+      li_class = "closed"
+      span_class = "folder"
+      font_class=""
+    end
+  %>
+  <li class="<%= li_class %>">
+    <span class="<%= span_class %>">
+      <font id="index_<%= index.id %>" class="<%= font_class%>">
+        <%= index.title %>
+      </font>
+    </span>
+	<% unless children.length == 0 %>
+	  <ul>
+	  <% children.each do |child| %>
+	    <% grandchildren = DNoticeIndex.get_index_list(child.d_notice_head_id, current_m_user.user_cd, 1) %>
+        <%
+          if grandchildren.length == 0
+            li_class = ""
+            span_class = "file"
+            font_class = "index"
+          else
+            li_class = "closed"
+            span_class = "folder"
+            font_class = ""
+          end
+        %>
+	    <li class="<%= li_class %>">
+	      <span class="<%= span_class %>">
+	        <font id="index_<%= child.id %>" class="<%= font_class%>">
+            <%= child.title %>
+			</font>
+	      </span>
+          <% unless grandchildren.length == 0 %>
+		    <ul>
+              <% grandchildren.each do |grandchild| %>
+			    <li>
+			      <span class="file">
+			        <font id="index_<%= grandchild.id %>" class="index">
+			       	  <%= grandchild.title %>
+					</font>
+			      </span>
+			    </li>
+			  <% end %>
+            </ul>
+		  <% end %>
+	  <% end %>
+	  </ul>
+	<% end %>
+<% end %>
+</ul>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        $("#index_list").treeview();
+      }
+    );
+	
+    $(".index").mouseover(
+      function(){
+        $(this).css("cursor", "pointer");
+      }
+    );
+
+    $(".index").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+	
+	$(".index").click(
+      function(){
+        bgChange($(this), $(".index"));
+        id = $(this).attr("id").replace("index_", "");
+        $("#auto").val(id);
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/notice/main/notice_list",
+            data : { id : id},
+            success :
+              function(data, dataType){
+                $("#notice_list").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+  //-->
+</script>

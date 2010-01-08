@@ -1,0 +1,77 @@
+<!-- 連絡先更新 -->
+
+<%= form_remote_tag :update=>"enote_address_main",
+    :url=>{:action=>:update, :id=>params[:adr_id], :gid=>params[:gid], :gkbn=>params[:gkbn], :orgcd=>params[:orgcd], :proid=>params[:proid], :sword=>params[:sword]} %>
+  <table style="width:100%;">
+    <tr>
+      <td style="width:50%; text-align:left;">
+        <% if @no_edit_mode == false %>
+          <% if @d_address.private_user_cd == current_m_user.user_cd %>
+            <input value='<%= h("登録") %>' id="enote_address_verify_button" class='submit lh_valid_button' type="submit" onclick="return ClickUpdateButton()" />
+            <input value='<%= h("削除") %>' id="enote_address_delete_button" class='submit' type="button"
+                onclick="ClickDeleteButton('<%= params[:adr_id] %>', '<%= params[:gid] %>', '<%= params[:gkbn] %>', '<%= params[:orgcd] %>', '<%= params[:proid] %>', '<%= params[:sword] %>');" />
+          <% end %>
+        <% end %>
+      </td>
+      <td style="width:50%; text-align: right;">
+        <input id="back_to_list" type="button" class="submit_large" value="一覧へ戻る"
+          onclick="ClickBackToList('<%= params[:gid] %>', '<%= params[:gkbn] %>', '<%= params[:orgcd] %>', '<%= params[:proid] %>', '<%= params[:sword] %>')" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="width:100%;">
+          <%= render :partial => 'form' %>
+      </td>
+    </tr>
+    <tr>
+      <td style="width:50%; text-align:left;">
+        <% if @no_edit_mode == false %>
+          <% if @d_address.private_user_cd == current_m_user.user_cd %>
+            <input value='<%= h("登録") %>' id="enote_address_verify_button" class='submit lh_valid_button' type="submit" onclick="return ClickUpdateButton()" />
+            <input value='<%= h("削除") %>' id="enote_address_delete_button" class='submit' type="button"
+                onclick="ClickDeleteButton('<%= params[:adr_id] %>', '<%= params[:gid] %>', '<%= params[:gkbn] %>', '<%= params[:orgcd] %>', '<%= params[:proid] %>', '<%= params[:sword] %>');" />
+          <% end %>
+        <% end %>
+      </td>
+      <td style="width:50%; text-align: right;">
+        <input id="back_to_list" type="button" class="submit_large" value="一覧へ戻る"
+          onclick="ClickBackToList('<%= params[:gid] %>', '<%= params[:gkbn] %>', '<%= params[:orgcd] %>', '<%= params[:proid] %>', '<%= params[:sword] %>')" />
+      </td>
+    </tr>
+  </table>
+</form>
+
+<script type="text/javascript">
+<!--
+  /*
+   * 更新
+   */
+  function ClickUpdateButton(){
+    //確認ダイアログ
+    result = confirm("更新して宜しいですか？");
+    if (!result) {
+      return result;
+    }
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+  }
+
+  /*
+   * 一覧へ戻る
+   */
+  function ClickBackToList(gid, gkbn, orgcd, proid, sword){
+    // jQueryでの処理
+    $.ajax({
+      type: 'get',
+      url: '/address/main/addrs_list?gid=' + gid + '&gkbn=' + gkbn + '&orgcd=' + orgcd + '&proid=' + proid + '&sword=' + encodeURIComponent(sword),
+      success: function(request){
+        // 受信結果を一覧エリアに反映させます。
+        $('#enote_address_main').html(request);
+      }
+    });
+  }
+-->
+</script>

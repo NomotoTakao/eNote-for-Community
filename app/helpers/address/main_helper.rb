@@ -1,0 +1,2 @@
+module Address::MainHelper
+end

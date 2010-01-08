@@ -1,0 +1,61 @@
+<!-- エラー -->
+<% err = flash[:place_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<table class="master_table2" style="margin:10px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">拠点コード&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_places[place_cd]', @m_places.place_cd,  {:size => 40, :maxlength => 16} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">拠点名</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_places[name]', @m_places.name,  {:size => 100, :maxlength => 80} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">表示順</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_places[sort_no]', @m_places.sort_no,  {:size => 5, :maxlength => 2} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">郵便番号</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_places[zip_cd]', @m_places.zip_cd,  {:size => 10, :maxlength => 8} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">住所１</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_places[address1]', @m_places.address1,  {:size => 100, :maxlength => 60} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">住所２</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_places[address2]', @m_places.address2,  {:size => 100, :maxlength => 60} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">住所３</td>
+    <td class="master_table2_content">
+      <%= text_area_tag 'm_places[address3]', @m_places.address3,  {:cols => 100, :rows => 2} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">備考</td>
+    <td class="master_table2_content">
+      <%= text_area_tag 'm_places[memo]', @m_places.memo,  {:cols => 60, :rows => 5} %>
+    </td>
+  </tr>
+</table>
+<%= hidden_field_tag 'm_places[id]', @m_places.id %>

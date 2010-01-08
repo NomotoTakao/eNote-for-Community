@@ -1,0 +1,19 @@
+<!-- 社員一覧 -->
+
+<%
+  moptions = ""
+  unless @member_list.nil?
+    @member_list.each do |member|
+      moptions += "<option value='#{member.user_cd}'>#{member.name}</option>"
+    end
+  end
+%>
+
+<%= select_tag(
+    'member_list',
+    moptions,
+    :size=>10,
+    :style=>'width:380px;border:1;',
+    :multiple=>true)
+%>
+<br />

@@ -1,0 +1,199 @@
+<td>
+  <!-- エラー -->
+  <% if !flash[:duplicate_msg].nil? && flash[:duplicate_msg] != "" %>
+    <table style="width:100%;">
+      <tr style="color:red;">
+        <td>下記の施設が既に予約されていた為、予約できませんでした。<br>詳細は、マイページをご覧ください。</td>
+      </tr>
+      <tr style="color:red;">
+        <td><%= flash[:duplicate_msg] %></td>
+      </tr>
+      <tr style="height:5px;"></tr>
+    </table>
+  <% end -%>
+
+  <!-- ヘッダ -->
+  <table cellpadding="1" cellspacing="0" style="width:100%;">
+    <tr>
+      <td style="width:15px;">
+        <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "facility_list",
+        :url => {:action => "month", :month => @current_date.last_month.strftime("%Y%m"), :facility_cd => @select_facility_cd}) %></a>
+      </td>
+      <td style="width:30px;">
+        <%=button_to_remote("今月", :update => "facility_list", :url => {:action => "month", :facility_cd => @select_facility_cd})%>
+      </td>
+      <td style="width:15px;">
+        <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "facility_list",
+        :url => {:action => "month", :month => @current_date.next_month.strftime("%Y%m"), :facility_cd => @select_facility_cd}) %></a>
+      </td>
+      <td style="width:80px;"><%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月</td>
+      <td>&nbsp;</td>
+      <!-- 施設選択リスト -->
+      <% if @facility_list.size > 0 %>
+        <td style="width:250px;">
+          <select id="facility_cd_h" name="facility_cd_h" style="width:250px;z-index:-10;" onchange="SelectFacilityList(0);">
+            <% for facility_list in @facility_list %>
+              <% if @select_facility_cd == facility_list.facility_cd %>
+                <option value = <%=facility_list.facility_cd%> selected><%=facility_list.name%><%=facility_list.case%></option>
+              <% else %>
+                <option value = <%=facility_list.facility_cd%>><%=facility_list.name%><%=facility_list.case%></option>
+              <% end %>
+            <% end %>
+          </select>
+        </td>
+        <td>&nbsp;</td>
+      <% end %>
+      <td style="width:20px;">
+        <%=button_to("日", :action => "index_day")%>
+      </td>
+      <td style="width:20px;">
+        <%=button_to("週", :action => "index_week")%>
+      </td>
+      <td style="width:20px;">
+        <%=button_to("月", :action => "index_month", :facility_cd => @select_facility_cd)%>
+      </td>
+      <td style="width:50px;"><%=button_to("予定リスト", :action => "index_list", :facility_cd => @select_facility_cd)%></td>
+    </tr>
+  </table>
+
+  <!-- 内容 -->
+  <%= calendar(:year => @current_date.year, :month => @current_date.month,
+               :first_day_of_week => 0,
+               :holidays => @holiday_hash_param,
+               :events => @event_hash_param,
+               :previous_month_text =>
+                  "<div class='previous_month'>" + link_to_remote("前月へ", :update => "facility_list", :url => {:action => "month", :month => @current_date.next_month.strftime("%Y%m")}) + "</div>",
+               :next_month_text =>
+                  "<div class='next_month'>" + link_to_remote("次月へ", :update => "facility_list", :url => {:action => "month", :month => @current_date.next_month.strftime("%Y%m")}) + "</div>"
+              ) do |d|
+
+        cell_attrs = {:class => "month"}
+        cell_text = "<div class='calendar_day_cell_title'>"
+        #本日の場合
+        if Date.today == d
+          cell_text << link_to(d.day.to_s, "#", :onclick => "dialog_reserve_open_ins('#{d}', '');", :class=>"today_cell_title")
+        else
+          cell_text << link_to(d.day.to_s, "#", :onclick => "dialog_reserve_open_ins('#{d}', '');")
+        end
+        cell_text << "</div>"
+        cell_text << "<div class='calendar_day_cell_body'>"
+
+        #祝日の場合
+        cell_text << "<div class='holiday_message'>#{@holiday_hash[d][0]}</div>"
+        #イベント日の場合
+        cell_text << "<div class='event_message'>#{@event_hash[d][0]}</div>"
+
+        @cell_reserves.each {|facility|
+          #対象日のデータを処理する
+          if d == facility[0]
+            reserve = facility[1]
+
+            str = ""
+            str += "◆"
+            #時間指定の場合
+            if reserve.plan_allday_flg == 0
+              target_day = d
+              #開始日の場合
+              if target_day == reserve.plan_date_from
+                str += reserve.plan_time_from.strftime("%H:%M") + "-"
+                #終了日と同日の場合
+                if target_day == reserve.plan_date_to
+                  str += reserve.plan_time_to.strftime("%H:%M")
+                end
+                str += "<br>"
+              #終了日の場合
+              elsif target_day == reserve.plan_date_to
+                str += "-" + reserve.plan_time_to.strftime("%H:%M") + "<br>"
+              end
+            else
+              str += "終日<br>"
+            end
+            str += reserve.title + "(" + reserve.create_user_name + ")" + "<br>"
+            #繰り返しデータがある場合
+            if reserve.repeat_facility_id.nil?
+              repeat_flg = '0'
+            else
+              repeat_flg = '1'
+            end
+            cell_text << link_to_function(str, "dialog_reserve_open_edit('#{reserve.id}', '#{repeat_flg}')", {:class=>"memo_disp", :title=>reserve.memo})
+          end
+        }
+
+        cell_text << "</div>"
+
+        [cell_text,cell_attrs]
+      end
+  %>
+
+  <!-- フッタ -->
+  <table cellpadding="1" cellspacing="0" style="width:100%;">
+    <tr>
+      <td style="width:15px;">
+        <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "facility_list",
+        :url => {:action => "month", :month => @current_date.last_month.strftime("%Y%m"), :facility_cd => @select_facility_cd}) %></a>
+      </td>
+      <td style="width:30px;">
+        <%=button_to_remote("今月", :update => "facility_list", :url => {:action => "month", :facility_cd => @select_facility_cd})%>
+      </td>
+      <td style="width:15px;">
+        <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "facility_list",
+        :url => {:action => "month", :month => @current_date.next_month.strftime("%Y%m"), :facility_cd => @select_facility_cd}) %></a>
+      </td>
+      <td style="width:80px;"><%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月</td>
+      <td>&nbsp;</td>
+      <!-- 施設選択リスト -->
+      <% if @facility_list.size > 0 %>
+        <td style="width:250px;">
+          <select id="facility_cd_f" name="facility_cd_f" style="width:250px;z-index:-10;" onchange="SelectFacilityList(1);">
+            <% for facility_list in @facility_list %>
+              <% if @select_facility_cd == facility_list.facility_cd %>
+                <option value = <%=facility_list.facility_cd%> selected><%=facility_list.name%><%=facility_list.case%></option>
+              <% else %>
+                <option value = <%=facility_list.facility_cd%>><%=facility_list.name%><%=facility_list.case%></option>
+              <% end %>
+            <% end %>
+          </select>
+        </td>
+        <td>&nbsp;</td>
+      <% end %>
+      <td style="width:20px;">
+        <%=button_to("日", :action => "index_day")%>
+      </td>
+      <td style="width:20px;">
+        <%=button_to("週", :action => "index_week")%>
+      </td>
+      <td style="width:20px;">
+        <%=button_to("月", :action => "index_month", :facility_cd => @select_facility_cd)%>
+      </td>
+      <td style="width:50px;"><%=button_to("予定リスト", :action => "index_list", :facility_cd => @select_facility_cd)%></td>
+    </tr>
+  </table>
+</td>
+
+<script type="text/javascript">
+<!--
+  /*
+   * 施設選択時の処理
+   */
+  function SelectFacilityList(click_flg){
+    //ヘッダ
+    if (click_flg == 0) {
+      facility_cd = $("#facility_cd_h").val()
+    //フッタ
+    } else {
+      facility_cd = $("#facility_cd_f").val()
+    }
+
+    // jQueryでの処理
+    $.ajax({
+        type:'get',
+        url:'/facility/reserve/month?&facility_cd=' + facility_cd + "&month=" + <%=@month%>,
+        success:
+            function(request){
+                // 受信結果を一覧エリアに反映させます。
+                $('#facility_list').html(request);
+            }
+    });
+  }
+-->
+</script>

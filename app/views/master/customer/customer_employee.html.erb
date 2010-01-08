@@ -1,0 +1,77 @@
+<div id="employee_contents">
+  <div>
+    <table class="enote_general_table1" style="width:98%;">
+      <tr>
+        <td colspan="6" style="text-align:right;">
+          <input type="button" id="button_new" class="submit_large" value="新規登録" />
+        </td>
+      </tr>
+      <tr class="enote_general_table1_title">
+        <th class="enote_general_table1_cell_bordered header" style="width:10%;">部署</th>
+        <th class="enote_general_table1_cell_bordered header" style="width:10%;">役職</th>
+        <th class="enote_general_table1_cell_bordered header" style="width:20%;">名前</th>
+        <th class="enote_general_table1_cell_bordered header" style="width:30%;">メールアドレス</th>
+        <th class="enote_general_table1_cell_bordered header" style="width:15%;">携帯</th>
+        <th class="enote_general_table1_cell_bordered header" style="width:15%;">勤務先TEL</th>
+      </tr>
+    </table>
+  </div>
+  <div id="customer_employee_list" style="height:380px;overflow-y:scroll;">
+  </div>
+</div>
+
+<script type="text/javascript">
+  <!--
+    $("#button_new").click(
+      function(){
+        var company_cd = $("#company_cd").val();
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/master/customer/customer_employee_register",
+            data :
+              {
+                company_cd : company_cd
+              },
+            success :
+              function(data, dataType){
+                $("#employee_contents").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    $(document).ready(
+      function(){
+        var company_cd = $("#company_cd").val();
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/master/customer/customer_employee_list",
+            data :
+              {
+                company_cd : company_cd
+              },
+            success :
+              function(data, dataType){
+                $("#customer_employee_list").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+  //-->
+</script>

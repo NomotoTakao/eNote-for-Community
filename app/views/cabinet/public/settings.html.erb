@@ -1,0 +1,34 @@
+
+<%= form_tag :action=>:settings_finish %>
+<table>
+<tr>
+  <th>org_cd</th>
+  <th>org_name1</th>
+  <th>org_name2</th>
+  <th>org_name3</th>
+  <th>authority</th>
+</tr>
+<% counter = 0 %>
+<% @org_list.each do |org| %>
+  <tr>
+    <td>
+      <%= org.org_cd unless org.org_cd.nil? %>
+    </td>
+    <td>
+      <%= org.org_name1 unless org.org_name1.nil? %>
+    </td>
+	<td>
+      <%= org.org_name2 unless org.org_name2.nil? %>
+    </td>
+    <td>
+      <%= org.org_name3 unless org.org_name3.nil? %>
+    </td>
+	<td>
+	  <input type="checkbox" name="authority[<%= counter %>]" value="<%= org.org_cd %>" />
+	</td>
+  </tr>
+  <% counter += 1 %>
+<% end %>
+</table>
+  <input type="submit" name="btn" />
+</form>

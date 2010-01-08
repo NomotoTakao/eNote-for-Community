@@ -1,0 +1,154 @@
+<!-- 設定 -->
+
+<%= form_tag :update=>"notice_setting", :action => 'setting' %>
+  <h3 style="text-align:left;margin-left:4px;">お知らせボードのタイトル</h3>
+  <%
+    options = ""
+    @board_list.each do |board|
+      options += "<option value=#{board.id}>#{board.title}</option>"
+    end
+  %>
+  <%= select_tag(
+      'board_list',
+      options,
+      :size=>1,
+      :style=>'width:400px;border:1;')
+  %>
+  <br />
+  <h3 style="text-align:left;margin-left:4px;">管理者の選択</h3>
+  <table border="0" cellpadding="0" cellspacing="0" style="width:900px;">
+    <tr>
+      <td valign="top">
+        <%= render :partial=>"administrator_select", :locals=>{:org_list=>@org_list}%>
+        <br />
+        <div id="member_list" style="heiborder:1px solid black;background-color:white;text-align:left;">
+          <%= render :partial=>"member_list", :locals=>{:member_list=>@member_list} %>
+        </div>
+      </td>
+      <td align="center" style="width:100px;">
+	    <span id="org_add">組織の追加 &gt;&gt;</span>
+		<br />
+		<br />
+        <br />
+		<br />
+		<br />
+        <br />
+        <span id="arrow_add">個人の追加 &gt;&gt;</span>
+		<br><br>
+        <!--
+        <span id="arrow_remove"><<</span>
+        -->
+      </td>
+      <td valign="top">
+        <div id="add_box" style="width:380px;height:300px;border:1px solid black;background-color:white;text-align:left;">
+		  <%= render :partial=>"add_list" %>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <%= submit_tag '登録する',{:class => 'submit'} %>
+</form>
+
+<script type="text/javascript">
+  <!--
+  $("#tab_index").val("");
+  $(document).ready(
+      function(){
+        // 管理者の選択ツリーを表示
+        $("#sosiki_browser2").treeview();
+
+        $("#add_box").load("/notice/main/add_list/");
+
+        $("#board_list").change(
+          function(){
+            // リスト変更後の項目のvalueを取得する。
+            val = $(this).val();
+            // 取得したvalue値でお知らせ権限テーブルを検索し、右側のセレクトボックスを更新する。
+            url = "/notice/main/add_list?notice_head_id=:id";
+			url = url.replace(":id", val);
+			$("add_box").load(url);
+          }
+        );
+
+        /*
+         * 個人の追加を押下した時に、セレクトボタンで選択されている
+         * ユーザーを右のセレクトボックスの要素に追加します。
+         */
+        $("#arrow_add").click(
+          function(){
+            txt = "";
+            val = "";
+            hval = "";
+            $("#member_list option:selected").each(
+              function(){
+                txt += $(this).html() + ",";
+                val += $(this).val() + ",";
+                hval += "p" + $(this).val() + ",";
+              }
+            );
+
+            arrayTxt = txt.split(",");
+            arrayVal = val.split(",");
+            for(i=0; i<arrayTxt.length-1; i++){
+              $("#add_list").append($('<option>').attr({value:arrayVal[i]}).text(arrayTxt[i]));
+            }
+            $("#add_array_").val($("#add_array_").val() + "," + hval);
+//	  	$("#member_list option:selected").remove();
+          }
+        );
+	
+        /*
+         * 個人の追加にマウスカーソルを合わせた時に、背景色を変更します。
+         */
+        $("#arrow_add").mouseover(
+          function (){
+            $(this).css("background", "aqua");
+          }	
+        );
+
+        /*
+         * 個人の追加からマウスカーソルが外れたときに、背景色を元に戻します。
+         */
+        $("#arrow_add").mouseout(
+          function(){
+            $(this).css("background", "white");
+          }
+        );
+
+        $("#arrow_remove").click(
+          function(){
+          }
+        );
+
+        /*
+         * 組織の追加が押下された時に、選択されている要素を右のセレクトボックスの要素に追加します。
+         */
+        $("#org_add").click(
+          function(){
+            element = $("#selected_admin").val().split(",");
+            $("#add_list").append($('<option>').attr({value:element[1]}).text(element[0]));
+            $("#add_array_").val($("#add_array_").val() + ",o" + element[1]);
+          }
+        );
+
+        /*
+         * 組織の追加にマウスカーソルを合わせたときに、背景色を変更します。
+         */
+        $("#org_add").mouseover(
+          function(){
+            $(this).css("background", "aqua");
+          }
+        );
+
+        /*
+         * 組織の追加からマウスカーソルが外れたときに、背景色を元に戻します。
+         */
+        $("#org_add").mouseout(
+          function(){
+            $(this).css("background", "white");
+          }
+        );
+      }
+    );
+  //-->
+</script>

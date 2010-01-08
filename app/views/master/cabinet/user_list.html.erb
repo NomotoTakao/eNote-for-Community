@@ -1,0 +1,7 @@
+<% unless @user_list.size == 0 %>
+  <% @user_list.each do |user| %>
+    <option value="<%= user.user_cd %>"><%= user.name %></option>
+  <% end %>
+<% else %>
+  <option>&nbsp;</option>
+<% end %>

@@ -1,0 +1,519 @@
+<div style="z-index:-3;">
+<table class="admin_pages_edit_table" cellpadding="1" cellspacing="0">
+  <!-- 秘書機能を持つユーザ -->
+  <% if @secretaries_flg == 1 %>
+    <tr>
+      <td class="admin_pages_edit_table_title"><%= label :reserve, :title, "代理登録ユーザ" %></td>
+      <td class="admin_pages_edit_table_content" colspan=2>
+        <% if @reserve.id.nil? || @reserve.id == "" %>
+          <% disabled = "" %>
+        <% else %>
+          <% disabled = "disabled" %>
+        <% end %>
+        <select id="select_proxy_user_cd" name="select_proxy_user_cd" style="width:170px" onchange="SelectSecretariesUserList()" <%=disabled%>>
+          <% if @select_proxy_user_cd == "" %>
+            <option value = "" selected="selected"></option>
+          <% else %>
+            <option value = ""></option>
+          <% end %>
+          <% for secretaries_user in @secretaries_user_list %>
+            <% if @select_proxy_user_cd == secretaries_user[0] %>
+              <option value = <%=secretaries_user[0]%> selected><%=secretaries_user[1]%></option>
+            <% else %>
+              <option value = <%=secretaries_user[0]%>><%=secretaries_user[1]%></option>
+            <% end %>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :title, "タイトル" %><span style="color:red;">（必須）</span></td>
+    <td class="admin_pages_edit_table_content" colspan=2><%= text_field :reserve, :title, :maxlength => 30, :size => 40, :class => "ime_on" %></td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :plan_date_from, "開始日時" %><span style="color:red;">（必須）</span></td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <%= text_field 'd_schedule','plan_date_from',{:value=>@reserve.plan_date_from, :size => 10, :class => "ime_off", :style => "width:120px;"} %>&nbsp;&nbsp;&nbsp;
+      <!-- 終日データの場合 -->
+      <% if @reserve.plan_allday_flg == 1 %>
+        <%= time_select :reserve, :plan_time_from, {:minute_step => @time_interval, :disabled => true} %>
+      <% else %>
+        <%= time_select :reserve, :plan_time_from, {:minute_step => @time_interval, :disabled => false} %>
+      <% end %>
+      &nbsp;&nbsp;&nbsp;
+      <% if @reserve.plan_allday_flg == 1 %>
+        <%= check_box("reserve", "plan_allday_flg", :value=>1, :checked=>"checked", :class=>"check", :onclick=>"ClickAllDayCheck();") %>
+      <% else %>
+        <%= check_box("reserve", "plan_allday_flg", :value=>1, :checked=>"", :class=>"check", :onclick=>"ClickAllDayCheck();") %>
+      <% end %>
+                終日
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :plan_date_to, "終了日時" %><span style="color:red;">（必須）</span></td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <%= text_field 'd_schedule','plan_date_to',{:value=>@reserve.plan_date_to, :size => 10, :class => "ime_off", :style => "width:120px;"} %>&nbsp;&nbsp;&nbsp;
+      <!-- 終日データの場合 -->
+      <% if @reserve.plan_allday_flg == 1 %>
+        <%= time_select :reserve, :plan_time_to, {:minute_step => @time_interval, :disabled => true} %>
+      <% else %>
+        <%= time_select :reserve, :plan_time_to, {:minute_step => @time_interval, :disabled => false} %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :memo, "備考" %></td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <textarea id="memo" name="memo"  cols=80 rows=4 class="ime_on"><%=@reserve.memo%></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :plan_kbn, "種別" %></td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <% count = 0 %>
+      <% for plan in @plan_list %>
+        <!-- 種別が99(Web日報)の場合 -->
+        <% if plan.kbn_id == 99 %>
+          <!-- 登録データがWeb日報以外の場合 -->
+          <% if @reserve.id.nil? || (@reserve.plan_kbn != plan.kbn_id) %>
+            <% break %>
+          <% end %>
+        <% end %>
+
+        <!-- 種別を表示 -->
+        <% count = count + 1 %>
+        <% checked = "" %>
+        <% color = "color:" + plan.value_chr + ";font-weight:bold;" %>
+        <% if (@reserve.id.nil? && count == 1) || (@reserve.plan_kbn == plan.kbn_id) %>
+          <% checked = "checked" %>
+        <% end %>
+        <% allday_flg = @plan_allday_list[plan.kbn_id][0] %>
+        <%= radio_button("reserve", "plan_kbn", plan.kbn_id, :checked=>checked, :class=>"check", :onclick=>"ClickPlanKbn(#{allday_flg});") %>
+        <span style=<%=color%>><%=plan.name%></span>&nbsp;
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :public_kbn, "公開／非公開" %></td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <div>
+        <table cellpadding="0" cellspacing="0" border="0">
+          <!-- 部署/プロジェクト -->
+          <% allcount = 0 %>
+          <% count = 0 %>
+          <!-- @belong_check_list:[チェックフラグ(各所属のチェック有無), 所属一覧] -->
+          <% for i in 0..(@belong_check_list.size - 1) %>
+            <!-- belong:所属一覧[所属フラグ(1:部署, 2:プロジェクト, 3:非公開), コード, 名称] -->
+            <% belong = @belong_check_list[i][1] %>
+            <% allcount = allcount + 1 %>
+            <% count = count + 1 %>
+            <% if count == 0 %>
+              <tr>
+            <% end %>
+            <td alighn=left>
+              <!-- チェック有無 -->
+              <% if @belong_check_list[i][0] == 0 %>
+                <% check = "" %>
+              <% else %>
+                <% check = "checked" %>
+              <% end %>
+              <!-- 公開/非公開 -->
+              <% if belong[0] == 3 %>
+                <% public_flg = 0 %>
+              <% else %>
+                <% public_flg = 1 %>
+              <% end %>
+              <input class="check check_belong_list" id="belong_check_list" type="checkbox" name="belong_check_list[]"
+              onclick="ClickPublicList(<%=public_flg%>, <%=@belong_check_list.size%>);" value=<%=i%> <%=check%> />
+              <%= belong[2]%>&nbsp&nbsp
+            </td>
+            <% if count == 5 || allcount == @belong_check_list.size %>
+              <% count = 0 %>
+              </tr>
+            <% end %>
+          <% end %>
+        </table>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :reminder_flg, "アラーム通知" %></td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <div>
+        <table cellpadding="0" cellspacing="0" border="0" style="width:500px;">
+          <tr>
+            <td>
+              <!-- アラーム通知(日) -->
+              <% if @reserve.reminder_day_flg == 1 %>
+                <%= check_box("reserve", "reminder_day_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+              <% else %>
+                <%= check_box("reserve", "reminder_day_flg", :value=>1, :checked=>"", :class=>"check") %>
+              <% end %>
+              <% options = "" %>
+              <% for i in 1..5 %>
+                <% if i == @reserve.reminder_day_value.to_i %>
+                  <% options += "<option value=#{i} selected='selected'>#{i}</options>" %>
+                <% else %>
+                  <% options += "<option value=#{i}>#{i}</options>" %>
+                <% end %>
+              <% end %>
+              <%= select_tag("reminder_day_value", options) %>日前
+            </td>
+            <td>
+              <!-- アラーム通知(週) -->
+              <% if @reserve.reminder_week_flg == 1 %>
+                <%= check_box("reserve", "reminder_week_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+              <% else %>
+                <%= check_box("reserve", "reminder_week_flg", :value=>1, :checked=>"", :class=>"check") %>
+              <% end %>
+              <% options = "" %>
+              <% for i in 1..5 %>
+                <% if i == @reserve.reminder_week_value.to_i %>
+                  <% options += "<option value=#{i} selected='selected'>#{i}</options>" %>
+                <% else %>
+                  <% options += "<option value=#{i}>#{i}</options>" %>
+                <% end %>
+              <% end %>
+              <%= select_tag("reminder_week_value", options) %>週間前
+            </td>
+            <td>
+              <!-- アラーム通知(月) -->
+              <% if @reserve.reminder_month_flg == 1 %>
+                <%= check_box("reserve", "reminder_month_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+              <% else %>
+                <%= check_box("reserve", "reminder_month_flg", :value=>1, :checked=>"", :class=>"check") %>
+              <% end %>
+              <% options = "" %>
+              <% for i in 1..5 %>
+                <% if i == @reserve.reminder_month_value.to_i %>
+                  <% options += "<option value=#{i} selected='selected'>#{i}</options>" %>
+                <% else %>
+                  <% options += "<option value=#{i}>#{i}</options>" %>
+                <% end %>
+              <% end %>
+              <%= select_tag("reminder_month_value", options) %>ヶ月前
+            </td>
+            <td>
+              <% if @reserve.reminder_specify_flg == 1 %>
+                <%= check_box("reserve", "reminder_specify_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+              <% else %>
+                <%= check_box("reserve", "reminder_specify_flg", :value=>1, :checked=>"", :class=>"check") %>
+              <% end %>
+                                    指定日：
+              <%= text_field 'd_schedule','reminder_specify_date',{:value=>@reserve.reminder_specify_date, :size => 10, :class => "ime_off", :style => "width:120px;"} %>
+            </td>
+          </tr>
+        </table>
+        <table><tr style="height:3px"></tr></table>
+        &nbsp;&nbsp;通知方法：&nbsp;
+        <% if @reserve.reminder_mypage_flg == 1 %>
+          <%= check_box("reserve", "reminder_mypage_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+        <% else %>
+          <%= check_box("reserve", "reminder_mypage_flg", :value=>1, :checked=>"", :class=>"check") %>
+        <% end %>
+                     マイページ&nbsp;&nbsp;
+        <% if @reserve.reminder_email_flg == 1 %>
+          <%= check_box("reserve", "reminder_email_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+        <% else %>
+          <%= check_box("reserve", "reminder_email_flg", :value=>1, :checked=>"", :class=>"check") %>
+        <% end %>
+                     メールへ送信&nbsp;&nbsp;
+        <% if @reserve.reminder_mobile_mail_flg == 1 %>
+          <%= check_box("reserve", "reminder_mobile_mail_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+        <% else %>
+          <%= check_box("reserve", "reminder_mobile_mail_flg", :value=>1, :checked=>"", :class=>"check") %>
+        <% end %>
+                     携帯メールへ送信&nbsp;&nbsp;
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title" rowspan=3><%= label :reserve, :repeat_flg, "繰り返し" %></td>
+    <td class="admin_pages_edit_table_content_top_left">
+      <% if @reserve.repeat_flg == 1 %>
+        <%= check_box("reserve", "repeat_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+      <% else %>
+        <%= check_box("reserve", "repeat_flg", :value=>1, :checked=>"", :class=>"check") %>
+      <% end %>
+                繰り返し登録
+    </td>
+    <td class="admin_pages_edit_table_content_top_right">
+                 終了日：<%= text_field 'd_schedule','repeat_date_to',{:value=>@reserve.repeat_date_to, :size => 10, :class => "ime_off", :style => "width:120px;"} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_content_middle" colspan=2>
+      <div style="margin-left:10px;">
+        <% checked1 = "" %>
+        <% checked2 = "" %>
+        <% if @reserve.repeat_interval_flg == 1 %>
+          <% checked1 = "checked" %>
+        <% elsif @reserve.repeat_interval_flg == 2 %>
+          <% checked2 = "checked" %>
+        <% end %>
+        <% options = "" %>
+        <% for i in 1..31 %>
+          <% if i == @reserve.repeat_month_value.to_i %>
+            <% options += "<option value=#{i} selected='selected'>#{i}</options>" %>
+          <% else %>
+            <% options += "<option value=#{i} >#{i}</options>" %>
+          <% end %>
+        <% end %>
+        <%= radio_button("reserve", "repeat_interval_flg", 1, :checked=>checked1, :class=>"check") %>毎月
+        <%= select_tag('repeat_month_value', options) %>日
+        &nbsp;&nbsp;
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_content_bottom" colspan=2>
+      <div style="margin-left:10px;">
+        <%= radio_button("reserve", "repeat_interval_flg", 2, :checked=>checked2, :class=>"check") %>曜日指定
+        &nbsp;&nbsp;
+        <% if @reserve.repeat_week_sun_flg == 1 %>
+          <%= check_box("reserve", "repeat_week_sun_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+        <% else %>
+          <%= check_box("reserve", "repeat_week_sun_flg", :value=>1, :checked=>"", :class=>"check") %>
+        <% end %>
+                               日&nbsp;
+        <% if @reserve.repeat_week_mon_flg == 1 %>
+          <%= check_box("reserve", "repeat_week_mon_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+        <% else %>
+          <%= check_box("reserve", "repeat_week_mon_flg", :value=>1, :checked=>"", :class=>"check") %>
+        <% end %>
+                               月&nbsp;
+        <% if @reserve.repeat_week_tue_flg == 1 %>
+          <%= check_box("reserve", "repeat_week_tue_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+        <% else %>
+          <%= check_box("reserve", "repeat_week_tue_flg", :value=>1, :checked=>"", :class=>"check") %>
+        <% end %>
+                               火&nbsp;
+        <% if @reserve.repeat_week_wed_flg == 1 %>
+          <%= check_box("reserve", "repeat_week_wed_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+        <% else %>
+          <%= check_box("reserve", "repeat_week_wed_flg", :value=>1, :checked=>"", :class=>"check") %>
+        <% end %>
+                               水&nbsp;
+        <% if @reserve.repeat_week_thu_flg == 1 %>
+          <%= check_box("reserve", "repeat_week_thu_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+        <% else %>
+          <%= check_box("reserve", "repeat_week_thu_flg", :value=>1, :checked=>"", :class=>"check") %>
+        <% end %>
+                               木&nbsp;
+        <% if @reserve.repeat_week_fri_flg == 1 %>
+          <%= check_box("reserve", "repeat_week_fri_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+        <% else %>
+          <%= check_box("reserve", "repeat_week_fri_flg", :value=>1, :checked=>"", :class=>"check") %>
+        <% end %>
+                               金&nbsp;
+        <% if @reserve.repeat_week_sat_flg == 1 %>
+          <%= check_box("reserve", "repeat_week_sat_flg", :value=>1, :checked=>"checked", :class=>"check") %>
+        <% else %>
+          <%= check_box("reserve", "repeat_week_sat_flg", :value=>1, :checked=>"", :class=>"check") %>
+        <% end %>
+                               土&nbsp;
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">
+      <%= label :reserve, :other_member, "同時登録" %>
+    </td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <table>
+        <tr>
+          <td>
+            <select id="other_belong_list" name="other_belong_list" style="width:250px" onchange="SelectOtherGroup(0);">
+              <% for i in 0..(@belong_list.size - 1) %>
+                <% belong = @belong_list[i] %>
+                <% if @other_checked_id == i %>
+                  <option value = <%=i%> selected><%=belong[2]%></option>
+                <% else %>
+                  <option value = <%=i%>><%=belong[2]%></option>
+                <% end %>
+              <% end %>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div id="other_member_list"></div>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;padding-right:20px;">
+            <input id="schedule_spare" type="button" class="submit_large" value="空き状況確認"
+            onclick="dialog_spare_time_other_member_open()" />
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">
+      <%= label :reserve, :facility, "施設予約" %>
+    </td>
+    <td class="admin_pages_edit_table_content" colspan=2>
+      <div id="facility_list"></div>
+    </td>
+  </tr>
+
+  <% if !@create_user_name.nil? %>
+    <tr>
+      <td class="admin_pages_edit_table_title"><%= label :reserve, :created_user_cd, "登録者" %></td>
+      <td class="admin_pages_edit_table_content" colspan=2><%=@create_user_name%></td>
+    </tr>
+  <% end %>
+  <tr>
+    <td class="admin_pages_edit_table_title"><%= label :reserve, :updated_at, "最終更新日" %></td>
+    <td class="admin_pages_edit_table_content" colspan=2><%=h datetime_strftime(@reserve.updated_at) %></td>
+  </tr>
+</table>
+</div>
+
+
+<%= hidden_field_tag 'invite_id', @reserve.invite_id %>
+<%= hidden_field_tag 'select_date', @reserve.plan_date_from %>
+<%= hidden_field_tag 'repeat_date_to', @reserve.repeat_date_to %>
+<%= hidden_field_tag 'week_start_date', @week_start_date %>
+<%= hidden_field_tag 'select_button', 0 %>
+<% if @secretaries_flg == 0 %>
+  <%= hidden_field_tag 'select_proxy_user_cd', "" %>
+<% elsif !(@reserve.id.nil? || @reserve.id == "") %>
+  <%= hidden_field_tag 'select_proxy_user_cd', @select_proxy_user_cd %>
+<% end %>
+<%= hidden_field_tag 'back_secretaries_user_cd', session[:back_secretaries_user_cd] %>
+<%= hidden_field_tag 'back_belong_index', session[:back_belong_index] %>
+<%= hidden_field_tag 'term_colon', @term_colon %>
+
+<div id="dialog_spare_time_other_member" title="空き状況の確認(同時登録メンバー)"></div>
+<div id="dialog_spare_time_facility" title="空き状況の確認(施設)"></div>
+
+<script type="text/javascript">
+<!--
+  /*
+  * ページロード時に同時登録選択決定リストを表示
+  */
+  $("#other_member_list").load(
+  "/schedule/reserve/other_member_list?id=" + $("#reserve_id").val()
+  + "&invite_id=" + $("#invite_id").val() + "&select_proxy_user_cd=" + $("#select_proxy_user_cd").val()
+  + "&plan_date_from=" + $("#d_schedule_plan_date_from").val(),
+  "",
+  function() {
+  });
+
+  /*
+  * ページロード時に施設選択決定リストを表示
+  */
+  $("#facility_list").load(
+  "/schedule/reserve/facility_list?id=" + $("#reserve_id").val()
+  + "&invite_id=" + $("#invite_id").val() + "&select_proxy_user_cd=" + $("#select_proxy_user_cd").val()
+  + "&plan_date_from=" + $("#d_schedule_plan_date_from").val(),
+  "",
+  function() {
+  });
+
+  /*
+  * 初期設定
+  */
+  $(document).ready(function(){
+    // カレンダー
+    setCalendar(jQuery("#d_schedule_plan_date_from"));
+    setCalendar(jQuery("#d_schedule_plan_date_to"));
+    setCalendar(jQuery("#d_schedule_reminder_specify_date"));
+    setCalendar(jQuery("#d_schedule_repeat_date_to"));
+    //ダイアログ
+    dialog_spare_time_other_member();
+    dialog_spare_time_facility();
+  });
+
+  /*
+   * 代理登録選択時の処理
+   */
+  function SelectSecretariesUserList(){
+    //画面遷移
+    document.location = "/schedule/reserve/new?&select_proxy_user_cd=" + $("#select_proxy_user_cd").val()
+          + "&date=" + $("#select_date").val() + "&from_mode=" + $("#from_mode").val()
+          + "&back_secretaries_user_cd=" + $("#back_secretaries_user_cd").val()
+          + "&back_belong_index=" + $("#back_belong_index").val()
+          + "&secretaries_user_cd=" + $("#select_proxy_user_cd").val();
+  }
+
+  /*
+   * 同時登録選択時の処理
+   */
+  function SelectOtherGroup(process_flg){
+    //選択されたidを取得する
+    other_checked_id = $("#other_belong_list").val();
+
+    if (process_flg == 1) {
+    //選択決定エリアのデータを全て削除
+      var dBox = document.getElementById("decided_member_");
+      for (var i = dBox.length-1; i > -1 ; i--) {
+        dBox.remove(i);
+      }
+      document.getElementById("decided_member_new").value = [];
+    }
+
+    // jQueryでの処理
+    $.ajax({
+        type:'get',
+        url:'/schedule/reserve/undecided_member?&other_checked_id=' + other_checked_id + "&select_proxy_user_cd=" + $("#select_proxy_user_cd").val(),
+        success:
+            function(request){
+                // 受信結果を一覧エリアに反映させます。
+                $('#other_member_undecide').html(request);
+            }
+    });
+  }
+
+  /*
+   * 選択した施設削除の処理
+   */
+  function ClickFacilityDelete(){
+    //該当データの削除
+    var dBox = document.getElementById("decided_facility_");
+    for (var i = dBox.length-1; i > -1 ; i--) {
+      if (dBox.options[i].selected == true) {
+        dBox.remove(i);
+      }
+    }
+   //選択決定エリアのデータを全て取得
+   var facility = new Array(dBox.length);
+   for (var i = 0; i < dBox.options.length; i++) {
+     facility[i] = dBox.options[i].value;
+   }
+   document.getElementById("decided_facility_new").value = facility;
+  }
+
+  /*
+   * 公開/非公開クリック時の処理
+   */
+  function ClickPublicList(public_flg, size) {
+    //公開の場合
+    if (public_flg == 1) {
+      //非公開のチェックボックスをOFFにする
+      $(".check_belong_list:input:checkbox[value='" + (size-1) + "']").attr("checked", false);
+
+    //非公開の場合
+    } else {
+      //公開のチェックボックスをOFFにする
+      for (i=0; i<size-1; i++) {
+        $(".check_belong_list:input:checkbox[value='" + i + "']").attr("checked", false);
+      }
+    }
+  }
+
+  /*
+   * 種別クリック時の処理
+   */
+  function ClickPlanKbn(allday_flg){
+    //終日フラグが立っている場合
+    if (allday_flg != null && allday_flg != "" && allday_flg == 1) {
+      //終日のチェックボックスにチェックをつける
+      $("#reserve_plan_allday_flg").attr("checked", true);
+    }
+  }
+-->
+</script>

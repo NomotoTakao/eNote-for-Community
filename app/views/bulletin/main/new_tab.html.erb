@@ -1,0 +1,32 @@
+<div id="new"></div>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        var edit_id = $("#edit_id").val();
+
+        jQuery.ajax(
+          {
+            type: "GET",
+            url: "/bulletin/main/new",
+            data:
+              {
+                edit_id : edit_id
+              },
+            success:
+              function(data, dataType){
+                $("#new").html(data);
+              },
+            error:
+              function(){
+                alert("通信エラー");
+              },
+            complete:
+              function(){}
+          }
+        );
+      }
+    );
+  //-->
+</script>

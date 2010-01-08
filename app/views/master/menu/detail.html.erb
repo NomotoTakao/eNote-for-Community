@@ -1,0 +1,193 @@
+<!-- エラー -->
+<% err = flash[:menu_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<!-- 修正する対象データ -->
+<table class="master_table2">
+  <tr>
+    <td class="master_table2_title">名称&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_menus[title]', @m_menus.title,  {:size => 40, :maxlength => 50} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">表示順&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_menus[sort_no]', @m_menus.sort_no, :maxlength => 3, :size => 5, :class => "ime_off" %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">ＵＲＬ</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_menus[url]', @m_menus.url, :maxlength => 255, :size => 80, :class => "ime_inactive" %>
+      <% check_flg = "" %>
+      <% if @m_menus.target.nil? || @m_menus.target == "_self" %>
+        <% check_flg = "checked" %>
+      <% end %>
+      <%= check_box("m_menus", "target", :value=>1, :checked=>check_flg, :class=>"check") %>このウインドウで開く
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">メモ<br><div style="font-weight:normal;">※管理メニューの場合入力してください。</div></td>
+    <td class="master_table2_content">
+      <%= text_area :m_menus, :memo, :rows=>5, :cols=>80 %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title" rowspan=2>参照/書き込み権限<br><br><div style="font-weight:normal;">※指定しない場合は<br>全員が権限を持つ設定になります。</div></td>
+    <td class="master_table2_content">
+      <table style="100%;">
+        <tr>
+          <th style="width:50%;text-align:left;">組織の選択</th>
+          <th style="width:50%;text-align:left;">社員の選択</th>
+        </tr>
+        <tr>
+          <td style="vertical-align:top;">
+            <div id="tree_org"></div>
+          </td>
+          <td style="vertical-align:top;">
+            <div id="undecided" style="padding-top:3px;">
+              <%= select_tag('undecided_member', "", :size=>5, :multiple=>false, :class=>'master_selectbox2') %>
+            </div>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">
+            <input id="auth_org_button" type="button" class="submit_ex_large" value="組織に追加"
+              onclick="ClickAddDecidedOrg($('#decided_auth_org_cd').val(), $('#decided_auth_org_name').val(), 'decided_auth_org')" />
+          </td>
+          <td style="text-align:center;">
+            <input id="auth_user_button" type="button" class="submit_ex_large" value="社員に追加"
+              onclick="ClickAddDecided('undecided_member','decided_auth_user')" />
+          </td>
+          <td>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_content">
+      <table style="100%;">
+        <tr>
+          <td style="width:50%;">
+            <b>組織：</b>
+            <div id="select_auth_org">
+              <% options = "" %>
+              <% if !@org_auth_decide.nil? %>
+                <% @org_auth_decide.each do |org|%>
+                  <% options += "<option value=#{org[0]} >#{org[1]}</options>" %>
+                <% end %>
+              <% end %>
+              <%= select_tag('decided_auth_org', options, :size=>5, :multiple=>true, :class=>'master_selectbox3') %>
+              <input id="delete_button" type="button" class="submit_small" value="削除" onclick="ClickDeleteButton('decided_auth_org')" />
+            </div>
+          </td>
+          <td style="width:50%;">
+            <b>社員：</b>
+            <div id="select_auth_user">
+              <% options = "" %>
+              <% if !@user_auth_decide.nil? %>
+                <% @user_auth_decide.each do |member|%>
+                  <% options += "<option value=#{member[0]} >#{member[1]}</options>" %>
+                <% end %>
+              <% end %>
+              <%= select_tag('decided_auth_user', options, :size=>5, :multiple=>true, :class=>'master_selectbox3') %>
+              <input id="delete_button" type="button" class="submit_small" value="削除" onclick="ClickDeleteButton('decided_auth_user')" />
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ボタン -->
+<table class="master_table_button">
+  <!-- ボタンの活性非活性を制御 -->
+  <% if @id.nil? || @id == "" || @id.to_s == "0" %>
+    <% disabled = "disabled" %>
+  <% else %>
+    <% disabled = "" %>
+  <% end %>
+  <tr>
+    <td style="text-align:right;">
+      <input type="submit" id="insert" name="insert" value="追加" class="submit_small" onclick="return ClickSubmitButton(1);">
+      <input type="submit" id="update" name="update" value="更新" class="submit_small" onclick="return ClickSubmitButton(2);" <%=disabled%>>
+      <input type="submit" id="delete" name="delete" value="削除" class="submit_small" onclick="return ClickSubmitButton(3);" <%=disabled%>>
+      <input type="button" id="cancel_button" class="submit_small" value="戻る" onclick="ClickCancel()" />
+    </td>
+  </tr>
+</table>
+<input type="hidden" id="sort_no_old" name="sort_no_old" value=<%=@m_menus.sort_no%>>
+<input type="hidden" id="decided_auth_org_all" name="decided_auth_org_all"> <!--参照/書き込み可能組織-->
+<input type="hidden" id="decided_auth_user_all" name="decided_auth_user_all"> <!--参照/書き込み可能社員-->
+
+<script type="text/javascript">
+<!--
+  /*
+   * 初期設定
+   */
+  $(document).ready(function(){
+    //ツリーを表示
+    $("#tree_org").load("/master/menu/tree_org");
+  });
+
+  /*
+   * 権限削除
+   */
+  function ClickDeleteButton(fromElement){
+    //選択された要素を削除する
+    DeleteElement(fromElement);
+  }
+
+  /*
+   * submitボタン押下
+   */
+  function ClickSubmitButton(submit_flg){
+    //ポップアップ
+    var msg = "";
+    if (submit_flg == 1) {
+      msg = "新規メニューを追加します。";
+    } else if (submit_flg == 2) {
+      msg = "メニューを更新します。";
+    } else if (submit_flg == 3) {
+      msg = "メニューを削除します。";
+    }
+    ret = confirm(msg + "宜しいですか？");
+    if (!ret) {
+      return false;
+    }
+
+    //処理フラグをhiddenに格納する
+    $("#submit_flg").val(submit_flg);
+
+    //入力チェック(追加,更新)
+    if (submit_flg == 1 || submit_flg == 2) {
+      result = CheckValidateMenu();
+      if (!result) {
+        return result;
+      }
+    }
+
+    //権限データを全てhiddenに格納する
+    document.getElementById("decided_auth_org_all").value = GetAllSelectBox("decided_auth_org");
+    document.getElementById("decided_auth_user_all").value = GetAllSelectBox("decided_auth_user");
+    return true;
+  }
+
+  /*
+   * 閉じる
+   */
+  function ClickCancel(){
+    document.location = "/master/menu/index";
+  }
+-->
+</script>

@@ -1,0 +1,102 @@
+<% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "fckeditor/fckeditor",
+      "jquery/treeview/jquery.treeview.js",
+      "jquery/mbTabset/mbTabset.js",
+      "app/cabinet"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "jquery/mbTabset/mbTabset.css",
+      "app/cabinet",
+      "pagenate.css"
+    ]) %>
+<% end -%>
+
+<input type="hidden" id="auto" value="<%= @auto %>" />
+<input type="hidden" id="function_name" name="function_name" value="cabinet" />
+<div style="padding:5px;">
+  <div class="tabset" id="tabset">
+    <ul>
+      <li><a href="/cabinet/public/cabinet_list_tab">キャビネット</a></li>
+      <li><a href="/cabinet/public/cabinet_create_tab">新規保存</a></li>
+<!-- 暫定画面：共有キャビネットの作成を許可する組織にチェックを入れて実行すると、d_cabinet_headsテーブル、d_cabinet_indicesテーブルにレコードを作成する。
+      <li><a href="/cabinet/public/settings">設定</a></li>
+-->
+    </ul>
+  </div>
+</div>
+<div id="dialog" title="ファイルの詳細">
+  <%= render :partial=>"dialog"%>
+</div>
+
+<br>
+<!-- キャビネット一覧で編集ボタンが押下された時には、ここにキャビネットIDがセットされる。 -->
+<input type="hidden" id="cabinet_id" name="cabinet_id" value="" />
+<input type="hidden" id="edit_id" name="edit_id" />
+<script type="text/javascript">
+  <!--
+  var tabs = new Array();
+  $(document).ready(
+    function(){
+      $("#tabset").tabs();
+	
+	  $("#tabset").find("ul").attr("class", "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all");
+  
+      // タブの枠線を描く
+      var cls = "ui-widget-content ui-corner-bottom mbTabsetContainer";
+      var hide = " ui-tabs-hide";
+      var elements = $("#tabset").find("ul").find("a");
+      var key_string = "ui-tabs-";
+    
+      for(i=0; i<elements.length; i++){
+        // ”ui-tabs-"を含む要素を取り出す。
+        if(String(elements[i]).search(key_string) > 0){
+          str = "#" + String(elements[i]).substring(String(elements[i]).search(key_string));
+          tabs[tabs.length] = str;
+        }
+      }
+    
+      for(i=0; i<tabs.length; i++){
+        if(i!=0){
+          cls += hide;
+        }
+        $(tabs[i]).attr("class", cls);
+      }
+
+      var auto = $("#auto").val();
+      if(auto != ""){
+        auto = auto.split(",");
+        cabinet_kbn = auto[0];
+        cabinet_kbn = auto[1];
+        cabinet_kbn = auto[2];
+      }
+    }
+  );
+   
+   
+  function open_dialog(){
+    $('#dialog').dialog('open');
+  };
+  
+  /*
+   * 引数によってタブを切り替えます。
+   * 
+   * @param tabIndex - 0: キャビネット
+   *                   1: 新規ほ孫
+   */
+  function showTab(tabIndex){
+    
+	if(tabIndex == 0){
+      $("a:contains('キャビネット')").click();
+	}else if(tabIndex == 1){
+      $("a:contains('新規保存')").click();
+	}
+  }
+  
+  //-->
+</script>

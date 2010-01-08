@@ -1,0 +1,219 @@
+<%= hidden_field :d_report_customer, :id %>
+<table class="admin_pages_edit_table" cellspacing="0" cellpadding="1" style="width:380px;">
+  <caption style="text-align:right;"><%= report_date @d_report_customer.d_report.action_date %></caption>
+  <tr>
+    <td class="admin_pages_edit_table_title">得意先</td>
+    <td class="admin_pages_edit_table_content">
+      <select id="select_customer" style="width:230px;">
+        <option value="">&nbsp;</option>
+        <% unless @customer_list.nil? %>
+          <% @customer_list.each do |customer| %>
+            <option value="<%= customer.company_cd %>"><%= customer.name %></option>
+          <% end %>
+        <% end %>
+      </select>
+      <%= hidden_field :d_report_customer, :company_cd %>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">対象者</td>
+    <td class="admin_pages_edit_table_content">
+      <select id="select_target" style="width:230px;">
+        <option value="">&nbsp;</option>
+        <% unless @action_target_list.nil? %>
+          <% @action_target_list.each do |target| %>
+            <option value="<%= target.action_target_cd %>"><%= target.action_target_name %></option>
+          <% end %>
+        <% end %>
+      </select>
+      <%= hidden_field :d_report_customer, :action_target_cd %>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">活動内容</td>
+    <td class="admin_pages_edit_table_content">
+      <select id="select_group" style="width:230px;">
+        <option value="">&nbsp;</option>
+        <% unless @action_group_list.nil? %>
+          <% @action_group_list.each do |group| %>
+            <option value="<%= group.action_group_cd %>"><%= group.action_group_name %></option>
+          <% end %>
+        <% end %>
+      </select>
+      <%= hidden_field :d_report_customer, :action_group_cd %>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">活動詳細</td>
+    <td class="admin_pages_edit_table_content">
+      <select id="select_action" style="width:230px;">
+        <option value="">&nbsp;</option>
+      </select>
+      <%= hidden_field :d_report_customer, :action_cd %>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">活動時間</td>
+    <td class="admin_pages_edit_table_content">
+      <input type="text" id="d_report_customer_action_time" value="<%= time_helper @d_report_customer.action_time.to_f %>" style="text-align:right;" size="8" class="ime_off" />&nbsp;時間
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">活動金額</td>
+    <td class="admin_pages_edit_table_content">
+      <input type="text" id="d_report_customer_sale_amount" value="<%= sales_helper @d_report_customer.sale_amount.to_i %>" style="text-align:right;" size="8" class="ime_off" />&nbsp;円
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">コメント</td>
+    <td class="admin_pages_edit_table_content">
+      <%= text_area :d_report_customer, :comment, :rows=>"5", :cols=>"35", :class=>"ime_on" %>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    /**
+     * ダイアログの内容を登録する処理
+     */
+    function dialog_register(){
+
+      var id = $("#d_report_customer_id").val();
+      var action_date = $("#input_report_date").val();
+      var company_cd = $("#d_report_customer_company_cd").val();
+      var action_target_cd = $("#d_report_customer_action_target_cd").val();
+      var action_group_cd = $("#d_report_customer_action_group_cd").val();
+      var action_cd = $("#d_report_customer_action_cd").val();
+      var action_time = $("#d_report_customer_action_time").val();
+      var sale_amount = $("#d_report_customer_sale_amount").val();
+      var comment = $("#d_report_customer_comment").val();
+      var authenticity_token = $("#authenticity_token").val();
+
+      jQuery.ajax(
+        {
+          type : "POST",
+          url  : "/report/main/register_report",
+          data :
+            "id=" + id + "&" +
+            "date=" + action_date + "&" +
+            "c=" + company_cd + "&" +
+            "t=" + action_target_cd + "&" +
+            "a=" + action_group_cd + "&" +
+            "d=" + action_cd + "&" +
+            "cmt=" + comment + "&" +
+            "time=" + action_time + "&" +
+            "sales=" + sale_amount + "&" +
+            "authenticity_token=" + authenticity_token,
+          success :
+            function(data, dataType){
+              close();
+            },
+          error :
+            function(){
+              alert("通信エラー");
+            },
+          complete :
+            function(){
+              get_input_list();
+            }
+        }
+      );
+    }
+
+    /**
+     * 得意先セレクトボックスの値を変更したときに発生するイベント
+     */
+    $("#select_customer").change(
+      function(){
+        $("#d_report_customer_company_cd").val($(this).val());
+      }
+    );
+
+    /**
+     * 対象者セレクトボックスの値を変更したときに発生するイベント
+     */
+    $("#select_target").change(
+      function(){
+        $("#d_report_customer_action_target_cd").val($(this).val())
+      }
+    );
+
+    /**
+     * 活動内容セレクトボックスの値を変更したときに発生するイベント
+     */
+    $("#select_group").change(
+      function(){
+        $("#d_report_customer_action_group_cd").val($(this).val());
+        action_list($(this).val(), "");
+      }
+    );
+
+    /**
+     * 活動詳細セレクトボックスの値を変更したときに発生するイベント
+     */
+    $("#select_action").change(
+      function(){
+        $("#d_report_customer_action_cd").val($(this).val());
+      }
+    );
+
+    /**
+     * 画面がロードされたときに発生するイベント
+     */
+    $(document).ready(
+      function(){
+        var company_cd = $("#d_report_customer_company_cd").val();
+        var target_cd = $("#d_report_customer_action_target_cd").val();
+        var group_cd = $("#d_report_customer_action_group_cd").val();
+        var action_cd = $("#d_report_customer_action_cd").val();
+
+        // 活動内容の値(group_cd)から活動詳細の一覧を取得して、活動詳細のセレクトボックスにセットする。
+        action_list(group_cd, action_cd);
+
+        $("#select_customer").val(company_cd);
+        $("#select_target").val(target_cd);
+        $("#select_group").val(group_cd);
+      }
+    );
+
+    /**
+     * 活動内容のセレクトボックスの値から、活動詳細セレクトボックスの内容を取得し設定する処理
+     * @param {Object} group_cd - 活動内容セレクトボックスの値
+     * @param {Object} action_cd - 活動詳細セレクトボックスの初期値として選択状態にする項目の値
+     */
+    function action_list(group_cd, action_cd){
+      if(group_cd != ""){
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/report/main/action_list",
+            data :
+              {
+                action_group_cd : group_cd
+              },
+            success :
+              function(data, dataType){
+                $("#select_action").html("");
+                $("#select_action").html("<option value=''>&nbsp;</option>" +data);
+                $("#d_report_customer_action_cd").val("");
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){
+                if(action_cd != ""){
+                  $("#select_action").val(action_cd);
+                  // このコードを書かないと、画面呼び出し時にhiddenフィールドの値がクリアされたままになる。
+                  $("#d_report_customer_action_cd").val(action_cd);
+                }
+              }
+          }
+        );
+      }
+    }
+
+  //-->
+</script>

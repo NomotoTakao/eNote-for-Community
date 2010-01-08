@@ -1,0 +1,80 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "app/master"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "app/master"
+    ]) %>
+<% end -%>
+
+<div id="input_area" style="padding:5px;">
+  <% form_tag url_for(:action=>:save), :multipart => true, :target=>"menu_create_form_upload_frame" do %>
+    <table style="width:100%">
+      <!-- 選択された階層の全データ -->
+      <tr style="width:100%;text-align:left;">
+        <td>
+          <div id="select_menu">
+            <% options = "" %>
+            <% if !@edit_menu_list.nil? %>
+              <% @edit_menu_list.each do |data|%>
+                <% options += "<option value=#{data.id} >#{data.title}</options>" %>
+              <% end %>
+            <% end %>
+            <%= select_tag('decided_select_menu', options, :size=>10, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickTargetMenu();') %>
+          </div>
+        </td>
+      </tr>
+
+      <!-- 修正する対象データ -->
+      <tr style="width:100%;text-align:left;">
+        <td colspan=2>
+          <!-- 入力フォーム -->
+          <div id="detail"></div>
+        </td>
+      </tr>
+    </table>
+    <input type="hidden" id="target_level" name="target_level" value=<%=@target_level%>>
+    <input type="hidden" id="sort_no_colon" name="sort_no_colon" value="<%=@sort_no_colon%>">
+    <input type="hidden" id="id" name="id" value=0>
+    <input type="hidden" id="menu_kbn" name="menu_kbn" value=<%=@menu_kbn%>>
+    <input type="hidden" id="parent_id" name="parent_id" value=<%=@parent_id%>>
+    <input type="hidden" id="submit_flg" name="submit_flg" value=0>
+  <% end %>
+</div>
+<iframe id='menu_create_form_upload_frame' name='menu_create_form_upload_frame' style='display:none;'></iframe>
+
+<script type="text/javascript">
+<!--
+  /*
+   * 初期化
+   */
+  $(document).ready(function(){
+    //空の詳細エリアを表示
+    $("#detail").load("/master/menu/detail?id=0");
+  });
+
+  /*
+   * 該当規程集クリック時の処理
+   */
+  function ClickTargetMenu(){
+    id = $("#decided_select_menu").val();
+    //IDをhiddenに格納
+    $("#id").val(id);
+    //該当データを表示
+    $.ajax({
+      type: 'get',
+      url: '/master/menu/detail?id=' + id + '&target_level=' + $("#target_level").val(),
+      success:
+        function(request){
+          $('#detail').html(request);
+        }
+    });
+  }
+-->
+</script>

@@ -1,0 +1,3 @@
+id,user_cd,d_rss_trunk_id,delf,created_user_cd,created_at,updated_user_cd,updated_at
+1,9999999,1,0,9999999,<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>,9999999,<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>
+2,9999999,2,0,9999999,<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>,9999999,<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>

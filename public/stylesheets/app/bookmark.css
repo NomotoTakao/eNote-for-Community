@@ -1,0 +1,119 @@
+/******************************************
+ * ブックマークページ Settings
+ ******************************************/
+
+.enote_general_table1 {
+  border:                       1px solid #b2b2b2;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_header {
+  border-collapse:              collapse;
+  color:                        #ffffff;
+  height:                       30px;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_footer {
+  background-color:             #ffffff;
+  border-collapse:              collapse;
+  color:                        cornsilk;
+  height:                       30px;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_title {
+/*  background-image:             url('../../../images/table1_header.gif'); */
+  background-image:             url('../../../images/titleback01.gif');
+  background-repeat:            repeat-x;
+  border-collapse:              collapse;
+/*  color:                        #4a4a4a; */
+  color:                        #000000;
+  height:                       20px;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_odd {
+  background-color:             #eeffcc;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_even {
+  background-color:             #ffffff;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_transparent {
+  background-color:             transparent;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+}
+
+.enote_general_table1_cell_bordered {
+  border:                       1px solid #b2b2b2;
+  border-collapse:              collapse;
+  padding:                      1px 0px;
+}
+.enote_general_table1_cell_header {
+  background-image:             url("../../../images/titleback01.gif");
+  background-repeat:            repeat-x;
+/*  width:                        100px;*/
+  padding:                      0px 3px 0px 3px;
+  color:                        #000000;
+  text-align:                   left;
+  vertical-align:               middle;
+  height:                       22px;
+}
+.enote_general_table1_cell_dotted {
+  border:                       none;
+  border-bottom:                1px dotted #333333;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      2px;
+}
+.enote_general_table1_cell_borderless {
+  border:                       none;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      2px;
+}
+.enote_general_table1_impact_cell_bordered {
+  background-color:             black;
+  border:                       1px solid black;
+  border-collapse:              collapse;
+  color:                        cornsilk;
+  margin:                       0px;
+  padding:                      2px;
+}
+.enote_general_table1_impact_cell_borderless {
+  background-color:             black;
+  border:                       none;
+  border-collapse:              collapse;
+  color:                        cornsilk;
+  margin:                       0px;
+  padding:                      2px;
+}
+.admin_pages_edit_table {
+    border:  1px solid #000;
+    width:  550px;
+}
+.admin_pages_edit_table_title {
+    border:  1px solid #000;
+    background-color:  #add4e9;
+    font-weight:  bold;
+    padding-left:  10px;
+    width:  40%;
+    height: 30px;
+    text-align: left;
+}
+.admin_pages_edit_table_content {
+    border:  1px solid #000;
+    background-color:  white;
+    padding: 5px 5px 5px 10px;;
+    width:  60%;
+    text-align: left;
+}

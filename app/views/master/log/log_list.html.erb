@@ -1,0 +1,115 @@
+
+
+<table class="enote_general_table1" style="width:800px;">
+  <tr class="enote_general_table1_title">
+    <th class="enote_general_table1_cell_bordered header" order="created_at" mode="<%= @next_mode_created_at %>">日時<%=h order_mark(@next_mode_created_at) %></th>
+    <th class="enote_general_table1_cell_bordered header" order="created_user_cd" mode="<%= @next_mode_created_user_cd %>">操作者<%=h order_mark(@next_mode_created_user_cd) %></th>
+    <th class="enote_general_table1_cell_bordered header" order="table_name" mode="<%= @next_mode_table_name %>">対象テーブル<%=h order_mark(@next_mode_table_name) %></th>
+    <th class="enote_general_table1_cell_bordered header" order="manipulate_id" mode="<%= @next_mode_manipulate_id %>">対象レコードID<%=h order_mark(@next_mode_manipulate_id) %></th>
+    <th class="enote_general_table1_cell_bordered header" order="manipulate_name" mode="<%= @next_mode_manipulate_name %>">操作<%=h order_mark(@next_mode_manipulate_name) %></th>
+  </tr>
+<% @log_list.each do |log| %>
+  <tr class="log_record">
+    <td style="text-align:center;">
+      <%=h format_datetime(log.created_at) %>
+	</td>
+    <td style="text-align:center;">
+      <%=h user_name(log.created_user_cd) %>
+    </td>
+    <td style="text-align:center;"">
+      <%=h log.table_name %>
+    </td>
+    <td style="text-align:center;">
+      <%=h log.manipulate_id %>
+    </td>
+    <td style="text-align:center;">
+      <%=h log.manipulate_name %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<table style="border:0px;width:100%;">
+  <tr>
+    <td style="text-align:center;padding-left:10px;">
+      <%= will_paginate @log_list, :renderer => RemoteLinkRenderer,
+                                       :update => 'log_list',
+                                       :url=> {
+                                                   :action => 'log_list',
+                                                   :date_from            => @date_from,
+                                                   :date_to              => @date_to,
+                                                   :manipulate_user_name => @manipulate_user_name,
+                                                   :table_name           => @table_name,
+                                                   :manipulate_id        => @manipulate_id,
+                                                   :manipulate_name      => @manipulate_name,
+                                                   :order => @order,
+                                                   :mode  => @mode
+                                                 },
+                                       :prev_label => "<<前へ",
+                                       :next_label => "次へ>>",
+                                       :method => :get
+      %>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $(".log_record").mouseover(
+      function(){
+        $(this).css("background-color", "aqua");
+      }
+    );
+	
+    $(".log_record").mouseout(
+      function(){
+        $(this).css("background-color", "white");
+      }
+    );
+
+    $(".header").mouseover(
+      function(){
+        $(this).css("cursor", "pointer");
+      }
+    );
+
+	$(".header").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+	
+    $(".header").click(
+      function(){
+        order = $(this).attr("order");
+        mode = $(this).attr("mode");
+        jQuery.ajax(
+          {
+            type     : "GET",
+            url      : "/master/log/log_list",
+            data     :
+              {
+                date_from            : $("#date_from_h").val(),
+                date_to              : $("#date_to_h").val(),
+                manipulate_user_name : $("#manipulate_user_name_h").val(),
+                table_name           : $("#table_name_h").val(),
+                manipulate_id        : $("#manipulate_id_h").val(),
+                manipulate_name      : $("#manipulate_name_h").val(),
+                order : order,
+                mode  : mode
+              },
+            success  :
+              function(data, dataType){
+                $("#log_list").html(data);
+              },
+            error    :
+              function(){
+                alert("通信エラー");
+              },
+            complete :function(){}
+          }
+        );
+      }
+    );
+  //-->
+</script>

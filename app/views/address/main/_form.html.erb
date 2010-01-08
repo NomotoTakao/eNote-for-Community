@@ -1,0 +1,184 @@
+<!-- 連絡先入力FORM -->
+
+<%= error_messages_for 'd_address' %>
+
+<!--[form:d_addresses]-->
+<table class="address_form_table address_form_table">
+  <tr>
+    <td class="address_form_table_title">名前&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="address_form_table_cell_bordered">
+        <%= _text_field @no_edit_mode, 'd_address', 'name', {:size => 40, :maxlength => 40, :class => "ime_on"} %>
+        <span id='d_address_name_msg'></span>
+    </td>
+  </tr>
+
+  <tr>
+    <td class="address_form_table_title">ふりがな</td>
+    <td class="address_form_table_cell_bordered">
+    <%= _text_field @no_edit_mode, 'd_address', 'name_kana', {:size => 40, :maxlength => 40, :class => "ime_on"} %>
+        <span id='d_address_name_kana_msg'></span>
+    </td>
+  </tr>
+
+  <tr>
+    <td class="address_form_table_title">メールアドレス</td>
+    <td class="address_form_table_cell_bordered">
+        <%= _text_field @no_edit_mode, 'd_address', 'email_address1', {:size => 60, :maxlength => 128, :class => "ime_off"}  %>
+    <span id="en_d_address_email_address1_msg"></span>
+    </td>
+  </tr>
+  <!-- 社員以外 -->
+  <% if @member_address_kbn != 1 %>
+    <tr>
+      <td class="address_form_table_title">メールアドレス(その他)</td>
+      <td class="address_form_table_cell_bordered">
+          <%= _text_field @no_edit_mode, 'd_address', 'email_address2', {:size => 60, :maxlength => 128, :class => "ime_off"}  %>
+      <span id="en_d_address_email_address2_msg"></span>
+      </td>
+    </tr>
+    <tr>
+      <td class="address_form_table_title">メールアドレス(その他)</td>
+      <td class="address_form_table_cell_bordered">
+          <%= _text_field @no_edit_mode, 'd_address', 'email_address3', {:size => 60, :maxlength => 128, :class => "ime_off"}  %>
+      <span id="en_d_address_email_address3_msg"></span>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td class="address_form_table_title">携帯電話</td>
+    <td class="address_form_table_cell_bordered"><%= _text_field @no_edit_mode, 'd_address', 'mobile_no',{:size => 20, :maxlength => 20, :class => "ime_off"}  %></td>
+  </tr>
+  <tr>
+    <td class="address_form_table_title">携帯メールアドレス</td>
+    <td class="address_form_table_cell_bordered"><%= _text_field @no_edit_mode, 'd_address', 'mobile_address',{:size => 60, :maxlength => 128, :class => "ime_off"}  %></td>
+  </tr>
+  <!-- 社員 -->
+  <% if @member_address_kbn == 1 %>
+    <tr>
+      <td class="address_form_table_title">携帯会社</td>
+      <td class="address_form_table_cell_bordered"><%= _text_field @no_edit_mode, 'd_address', 'mobile_company',{:size => 20, :maxlength => 10, :class => "ime_on"}  %></td>
+    </tr>
+    <tr>
+      <td class="address_form_table_title">携帯機種</td>
+      <td class="address_form_table_cell_bordered"><%= _text_field @no_edit_mode, 'd_address', 'mobile_kind',{:size => 20, :maxlength => 20, :class => "ime_on"}  %></td>
+    </tr>
+  <% end %>
+</table>
+<hr style="clear:both;" />
+<table class="address_form_table address_form_table">
+  <!-- 社員以外 -->
+  <% if @member_address_kbn != 1 %>
+    <tr>
+      <td style="height:45px;" class="address_form_table_title">勤務先</td>
+      <td style="height:45px;" class="address_form_table_cell_bordered">
+        <table>
+          <tr>
+            <td style="width:50px;align:left">会社名：</td>
+            <td style="align:left">
+              <%= _text_field @no_edit_mode, 'd_address', 'company_name', {:size => 60, :maxlength => 100, :class => "ime_on"}  %>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:50px;align:left">部署名：</td>
+            <td style="align:left">
+              <%= _text_field @no_edit_mode, 'd_address', 'company_post', {:size => 60, :maxlength => 100, :class => "ime_on"} %>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:50px;align:left">役職：</td>
+            <td style="align:left">
+              <%= _text_field @no_edit_mode, 'd_address', 'company_job',{:size => 20, :maxlength => 40, :class => "ime_on"} %>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="address_form_table_title">勤務先名カナ</td>
+      <td class="address_form_table_cell_bordered"><%= _text_field @no_edit_mode, 'd_address', 'company_name_kana',{:size => 60, :maxlength => 100, :class => "ime_on"}  %></td>
+    </tr>
+    <tr>
+      <td class="address_form_table_title">勤務先郵便番号</td>
+      <td class="address_form_table_cell_bordered"><%= _text_field @no_edit_mode, 'd_address', 'company_zip_cd',{:size => 10, :maxlength => 8, :class => "ime_off"}  %></td>
+    </tr>
+    <tr>
+      <td style="height:65px;" class="address_form_table_title">勤務先住所</td>
+      <td style="height:65px;" class="address_form_table_cell_bordered" style="padding-left:0px;">
+        <table>
+          <tr>
+            <td style="align:left">
+              <%= _text_field @no_edit_mode, 'd_address', 'company_address1', {:size => 60, :maxlength => 60, :class => "ime_on"}  %>
+            </td>
+          </tr>
+          <tr>
+            <td style="align:left">
+              <%= _text_field @no_edit_mode, 'd_address', 'company_address2', {:size => 60, :maxlength => 60, :class => "ime_on"}  %>
+            </td>
+          </tr>
+          <tr>
+            <td style="align:left">
+              <%= _text_field @no_edit_mode, 'd_address', 'company_address3', {:size => 60, :maxlength => 60, :class => "ime_on"}  %>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="address_form_table_title">勤務先電話番号１</td>
+      <td class="address_form_table_cell_bordered"><%= _text_field @no_edit_mode, 'd_address', 'company_tel1',{:size => 20,:maxlength => 20, :class => "ime_off"}  %></td>
+    </tr>
+    <tr>
+      <td class="address_form_table_title">勤務先電話番号２</td>
+      <td class="address_form_table_cell_bordered"><%= _text_field @no_edit_mode, 'd_address', 'company_tel2',{:size => 20,:maxlength => 20, :class => "ime_off"}  %></td>
+    </tr>
+    <tr>
+      <td class="address_form_table_title">勤務先FAX</td>
+      <td class="address_form_table_cell_bordered"><%= _text_field @no_edit_mode, 'd_address', 'company_fax',{:size => 20,:maxlength => 20, :class => "ime_off"}  %></td>
+    </tr>
+    <tr>
+      <td class="address_form_table_title">勤務先Webページ</td>
+      <td class="address_form_table_cell_bordered"><%= _text_field @no_edit_mode, 'd_address', 'company_homepage_url', {:size => 60,:maxlength => 255, :class => "ime_inactive"}  %></td>
+    </tr>
+  <!-- 社員 -->
+  <% else %>
+    <td class="address_form_table_title">所属</td>
+    <td class="address_form_table_cell_bordered">
+      <% count = 0 %>
+      <% for org_name in @org_list %>
+        <% if count > 0 %>
+          <br>
+        <% end %>
+        <%=org_name.case%>
+        <% count = count + 1 %>
+      <% end %>
+    </td>
+  <% end %>
+</table>
+<hr style="clear:both;" />
+<table class="address_form_table address_form_table">
+  <!-- 社員以外 -->
+  <% if @member_address_kbn != 1 %>
+    <tr>
+      <td class="address_form_table_title">検索キーワード</td>
+      <td class="address_form_table_cell_bordered"><%= _text_field @no_edit_mode, 'd_address', 'meta_tag', {:size => 20,:maxlength => 20, :class => "ime_on"}  %></td>
+    </tr>
+    <tr>
+      <td style="height:120px;" class="address_form_table_title">備考</td>
+      <td style="height:120px;" class="address_form_table_cell_bordered"><%= _text_area @no_edit_mode, 'd_address', 'memo', {:cols => 50, :rows => 5, :class => "ime_on"}  %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <td class="address_form_table_title">登録者</td>
+    <td class="address_form_table_cell_bordered"><%= @create_user_name %></td>
+  </tr>
+  <tr>
+    <td class="address_form_table_title">登録日</td>
+    <td class="address_form_table_cell_bordered"><%= format_datetime(@d_address.created_at) %></td>
+  </tr>
+  <tr>
+    <td class="address_form_table_title">更新日</td>
+    <td class="address_form_table_cell_bordered"><%= format_datetime(@d_address.updated_at) %></td>
+  </tr>
+</table>
+<!--[eoform:d_address]-->
+<input type="hidden" id="next_form" name="next_form" value=1>

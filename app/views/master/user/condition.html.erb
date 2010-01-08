@@ -1,0 +1,92 @@
+<table style="margin:10px 0px 0px 10px;width:100%;">
+  <tr>
+    <th style="width:30%;text-align:left;">
+      <%= radio_button_tag("select_mode", 1, true, :class=>"check", :style=>"vertical-align:middle;") %>組織で検索
+    </th>
+    <th style="width:5%;"></th>
+    <th style="width:30%;"></th>
+    <th style="width:35%;"></th>
+  </tr>
+  <tr>
+    <!-- 組織ツリーエリア -->
+    <td style="text-align:center">
+      <div id="tree_org"></div>
+    </td>
+    <!-- 矢印 -->
+    <td style="text-align:center">
+      <input id="btn_move_right" type="button" value=">" style="border:0px;"
+        onclick="ClickAddDecidedOrg($('#decided_org_cd').val(), $('#decided_org_name').val(), 'decided_org')" />
+    </td>
+    <!-- 選択決定エリア -->
+    <td style="text-align:center;vertical-align:top;padding-top:5px;">
+      <div id="select_org">
+        <%= select_tag('decided_org', "", :size=>5, :multiple=>true, :class=>'master_selectbox2') %>
+      </div>
+    </td>
+    <td style="text-align:left;vertical-align:bottom;">
+      <input id="delete_button" type="button" class="submit_small" value="削除" onclick="ClickDeleteButton('decided_org')" />
+    </td>
+  </tr>
+</table>
+<table style="margin:10px 0px 0px 10px;width:100%;">
+  <tr>
+    <th style="width:10%;text-align:left;">
+      <%= radio_button_tag("select_mode", 2, false, :class=>"check", :style=>"vertical-align:middle;") %>あいまい検索（社員コード または 社員名）
+    </th>
+  </tr>
+  <tr>
+    <td style="text-align:left;">
+      <%= text_field_tag "sword","",{:size => 20, :style => "height:20px;width:150px;margin:0px;"} %>
+    </td>
+  </tr>
+</table>
+<table class="master_table_button">
+  <tr>
+    <td style="text-align:left;">
+      <input id="select_button" type="submit" class="submit_small" value="検索" onclick="ClickSelectButton()" />
+      <input id="new_button" type="submit" class="submit_small" value="新規" onclick="ClickNewButton()" />
+    </td>
+    <td style="text-align:right;">
+      <input id="back_list_button" type="button" class="submit_large" value="マスタ一覧へ戻る" onclick="ClickBackToMasterList()" />
+    </td>
+  </tr>
+</table>
+
+<%= hidden_field_tag 'decided_org_cd' %>
+<%= hidden_field_tag 'decided_org_name' %>
+<%= hidden_field_tag 'decided_org_all' %>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    //組織ツリーを表示
+    $("#tree_org").load("/master/user/tree_org");
+  });
+
+  /*
+   * 新規
+   */
+  function ClickNewButton(){
+    document.location = "/master/user/new";
+  }
+
+  /*
+   * 検索
+   */
+  function ClickSelectButton(){
+    //選択された組織を全て取得
+    document.getElementById("decided_org_all").value = GetAllSelectBox("decided_org");
+  }
+
+  /*
+   * 削除
+   */
+  function ClickDeleteButton(fromElement){
+    //選択された要素を削除する
+    DeleteElement(fromElement);
+  }
+-->
+</script>

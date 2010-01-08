@@ -1,0 +1,63 @@
+<!-- 回覧板一覧 -->
+<table class="enote_general_table1">
+  <tr class="enote_general_table1_title">
+    <th style="width:440pt" class="enote_general_table1_cell_bordered" order="title" mode="<%= @title_next %>" >
+    タイトル
+    </th>
+    <th style="width:120pt" class="enote_general_table1_cell_bordered" order="post_user_name" mode="<%= @post_user_name_next %>">
+    発信者
+    </th>
+    <th style="width:80pt" class="enote_general_table1_cell_bordered" order="post_user_name" mode="<%= @post_user_name_next %>">
+    回覧期限
+    </th>
+    <th style="width:40pt" class="enote_general_table1_cell_bordered">&nbsp;</th>
+  </tr>
+
+  <% @bulletins.each do |bulletin| %>
+    <tr style="height:30px;">
+      <td class="enote_general_table1_cell_bordered" style="padding-left:5px;text-align:left;">
+        <%= link_to bulletin_marker(bulletin, @current_m_user), "#", :onclick => "disp_bulletin_detail(#{bulletin.d_bulletin_head_id});" %>
+      </td>
+      <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= bulletin.post_user_name %></td>
+      <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= datetime_strftime_bulletin(bulletin.bulletin_date_to.to_date) %></td>
+      <td class="enote_general_table1_cell_bordered" style="text-align:center;">
+    <% if bulletin.post_user_cd == current_m_user.user_cd %>
+      <%= link_to(image_tag("icons/icon_trash.gif"), {:action => "delete", :id => bulletin.d_bulletin_head_id, :kbn_id => @kbn_id}, {:confirm => "削除してよろしいですか？"}) %>
+    <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<table style="width:100%;">
+  <tr>
+    <td style="text-align:center;padding-left:10px;">
+    <%#= will_paginate @cabinet_list, :renderer => RemoteLinkRenderer,
+                                    :update => 'cabinet_list',
+                                    :params=> { :action => 'cabinet_list',
+                                                :id=>@index_id,
+                                                :date_from=>@date_from,
+                                                :date_to=>@date_to,
+                                                :keyword=>@keyword
+                                              },
+                                    :prev_label => "<<前へ",
+                                    :next_label => "次へ>>",
+                                    :method => :get %>
+    </td>
+  </tr>
+</table>
+<input type="hidden" id="pre_edit_id" value="<%= @edit_id %>" />
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        var edit_id = $("#pre_edit_id").val();
+        if(edit_id != ""){
+          $("#edit_id").val(edit_id);
+          // 「新規作成」タブをクリックする。
+          showTab(1);
+        }
+      }
+    );
+  //-->
+</script>

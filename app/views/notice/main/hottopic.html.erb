@@ -1,0 +1,38 @@
+<!-- ホットトピック -->
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "app/notice"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "app/notice",
+      "pagenate.css"
+    ]) %>
+<% end -%>
+
+<table style="width:100%;">
+  <tr>
+<!--    <td style="width:20%;">&nbsp;</td> -->
+    <td align="center">
+      <div id="notice_list" />
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        // お知らせ一覧を読み込む
+        url = "/notice/main/notice_list";
+        url += "?hottopic_flg=0"
+        $("#notice_list").load(url);
+      }
+    );
+  //-->
+</script>

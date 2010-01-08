@@ -1,0 +1,134 @@
+<table style="width:100%;text-align:left;">
+  <tr>
+    <td colspan=3><h4>【対象ボードの選択】</h4></td>
+  </tr>
+  <!-- タイトル -->
+  <tr>
+    <td style="width:33%;">1階層目</td>
+    <td style="width:33%;">2階層目</td>
+    <td style="width:33%;">3階層目</td>
+  </tr>
+  <!-- 内容 -->
+  <tr>
+    <!-- 1階層目 -->
+    <td>
+      <div id="first_notice">
+        <% options = "" %>
+        <% if !@first_notice_list.nil? %>
+          <% @first_notice_list.each do |data|%>
+            <% options += "<option value=#{data.d_notice_head_id} >#{data.title}</options>" %>
+          <% end %>
+        <% end %>
+        <%= select_tag('decided_first_notice', options, :size=>5, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickFirstNotice();') %>
+      </div>
+    </td>
+    <!-- 2階層目 -->
+    <td>
+      <div id="second_notice">
+        <%= select_tag('decided_second_notice', '', :size=>5, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickSecondNotice();') %>
+      </div>
+    </td>
+    <!-- 3階層目 -->
+    <td>
+      <div id="third_notice">
+        <%= select_tag('decided_third_notice', '', :size=>5, :multiple=>false, :style=>'width:300px;') %>
+      </div>
+    </td>
+  </tr>
+  <!-- 選択ボタン -->
+  <tr>
+    <td>
+      <input type="button" id="first_select" name="first_select" value="選択" class="submit_small" onclick="return ClickEditNoticeSelect(1);">
+    </td>
+    <td>
+      <input type="button" id="second_select" name="second_select" value="選択" class="submit_small" onclick="return ClickEditNoticeSelect(2);">
+    </td>
+    <td>
+      <input type="button" id="third_select" name="third_select" value="選択" class="submit_small" onclick="return ClickEditNoticeSelect(3);">
+    </td>
+  </tr>
+</table>
+<br>
+<hr style="clear:both;" />
+<br>
+<!-- 編集エリア -->
+<table style="width:100%;">
+  <tr>
+    <td>
+      <%= form_tag({:action=>'save_notice_board'}) %>
+        <div id="edit_notice_board"></div>
+        <input type="hidden" id="parent_id" name="parent_id">
+      </form>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+<!--
+/*
+ * 1階層目クリック時の処理
+ */
+function ClickFirstNotice(){
+  //2階層目を表示
+  $.ajax({
+    type: 'get',
+    url: '/master/notice/notice_board_list?parent_id=' + $("#decided_first_notice").val() + '&target_level=2',
+    success:
+      function(request){
+        //2階層目にデータ表示
+        $('#second_notice').html(request);
+      }
+  });
+}
+
+/*
+ * 2階層目クリック時の処理
+ */
+function ClickSecondNotice(){
+  //3階層目を表示
+  $.ajax({
+    type: 'get',
+    url: '/master/notice/notice_board_list?parent_id=' + $("#decided_second_notice").val() + '&target_level=3',
+    success:
+      function(request){
+        //3階層目にデータ表示
+        $('#third_notice').html(request);
+      }
+  });
+}
+
+/*
+ * 編集ボードの選択ボタンクリック時の処理
+ */
+function ClickEditNoticeSelect(select_level){
+  //選択された階層により親IDを判断する
+  var parent_id = 0;
+  if (select_level == 1) {
+    parent_id = 0;
+  } else if (select_level == 2) {
+    parent_id = $("#decided_first_notice").val();
+  } else if (select_level == 3) {
+    parent_id = $("#decided_second_notice").val();
+  }
+
+  //選択チェック(親IDが選択されていない場合エラー)
+  if (parent_id == null) {
+    alert((select_level-1) + "階層目のボードを選択してください。");
+    return;
+  }
+
+  //hiddenに格納
+  $("#parent_id").val(parent_id);
+
+  //編集エリアを表示
+  $.ajax({
+    type: 'get',
+    url: '/master/notice/edit_notice_board?parent_id=' + parent_id,
+    success:
+      function(request){
+        $('#edit_notice_board').html(request);
+      }
+  });
+}
+-->
+</script>

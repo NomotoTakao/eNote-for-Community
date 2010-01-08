@@ -1,0 +1,106 @@
+
+<ul id="sosiki_browser" class="filetree">
+  <li>
+    <span class="file">全社</span>
+  </li>
+  <%
+    prev_org = nil
+    clsSpan = ""
+    clsLi = ""
+
+  %>
+  <% @orgs.each do |org| %>
+    
+    <% unless prev_org.nil? %>
+	  <%
+        if prev_org.org_lvl < org.org_lvl
+          cls_li = "closed"
+          cls_span = "folder"
+        else
+          cls_li = ""
+          cls_span = "file"
+        end
+      %>
+      <%
+	    if prev_org.org_lvl == 1 
+          org_name = prev_org.org_name1
+        elsif prev_org.org_lvl == 2
+          org_name = prev_org.org_name2
+        elsif prev_org.org_lvl == 3
+          org_name = prev_org.org_name3
+        elsif prev_org.org_lvl == 4
+          org_name = prev_org.org_name4
+        end
+      %>
+	
+      <li class="<%=cls_li %>">
+        <span class="<%=cls_span %>">
+          <font class="public_org" code="<%=prev_org.org_cd %>">
+            <%= org_name %>
+          </font>
+        </span>
+        <% if prev_org.org_lvl < org.org_lvl %>
+		  <ul>
+		<% end %>		
+		<% if prev_org.org_lvl > org.org_lvl %>
+		  <% down = prev_org.org_lvl - org.org_lvl %>
+		  <% if down == 1 %>
+		    </ul>
+		  <% elsif down == 2 %>
+		    </ul></ul>
+		  <% elsif down == 3 %>
+		    ul3</ul></ul></ul>
+		  <% end %>
+		<% end %>
+	<% end%>
+	<% prev_org = org %>
+  <% end %>
+
+  <%
+    org = @orgs[@orgs.length - 1]
+    prev_org = @orgs[@orgs.length - 2]
+    if prev_org.org_lvl < org.org_lvl
+      cls_li = "closed"
+      cls_span = "folder"
+    else
+      cls_li = ""
+      cls_span = "file"
+    end
+  %>
+  <%
+    if org.org_lvl == 1 
+      org_name = org.org_name1
+    elsif org.org_lvl == 2
+      org_name = org.org_name2
+    elsif org.org_lvl == 3
+      org_name = org.org_name3
+    elsif org.org_lvl == 4
+      org_name = org.org_name4
+    end
+  %>
+  <li class="<%=cls_li %>">
+    <span class="<%=cls_span %>">
+      <font class="public_org">
+        <%= org_name %>
+      </font>
+    </span>
+</ul>
+		  
+<script type="text/javascript">
+   <!--
+    $(document).ready(
+      function(){
+	  	$("#sosiki_browser").treeview();
+		
+		$(".public_org").click(
+          function(){
+            bgChange($(this), $(".public_org"));
+			org_cd = $(this).attr("code");
+
+            $("#d_bbs_auths_org_cd").val(org_cd);
+          }
+        );
+	  }
+    );
+  //-->
+</script>

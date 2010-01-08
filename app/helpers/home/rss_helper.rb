@@ -1,0 +1,2 @@
+module Home::RssHelper
+end

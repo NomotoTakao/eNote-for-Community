@@ -1,0 +1,96 @@
+<% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "app/sessions"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "app/sessions"
+    ]) %>
+<% end -%>
+
+<% form_tag ({:action => 'create_after_change_passwd'}) do -%>
+  <div align="center" style="width:100%;">
+    <table style="width:980px;margin-top:100px;">
+      <tr>
+        <td align="center" valign="top">
+          <table cellpadding="0" border="0" background="/images/login/login-logo.gif" style="width:300px;height:350px;">
+            <tr>
+              <td height="50">&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                <div title="Change_passwd" id="change_passwd_form" class="form">
+                  <table cellpadding="0" border="0" height="120" style="margin-top:80px;width:100%;">
+                    <tr height="30">
+                      <td colspan=2 style="text-align:center;">パスワードを変更してください。</td>
+                    </tr>
+                    <tr height="30">
+                      <td style="text-align:right;width:170px;">現在のパスワード：</td>
+                      <td style="text-align:left;">
+                        <%= password_field_tag 'password_old', nil, :size=>15 %>
+                      </td>
+                    </tr>
+                    <tr height="30">
+                      <td style="text-align:right;">新規パスワード：</td>
+                      <td style="text-align:left;">
+                        <%= password_field_tag 'password_new', nil, :size=>15 %>
+                      </td>
+                    </tr>
+                    <tr height="30">
+                      <td style="text-align:right;">確認用パスワード：</td>
+                      <td style="text-align:left;">
+                        <%= password_field_tag 'password_confirm', nil, :size=>15 %>
+                      </td>
+                    </tr>
+                    <tr height="40">
+                      <td align="center" colspan="2">
+                        <%= submit_tag '変更', :class => "submit", :onclick=>"return ClickEditButton();"  %>
+                      </td>
+                    </tr>
+                    <!-- エラーメッセージ -->
+                    <tr height="40">
+                      <td align="center" colspan="2">
+                        <% if @message %>
+                          <p id="message" style="width:90%;text-align:center;color:red;font-weight:bold;">
+                            <%= @message %>
+                          </p>
+                        <% end %>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <input type="hidden" id="password" name="password" value=<%=current_m_user.passwd%>>
+<% end -%>
+
+<script type="text/javascript">
+<!--
+  /*
+   * 変更ボタン押下時
+   */
+  function ClickEditButton(){
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+  }
+
+  $(document).ready(
+    function(){
+      $("#password_old").focus();
+    }
+  );
+-->
+</script>

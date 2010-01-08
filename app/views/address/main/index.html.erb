@@ -1,0 +1,210 @@
+<% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "app/address"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "app/address",
+      "pagenate.css"
+    ]) %>
+<% end -%>
+
+<div style="padding:5px;">
+<table class="frame_2pain" style="">
+<tr>
+<!-- 左側エリア -->
+<td class="frame_2pain_left" style="">
+  <div class="gadget" style="width:240px;">
+    <div id="" class="gadget_title" style="">
+      <h3 style=""><img src="/images/icons/icon_address.gif" align="top" style="margin-right:5px;">アドレス帳</h3>
+    </div>
+    <!-- 条件選択エリア -->
+    <div class="gadget_body">
+      <select id="gkbn" name="gkbn" style="width:120px;" onchange="SelectGroupList()">
+        <option value = "1">社内宛先</option>
+        <option value = "2">プロジェクト</option>
+        <option value = "8">共用グループ</option>
+        <option value = "9" selected>個人用</option>
+      </select>
+    </div>
+    <!-- 条件詳細エリア -->
+    <div id="enote_address_condition"></div>
+  </div>
+  <br><br>
+  <!-- 検索エリア -->
+  <div class="gadget" style="width:240px;">
+    <div id="" class="gadget_title" style="">
+      <h3 style=""><img src="/images/icons/icon_address.gif" align="top" style="margin-right:5px;">アドレス帳を検索</h3>
+    </div>
+    <%= form_remote_tag(:update => 'enote_address_main',
+      :url => {:action => :addrs_list} , :loading => "$('app_title').innerHTML ='アドレス帳 > 検索'") %>
+      <div class="gadget_body">あいまい検索：<br>
+        <%= text_field_tag 'sword','',{:size => 20, :class => "ime_on", :style => "height:20px;width:150px;margin:0px;"} %>
+        <%= submit_tag "検索", :class => "submit_small", :style => "margin:0px;" %>
+      </div>
+    </form>
+  </div>
+  <br><br>
+  <!-- グループへの遷移エリア -->
+  <div class="gadget" style="width:240px;">
+    <div id="" class="gadget_title" style="">
+      <h3 style=""><img src="/images/icons/icon_address.gif" align="top" style="margin-right:5px;">グループの編集</h3>
+    </div>
+    <div>
+      <table>
+        <tr>
+          <td style="width:120px;text-align:center;">
+            <form name="new_form" action="/address/group">
+              <input value='<%= h("新規") %>' id="enote_address_group_new" class='submit_small' type="submit" />
+              <input type="hidden" id="mode" name="mode" value="0" />
+              <input type="hidden" id="gid" name="gid" value="0" />
+            </form>
+          </td>
+          <td style="width:120px;text-align:center;">
+            <form name="edit_form" action="/address/group" onsubmit="return ClickGroupVerifyButton()">
+              <input value='<%= h("編集") %>' id="enote_address_group_verify" class='submit_small' type="submit" />
+              <input type="hidden" id="mode" name="mode" value="1" />
+              <input type="hidden" id="gid" name="gid" value="" />
+            </form>
+          </td>
+          <td style="width:120px;text-align:center;">
+            <form name="delete_form" action="/address/group/delete" onsubmit="return ClickGroupDeleteButton()">
+              <input value='<%= h("削除") %>' id="enote_address_group_delete" class='submit_small' type="submit" />
+              <input type="hidden" id="gid" name="gid" value="" />
+            </form>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</td>
+<!-- 右側エリア -->
+<td class="frame_2pain_right" style="">
+  <div id="enote_address_main"></div>
+</td>
+</tr>
+</table>
+</div>
+
+<input type="hidden" id="adr_id" name="adr_id" value=<%=@adr_id%>>
+
+<script type="text/javascript">
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    //サイト内検索から遷移してきた場合
+    if ($("#adr_id").val() != null && $("#adr_id").val() != "") {
+      //右領域に編集画面を表示
+      $("#enote_address_main").load("/address/main/edit?adr_id=" + $("#adr_id").val());
+
+    } else {
+      //右領域にアドレスリストを表示
+      $("#enote_address_main").load("/address/main/addrs_list?gkbn=" + $("#gkbn").val());
+    }
+
+    //グループ領域にリスト(メーカー/社員/プロジェクト/共用グループ/個人)を表示
+    $("#enote_address_condition").load("/address/main/condition?gkbn=" + $("#gkbn").val());
+  });
+
+  /*
+   * グループ(メーカー/社員/プロジェクト/共用グループ/個人)選択時の処理
+   */
+  function SelectGroupList(){
+    // jQueryでの処理
+    $.ajax({
+      type:'get',
+      url:'/address/main/condition?&gkbn=' + $("#gkbn").val(),
+      success:
+        function(request){
+          // 受信結果を一覧エリアに反映させます。
+          $('#enote_address_condition').html(request);
+        }
+    });
+  }
+
+  /*
+   * 編集リンク押下時の処理
+   */
+  function ClickEditLink(id, gid, gkbn, orgcd, proid, sword){
+    // jQueryでの処理
+    $.ajax({
+      type:'get',
+      url:'/address/main/edit?adr_id=' + id + '&gid=' + gid + '&gkbn=' + gkbn
+          + '&orgcd=' + orgcd + '&proid=' + proid
+          + '&sword=' + encodeURIComponent(sword),
+      success:
+        function(request){
+          // 受信結果を右領域に反映させます。
+          $('#enote_address_main').html(request);
+        }
+    });
+  }
+
+  /*
+   * 削除ボタン押下時の処理
+   */
+  function ClickDeleteButton(id, gid, gkbn, orgcd, proid, sword){
+    if (confirm("削除してよろしいですか？")) {
+      // jQueryでの処理
+      $.ajax({
+        type: 'get',
+        url: '/address/main/delete?id=' + id + '&gid=' + gid + '&gkbn=' + gkbn
+            + '&orgcd=' + orgcd + '&proid=' + proid
+            + '&sword=' + encodeURIComponent(sword),
+        success:
+          function(request){
+            // 受信結果を右領域に反映させます。
+            $('#enote_address_main').html(request);
+          }
+      });
+    }
+  }
+
+  /*
+   * グループ編集ボタン押下時の処理
+   */
+  function ClickGroupVerifyButton(){
+    //メーカー or 社員 or グループが未選択の場合
+    if ($("#gkbn").val() != 9 || $("#address_condition").length == 0 || $("#address_condition").val() == null) {
+      alert("グループを選択してください。");
+      return false;
+
+    //「全て」を選択の場合
+    } else if ($("#address_condition").val() == 0) {
+      alert("グループは全て以外を選択してください。");
+      return false;
+
+    } else {
+      document.edit_form.gid.value = $("#address_condition").val();
+    }
+  }
+
+  /*
+   * グループ削除ボタン押下時の処理
+   */
+  function ClickGroupDeleteButton(){
+    //メーカー or 社員 or グループが未選択の場合
+    if ($("#gkbn").val() != 9 || $("#address_condition").length == 0 || $("#address_condition").val() == null) {
+      alert("グループを選択してください。");
+      return false;
+
+    //「全て」を選択の場合
+    } else if ($("#address_condition").val() == 0) {
+      alert("グループは全て以外を選択してください。");
+      return false;
+
+    } else {
+      document.delete_form.gid.value = $("#address_condition").val();
+      if (!confirm("削除してよろしいですか？")) {
+        return false;
+      }
+    }
+  }
+</script>
+

@@ -1,0 +1,75 @@
+<%# コメント一覧 %>
+
+<%= hidden_field "comment_lastpost_date", "", :value=>formatMD(@lastpost_date) %>
+<table style="margin-left:40px;width:620px;text-align:left;">
+  <tr>
+    <td style="text-align:center;">
+<% if @comment_list.size > 0 %>
+  <% if params[:mode]=="1" %>
+  <%= link_to_remote "新しいものから", :update=>"comment_list", :url=>{:action=>"comment_list", :board_id=>@comment_list[0].d_bbs_board_id, :thread_id=>@comment_list[0].d_bbs_thread_id, :mode=>"2"}%>
+    &nbsp;&nbsp;&nbsp;<font color="#1e90ff">古い物から</font>
+  <% else %>
+    <font color="#1e90ff">新しい物から</font>&nbsp;&nbsp;&nbsp;
+  <%= link_to_remote "古いものから", :update=>"comment_list", :url=>{:action=>"comment_list", :board_id=>@comment_list[0].d_bbs_board_id, :thread_id=>@comment_list[0].d_bbs_thread_id, :mode=>"1"}%>
+  <% end %>
+<% end %>
+    </td>
+  </tr>
+</table>
+
+<% @comment_list.each do |comment| %>
+  <table class="bbs_head_table" style="margin-left: 40px; width: 620px; text-align: left;">
+    <tbody>
+      <tr>
+        <td style="text-align: left; width: 320px;" class="bbs_head_table_i">作成者：<%= comment.post_user_name %></td>
+        <td style="text-align: right; width: 300px;" class="bbs_head_table_i">&nbsp;&nbsp;作成日：<%= formatMD(comment.post_date) %></td>
+      </tr>
+      <tr style="" class="desc1">
+        <td colspan="2" class="bbs_head_table_b" style="text-align:left;">
+          <%= display(comment.body) %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+<% end %>
+<% if @comment_list.size > 0%>
+  <table style="width:100%;">
+    <tr>
+      <td style="text-align:center;padding-left:10px;">
+      <%= will_paginate @comment_list, :renderer => RemoteLinkRenderer,
+                                       :update => 'comment_list',
+                                       :params=> { :action => 'comment_list',
+                                                   :board_id=>@comment_list[0].d_bbs_board_id,
+                                                   :thread_id=>@comment_list[0].d_bbs_thread_id,
+                                                   :mode=>@mode
+                                                 },
+                                       :prev_label => "<<前へ",
+                                       :next_label => "次へ>>",
+                                       :method => :get
+      %>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        $(document).scrollTop = 0;
+        // コメント一覧を更新
+        $("#d_bbs_comments_body").val("");
+    var lastpost_date = $("#comment_lastpost_date_").val();
+        // 最終投稿日を更新
+        if(lastpost_date != ""){
+          $("#lastpost_date").html("最終投稿日<br>" + lastpost_date);
+        }
+        // 新規投稿記事一覧を更新
+        url = "/bbs/main/newly_list?board_id=:board_id&thread_id=:thread_id";
+        url = url.replace(":board_id", board_id).replace(":thread_id", thread_id);
+        $("#newly_list").load(url);
+      }
+    );
+  //-->
+</script>

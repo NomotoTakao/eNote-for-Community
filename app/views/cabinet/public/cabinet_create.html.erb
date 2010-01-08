@@ -1,0 +1,472 @@
+<!-- 新規保存 タブ -->
+<%
+  unless @d_cabinet_body.nil?
+    unless @d_cabinet_body.nil?
+      unless @d_cabinet_body.d_cabinet_head.nil?
+        unless @d_cabinet_body.d_cabinet_head.d_cabinet_index.nil?
+          parent_id = @d_cabinet_body.d_cabinet_head.d_cabinet_index.parent_cabinet_head_id
+        end
+      end
+    end
+  end
+
+  select_options = ""
+  hiddenvalue = ""
+  unless @d_cabinet_body.nil?
+    org_name = ""
+    org_code = ""
+    @d_cabinet_body.d_cabinet_public_orgs.each do |org|
+      if org.org_cd == 0
+        org_name = "全社"
+        org_code = "0"
+      else
+        org_name = @morgs[org.org_cd.to_s]
+        org_code = org.org_cd
+      end
+      select_options += "<option value=#{org_code}>#{org_name}</option>"
+      hiddenvalue += "_" + org_code.to_s + "_,"
+    end
+  end
+%>
+<input type="hidden" id="sub_directory" name="sub_directory" value="<%= current_m_user.user_cd %>" />
+<%= form_tag({:action=>'create'}, {:multipart=>true, :target=>'cabinet_create_form_upload_frame'}) %>
+  <%= hidden_field :parent_id, nil, :value=>parent_id %>
+  <%= hidden_field :d_cabinet_body, :d_cabinet_head_id%>
+  <input type="hidden" id="selectedCabinetName" value="" />
+  <%= hidden_field :d_cabinet_body, :id %>
+  <table class="admin_pages_edit_table" cellpadding="1" cellspacing="0" style="width:960px;margin-left:20px;">
+    <tr>
+      <td class="admin_pages_edit_table_title">キャビネットの種別</td>
+      <td class="admin_pages_edit_table_content">
+        <!-- 保存するキャビネットの選択 -->
+        <div style="width:200px;border:1px solid black;background-color:#fff;text-align:left;"">
+          <%
+            options = ""
+            # 部内キャビネットの項目がなければ非表示
+            unless @sectional_cabinet_indices_list.length == 0
+              options += "<option value='2' #{("selected" if @d_cabinet_body.d_cabinet_head.cabinet_kbn == 2) unless @d_cabinet_body.d_cabinet_head.nil?}>部内キャビネット</option>"
+            end
+            unless @project_cabinet_indices_list.length == 0
+              options += "<option value='3' #{("selected" if @d_cabinet_body.d_cabinet_head.cabinet_kbn == 3) unless @d_cabinet_body.d_cabinet_head.nil?}>プロジェクト</option>"
+            end
+            unless @company_cabinet_indices_list.length == 0
+              options += "<option value='1' #{("selected" if @d_cabinet_body.d_cabinet_head.nil?) || ("selected" if @d_cabinet_body.d_cabinet_head.cabinet_kbn == 1)}>全社</option>"
+            end
+          %>
+          <%= select_tag("selectCabinet", options, :size=>1, :style=>'width:100%;border:0;', :multiple=>false) %>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">保存するキャビネットの選択<br /><span style="color: red;">（必須）</span></td>
+      <td class="admin_pages_edit_table_content">
+        <div id="public_cabinet" style="background-color:#fff;text-align:left;height:150px;width:350px;"></div>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">
+        <font id="sectional_folder_edit_title" style="display:block;">部内キャビネットの編集</font>
+        <font id="public_org_table_title" style="display:none;">公開対象組織の選択<span style="color: red;">（必須）</span></font>
+      </td>
+      <td class="admin_pages_edit_table_content">
+        <!-- キャビネットの作成・編集・削除(「保存するキャビネットの選択｣で"部内キャビネット"が選択されたときのみ表示) -->
+        <table id="folder_edit" style="display:block;">
+          <tr>
+            <td nowrap>
+              <%= text_field 'new_cabinet_name', '', {:size => 20, :style => "height:20px;width:150px;margin:0px;"} %>
+              <input type="button" value="作成" class="submit_small" onClick="createCabinet();" />
+              <input type="button" value="名称変更" class="submit_small" onClick="editCabinet();" />
+              <input type="button" value="削除" class="submit_small" onClick="deleteCabinet();" />
+              <div id="confirm_cabinet" />
+            </td>
+          </tr>
+        </table>
+        <!-- 公開対象組織の選択(「保存するキャビネットの選択」で"全社"が選択されたときのみ表示) -->
+        <table id="public_org_table" style="display:none;">
+          <tr>
+            <td>
+              <div id="public_org_select" />
+            </td>
+            <td valign="middle">
+              <input type="button" id="public_org_add" class="submit_small" value=">" />
+              <br />
+              <br />
+              <input type="button" id="public_org_delete" class="submit_small" value="<" />
+            </td>
+            <td valign="top" text-align="left">
+              <div style="border:1px solid black;width:150px;height:210px;background-color:#fff;text-align:left;">
+                <%= select_tag("public_org_list", select_options, :size=>13, :style=>'width:100%;height:100%;border:0;', :multiple=>true) %>
+                <input type="hidden" id="selected_public_org_list" name="selected_public_org_list" value="<%= hiddenvalue %>" />
+                <input type="hidden" id="deleted_public_org_list" name="deleted_public_org_list" value="" />
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">公開期間</td>
+      <td class="admin_pages_edit_table_content">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td><%= text_field :d_cabinet_body, :public_date_from, {:class=>"ime_off", :maxlength => 10, :style => "width:100px;"} %></td>
+            <td align="text-align;center" width="30">&nbsp;&nbsp;～</td>
+            <td><%= text_field :d_cabinet_body, :public_date_to, {:class=>"ime_off", :maxlength => 10, :style => "width:100px;"} %></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">タイトル<span style="color: red;">（必須）</span></td>
+      <td class="admin_pages_edit_table_content">
+        <div class="enote_blog_subject">
+          <%= text_field :d_cabinet_body, :title, {:size => 60, :maxlength => 40, :style => "width:680px;height:25px;font-size:1.5em;", :class => 'enote_blog_subject_text ime-on' } %>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">本文の編集</td>
+      <td class="admin_pages_edit_table_content">
+        <div class="enote_blog_body">
+          <%= fckeditor_textarea :d_cabinet_body, :body, {:toolbarSet => "Simple", :width=>'100%', :height=>'500px', :class =>'enote_blog_body_text ime_on'} %>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">検索キーワード</td>
+      <td class="admin_pages_edit_table_content">
+        <%= text_field :d_cabinet_body, :meta_tag, {:size => 60, :style => "width:600px;", :class => 'enote_blog_subject_text' } %>
+        <br>(複数のキーワードを入力する場合は、','で区切ってください。)
+      </td>
+    </tr>
+    <tr>
+      <td class="admin_pages_edit_table_title">保存するファイルの指定</td>
+      <td class="admin_pages_edit_table_content">
+        <div id="attachment_file">
+          <%= render :partial=>"attachment_file" %>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <table style="border:0px;width:100%;">
+    <tr>
+      <td style="text-align:left;padding-left:10px;">
+        <%= submit_tag '登録',{:class => 'submit', :onclick => 'return ClickSaveButton()'} %>
+      </td>
+      <td>&nbsp;</td>
+      <td style="text-align:right;padding-right:10px;">
+        <%
+          target = ""
+          unless @d_cabinet_body.nil? or @d_cabinet_body.id.nil?
+            target = @d_cabinet_body.d_cabinet_head.cabinet_kbn.to_s  + '_' + @d_cabinet_body.d_cabinet_head_id.to_s
+          end
+        %>
+        <input type="button" class="submit_large" value="一覧へ戻る" onClick="returnCabinet('<%= target %>');" />
+      </td>
+    </tr>
+  </table>
+</form>
+
+<script type="text/javascript">
+  <!--
+
+
+    /*
+     * ">"にマウスフォーカスを当てた時のイベント
+     */
+    $("#public_org_add").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /*
+     * ">"をクリックしたときのイベント
+     */
+    $("#public_org_add").click(
+      function(){
+        // ツリーで選択されている組織の名称とコードが格納されているテキストフィールドから、値を取得する。
+        element = $("#public_org_cd").val().split(",");
+        // 既に同じ項目が選択されていないかチェックして、追加されていなければ右セレクトボックスに追加する。
+        if($("#selected_public_org_list").val().indexOf("_" + element[1]) == -1){
+          // option要素のvalue属性にelement[1]を、テキストをelement[0]にしてセレクトボックスに追加
+          $("#public_org_list").append($('<option>').attr({value:element[1]}).text(element[0]));
+          // 選択されている項目のコードをhiddenフィールドに格納する。
+          $("#selected_public_org_list").val($('#selected_public_org_list').val() + "_" + element[1] + "_,");
+          // 選択されている項目のコードが削除用のリストに存在すれば、消去する。
+          $("#deleted_public_org_list").val($("#deleted_public_org_list").val().replace("_" + element[1] + "_,", ""));
+        }
+      }
+    );
+
+    /*
+     *  "<"にマウスフォーカスを当てた時のイベント
+     */
+    $("#public_org_delete").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /*
+     *  "<"をクリックしたときのイベント
+     */
+    $("#public_org_delete").click(
+      function(){
+        txt = "";
+        val = "";
+        arrayText = "";
+        arrayVal = "";
+        txtDeletedTxt = ""
+        $("#public_org_list option:selected").each(
+          function(){
+            txt += $(this).html() + ",";
+            val += $(this).val() + ",";
+          }
+        );
+        arrayText = txt.split(",");
+        arrayVal = val.split(",");
+        txtSelectedTxt = $("#selected_public_org_list").val();
+        arraySelectedTxt = txtSelectedTxt.split(",");
+
+        for(i=0; i<arrayVal.length-1; i++){
+          txtDeletedTxt += "_" + arrayVal[i] + "_,"
+          txtSelectedTxt = txtSelectedTxt.replace("_" + arrayVal[i] + "_,", "");
+        }
+        $("#deleted_public_org_list").val($("#deleted_public_org_list_").val() + txtDeletedTxt);
+        $("#selected_public_org_list").val(txtSelectedTxt);
+        $("#public_org_list option:selected").remove();
+      }
+    );
+
+
+    $(document).ready(
+      function(){
+
+        $("#public_org_select").load("/common/public_org/index");
+        url = "";
+        $(document).scrollTop = 0;
+
+        // カレンダー
+        setCalendar(jQuery("#d_cabinet_body_public_date_from"));
+        setCalendar(jQuery("#d_cabinet_body_public_date_to"));
+
+        // キャビネット選択
+        cabinet_kbn = $("#selectCabinet").val();
+        if(cabinet_kbn == 1){
+          url = "/cabinet/public/company_cabinet?select=<%= @d_cabinet_body.d_cabinet_head.id unless @d_cabinet_body.d_cabinet_head.nil? %>";
+          $("#public_org_table_title").css("display", "block");
+          $("#public_org_table").css("display", "block");
+          $("#sectional_folder_edit_title").css("display", "none");
+          $("#folder_edit").css("display", "none");
+        }else if(cabinet_kbn == 2){
+          url = "/cabinet/public/sectional_cabinet?id=" + cabinet_kbn + "&select=<%= @d_cabinet_body.d_cabinet_head.id unless @d_cabinet_body.d_cabinet_head.nil? %>";
+          $("#public_org_table_title").css("display", "none");
+          $("#public_org_table").css("display", "none");
+          $("#sectional_folder_edit_title").css("display", "block");
+          $("#folder_edit").css("display", "block");
+        }else if(cabinet_kbn == 3){
+          url = "/cabinet/public/project_cabinet?select=<%= @d_cabinet_body.d_cabinet_head.id unless @d_cabinet_body.d_cabinet_head.nil? %>";
+          $("#public_org_table_title").css("display", "none");
+          $("#public_org_table").css("display", "none");
+          $("#sectional_folder_edit_title").css("display", "none");
+          $("#folder_edit").css("display", "none");
+        }
+
+        if(url != ""){
+          $("#public_cabinet").load(url);
+        }
+
+    // 保存するキャビネットの種類(部内・プロジェクト・全社)が変更されたときに発生する。
+        $("[name=selectCabinet]").change(
+          function(){
+            cabinet_kbn = $(this).val();
+            $("#selectedCabinetName").val("");
+            $("#d_cabinet_body_d_cabinet_head_id").val("");
+            if(cabinet_kbn == 1){
+              // 全社キャビネット
+              url = "/cabinet/public/company_cabinet/";
+              // 「公開対象組織の選択｣を表示
+              $("#public_org_table_title").css("display", "block");
+              $("#public_org_table").css("display", "block");
+              $("#sectional_folder_edit_title").css("display", "none");
+              $("#folder_edit").css("display", "none");
+            }else if(cabinet_kbn == 3){
+              // プロジェクトキャビネット
+              url = "/cabinet/public/project_cabinet/";
+              // 「公開対象組織の選択」を非表示
+              $("#public_org_table_title").css("display", "none");
+              $("#public_org_table").css("display", "none");
+              $("#sectional_folder_edit_title").css("display", "none");
+              $("#folder_edit").css("display", "none");
+            }else{
+              org_cd = $("#selectCabinet").val();
+              url = "/cabinet/public/sectional_cabinet/" + org_cd;
+              // 「公開対象組織の選択」を非表示
+              $("#public_org_table_title").css("display", "none");
+              $("#public_org_table").css("display", "none");
+              $("#sectional_folder_edit_title").css("display", "block");
+              $("#folder_edit").css("display", "block");
+            }
+
+            $("#d_cabinet_body_d_cabinet_head_id")
+
+            $("#public_cabinet").load(url);
+          }
+        );
+        $("#auto").val("");
+      }
+    );
+
+    /*
+     * 「保存」ボタンが押下された時の処理。
+     * 入力チェックを行います。
+     */
+    function ClickSaveButton(){
+      //入力チェック
+      var result = CheckPublicValidate();
+
+      if(result){
+        // 入力チェックがOKのとき、登録確認をおこないOKのときのみ登録する。
+        // 選択されたキャビネットの名称を取得
+        var selectedCabinetName = $("#selectedCabinetName").val();
+        // 入力されたキャビネット名を取得
+        var inputCabinetName = $("#d_cabinet_body_title").val();
+        return confirm("保存するキャビネット：" + selectedCabinetName + "\nタイトル：" + inputCabinetName + "\n\n以上の内容で登録します。\nよろしいですか？");
+      }else{
+        return false;
+      }
+    }
+
+  /*
+   * 「一覧へ戻る」アンカーを押下した時に呼ばれる処理。
+   * 「キャビネット」タブを表示します。
+   */
+  function returnCabinet(id){
+      $("a:contains('キャビネット')").click();
+      $("#auto").val(id);
+      $("#" + id).click();
+  }
+
+    /*
+     * 「保存するキャビネットの選択」ツリーの「部内キャビネット」の下に
+     * キャビネットを追加作成する。
+     */
+    function createCabinet(){
+      // 選択されている組織コードを取得する。
+      parent_id = $("#parent_id_").val();
+      // 新しく作成するキャビネットの名前を取得する。
+      new_cabinet_name = $("#new_cabinet_name_").val();
+
+      if (parent_id != "") {
+      if (new_cabinet_name != "") {
+          jQuery.ajax(
+            {
+              type: "GET",
+              url: "/cabinet/public/create_cabinet",
+              data:
+                {
+                  parent_id: parent_id,
+                  title: new_cabinet_name
+                },
+              success:
+                function(){
+                  url = "/cabinet/public/sectional_cabinet";
+                  $('#public_cabinet').load(url);
+                  // キャビネット名入力テキストボックスの内容をクリアする。
+                  $("#new_cabinet_name_").val("");
+                  $("#parent_id_").val();
+                },
+              error:
+                function(){
+                  alert("通信エラー");
+                }
+            }
+          );
+        }else{
+          alert("作成するキャビネットの名称を入力してください。");
+        }
+      }else{
+        alert("キャビネットの作成先を選択してください。");
+      }
+    }
+
+    /*
+     * 部内キャビネットの名前を変更する。.
+     */
+    function editCabinet(){
+    head_id = $("#d_cabinet_body_d_cabinet_head_id").val();
+      new_cabinet_name = $("#new_cabinet_name_").val();
+
+      if (head_id != "") {
+      if (new_cabinet_name != "") {
+          jQuery.ajax(
+            {
+              type: "GET",
+              url: "/cabinet/public/edit_cabinet",
+              data:
+                {
+                  head_id: head_id,
+                  title: new_cabinet_name
+                },
+              success:
+                function(){
+                  url = "/cabinet/public/sectional_cabinet";
+                  $('#public_cabinet').load(url);
+                  // キャビネット名入力テキストボックスの内容をクリアする。
+                  $("#new_cabinet_name_").val("");
+                  $("#d_cabinet_body_d_cabinet_head_id").val("");
+                },
+              error:
+                function(){
+                  alert("通信エラー");
+                }
+            }
+          );
+        }else{
+          alert("変更後のキャビネット名称を入力してください。");
+        }
+    }else{
+        alert("名称を変更するキャビネットを選択してください。");
+      }
+    }
+
+    /*
+     * 部内キャビネットを削除する。
+     */
+    function deleteCabinet(){
+      head_id = $("#d_cabinet_body_d_cabinet_head_id").val();
+      if (head_id != "") {
+        // 削除しようとしている部内キャビネットにファイルが保存されていないかをチェックする。
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/cabinet/public/confirm_cabinet",
+            data :
+              {
+                head_id : head_id
+              },
+            success :
+              function(data, dataType){
+                $("#confirm_cabinet").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }else{
+        alert("削除するキャビネットを選択してください。");
+      }
+    }
+  //-->
+</script>

@@ -1,0 +1,76 @@
+<% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "jquery/mbTabset/mbTabset.js",
+      "fckeditor/fckeditor",
+      "app/bulletin"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "jquery/mbTabset/mbTabset.css",
+      "app/bulletin"
+    ]) %>
+<% end -%>
+
+<input type="hidden" id="function_name" name="function_name" value="bulletin" />
+<input type="hidden" id="sub_directory" name="sub_directory" value="<%= current_m_user.user_cd %>" />
+<div style="padding:5px;">
+  <div class="tabset" id="tabset">
+    <input type="hidden" id="edit_id" value="<%= @edit_id %>" />
+    <ul>
+      <li><a href="/bulletin/main/list?kbn_id=<%=@kbn_id%>">回覧板一覧</a></li>
+      <li><a href="/bulletin/main/new_tab">新規作成</a></li>
+    </ul>
+  </div>
+</div>
+
+<script type="text/javascript">
+  <!--
+  var tabs = new Array();
+  $(document).ready(function(){
+    $("#tabset").tabs();
+
+    $("#tabset").find("ul").attr("class", "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all");
+
+    // タブの枠線を描く
+    cls = "ui-widget-content ui-corner-bottom mbTabsetContainer";
+    hide = " ui-tabs-hide";
+    elements = $("#tabset").find("ul").find("a");
+    key_string = "ui-tabs-";
+
+    for(i=0; i<elements.length; i++){
+      // ”ui-tabs-"を含む要素を取り出す。
+      if(String(elements[i]).search(key_string) > 0){
+        str = "#" + String(elements[i]).substring(String(elements[i]).search(key_string));
+        tabs[tabs.length] = str;
+      }
+    }
+
+    for(i=0; i<tabs.length; i++){
+      if(i!=0){
+        cls += hide;
+      }
+      $(tabs[i]).attr("class", cls);
+    }
+   });
+
+  /*
+   * 引数によってタブを切り替えます。
+   *
+   * @param tabIndex - 0: 回覧板一覧
+   *                   1: 新規作成
+   */
+  function showTab(tabIndex){
+    if(tabIndex == 0){
+      $("a:contains('回覧板一覧')").click();
+    }else if(tabIndex == 1){
+      $("a:contains('新規作成')").click();
+    }
+  }
+  -->
+</script>
+

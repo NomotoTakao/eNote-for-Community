@@ -1,0 +1,69 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/blockUI/jquery.blockUI.js",
+      "jquery/tooltip/jquery.tooltip.js",
+      "jquery/timer/jquery.timer.js",
+      "app/schedule"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/tooltip/jquery.tooltip.css",
+      "app/schedule"
+    ]) %>
+<% end -%>
+
+<table class="frame_2pain">
+  <tr>
+    <td>
+      <!-- 一覧エリア -->
+      <div id="schedule_list"></div>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 一覧エリアに2か月単位のスケジュール一覧を表示
+  */
+  $("#schedule_list").load(
+  "/schedule/reserve/list?month=" + <%=session[:list_start_month]%> + "&secretaries_user_cd=" + <%=@select_secretaries_user_cd%>,
+  "",
+  function() {
+    //timer設定
+    timerStart();
+  });
+
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    //tooltip(備考)
+    $('a.memo_disp').tooltip({
+      track: true,
+      delay: 0,
+      showURL: false,
+      opacity: 1,
+      fixPNG: true,
+      showBody: " - ",
+      extraClass: 'pretty',
+      top: -15,
+      left: 5  });
+
+    //tooltip(施設登録者)
+    $('facility_create').tooltip({
+      track: true,
+      delay: 0,
+      showURL: false,
+      opacity: 1,
+      fixPNG: true,
+      showBody: " - ",
+      extraClass: 'pretty',
+      top: -15,
+      left: 5  });
+  });
+-->
+</script>

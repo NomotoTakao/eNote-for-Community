@@ -1,0 +1,123 @@
+
+<ul id="subtree" class="filetree">
+  <% unless @org_list.nil?%>
+    <% @org_list.each do |org|%>
+      <li class=closed">
+        <span class="folder subcabinet" id="o_<%= org[:cd] %>" data="0">
+          <%= org[:name] %>
+        </span>
+        <ul></ul>
+    <% end %>
+  <% end %>
+
+  <% unless @cabinet_list.nil?%>
+    <% @cabinet_list.each do |cabinet| %>
+      <li>
+        <span class="file">
+          <font class="cabinet"  id="c_<%= cabinet.d_cabinet_head_id %>">
+            <%= cabinet.title %>
+          </font>
+        </span>
+        <% children = DCabinetIndex.get_cabinet_indices cabinet.cabinet_kbn, cabinet.id, 2, current_m_user.user_cd %>
+    <% end %>
+  <% end %>
+
+  <% unless @project_cabinet_list.nil? %>
+    <% @project_cabinet_list.each do |project| %>
+      <li>
+        <span class="file">
+          <font class="cabinet"  id="c_<%= project.d_cabinet_head_id %>">
+            <%= project.name %>
+          </font>
+        </span>
+      </li>
+    <% end %>
+  <% end %>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        $("#subtree").treeview();
+
+        $(".subcabinet").click(
+          function(){
+            id = $(this).attr("id");
+
+            if(id.indexOf("o_") > -1){
+              if ($(this).attr("data") == "0" && $(this).next().html() == "") {
+                jQuery.ajax(
+                  {
+                    type: "GET",
+                    url: "/cabinet/public/tmp_list",
+                    data:
+                      {
+                        org_cd: id.replace("o_", "")
+                      },
+                    success:
+                      function(data, dataType){
+                        $("#tmp_list").html(data);
+                        if(id.indexOf("#")== -1){
+                          id = "#" + id
+                        }
+                        // リクエストは3回投げられてしまうが表示は1回でいいので、フラグで制御している。
+                        if ($(id).attr("data") == "0") {
+                          $(id).after(data);
+                          $(id).attr("data", "1");
+                        }
+                      },
+                    error:
+                      function(){
+                        alert("通信エラー");
+                      },
+                    complete:
+                      function(){}
+                  }
+                );
+              }
+            }
+          }
+        );
+
+
+        $("#subtree").attr("id", "");
+
+        /*
+         * ツリーの+/-ボタンがクリックされたときに発生するイベントです。
+         */
+        $(".hitarea").click(
+          function(){
+            if ($(this).next().attr("data") == "0" && $(this).next().next().html() == "") {
+              $(this).next().click();
+              // ツリーの+/-ボタンの記号を'+'から'-'に変更する。(クラスの属性を置き換える)
+              $(this).attr("class", $(this).attr("class").replace("expandable", "collapsable"));
+            }
+          }
+        );
+
+        $(".cabinet").mouseover(
+          function(){
+            $(this).css("cursor", "pointer");
+          }
+        );
+
+        $(".cabinet").mouseout(
+          function(){
+            $(this).css("cursor", "default");
+          }
+        );
+
+        $(".cabinet").click(
+          function(){
+            bgChange($(this), $(".cabinet"));
+            id = $(this).attr("id").replace("c_", "");
+            url = "/cabinet/public/cabinet_list/" + id;
+            $("#cabinet_list").load(url);
+            $("#d_cabinet_body_d_cabinet_head_id").val(id.replace("cabinet_", ""));
+            $("#selectedCabinetName").val($("#c_" + id).text().replace(/^\s+|\s+$/g, ""));
+          }
+        );
+      }
+    );
+  //-->
+</script>

@@ -1,0 +1,119 @@
+<%# コメント一覧ペイン %>
+
+<h3><%= @board.title%></h3>
+<table class="bbs_head_table" style="width: 660px; text-align: left;">
+  <tbody>
+    <tr>
+      <td class="bbs_head_table_t">&nbsp</td>
+      <td style="width: 520px; padding-left: 10px;background-color:#95b3de;">
+        <h3><%= @thread.title %></h3>
+      </td>
+      <td class="bbs_head_table_t_noimg" style="width: 140px; text-align: center;">
+        <span id="lastpost_date">
+          <% unless @board.lastpost_date.nil? %>
+            最終投稿日<br><%= formatMD(@board.lastpost_date) %>
+          <% end %>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" style="text-align: right;" class="bbs_head_table_i">
+        作成者：<%= @thread.post_user_name %>&nbsp;&nbsp;&nbsp;作成日：<%= formatMD(@thread.post_date) %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" class="bbs_head_table_b" style="text-align:left;">
+        <%= display(@thread.body) %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" style="text-align: left;">このスレッドへのリンクURL：
+        <%= link_to "",
+                    {:controller => "bbs/main",
+                     :action => "index",
+                     :board_id=>@board.id,
+                     :thread_id=>@thread.id},
+                    {:id=>"link_target"} %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+
+<% form_remote_tag :update=>"comment_list", :url=>{:action=>:comment_create} do %>
+  <%= hidden_field "board_id", "", :value=>@board.id%>
+  <%= hidden_field "thread_id", "", :value=>@thread.id%>
+  <input id="bid" name="bid" value="4" type="hidden">
+
+  <table class="bbs_head_table" style="width:620px;text-align:left;margin-left:40px;">
+    <tr>
+      <td colspan="2" class="bbs_head_table_t_noimg" style="padding-left:10px;height:25px;">
+        <h3>コメントを投稿する</h3>
+      </td>
+    </tr>
+    <tr>
+      <td class="bbs_head_table_i" style="width:100px;font-weight:bold;">
+    本文
+    </td>
+      <td class="bbs_head_table_b" style="text-align:left;padding:10px;">
+        <%= text_area "d_bbs_comments", "body", {:class=>"ime_on", :cols=>50, :rows=>7, :style => "width:100%;height:100%;"} %>
+      </td>
+    </tr>
+  </table>
+
+  <table border="0" style="width:620px;">
+    <tr>
+      <td align="center">
+        <%= submit_tag '投稿する',{:class => 'submit', :onclick => 'return ClickContributeButton()'} %>
+    &nbsp;&nbsp;&nbsp;
+    <%= button_to_remote '一覧に戻る', {:update=>"right_pane", :url=>{:action =>'thread_pane', :board_id=>@board.id, :thread_id=>@thread.id}}, {:class =>'submit'} %>
+      </td>
+    </tr>
+  </table>
+
+  <br>
+  <hr>
+  <br>
+  <br>
+  <div id="comment_list">
+  </div>
+
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        board_id = $("#board_id_").val();
+        thread_id = $("#thread_id_").val();
+        // 左領域の"form_board_id"、"form_thread_id"に値を設定する
+        $("#form_board_id").val(board_id);
+        $("#form_thread_id").val(thread_id);
+
+        url = "/bbs/main/comment_list?board_id=:board_id&thread_id=:thread_id";
+        url = url.replace(":board_id", board_id).replace(":thread_id", thread_id);
+        $("#comment_list").load(url);
+
+        var target_url = $("#link_target").attr("href");
+        $("#link_target").html($("#link_target").html() + target_url);
+      }
+    );
+
+    /*
+     * 「投稿」ボタンが押下された時の処理。
+     * 入力チェックを行います。
+     */
+    function ClickContributeButton(){
+      //確認ダイアログ
+      result = confirm("投稿して宜しいですか？");
+      if (!result) {
+        return result;
+      }
+      //入力チェック
+      result = CheckThreadValidate();
+      if (!result) {
+        return result;
+      }
+    }
+  //-->
+</script>

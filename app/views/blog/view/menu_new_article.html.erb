@@ -1,0 +1,15 @@
+<div id="blog_new_article_head"></div>
+<div id="blog_new_article_body">
+<% @newly_list.each do |blog| %>
+    <div id="blog_new_article">
+        <%= link_to_remote blog.send(:title), :update=>"right_pane", :url=>{:action => 'detail', :id => blog.send(:id)} %><br>
+		(<%= datetime_strftime(blog.send(:post_date)) %>
+		 <% if params[:uid] == nil || params[:uid] == "" %>
+		 	:<%= h blog.d_blog_head.send(:user_name) %>
+		 <% end %>
+		)
+    </div>
+<% end %>
+</div>
+<div id="blog_new_article_foot"></div>
+

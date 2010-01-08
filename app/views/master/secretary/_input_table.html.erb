@@ -1,0 +1,125 @@
+<!-- エラー -->
+<% err = flash[:secretary_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<table style="margin:10px 0px 0px 10px;">
+  <tr>
+    <th style="width:40%;text-align:left;">組織の選択</th>
+    <th style="width:40%;text-align:left;">社員の選択</th>
+    <th style="width:20%;"></th>
+  </tr>
+  <tr>
+    <td style="vertical-align:top;">
+      <div id="tree_org"></div>
+    </td>
+    <td style="vertical-align:top;">
+      <div id="undecided" style="padding-top:3px;">
+        <%= select_tag('undecided_member', "", :size=>5, :multiple=>false, :class=>'master_selectbox2') %>
+      </div>
+    </td>
+    <td>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      <input id="auth_org_button" type="button" class="submit_large" value="認定組織に追加"
+        onclick="ClickAddDecidedOrg($('#decided_auth_org_cd').val(), $('#decided_auth_org_name').val(), 'decided_auth_org')" />
+    </td>
+    <td style="text-align:center;">
+      <!-- 新規のみ -->
+      <% if @decided_user_cd.nil? || @decided_user_cd == "" %>
+        <input id="user_button" type="button" class="submit_large" value="社員に追加" onclick="ClickUser()" />
+      <% end %>
+      <input id="auth_user_button" type="button" class="submit_large" value="認定者に追加"
+        onclick="ClickAddDecided('undecided_member','decided_auth_user')" />
+    </td>
+    <td>
+    </td>
+  </tr>
+</table>
+
+<table class="master_table2" style="margin:10px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">社員&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <div id="select_user">
+        <%= text_field_tag('decided_user_name', @decided_user_name, {:disabled=>true}) %>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">認定者</td>
+    <td class="master_table2_content">
+      <div id="select_auth_user">
+        <% options = "" %>
+        <% if !@user_auth_decide.nil? %>
+          <% @user_auth_decide.each do |member|%>
+            <% options += "<option value=#{member[0]} >#{member[1]}</options>" %>
+          <% end %>
+        <% end %>
+        <%= select_tag('decided_auth_user', options, :size=>5, :multiple=>true, :class=>'master_selectbox3') %>
+        <input id="delete_button" type="button" class="submit_small" value="削除" onclick="ClickDeleteButton('decided_auth_user')" />
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">認定組織</td>
+    <td class="master_table2_content">
+      <div id="select_auth_org">
+        <% options = "" %>
+        <% if !@org_auth_decide.nil? %>
+          <% @org_auth_decide.each do |org|%>
+            <% options += "<option value=#{org[0]} >#{org[1]}</options>" %>
+          <% end %>
+        <% end %>
+        <%= select_tag('decided_auth_org', options, :size=>5, :multiple=>true, :class=>'master_selectbox3') %>
+        <input id="delete_button" type="button" class="submit_small" value="削除" onclick="ClickDeleteButton('decided_auth_org')" />
+      </div>
+    </td>
+  </tr>
+</table>
+<%= hidden_field_tag 'decided_user_cd', @decided_user_cd %>
+<%= hidden_field_tag 'decided_auth_user_all' %>
+<%= hidden_field_tag 'decided_auth_org_all' %>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    //一覧を表示
+    $("#tree_org").load("/master/secretary/tree_org");
+    //
+  });
+
+  /*
+   * 社員に追加
+   */
+  function ClickUser(){
+    value = "";
+    name = "";
+    //選択された名称取得
+    $("#undecided_member option:selected").each(function(){
+      value = $(this).val();
+      name = $(this).text();
+    })
+    $("#decided_user_cd").val(value);  //社員コード
+    $("#decided_user_name").val(name); //社員名
+  }
+
+  /*
+   * 削除
+   */
+  function ClickDeleteButton(fromElement){
+    //選択された要素を削除する
+    DeleteElement(fromElement);
+  }
+-->
+</script>

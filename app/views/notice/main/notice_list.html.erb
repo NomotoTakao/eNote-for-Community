@@ -1,0 +1,248 @@
+<!-- お知らせ一覧 -->
+<%
+  table_width = 660
+  title_width = 550
+  if @hottopic_flg == "0"
+    table_width = 770
+    title_width = 660
+  end
+%>
+
+<input type="hidden" id="list_message_id" value="<%= @message_id %>" />
+<table class="notice_table" style="width:<%= table_width %>px; text-align:left;">
+  <tr>
+    <td class="notice_table_t" style="width:<%= title_width %>px;padding-left:0px;">
+      <h3>
+        <img src="/images/icons/icon_notice.gif" align="top" style="margin-right:5px;">
+    お知らせ&nbsp;ー&nbsp;<%=h @index_name %>
+      </h3>
+    </td>
+    <td class="notice_table_t_noimg" style="text-align:left;background-image:'';">
+      <%=  image_tag("icons/folder.gif") %><a href="javascript:displayBlock();">全て開く</a><br>
+      <%=  image_tag("icons/folder-closed.gif") %><%= link_to("全て閉じる","javascript:displayNone();") %><br>
+    </td>
+  </tr>
+</table >
+<table style="width:<%= table_width %>px;">
+  <tr>
+    <td style="text-align:center;">
+<% if @notice_list.size > 0 %>
+  <% if params[:mode]=="1" || @order == "asc" %>
+    <%= link_to_remote "新しいものから",
+                       :update=>"notice_list",
+                       :url=>{:action=>:notice_list,
+                              :id=>@index_id,
+                              :date_from=>@date_from,
+                              :date_to=>@date_to,
+                              :keyword=>@keyword,
+                              :owner=>@owner,
+                                :hottopic_flg=>@hottopic_flg,
+                              :order=>"desc",
+                              :mode=>"2"
+                             }
+    %>
+  &nbsp;&nbsp;&nbsp;<font color="#1e90ff">古い物から</font>
+  <% else %>
+    <font color="#1e90ff">新しい物から</font>&nbsp;&nbsp;&nbsp;
+      <%= link_to_remote "古いものから",
+                         :update=>"notice_list",
+                         :url=>{:action=>:notice_list,
+                                :id=>@index_id,
+                                :date_from=>@date_from,
+                                :date_to=>@date_to,
+                                :keyword=>@keyword,
+                                :owner=>@owner,
+                                :hottopic_flg=>@hottopic_flg,
+                                :order=>"asc",
+                                :mode=>"1"
+                               }
+    %>
+  <% end %>
+<% end %>
+    </td>
+  </tr>
+</table>
+
+<% if @notice_list.size==0 %>
+  <table>
+    <tr>
+      <%
+        message = ""
+        if @keyword.nil?
+          message = "このボードにはまだ投稿がありません。"
+        else
+          message = "検索結果は0件です。"
+        end
+      %>
+      <td><%= message %></td>
+  </tr>
+  </table>
+<% end %>
+<% count = 1 %>
+<% @notice_list.each do |notice| %>
+  <table class="notice_table" style="margin-left:40px;width:<%= table_width - 40 %>px;text-align:left;">
+    <tr>
+      <td colspan="2" class="notice_table_t" style="width:<%= table_width - 200 %>px;padding-left:0px;text-align:left;color:black;font-weight:bold;font-size:3p;">
+        <%=h notice.send(:title) %>
+      </td>
+      <td class="notice_table_t_noimg" style="text-align:right;color:black;padding-right:10px;">
+      <!-- 編集・削除が可能なユーザ、掲示板を書いた本人か、その人が所属する組織 -->
+        <%= public_term notice %>
+        <%= public_flg notice %>
+        <% if notice.post_user_cd.to_i == current_m_user.user_cd.to_i and notice.post_org_cd == (MUserBelong.new.get_main_org current_m_user.user_cd).org_cd and @hottopic_flg.nil? %>
+          <%= link_to_remote(image_tag("icons/icon_entry.gif"), :update=>"notice_list", :url=>{:action=>"edit", :message_id=>notice.id}, :class=>"submit") %>
+          <%= link_to_remote(image_tag("icons/icon_trash.gif"), :update=>'notice_list', :url=>{:action=>"delete", :message_id=>notice.id}, :confirm=>"削除してよろしいですか？",:class =>"submit") %>
+        <% end %>
+        <% unless notice.body.empty? and notice.d_notice_files.length == 0 %>
+          <input type="button" name="btnDisp" id="btn_<%= notice.id %>" style="width:50px;" />
+        <% end %>
+      </td>
+    </tr>
+    <tr id="notice_<%= notice.id %>" class="notice_table_b notice_<%= notice.id %>">
+      <td colspan="3" style="word-break:break-all;text-align:left;overflow-x:auto;">
+      <div style="width:620px;text-align:left;overflow-x:auto;">
+          <%= notice.body %>
+        </div>
+      </td>
+    </tr>
+
+<!-- ↓ 添付ファイルありの場合 -->
+<% unless notice.d_notice_files.length == 0 %>
+    <tr class="enote_general_table1_title notice_table_b notice_<%= notice.id %>">
+      <th style="width:80px;" class="enote_general_table1_cell_bordered">&nbsp;</th>
+      <th style="width:220px;" class="enote_general_table1_cell_bordered">ファイル名</th>
+      <th style="width:80px;"class="enote_general_table1_cell_bordered">サイズ</th>
+    </tr>
+    <% notice_file_reverse = notice.d_notice_files.reverse %>
+  <% notice_file_reverse.each do |file| %>
+    <tr style="height:30px;" class="notice_table_b notice_<%= notice.id %>">
+      <td class="enote_general_table1_cell_bordered" style="text-align:center;">
+        <%= link_to "<img src='/images/icons/icon_download_file.gif' />", :action=>:download, :id=>file.id %>
+      </td>
+      <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= file.file_name %></td>
+      <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= file_size(file.file_size) %></td>
+    </tr>
+  <% end %>
+<% end %>
+<!-- ↑ -->
+    <tr>
+      <td colspan="3" style="text-align:right;">
+        <table style="width:100%;">
+          <tr class="notice_table_b notice_<%= notice.id %>">
+            <td colspan="2" style="text-align:left;">このページへのリンクURL：&nbsp;
+              <%= link_to "",
+                          {:controller => "notice/main",
+                           :action => "index",
+                           :id => notice.d_notice_head_id,
+                           :message_id_def=>notice.id},
+                           {:id=>"link_target_#{count}",
+                            :name=>"link_target"} %>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" class="notice_table_i">
+        <table style="width:100%;">
+          <tr>
+            <td style="text-align:left;">
+              <% if @index_name == "すべて" %>
+                                           【<%= notice.d_notice_head.title %>】
+              <% end %>
+            </td>
+            <td style="text-align:right;">
+                                     登録者：
+                                     【<%= @orgs[notice.post_org_cd] %>】
+              <%=h notice.post_user_name %>&nbsp;&nbsp;&nbsp;登録日：<%= datetime_strftime(notice.post_date) %>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <br />
+  <% count += 1 %>
+<% end %>
+<table style="border:0px;width:660px;">
+  <tr>
+    <td style="text-align:center;padding-left:10px;">
+    <% if @notice_list.size > 0 %>
+      <%= will_paginate @notice_list, :renderer => RemoteLinkRenderer,
+                                      :update => 'notice_list',
+                                      :params=> { :action => 'notice_list',
+                                                  :id=>@index_id,
+                                                  :date_from=>@date_from,
+                                                  :date_to=>@date_to,
+                                                  :keyword=>@keyword,
+                                                  :hottopic_flg=>@hottopic_flg,
+                                                  :order=>@order
+                                                },
+                                      :prev_label => "<<前へ",
+                                      :next_label => "次へ>>",
+                                      :method => :get
+      %>
+    <% end %>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  $(document).ready(
+      function (){
+        $(document).scrollTop = 0;
+        // 編集ボタンが押下されたときにこのフィールドにメッセージ番号が設定される。
+        var message_id = $("#list_message_id").val();
+        if(message_id != ""){
+          // index.htmlのフィールド：message_idにメッセージIDを格納してから、新規投稿タブに遷移する。
+          $("#message_id").val(message_id);
+          showTab(1);
+        }
+
+        displayNone();
+
+        $("input[name='btnDisp']").val("開く");
+        $("input[name='btnDisp']").click(
+          function dispDetail(){
+            // 押下されたボタンが対象とするthreadのIDを取得する。
+            notice_id = $(this).attr("id").replace("btn_", "notice_");
+
+            // 押下されたボタンの現在の状態を、ボタンのvalueから判断する。
+            valueBtn = $(this).val();
+            // ボタンのvalue属性が「開く」のときはスレッド詳細を開き、ボタンのvalue属性を「閉じる」に変更する。
+            if (valueBtn == "開く") {
+              $("." + notice_id).show();
+              $(this).val("閉じる");
+            }else{
+              $("." + notice_id).hide();
+              $(this).val("開く");
+            }
+          }
+        );
+
+        var target_url_list = $("a[name='link_target']");
+        for(i=1; i<=target_url_list.length; i++){
+          var target_url = $("#link_target_" + i).attr("href");
+          $("#link_target_" + i).html($("#link_target_" + i).html() + target_url);
+        }
+      }
+  );
+
+  /*
+   * 全て開く
+   */
+  function displayBlock(){
+    $('.notice_table_b').show();
+    $("input[name='btnDisp']").val("閉じる");
+  }
+
+  /*
+   * 全て閉じる
+   */
+  function displayNone(){
+    $('.notice_table_b').hide();
+    $("input[name='btnDisp']").val("開く");
+  }
+  //-->
+</script>

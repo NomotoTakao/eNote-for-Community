@@ -1,0 +1,126 @@
+<% unless @tmp_list.nil? %>
+  <ul id="tmp_ul" class="filetree">
+    <% @tmp_list.each do |tmp| %>
+      <% children = MOrg.get_org_list tmp.org_lvl.to_i + 1, tmp.org_cd %>
+      <%
+        li_class = ""
+        if children.length == 0
+          li_class = ""
+        else
+          li_class = "closed"
+        end
+      %>
+      <li class="<%= li_class %>">
+        <span id="org_<%= tmp.org_cd %>" class="folder org_span">
+          <font class="org_font">
+            <%
+              org_name = ""
+              unless tmp.org_name4.empty?
+                org_name = tmp.org_name4
+              else
+                unless tmp.org_name3.empty?
+                  org_name = tmp.org_name3
+                else
+                  unless tmp.org_name2.empty?
+                    org_name = tmp.org_name2
+                  end
+                end
+              end 
+            %>
+            <%= org_name %>
+          </font>
+        </span>
+        <% if children.length > 0 %>
+          <ul></ul>
+        <% end %>
+    <% end %>
+  </ul>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        $("#tmp_ul").treeview();
+      }
+    );
+	
+	$(".org_span").mouseover(
+      function(){
+        $(this).css("cursor", "pointer");
+      }
+    );
+	
+	$(".org_span").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+	
+    $(".org_span").click(
+      function(){
+        // 「送信先の選択」欄に送信先を表示する処理
+        value = $(this).attr("id").replace("org_", "");
+        bgChange($(this).children(), $(".org_font"));
+
+		// ユーザー選択エリアにユーザーを表示する処理
+        var value = $(this).attr("id").replace("org_", "");
+        jQuery("#org_users_area").load("/common/tree/disp_org_user?org_cd=" + value);
+		
+        // ツリーの子要素を取得する処理
+        val_id = $(this).attr("id");
+        get_tree(val_id);
+      }
+    );
+
+    /*
+     * ツリーの+/-ボタンクリック時
+     */
+    $(".hitarea").click(
+      function(){
+        if($(this).attr("class").indexOf("collapsable-hitarea") != -1){
+          // ツリーを開く
+          val_id = $(this).next().attr("id");
+          get_tree(val_id);
+        }else{
+          // ツリーを閉じる
+          $(this).attr("class", $(this).attr("class").replace("collapsable", "expansable"));
+        }
+      }
+    );
+
+	/*
+	 * 非同期通信により、ツリーの下位要素を取得する処理
+	 * @param id - クリックされたHTML要素のID 
+	 */
+    function get_tree(id){
+		
+      if ($("#" + id).next().html() == "") {
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/common/tree/tmp_list",
+            data :
+              {
+                org_cd : id.replace("org_", "")
+              },
+            success :
+              function(data, dataType){
+                if($("#" + id).next().html() == ""){
+                  $("#" + id).after(data);
+                }
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){
+                $("#tmp_ul").attr("id", "");
+              }
+          }
+        );
+      }
+    }
+  //-->
+</script>

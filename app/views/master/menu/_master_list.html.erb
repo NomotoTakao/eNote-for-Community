@@ -1,0 +1,194 @@
+<!-- 一覧 -->
+<table class="master_table3" style="margin:10px 0px 0px 10px;">
+  <tr style="width:100%;text-align:left;">
+    <td colspan=3>※管理メニューは、メニュー項目１のみ設定してください。</td>
+  </tr>
+  <tr style="height:10px;"></tr>
+  <!-- 内容1段目 -->
+  <tr>
+    <td style="width:33%;"><b>メニュー表示位置</b></td>
+    <td style="width:33%;"><b>メニュー項目１</b></td>
+    <td style="width:33%;"><b>メニュー項目２ </b></td>
+  </tr>
+  <tr>
+    <!-- 1階層目 -->
+    <td>
+      <div id="first_menu">
+        <select id="decided_first_menu" size="10" multiple=false style="width:300px;" onchange="ClickFirstMenu();">
+          <option value="0">ヘッダーメニュー</option>
+          <option value="9">管理メニュー</option>
+        </select>
+      </div>
+    </td>
+    <!-- 2階層目 -->
+    <td>
+      <div id="second_menu">
+        <%= select_tag('decided_second_menu', '', :size=>10, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickSecondMenu();') %>
+      </div>
+    </td>
+    <!-- 3階層目 -->
+    <td>
+      <div id="third_menu">
+        <%= select_tag('decided_third_menu', '', :size=>10, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickThirdMenu();') %>
+      </div>
+    </td>
+  </tr>
+  <!-- 選択ボタン -->
+  <tr>
+    <td></td>
+    <td>
+      <input type="button" id="second_select" name="second_select" value="選択" class="submit_small" onclick="return ClickEditMenuSelect(2);">
+    </td>
+    <td>
+      <input type="button" id="third_select" name="third_select" value="選択" class="submit_small" onclick="return ClickEditMenuSelect(3);">
+    </td>
+  </tr>
+  <tr style="height:10px;"></tr>
+  <!-- 内容2段目 -->
+  <tr>
+    <td style="width:33%;"><b>メニュー項目３</b></td>
+    <td style="width:33%;"><b>メニュー項目４</b></td>
+    <td style="width:33%;"> </td>
+  </tr>
+  <tr>
+    <!-- 4階層目 -->
+    <td>
+      <div id="fourth_menu">
+        <%= select_tag('decided_fourth_menu', '', :size=>10, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickFourthMenu();') %>
+      </div>
+    </td>
+    <!-- 5階層目 -->
+    <td>
+      <div id="fifth_menu">
+        <%= select_tag('decided_fifth_menu', '', :size=>10, :multiple=>false, :style=>'width:300px;') %>
+      </div>
+    </td>
+    <td></td>
+  </tr>
+  <!-- 選択ボタン -->
+  <tr>
+    <td>
+      <input type="button" id="fourth_select" name="fourth_select" value="選択" class="submit_small" onclick="return ClickEditMenuSelect(4);">
+    </td>
+    <td>
+      <input type="button" id="fifth_select" name="fifth_select" value="選択" class="submit_small" onclick="return ClickEditMenuSelect(5);">
+    </td>
+    <td></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+<!--
+/*
+ * 1階層目クリック時の処理
+ */
+function ClickFirstMenu(){
+  //2階層目を表示
+  $.ajax({
+    type: 'get',
+    url: '/master/menu/master_click_list?menu_kbn=' + $("#decided_first_menu").val() + '&parent_id=0' + '&target_level=2',
+    success:
+      function(request){
+        //2階層目にデータ表示
+        $('#second_menu').html(request);
+      }
+  });
+}
+
+/*
+ * 2階層目クリック時の処理
+ */
+function ClickSecondMenu(){
+  //3階層目を表示
+  $.ajax({
+    type: 'get',
+    url: '/master/menu/master_click_list?menu_kbn=' + $("#decided_first_menu").val() + '&parent_id=' + $("#decided_second_menu").val() + '&target_level=3',
+    success:
+      function(request){
+        //3階層目にデータ表示
+        $('#third_menu').html(request);
+      }
+  });
+}
+
+/*
+ * 3階層目クリック時の処理
+ */
+function ClickThirdMenu(){
+  //4階層目を表示
+  $.ajax({
+    type: 'get',
+    url: '/master/menu/master_click_list?menu_kbn=' + $("#decided_first_menu").val() + '&parent_id=' + $("#decided_third_menu").val() + '&target_level=4',
+    success:
+      function(request){
+        //4階層目にデータ表示
+        $('#fourth_menu').html(request);
+      }
+  });
+}
+
+/*
+ * 4階層目クリック時の処理
+ */
+function ClickFourthMenu(){
+  //5階層目を表示
+  $.ajax({
+    type: 'get',
+    url: '/master/menu/master_click_list?menu_kbn=' + $("#decided_first_menu").val() + '&parent_id=' + $("#decided_fourth_menu").val() + '&target_level=5',
+    success:
+      function(request){
+        //5階層目にデータ表示
+        $('#fifth_menu').html(request);
+      }
+  });
+}
+
+/*
+ * 編集メニューの選択ボタンクリック時の処理
+ */
+function ClickEditMenuSelect(target_level){
+  var parent_id = 0;
+  var menu_kbn = 0;
+  //親IDを取得
+  if (target_level == 2) {
+    menu_kbn = $("#decided_first_menu").val();
+    parent_id = 0;
+    //選択チェック
+    if (menu_kbn == null) {
+      alert("メニュー表示位置を選択してください。");
+      return;
+    }
+
+  } else if (target_level == 3) {
+    menu_kbn = $("#decided_first_menu").val();
+    parent_id = $("#decided_second_menu").val();
+    //選択チェック
+    if (parent_id == null) {
+      alert("メニュー項目１を選択してください。");
+      return;
+    }
+
+  } else if (target_level == 4) {
+    menu_kbn = $("#decided_first_menu").val();
+    parent_id = $("#decided_third_menu").val();
+    //選択チェック
+    if (parent_id == null) {
+      alert("メニュー項目２を選択してください。");
+      return;
+    }
+
+  } else if (target_level == 5) {
+    menu_kbn = $("#decided_first_menu").val();
+    parent_id = $("#decided_fourth_menu").val();
+    //選択チェック
+    if (parent_id == null) {
+      alert("メニュー項目３を選択してください。");
+      return;
+    }
+  }
+
+  //編集エリアを表示
+  document.location = '/master/menu/edit?menu_kbn=' + menu_kbn + '&parent_id=' + parent_id + '&target_level=' + target_level;
+}
+-->
+</script>

@@ -1,0 +1,224 @@
+<div id="input_area">
+<% form_for :reserve, :url => { :action => "update" }, :html => {:id => "form_reserve", :method => :put, :style => "margin-top:3px;"} do |f| %>
+  <table style="width: 700px;">
+    <tr>
+      <!-- 繰り返しデータの場合 -->
+      <% if params[:repeat_flg] == '0' %>
+        <% num = 4 %>
+        <!-- 編集不可データの場合 -->
+        <% if @edit_flg == 0 %>
+          <td style="width: 670px;" colspan=<%=num-1%>>
+            <div class="alert_message">この施設はスケジュール画面から予約されています。<br>変更はスケジュール画面より行ってください。</div>
+          </td>
+          <td style="width: 30px;">
+            <input id="facility_cancel" type="submit" class="submit_small" value="閉じる" onclick="ClickCancelButton()" />
+          </td>
+        <% else %>
+          <td style="width: 610px;"></td>
+          <td style="width: 30px;">
+            <input id="facility_update1" type="submit" class="submit_small" value="登録" onclick="return ClickUpdate1Button()" />
+          </td>
+          <td style="width: 30px;">
+            <input id="facility_delete" type="submit" class="submit_small" value="削除" onclick="return ClickDelete5Button()" />
+          </td>
+          <td style="width: 30px;">
+            <input id="facility_cancel" type="submit" class="submit_small" value="閉じる" onclick="ClickCancelButton()" />
+          </td>
+        <% end %>
+      <% else %>
+        <!-- 編集不可データの場合 -->
+        <% num = 6 %>
+        <% if @edit_flg == 0 %>
+          <td style="width: 670px;" colspan=<%=num-1%>>
+            <div class="alert_message">この施設はスケジュール画面から予約されています。<br>変更はスケジュール画面より行ってください。</div>
+          </td>
+          <td style="width: 30px;">
+            <input id="facility_cancel" type="submit" class="submit_small" value="閉じる" onclick="ClickCancelButton()" />
+          </td>
+        <% else %>
+          <td style="width: 310px;"></td>
+          <td style="width: 90px; font-size:8px;">
+            <input id="facility_update2" type="submit" class="submit_large" value="この予定を更新" onclick="return ClickUpdate2Button()" />
+          </td>
+          <td style="width: 90px; font-size:8px;">
+            <input id="facility_update4" type="submit" class="submit_large" value="この予定以降を更新" onclick="return ClickUpdate4Button()" />
+          </td>
+          <td style="width: 90px; font-size:8px;">
+            <input id="facility_delete" type="submit" class="submit_large" value="この予定を削除" onclick="return ClickDelete5Button()" />
+          </td>
+          <td style="width: 90px; font-size:8px;">
+            <input id="facility_delete" type="submit" class="submit_large" value="この予定以降を削除" onclick="return ClickDelete6Button()" />
+          </td>
+          <td style="width: 30px; font-size:8px;">
+            <input id="facility_cancel" type="submit" class="submit_small" value="閉じる" onclick="ClickCancelButton()" />
+          </td>
+        <% end %>
+      <% end %>
+    </tr>
+    <tr>
+      <td colspan=<%=num%> style="width: 700px;">
+        <%= f.hidden_field :id %>
+        <!-- 入力フォーム -->
+        <%= render :partial => 'input_table' %>
+      </td>
+    </tr>
+    <tr>
+      <!-- 繰り返しデータの場合 -->
+      <% if params[:repeat_flg] == '0' %>
+        <% num = 4 %>
+        <!-- 編集不可データの場合 -->
+        <% if @edit_flg == 0 %>
+          <td style="width: 670px;" colspan=<%=num-1%>>
+          </td>
+          <td style="width: 30px;">
+            <input id="facility_cancel" type="submit" class="submit_small" value="閉じる" onclick="ClickCancelButton()" />
+          </td>
+        <% else %>
+          <td style="width: 610px;"></td>
+          <td style="width: 30px;">
+            <input id="facility_update1" type="submit" class="submit_small" value="登録" onclick="return ClickUpdate1Button()" />
+          </td>
+          <td style="width: 30px;">
+            <input id="facility_delete" type="submit" class="submit_small" value="削除" onclick="return ClickDelete5Button()" />
+          </td>
+          <td style="width: 30px;">
+            <input id="facility_cancel" type="submit" class="submit_small" value="閉じる" onclick="ClickCancelButton()" />
+          </td>
+        <% end %>
+      <% else %>
+        <!-- 編集不可データの場合 -->
+        <% num = 6 %>
+        <% if @edit_flg == 0 %>
+          <td style="width: 670px;" colspan=<%=num-1%>>
+          </td>
+          <td style="width: 30px;">
+            <input id="facility_cancel" type="submit" class="submit_small" value="閉じる" onclick="ClickCancelButton()" />
+          </td>
+        <% else %>
+          <td style="width: 310px;"></td>
+          <td style="width: 90px; font-size:8px;">
+            <input id="facility_update2" type="submit" class="submit_large" value="この予定を更新" onclick="return ClickUpdate2Button()" />
+          </td>
+          <td style="width: 90px; font-size:8px;">
+            <input id="facility_update4" type="submit" class="submit_large" value="この予定以降を更新" onclick="return ClickUpdate4Button()" />
+          </td>
+          <td style="width: 90px; font-size:8px;">
+            <input id="facility_delete" type="submit" class="submit_large" value="この予定を削除" onclick="return ClickDelete5Button()" />
+          </td>
+          <td style="width: 90px; font-size:8px;">
+            <input id="facility_delete" type="submit" class="submit_large" value="この予定以降を削除" onclick="return ClickDelete6Button()" />
+          </td>
+          <td style="width: 30px; font-size:8px;">
+            <input id="facility_cancel" type="submit" class="submit_small" value="閉じる" onclick="ClickCancelButton()" />
+          </td>
+        <% end %>
+      <% end %>
+    </tr>
+  </table>
+</div>
+<% end %>
+
+<script type="text/javascript">
+<!--
+  /*
+   * 登録
+   */
+  function ClickUpdate1Button(){
+    //確認ダイアログ
+    if (!confirm("更新してよろしいですか？")) {
+      return false;
+    }
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+    //ボタンモード
+    $("#select_button").val(1);
+  }
+
+  /*
+   * この予定のみ更新
+   */
+  function ClickUpdate2Button(){
+    //確認ダイアログ
+    if (!confirm("更新してよろしいですか？")) {
+      return false;
+    }
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+    //ボタンモード
+    $("#select_button").val(2);
+  }
+
+  /*
+   * 全ての予定を更新
+   */
+  function ClickUpdate3Button(){
+    //確認ダイアログ
+    if (!confirm("更新してよろしいですか？")) {
+      return false;
+    }
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+    //ボタンモード
+    $("#select_button").val(3);
+  }
+
+  /*
+   * この予定以降を全て更新
+   */
+  function ClickUpdate4Button(){
+    //確認ダイアログ
+    if (!confirm("更新してよろしいですか？")) {
+      return false;
+    }
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+    //ボタンモード
+    $("#select_button").val(4);
+  }
+
+  /*
+   * 削除/この予定を削除
+   */
+  function ClickDelete5Button(){
+    //ボタンモード
+    $("#select_button").val(5);
+    //確認ダイアログ
+    if (!confirm("削除してよろしいですか？")) {
+      return false;
+    }
+  }
+
+  /*
+   * この予定以降を削除
+   */
+  function ClickDelete6Button(){
+    //ボタンモード
+    $("#select_button").val(6);
+    //確認ダイアログ
+    if (!confirm("削除してよろしいですか？")) {
+      return false;
+    }
+  }
+
+  /*
+   * 閉じる
+   */
+  function ClickCancelButton(){
+    //ボタンモード
+    $("#select_button").val(99);
+  }
+
+-->
+</script>

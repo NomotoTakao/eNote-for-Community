@@ -1,0 +1,98 @@
+<table>
+  <tr>
+    <th style="text-align:left;">メンバーの選択</th>
+  </tr>
+  <tr>
+    <td>
+      <div class="master_tree1">
+        <ul id="sosiki_browser" class="orgtree">
+          <%
+            prev_org = nil
+            prev_org_lvl = 1
+            li_class = "closed"
+            li_close_tag = ""
+            span_class = "folder"
+            style = ""
+          %>
+          <% @m_orgs.each do |org| %>
+            <% prev_org_lvl = prev_org.org_lvl unless prev_org.nil?%>
+            <% if prev_org_lvl < org.org_lvl %>
+              <ul>
+            <% elsif prev_org_lvl > org.org_lvl %>
+              <% t = prev_org_lvl - org.org_lvl %>
+              <% if t == 1 %>
+                </ul>
+              <% elsif t == 2 %>
+                </ul></ul>
+              <% elsif t == 3%>
+                </ul></ul></ul>
+              <% end %>
+            <% end %>
+
+            <% prev_org = org %>
+            <%
+              org_name = ""
+              if org.org_lvl == 1
+                li_class = "closed"
+                li_close_tag = ""
+                span_class = "folder"
+                style = ""
+                org_name = org.org_name1
+              elsif org.org_lvl == 2
+                li_class = "closed"
+                li_close_tag = ""
+                span_class = "folder"
+                style = ""
+                org_name = org.org_name2
+              elsif org.org_lvl == 3
+                li_class = "closed"
+                li_close_tag = ""
+                span_class = "folder"
+                style = ""
+                style = ""
+                org_name = org.org_name3
+              elsif org.org_lvl == 4
+                span_class = "folder"
+                style = ""
+                org_name = org.org_name4
+              end
+
+              if org_name == "-"
+                next
+              end
+            %>
+            <li class="<%= li_class %>" style="<%= style %>">
+              <span class="<%= span_class %>">
+                <font id="setting_org_<%= org.org_cd %>" class="setting_org">
+                  <%= org_name %>
+                </font>
+              </span>
+            <%= li_close_tag %>
+          <% end %>
+        </ul>
+      </div>
+    </td>
+  </tr>
+</table>
+
+
+<script type="text/javascript">
+<!--
+/*
+ * 初期処理
+ */
+$(document).ready(function(){
+  // 公開対象組織ツリーを構成
+  $("#sosiki_browser").treeview();
+  $(".setting_org").click(function(){
+    id = $(this);
+    name = $(this).text();
+    bgChange($(id), $(".setting_org"));
+    orgnm = name
+    url = "/master/project_user/undecided_member?orgcd=:orgcd";
+    url = url.replace(":orgcd", id.attr("id").replace("setting_org_", ""));
+    $("#undecided").load(url);
+  });
+});
+-->
+</script>

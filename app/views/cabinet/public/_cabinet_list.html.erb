@@ -1,0 +1,89 @@
+<!-- 保存するキャビネットの選択欄で、部内キャビネットのときに使用される。 -->
+<div id="cabinet_list" style="border:1px solid black;background-color:#fff;text-align:left;height:150px;overflow-y:scroll;">
+  <ul id="cabinet_tree" class="filetree">
+    <% @cabinet_list.each do |cabinet| %>
+      <li class="closed">
+        <span class="folder">
+          <font id="<%= cabinet.cabinet_kbn %>_<%= cabinet.d_cabinet_head_id %>" class="cabinet_item" data="0">
+          <%= cabinet.title %>
+          </font>
+        </span>
+    <ul></ul>
+    <% end %>
+</div>
+
+<div id="tmp_list" style="display:block;"></div>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        // ツリーを構成
+        $("#cabinet_tree").treeview();
+
+
+
+        // 初期選択させる場合の処理
+　　　　　　parent_id = $("#parent_id_").val();
+        id = "#cabinet_" + parent_id;
+        $(id).click();
+      }
+    );
+
+    $(".cabinet_item").mouseover(
+       function(){
+         $(this).css("cursor", "pointer");
+       }
+    );
+
+    $(".cabinet_item").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    $(".cabinet_item").click(
+      function(){
+        id = $(this).attr("id");
+        tmp_id = id.split("_");
+        if ($(this).attr("data") != "1") {
+          jQuery.ajax(
+            {
+              type: "GET",
+              url: "/cabinet/public/tmp_list",
+              data:
+                {
+                  kbn: tmp_id[0],
+                  id: tmp_id[1]
+                },
+              success:
+                function(data, dataType){
+                  $("#tmp_list").html(data);
+                    if (id.indexOf("#") == -1) {
+                    id = "#" + id
+                  }
+
+                  $(id).parent().after(data);
+                },
+              error:
+                function(){
+                  alert("通信エラー");
+                },
+              complete:
+                function(){
+                  $(id).attr("data", "1");
+                  // ヘッダIDをクリックする
+                  head_id = $("#d_cabinet_body_d_cabinet_head_id").val();
+                  id = "#c_" + head_id;
+                }
+            }
+          );
+        }
+
+        // cabinet_create.html.erbのフィールドに選択された値をセットする。
+        $("#parent_id_").val(id.replace("cabinet_", ""));
+        bgChange($(this), $(".cabinet_item"));
+      }
+    );
+  //-->
+</script>

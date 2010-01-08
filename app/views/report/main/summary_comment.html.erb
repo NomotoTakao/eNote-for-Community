@@ -1,0 +1,15 @@
+<% unless @d_report.nil? %>
+  <%= text_area :d_report, :comment, :style=>"display:none;" %>
+  <%= text_area :d_report, :superior_comment, :style=>"display:none;" %>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        $("#summary_comment").html($("#d_report_comment").html());
+        $("#superior_comment").html($("#d_report_superior_comment").html());
+      }
+    );
+  //-->
+</script>

@@ -1,0 +1,22 @@
+<% unless @board_list.size == 0 %>
+  <% @board_list.each do |board| %>
+    <option value="<%= board.id %>"><%= board.title %></option>
+  <% end %>
+<% else %>
+  <option>&nbsp;</option>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    /*
+     * 画面ロード時に実行されるイベント
+     */
+    $(document).ready(
+      function(){
+	  	// リストが更新されるとき(画面遷移時・登録時・削除時)には、内容入力フォームをクリアする。
+        $("#d_bbs_boards_title").val("");
+        $("#d_bbs_boards_memo").val("");
+      }
+    );
+  //-->
+</script>

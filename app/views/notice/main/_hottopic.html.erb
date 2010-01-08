@@ -1,0 +1,29 @@
+<%# ホットトピック %>
+<table border="0" cellpadding="0" cellspacing="0" style="">
+  <tr>
+    <td>
+      <%
+        count = 0
+        checked = ""
+      %>
+      <% @hot_topic_kbn.each do |kbn|%>
+        <% if hottopic_flg
+             if kbn.kbn_id == hottopic_flg
+               checked = "checked"
+             else
+               checked = ""
+             end
+           else
+             if kbn.kbn_id == kbn.value_int
+               checked = "checked"
+             else
+               checked = ""
+             end
+           end
+        %>
+        <%= radio_button("d_notice_body", "hottopic_flg", kbn.kbn_id, :checked=>checked) %><%= kbn.name %>
+        <% count += 1 %>
+      <% end %>
+    </td>
+  </tr>
+</table>

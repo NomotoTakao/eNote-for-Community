@@ -1,0 +1,12 @@
+<div id="blog_search_list_head"></div>
+<div id="blog_search_list_body">
+  <div id="blog_search_list">
+    <% form_remote_tag :update=>"right_pane", :url=>{:action =>:blog_list} do %>
+      <%= text_field_tag("keyword", nil, :class=>"ime_on", :size => 22)%><br>
+	  <input type="hidden" id="user_cd_s" name="user_cd" value="<%= @user_cd %>" />
+      <input type="submit" value="検索" class="submit">
+    <% end %>
+  </div>
+</div>
+<div id="blog_search_list_foot"></div>
+  

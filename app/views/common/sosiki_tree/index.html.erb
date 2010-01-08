@@ -1,0 +1,80 @@
+<div id="sosiki_tree_<%= @count %>" title="組織ツリー">
+  <table>
+    <tr>
+      <td>
+        <input type="hidden" id="selected_cd_dialog_<%= @count %>" value="" />
+        <input type="hidden" id="selected_name_dialog_<%= @count %>" value="" />
+        <div id="tree_contents_<%= @count %>" />
+      </td>    
+    </tr>
+  </table>
+</div>
+      
+<script type="text/javascript">
+  <!--
+    /*
+     * ファイルがロードされたときにおこるイベントです。
+     */
+    $(document).ready(
+      function(){
+        // このファイルの記述内容をダイアログとして使用するため、ｊQueryの機能を使って変換します。
+        $("#sosiki_tree_<%= @count %>").dialog(
+          {
+            modal: true,
+            autoOpen: false,
+            height: 480,
+            width: 350,
+            buttons:
+              {
+                "ＯＫ":
+                  function(){
+                    $("#<%= @cd_field %>").val($("#selected_cd_dialog_<%= @count %>").val());
+                    $("#<%= @name_field %>").val($("#selected_name_dialog_<%= @count %>").val());
+                    $("#tree_contents").html("");
+                    $("#selected_cd_dialog").val("");
+                    $("#selected_name_dialog").val("");
+                    $(this).dialog("close");
+                  },
+                "キャンセル":
+                  function(){
+                    $("#tree_contents_<%= @count %>").html("");
+                    $("#selected_cd_dialog_<%= @count %>").val("");
+                    $("#selected_name_dialog_<%= @count %>").val("");
+                    $(this).dialog("close");
+                  }
+              }
+          }
+        );
+
+        /*
+         * ツリーの最上位項目を非同期通信で取得します。
+         */
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/common/sosiki_tree/tmp_tree",
+            data :
+              {
+                org_lvl : 1,
+//                target  : "#{target}",
+                type    : "",
+                count : "<%= @count %>"
+              },
+            success :
+              function(data, dataType){
+                $("#tree_contents_<%= @count %>").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+		// 作成したダイアログを開きます。
+        $("#sosiki_tree_<%= @count %>").dialog("open");
+      }
+    );
+  //-->
+</script>

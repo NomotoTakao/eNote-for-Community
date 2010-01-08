@@ -1,0 +1,230 @@
+<table style="width:100%;">
+  <tr>
+    <td>
+      <input type="button" class="submit_large" id="button_customer_employee_register" value="登録" />
+      <input type="button" class="submit_large" id="button_customer_employee_cancel" value="キャンセル" />
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <%= hidden_field :d_address, :id %>
+      <table class="admin_pages_edit_table" cellspacing="0" cellpadding=="1">
+        <tr>
+          <td class="admin_pages_edit_table_title">名前</td>
+          <td class="admin_pages_edit_table_content">
+            <%= text_field :d_address, :name, :class=>"ime_on", :size=>"40", :maxlength=>"40" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">ふりがな</td>
+          <td class="admin_pages_edit_table_content">
+            <%= text_field :d_address, :name_kana, :class=>"ime_on", :size=>"40", :maxlength=>"40" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">メールアドレス</td>
+          <td class="admin_pages_edit_table_content">
+            <%= text_field :d_address, :email_address1, :class=>"ime_off", :size=>"60", :maxlength=>"128" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">メールアドレス(その他)</td>
+          <td class="admin_pages_edit_table_content">
+            <%= text_field :d_address, :email_address2, :class=>"ime_off", :size=>"60", :maxlength=>"128" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">メールアドレス(その他)</td>
+          <td class="admin_pages_edit_table_content">
+            <%= text_field :d_address, :email_address3, :class=>"ime_off", :size=>"60", :maxlength=>"128" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">携帯電話</td>
+          <td class="admin_pages_edit_table_content">
+            <%= text_field :d_address, :mobile_no, :class=>"ime_off", :size=>"20", :maxlength=>"20" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">携帯メールアドレス</td>
+          <td class="admin_pages_edit_table_content">
+            <%= text_field :d_address, :mobile_address, :class=>"ime_off", :size=>"60", :maxlength=>"128" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">勤務先</td>
+          <td class="admin_pages_edit_table_content">
+            <table>
+              <tr>
+                <td>会社名：</td>
+                <td>
+                  <%= @m_customer.name %>
+                </td>
+              </tr>
+              <tr>
+                <td>部署名：</td>
+                <td>
+                  <%= text_field :d_address, :company_job, :size=>"20", :maxlength=>"20", :class=>"ime_on" %>
+                </td>
+              </tr>
+              <tr>
+                <td>役職：</td>
+                <td>
+                  <%= text_field :d_address, :company_post, :size=>"20", :maxlength=>"20", :class=>"ime_on" %>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">勤務先名カナ</td>
+          <td class="admin_pages_edit_table_content">
+            <%= @m_customer.kana %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">勤務先郵便番号</td>
+          <td class="admin_pages_edit_table_content">
+            <%= @m_customer.zip_cd %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">勤務先住所</td>
+          <td class="admin_pages_edit_table_content">
+            <table>
+              <tr>
+                <td>
+                  <%= @m_customer.address1 %>
+                </td>
+                <td>
+                  <%= @m_customer.address2 %>
+                </td>
+                <td>
+                  <%= @m_customer.address3 %>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">勤務先電話番号１</td>
+          <td class="admin_pages_edit_table_content">
+            <%= @m_customer.tel1 %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">勤務先電話番号２</td>
+          <td class="admin_pages_edit_table_content">
+            <%= @m_customer.tel2 %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">勤務先FAX</td>
+          <td class="admin_pages_edit_table_content">
+            <%= @m_customer.fax %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">勤務先Webページ</td>
+          <td class="admin_pages_edit_table_content">
+            <a href="<%= @m_customer.url %>" target="_blank"><%= @m_customer.url %></a>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">検索キーワード</td>
+          <td class="admin_pages_edit_table_content">
+            <%= text_field :d_address, :meta_tag, :size=>20, :maxlength=>20, :class=>"ime_on" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">備考</td>
+          <td class="admin_pages_edit_table_content">
+            <%= text_area :d_address, :memo, :rows=>8, :cols=>30, :class=>"ime_on" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">登録者</td>
+          <td class="admin_pages_edit_table_content">
+            <%=h user_name @d_address.created_user_cd %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">登録日</td>
+          <td class="admin_pages_edit_table_content">
+            <%= datetime_strftime @d_address.created_at %>
+          </td>
+        </tr>
+        <tr>
+          <td class="admin_pages_edit_table_title">更新日</td>
+          <td class="admin_pages_edit_table_content">
+            <%= datetime_strftime @d_address.updated_at %>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $("#button_customer_employee_register").click(
+      function(){
+        var id = $("#d_address_id").val();
+        var company_cd = $("#company_cd").val();
+        var company_post = $("#d_address_company_post").val();
+        var company_job = $("#d_address_company_job").val();
+        var name_kana = $("#d_address_name_kana").val();
+        var name = $("#d_address_name").val();
+        var email_address1 = $("#d_address_email_address1").val();
+        var mobile_no = $("#d_address_mobile_no").val();
+        var mobile_address = $("#d_address_mobile_address").val();
+        var memo = $("#d_address_memo").val();
+        var authenticity_token = $("#authenticity_token").val();
+
+        // 入力チェック
+        if (!inValueChk($("#d_address_name").val(),99,0,1,0,0,"名前")) {
+          return false;
+        }
+
+        jQuery.ajax(
+          {
+            type : "POST",
+            url  : "/master/customer/register_employee",
+            data :
+              "id=" + id + "&" +
+              "company_cd=" + company_cd + "&" +
+              "company_post=" + company_post + "&" +
+              "company_job=" + company_job + "&" +
+              "name_kana=" + name_kana + "&" +
+              "name=" + name + "&" +
+              "email_address1=" + email_address1 + "&" +
+              "mobile_no=" + mobile_no + "&" +
+              "mobile_address=" + mobile_address + "&" +
+              "memo=" + memo + "&" +
+              "authenticity_token=" + authenticity_token,
+            success :
+              function(data, dataType){
+                alert("登録しました。");
+                $("#customer_employee").load("/master/customer/customer_employee");
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     * キャンセルボタンが押下された時のイベント
+     */
+    $("#button_customer_employee_cancel").click(
+      function(){
+        $("#customer_employee").load("/master/customer/customer_employee");
+      }
+    );
+  //-->
+</script>

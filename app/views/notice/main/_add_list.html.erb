@@ -1,0 +1,29 @@
+<%
+  soptions = ""
+  unless @auths.nil?
+    arrayOrgs = @auths["orgs"]
+    arrayUsers = @auths["users"]
+    
+    unless arrayOrgs.nil?
+      arrayOrgs.each do |org|
+        soptions += "<option value='#{org}'>#{@orgs[org]}</option>"
+      end
+    end
+
+    unless arrayUsers.nil?
+      arrayUsers.each do |user|
+        soptions += "<option value='#{user}'>#{@users[user]}</option>"
+      end
+    end
+  end
+soptions
+%>
+
+<%= select_tag(
+      'add_list',
+      soptions,
+      :size=>20,
+      :style=>'width:100%;height:100%;border:1;',
+      :multiple=>true)
+%>
+<%= hidden_field "add_array", "", :value=>"" %>

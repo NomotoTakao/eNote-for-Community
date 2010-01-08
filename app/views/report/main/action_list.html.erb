@@ -1,0 +1,5 @@
+<% unless @action_list.nil? %>
+  <% @action_list.each do |m_action| %>
+    <option value="<%= m_action.action_cd %>"><%= m_action.action_name %></option>
+  <% end %>
+<% end %>

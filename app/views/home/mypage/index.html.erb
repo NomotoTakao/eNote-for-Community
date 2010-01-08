@@ -1,0 +1,49 @@
+<% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "app/home"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "app/home",
+      "app/schedule",
+      "pagenate.css"
+    ]) %>
+<% end -%>
+
+<div id="home_all">
+  <!-- スケジュール -->
+  <div id="mypage_schedule" class="gadget_schedule"></div>
+</div>
+<div id="home_left">
+  <div id="mypage_alert" class="gadget_short"></div>
+  <div id="mypage_kbn99" class="gadget_short"></div>
+  <div id="mypage_bbs" class="gadget_short"></div>
+  <div id="mypage_blog" class="gadget_short"></div>
+</div>
+<div id="home_right">
+  <div id="mypage_notice" class="gadget_long" style="float:left;"></div>
+  <!-- あなたへの新着メッセージ-->
+  <div id="mypage_new_message" class="gadget_long" style="float:left;"></div>
+  <!-- ホットトピック -->
+  <div id="mypage_hottopic" class="gadget_long" style="float:left;"></div>
+  <div id="mypage_cabinet" class="gadget_long" style="float:left;"></div>
+  <div id="mypage_rss" class="gadget_long" style="float:left;"></div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#mypage_schedule").load("/home/mypage/gadget_schedule");
+    $("#mypage_hottopic").load("/home/mypage/gadget_hottopic");
+    $("#mypage_bbs").load("/home/mypage/gadget_bbs");
+    $("#mypage_alert").load("/home/mypage/gadget_alert");
+    $("#mypage_new_message").load("/home/mypage/gadget_new_message");
+    $("#mypage_kbn99").load("/home/mypage/gadget_kbn99");
+    $("#mypage_notice").load("/home/mypage/gadget_notice?top_disp_kbn=0");
+    $("#mypage_cabinet").load("/home/mypage/gadget_cabinet_long")
+    $("#mypage_blog").load("/home/mypage/gadget_blog_long");
+    GetRSSReader();
+  });
+</script>

@@ -1,0 +1,233 @@
+<table>
+  <tr>
+    <td>活動日</td>
+    <td colspan="3">
+      <input type="text" id="date_from" size="11" />&nbsp;～&nbsp;<input type="text" id="date_to" size="11" />
+    </td>
+  </tr>
+  <tr>
+    <td style="width:80px;">面談相手</td>
+    <td style="width:250px;">
+      <select id="select_action_target" size="1" style="width:150px;">
+        <option value="">&nbsp;</option>
+        <% unless @action_target_list.nil? %>
+          <% @action_target_list.each do |target| %>
+            <option value="<%= target.action_target_cd %>"><%= target.action_target_name %></option>
+          <% end %>
+        <% end %>
+      </select>
+    </td>
+    <td style="width:80px;">活動のコメント</td>
+    <td style="width:250px;">
+      <input type="text" id="action_comment" size="40" class="ime_on" />
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td style="width:80px;">活動分類</td>
+    <td style="width:250px;">
+      <select id="select_action_group" size="1" style="width:150px;">
+        <option value="">&nbsp;</option>
+        <% unless @action_group_list.nil? %>
+          <% @action_group_list.each do |group| %>
+            <option value="<%= group.action_group_cd %>"><%= group.action_group_name %></option>
+          <% end %>
+        <% end %>
+      </select>
+    </td>
+    <td style="width:80px;">活動詳細</td>
+    <td style="width:250px;">
+      <select id="select_action" size="1" style="width:150px;">
+        <option value="">&nbsp;</option>
+      </select>
+    </td>
+    <td>
+      <input type="button" id="button_reference_search" class="submit_large" value="検索" />
+<!--
+      <input type="button" id="button_reference_csv" class="submit_large" value="CSV出力" />
+-->
+    </td>
+  </tr>
+</table>
+<table style="width:100%;">
+  <tr>
+    <td>
+      <div style="width:100%;">
+        <table class="enote_general_table1" style="width:98%;">
+          <tr class="enote_general_table1_title">
+            <th class="enote_general_table1_cell_bordered" style="width:33px;;">&nbsp;</th>
+            <th class="enote_general_table1_cell_bordered" style="width:32px;">行</th>
+            <th class="enote_general_table1_cell_bordered" id="activity_date" style="width:10%;">日付</th>
+            <th class="enote_general_table1_cell_bordered" id="activity_user_cd" style="width:10%;">担当者</th>
+            <th class="enote_general_table1_cell_bordered" style="width:30%;">得意先</th>
+            <th class="enote_general_table1_cell_bordered" style="width:10%;">対象者</th>
+            <th class="enote_general_table1_cell_bordered" style="width:10%;">活動分類</th>
+            <th class="enote_general_table1_cell_bordered" style="width:10%;">活動詳細</th>
+            <th class="enote_general_table1_cell_bordered" style="width:10%;">活動時間</th>
+          </tr>
+        </table>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div id="activity_reference_list" style="width:100%;height:340px;overflow-y:scroll;"></div>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    /**
+     * 活動分類セレクトボックスの内容が変更されたときに発生するイベント
+     * 選択された内容によって活動詳細セレクトボックスの内容を決定する。
+     */
+    $("#select_action_group").change(
+      function(){
+        var action_group_cd = $("#select_action_group").val();
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/master/customer/action_list",
+            data :
+              {
+                action_group_cd : action_group_cd
+              },
+            success :
+              function(data, dataType){
+                $("#select_action").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     * CSV出力ボタンをクリックしたときに発生するイベント
+     * 初期表示順(日付の昇順、対象者の昇順)で整列されたCSVファイルをダウンロードする。
+     */
+    $("#button_reference_csv").click(
+      function(){
+alert("CSV出力");
+      }
+    );
+
+    /**
+     * 検索ボタンをクリックしたときに発生するイベント
+     * 初期表示順(日付の昇順、対象者の昇順)で一覧を取得する。
+     */
+    $("#button_reference_search").click(
+      function(){
+        search_activity("");
+      }
+    );
+
+    /**
+     * 活動内容参照一覧の「日付」の見出しにマウスカーソルを当てたときに発生するイベント
+     */
+    $("#activity_date").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /**
+     * 活動内容参照一覧の「日付」の見出しをクリックしたときに発生するイベント
+     * 日付を第一オーダーとして一覧を再取得する。
+     */
+    $("#activity_date").click(
+      function(){
+
+        search_activity("action_date");
+      }
+    );
+
+    /**
+     * 活動内容参照一覧の「対象者」の見出しにマウスカーソルを当てたときに発生するイベント
+     */
+    $("#activity_user_cd").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /**
+     * 活動内容参照一覧の「対象者」の見出しをクリックしたときに発生するイベント
+     * 対象者コードを第一オーダーとして一覧を再取得する。
+     */
+    $("#activity_user_cd").click(
+      function(){
+
+        search_activity("user_cd");
+      }
+    );
+
+    /**
+     * 画面がロードされた時に発生するイベント
+     */
+    $(document).ready(
+      function(){
+        // 日付の入力ボックスにカレンダー機能を付加する。
+        setCalendar($("#date_from"));
+        setCalendar($("#date_to"));
+      }
+    );
+
+    /**
+     * 活動内容参照一覧を検索する処理
+     * @param {Object} order - 一覧の並び順
+     */
+    function search_activity(order){
+
+      var company_cd = $("#m_customer_company_cd").val();
+      var date_from = $("#date_from").val();
+      var date_to = $("#date_to").val();
+      var comment = $("#action_comment").val();
+      var action_target_cd = $("#select_action_target").val();
+      var action_group_cd = $("#select_action_group").val();
+      var action_cd = $("#select_action").val();
+      var current_order = $("#current_order").val();
+
+      jQuery.ajax(
+        {
+          type : "GET",
+          url  : "/master/customer/activity_reference_list",
+          data :
+            {
+              company_cd : company_cd,
+              date_from  : date_from,
+              date_to    : date_to,
+              comment    : comment,
+              target_cd  : action_target_cd,
+              group_cd   : action_group_cd,
+              action_cd  : action_cd,
+              current_order : current_order,
+              order      : order
+            },
+          success :
+            function(data, dataType){
+              $("#activity_reference_list").html(data);
+            },
+          error :
+            function(){
+              alert("通信エラー");
+            },
+          complete :
+            function(){}
+        }
+      );
+    }
+  //-->
+</script>

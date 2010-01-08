@@ -1,0 +1,43 @@
+/******************************************
+* ヘッダー・フッター用 Settings
+******************************************/
+
+/* フッター部 */
+table.footer_table {
+    background-image:             url('/images/header/head_back02.gif');
+    background-repeat:            repeat-x;
+    border-collapse:              collapse;
+    height:                       34px;
+    width:                        100%;
+    text-align:                   center;
+}
+
+/* ヘッダー部 */
+div.header_top_area{
+    width:                        100%;
+    height:                       20px;
+    padding:                      0px;
+    background-color:             #93c1dc;
+}
+table.header_table{
+    background-image:             url('/images/header/head_back02.gif');
+    background-repeat:            repeat-x;
+    background-color:             white;
+    margin:                       10px 0px 0px 0px;
+    padding:                      0px;
+    border-color:                 #000000;
+    border-collapse:              collapse;
+    border-bottom:                1px dotted #14aee8;
+    width:                        960px;
+}
+td.header_left {
+    left:                         0px;
+    right:                        0px;
+    padding:                      5px 10px 5px 5px;
+    text-align:                   right;
+    vertical-align:               middle;
+}
+td.header_right {
+    height:                       45px;
+    padding:                      0px;
+}

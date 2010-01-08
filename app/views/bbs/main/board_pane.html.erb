@@ -1,0 +1,44 @@
+<%# 掲示板一覧ペイン %>
+
+<div class="tabset" id="tabset">
+  <ul>
+    <li><a href="/bbs/main/bbs_tab" >掲示板</a></li>
+<!--
+    <li><a href="/bbs/main/bbs_create_tab" >掲示板を新規作成</a></li>
+-->
+  </ul>
+</div>
+
+<script type="text/javascript">
+  <!--
+    var tabs = new Array();
+    $(document).ready(
+      function(){
+	    $("#tabset").tabs();
+        // タブ部分のスタイル(クラス)を設定
+        $("#tabset").find("ul").attr("class", "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all");
+
+        // タブの枠線を描く
+        cls = "ui-widget-content ui-corner-bottom mbTabsetContainer";
+        hide = " ui-tabs-hide";
+        elements = $("#tabset").find("ul").find("a");
+        key_string = "ui-tabs-";
+        
+        // ”ui-tabs-"を含む要素を取り出す。
+        for(i=0; i<elements.length; i++){
+          if(String(elements[i]).search(key_string) > 0){
+            str = "#" + String(elements[i]).substring(String(elements[i]).search(key_string));
+            tabs[tabs.length] = str;
+          }
+        }
+    
+        for(i=0; i<tabs.length; i++){
+          if(i!=0){
+            cls += hide;
+          }
+          $(tabs[i]).attr("class", cls);
+        }
+	  }
+    );
+  //-->
+</script>

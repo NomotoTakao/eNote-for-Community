@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="content-style-type" content="text/css" />
+        <meta http-equiv="content-script-type" content="text/javascript" />
+        <meta http-equiv="content-language" content="ja" />
+        <meta name="robots" content="Index,Follow" />
+        <meta name="keywords" content="eNote for Community" />
+        <meta name="description" content="eNote for Community" />
+        <meta name="rating" content="General" />
+        <meta name="author" content="Lighthouse Corp" />
+        <meta name="copyright" content="Copyright(c) 2001-2009 by Lighthouse Corp" />
+        <meta name="generator" content="eNote" />
+        <title>eNote for Community</title>
+        <!-- 当サイト共通 JavaScripts -->
+        <%= javascript_include_tag "jquery/jquery-1.3.2.min.js" %>
+        <%= javascript_include_tag "jquery/jrails" %>
+        <%= javascript_include_tag "application" %>
+        <%= javascript_include_tag "inputchk" %>
+        <!-- 当サイト共通 StyleSheet -->
+        <%= stylesheet_link_tag "portal" %>
+        <!-- 各アプリケーション用 stylesheet -->
+        <%= @content_for_add_styles if @content_for_add_styles %>
+        <!-- 各アプリケーション用 JavaScript -->
+        <%= @content_for_add_scripts if @content_for_add_scripts %>
+    </head>
+<body>
+  <%# if flash[:notice] %>
+  	<%#= flash[:notice] %>
+  <%# end %>
+  <!-- Main Partition Begin -->
+  <div id="enote_standard_main">
+    <%= yield  %>
+  </div>
+  <!-- Main Partition End -->
+  </div>
+</body>
+</html>

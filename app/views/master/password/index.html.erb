@@ -1,0 +1,70 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "app/master"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "app/master"
+    ]) %>
+<% end -%>
+
+<!-- エラー -->
+<% err = flash[:password_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+<br><br>
+<%= form_tag :action => 'update' %>
+<table class="admin_pages_edit_table" cellpadding="1" cellspacing="0" style="width:960px;margin-left:20px;">
+  <tr>
+    <td class="admin_pages_edit_table_title"><div style="text-align:left;margin-left:4px;">現在のパスワード</div></td>
+    <td class="admin_pages_edit_table_content">
+      <%= password_field_tag 'password_old', nil %>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><div style="text-align:left;margin-left:4px;">新規パスワード</div></td>
+    <td class="admin_pages_edit_table_content">
+      <%= password_field_tag 'password_new', nil %>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><div style="text-align:left;margin-left:4px;">確認用パスワード</div></td>
+    <td class="admin_pages_edit_table_content">
+      <%= password_field_tag 'password_confirm', nil %>
+    </td>
+  </tr>
+</table>
+<br><br>
+<table style="width: 980px;">
+  <tr>
+    <td style="text-align:right;">
+      <input id="password_setting_edit" type="submit" class="submit lh_valid_button" value="登録" onclick="return ClickUpdateButton()" />
+    </td>
+  </tr>
+</table>
+<%= hidden_field_tag 'password', @m_users.passwd %>
+</form>
+
+<script type="text/javascript">
+<!--
+  /*
+   * 登録
+   */
+  function ClickUpdateButton(){
+    //入力チェック
+    result = CheckValidatePassword();
+    if (!result) {
+      return result;
+    }
+    return true;
+  }
+-->
+</script>

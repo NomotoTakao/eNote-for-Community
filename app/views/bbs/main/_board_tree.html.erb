@@ -1,0 +1,46 @@
+<!-- ボード一覧 -->
+<div class="gadget_title">
+  <h3 style=""><img src="/images/icons/icon_freetalk.gif" align="top" style="margin-right:5px;">ボード一覧</h3>
+</div>
+<div style="height:170px;overflow-y:scroll;">
+<ul id="board_inex" class="filetree">
+  <% boards.each do |board| %>
+    <li>
+      <span class="file">
+        <font class="board_index" id="<%= board.id %>">
+          <%= cut_off(board.title, 12) %>
+        </font>
+      </span>
+    </li>
+  <% end %>
+</ul>
+</div>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(function(){
+
+      $(".board_index").mouseover(
+        function(){
+          $(this).css("cursor", "pointer");
+        }
+      );
+
+      $(".board_index").mouseout(
+        function(){
+          $(this).css("cursor", "default");
+        }
+      );
+
+    $(".board_index").click(
+      function(){
+          board_id = $(this).attr("id");
+          bgChange2($(this), $(".board_index"));
+          url = "/bbs/main/thread_pane?board_id=" + board_id;
+          $("#right_pane").load(url);
+      }
+      );
+      $(".filetree").treeview();
+    });
+  //-->
+</script>

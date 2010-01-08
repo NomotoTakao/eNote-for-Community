@@ -1,0 +1,61 @@
+<table style="width:100%;text-align:left;">
+  <!-- 内容 -->
+  <tr>
+    <td>
+      <div id="bbs_list">
+        <% options = "" %>
+        <% if !@bbs_list.nil? %>
+          <% @bbs_list.each do |data|%>
+            <% options += "<option value=#{data.id} >#{data.title}</options>" %>
+          <% end %>
+        <% end %>
+        <%= select_tag('detail_bbs_list', options, :size=>10, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickBbsBoard();') %>
+      </div>
+    </td>
+  </tr>
+</table>
+<br>
+<hr style="clear:both;" />
+<br>
+<!-- 該当データ表示エリア -->
+<table style="width:100%;">
+  <tr>
+    <td>
+      <%= form_tag({:action=>'save_bbs_board'}) %>
+        <div id="detail_bbs_board"></div>
+      </form>
+    </td>
+  </tr>
+</table>
+
+<input type="hidden" id="board_id" name="board_id" value=0>
+
+<script type="text/javascript">
+<!--
+/*
+ * 初期化
+ */
+$(document).ready(function(){
+  //空の詳細エリアを表示
+  $("#detail_bbs_board").load("/master/bbs/detail_bbs_board?board_id=0");
+});
+
+/*
+ * 対象ボードクリック時の処理
+ */
+function ClickBbsBoard(){
+  var board_id = $("#detail_bbs_list").val();
+  //ボードIDをhiddenに格納
+  $("#board_id").val(board_id);
+  //該当データを表示
+  $.ajax({
+    type: 'get',
+    url: '/master/bbs/detail_bbs_board?board_id=' + board_id,
+    success:
+      function(request){
+        $('#detail_bbs_board').html(request);
+      }
+  });
+}
+-->
+</script>

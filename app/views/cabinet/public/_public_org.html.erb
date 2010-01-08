@@ -1,0 +1,265 @@
+<!--　公開対象組織の選択 (共有キャビネット) -->
+
+<%
+  #public_org_cd = "103040120"  # 外部より取得する初期選択組織コード
+  len = public_org_cd.to_s.length
+  open_dir = []
+  comparison_flg = false
+  reverse_org = @m_orgs.reverse
+  reverse_org.each do |org|
+    if org.org_cd == public_org_cd.to_s
+      comparison_flg = true
+    end
+    if comparison_flg
+      if org.org_cd.to_s.length < len.to_i
+        open_dir[open_dir.length] = org.org_cd
+        len = org.org_cd.length.to_i
+      end
+    end
+  end
+
+  options = ""
+  hidden = ""
+  unless @d_cabinet_body.nil?
+    org_name = ""
+    org_code = ""
+    @d_cabinet_body.d_cabinet_public_orgs.each do |org|
+      if org.org_cd == 0
+        org_name = "全社"
+        org_code = "0"
+      else
+        org_name = @morgs[org.org_cd.to_s]
+        org_code = org.org_cd
+      end
+      options += "<option value=#{org_code}>#{org_name}</option>"
+      hidden += "_" + org_code.to_s + "_,"
+    end
+  end
+%>
+
+<table id="public_org_table" style="display:none;">
+  <tr>
+    <td>
+      <div id="public_org" style="border:1px solid black;width:200px;height:215px;background-color:white;text-align:left;overflow-y:scroll;">
+        <%= hidden_field 'public_org_cd', nil, 'value'=>public_org_cd %>
+        <ul id="sosiki_browser" class="orgtree">
+          <%
+            prev_org = nil
+            prev_org_lvl = 1
+            li_class = "closed"
+            li_close_tag = ""
+            span_class = "folder"
+            style = ""
+          %>
+          <li>
+            <span class="file">
+              <font id="public_org_0" class="public_org" >全社</font>
+            </span>
+          </li>
+          <% @m_orgs.each do |org| %>
+
+            <% prev_org_lvl = prev_org.org_lvl unless prev_org.nil?%>
+            <% if prev_org_lvl < org.org_lvl %>
+              <ul>
+            <% elsif prev_org_lvl > org.org_lvl %>
+              <% t = prev_org_lvl - org.org_lvl %>
+              <% if t == 1 %>
+                </ul>
+              <% elsif t == 2 %>
+                </ul></ul>
+              <% elsif t == 3%>
+                </ul></ul></ul>
+              <% end %>
+            <% end %>
+
+            <% prev_org = org %>
+            <%
+              org_name = ""
+              if org.org_lvl == 1
+                li_class = "closed"
+                li_close_tag = ""
+                span_class = "folder"
+                style = ""
+                org_name = org.org_name1
+              elsif org.org_lvl == 2
+                li_class = "closed"
+                li_close_tag = ""
+                span_class = "folder"
+                style = ""
+                org_name = org.org_name2
+              elsif org.org_lvl == 3
+                li_class = ""
+                li_close_tag = ""
+                span_class = "folder"
+                style = ""
+                style = ""
+                org_name = org.org_name3
+              elsif org.org_lvl == 4
+                span_class = "folder"
+                style = ""
+                org_name = org.org_name4
+              end
+
+              if org_name == "-"
+                next
+              end
+            %>
+            <li class="<%= li_class %>" style="<%= style %>">
+              <span class="<%= span_class %>">
+                <font id="public_org_<%= org.org_cd %>" class="public_org">
+                  <%= org_name %>
+                </font>
+              </span>
+            <%= li_close_tag %>
+          <% end %>
+        </ul>
+      </div>
+    </td>
+    <td valign="middle">
+<!--
+      <span id="public_org_add">&gt;</span>
+-->
+      <input type="button" id="public_org_add" class="submit_small" value=">" />
+      <br />
+      <br />
+<!--
+      <span id="public_org_delete">&lt;</span>
+-->
+      <input type="button" id="public_org_delete" class="submit_small" value="<" />
+    </td>
+    <td valign="top" text-align="left">
+      <div style="border:1px solid black;width:150px;height:210px;background-color:#fff;text-align:left;">
+        <%= select_tag("public_org_list", options, :size=>13, :style=>'width:100%;height:100%;border:0;', :multiple=>true) %>
+        <%= hidden_field "selected_public_org_list", nil, :value=>hidden %>
+        <%= hidden_field "deleted_public_org_list", nil, :value=>"" %>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  
+    $(document).ready(
+      function(){
+        // 公開対象組織ツリーを構成
+        $("#sosiki_browser").treeview();
+
+        $(".public_org").mouseover(
+          function(){
+            $(this).css("cursor", "pointer");
+          }
+        );
+
+        $(".public_org").mouseout(
+          function(){
+            $(this).css("cursor", "default");
+          }
+        );
+		
+        $(".public_org").click(
+          function(){
+            tid = "#" + $(this).attr("id");
+            value = $(tid).attr("id").replace("public_org_", "");
+            $("#public_org_cd").val(value);
+            $("#public_org_cd_").val(value); // IDの末尾にアンダーバーがつくことがある。
+            bgChange($(tid), $(".public_org"));
+			name = $(this).text();
+			$("#public_org_cd_").val(name + "," + value);
+          }
+        );
+
+        /*
+         * ">"にマウスフォーカスを当てた時のイベント
+         */
+        $("#public_org_add").mouseover(
+          function(){
+            $(this).css("cursor", "pointer");
+          }
+        );
+
+        /*
+         * ">"からマウスフォーカスを外した時のイベント
+         */
+		$("#public_org_add").mouseout(
+          function(){
+            $(this).css("cursor", "default");
+          }
+		);
+
+        /*
+         * ">"をクリックしたときのイベント
+         */
+        $("#public_org_add").click(
+          function(){
+			// ツリーで選択されている組織の名称とコードが格納されているテキストフィールドから、値を取得する。
+			element = $("#public_org_cd_").val().split(",");
+			// 既に同じ項目が選択されていないかチェックして、追加されていなければ右セレクトボックスに追加する。
+            if($("#selected_public_org_list_").val().indexOf("_" + element[1]) == -1){
+              // option要素のvalue属性にelement[1]を、テキストをelement[0]にしてセレクトボックスに追加
+              $("#public_org_list").append($('<option>').attr({value:element[1]}).text(element[0]));
+              // 選択されている項目のコードをhiddenフィールドに格納する。
+              $("#selected_public_org_list_").val($('#selected_public_org_list_').val() + "_" + element[1] + "_,");
+			  // 選択されている項目のコードが削除用のリストに存在すれば、消去する。
+              $("#deleted_public_org_list_").val($("#deleted_public_org_list_").val().replace("_" + element[1] + "_,", ""));
+            }
+          }
+        );
+        
+        /*
+         *  "<"にマウスフォーカスを当てた時のイベント
+         */
+		$("#public_org_delete").mouseover(
+          function(){
+            $(this).css("cursor", "pointer");
+          }
+        );
+
+        /*
+         *  "<"からマウスフォーカスを外した時のイベント
+         */
+		$("#public_org_delete").mouseout(
+          function(){
+            $(this).css("cursor", "default");
+          }
+        );
+
+        /*
+         *  "<"をクリックしたときのイベント
+         */
+		$("#public_org_delete").click(
+          function(){
+            txt = "";
+            val = "";
+            arrayText = "";
+            arrayVal = "";
+            txtDeletedTxt = ""
+            $("#public_org_list option:selected").each(
+              function(){
+                txt += $(this).html() + ",";
+                val += $(this).val() + ",";
+              }
+            );
+            arrayText = txt.split(",");
+            arrayVal = val.split(",");
+            txtSelectedTxt = $("#selected_public_org_list_").val();
+            arraySelectedTxt = txtSelectedTxt.split(",");
+
+            for(i=0; i<arrayVal.length-1; i++){
+              txtDeletedTxt += "_" + arrayVal[i] + "_,"
+              txtSelectedTxt = txtSelectedTxt.replace("_" + arrayVal[i] + "_,", "");
+            }
+            $("#deleted_public_org_list_").val($("#deleted_public_org_list_").val() + txtDeletedTxt);
+            $("#selected_public_org_list_").val(txtSelectedTxt);
+            $("#public_org_list option:selected").remove();
+          }
+        );
+
+        id = "<%= public_org_cd %>";
+        if(id != ""){
+          jid = "#public_org_" + id;
+          $(jid).click();
+        }
+      }
+    );
+  //-->
+</script>

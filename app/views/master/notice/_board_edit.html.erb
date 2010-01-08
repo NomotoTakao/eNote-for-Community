@@ -1,0 +1,90 @@
+<% form_tag({:controller=>"master/notice", :action=>:save_board}, {:multipart=>true}) do %>
+  <%= text_field :d_notice_heads, :id %>
+  <table class="master_table">
+    <tr>
+      <td class="master_table2_title">上位メニュー</td>
+      <td class="master_table2_content">
+        <input type="text" id="d_notice_indices_parent_head_id" name="d_notice_indices[parent_notice_head_id]" value="<%#= @d_notice_heads.d_notice_index.parent_notice_head_id unless @d_notice_heads.nil? %>"
+      </td>
+    </tr>
+    <tr>
+      <td class="master_table2_title">名称</td>
+      <td class="master_table2_content">
+        <%#= text_field :d_notice_heads, :title%>
+        <input type="text" id="d_notice_heads[title]" value="<%#= @d_notice_indices.d_notice_head.title %>"
+      </td>
+    </tr>
+    <tr>
+      <td class="master_table2_title">説明</td>
+      <td class="master_table2_content">
+        <%#= text_area :d_notice_heads, :descprition, :rows=>5, :cols=>50 %>
+      </td>
+    </tr>
+    <tr>
+      <td class="master_table2_title">表示順</td>
+      <td class="master_table2_content">
+        <input type="text" id="d_notice_indices_sort_no" name="d_notice_indices[sort_no]" value="<%#= @d_notice_heads.d_notice_index.sort_no unless @d_notice_heads.nil? %>" size="3" maxlength="3" />
+        <input type="text" id="old_sort_no" name="old_sort_no" value="<%#= @d_notice_heads.d_notice_index.sort_no unless @d_notice_heads.nil? %>" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align:right;">
+        <input type="button" class="submit_small" value="クリア" onClick="btnClear();" />
+        <input type="submit" class="submit_small" value="登録" />
+        <input type="button" class="submit_small" value="削除" onClick="btnDelete();" />
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        //TODO 上位メニューのセレクトボックスを自動選択させる。
+        
+
+      }
+    );
+	
+    function btnClear(){
+      $("#d_notice_head_id").val("");
+      $("#d_notice_indices_parent_head_id").val("");
+      $("#d_notice_heads_title").val("");
+      $("#d_notice_heads_descprition").val("");
+      $("#d_notice_indices_sort_no").val("");
+      $("#old_sort_no").val("");
+    }
+
+    /*
+     * 
+     */
+    function btnDelete(){
+      id = $("#d_notice_head_id").val();
+      if(id == ""){
+        alert("削除する項目を選択してください。");
+      }else{
+        jQuery.ajax(
+          {
+            type: "GET",
+            url:  "/master/notice/delete_board",
+            data:
+              {
+                id : id
+              },
+            success:
+              function(data, dataType){
+                $(".layout_table").load("/master/notice/index");
+              },
+            error:
+              function(){
+                alert("通信エラー");
+              },
+            complete:
+              function(){}
+          }
+        );
+      }
+    }
+  //-->
+</script>

@@ -1,0 +1,97 @@
+<%# スレッド一覧 %>
+<table style="margin-left:40px;width:620px;text-align:left;">
+  <tr>
+    <td style="text-align:center;">
+<% if @thread_list.size > 0 %>
+  <% if params[:mode]=="1" %>
+    <%= link_to_remote "新しいものから", :update=>"thread_list", :url=>{:action=>"thread_list", :board_id=>@thread_list[0].d_bbs_board_id, :mode=>"2"}%>
+    &nbsp;&nbsp;&nbsp;<font color="#1e90ff">古い物から</font>
+  <% else %>
+    <font color="#1e90ff">新しい物から</font>&nbsp;&nbsp;&nbsp;
+    <%= link_to_remote "古いものから", :update=>"thread_list", :url=>{:action=>"thread_list", :board_id=>@thread_list[0].d_bbs_board_id, :mode=>"1"}%>
+  <% end %>
+<% end %>
+    </td>
+  </tr>
+</table>
+
+<% @thread_list.each do |thread| %>
+  <table class="bbs_head_table" style="margin-left:40px;width:620px;text-align:left;">
+    <tr>
+      <td class="bbs_head_table_t">&nbsp;</td>
+      <td colspan="2" style="width:90%;padding-left:10px;color:black;text-align:left;background-color:#95b3de;">
+        <%= display(thread.title) %>
+      </td>
+      <td class="bbs_head_table_t_noimg" style="width:5%;text-align:right;padding-right:10px;color:black;">
+        <% unless thread.body.empty? %>
+          <input type="button" name="btnDisp" id="btn_<%= thread.id %>" class="submit_small" />
+        <% end %>
+      </td>
+    </tr>
+    <tr id="thread_<%= thread.id %>" style="display:none;">
+      <td colspan="4" class="bbs_head_table_b" style="word-break:break-all;text-align:left;">
+        <%= display(thread.body) %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align:left;" class="bbs_head_table_i">
+        <%= image_tag "icons/icon_search.png" %>&nbsp;<%= link_to_remote "スレッドを見る", :update=>"right_pane",
+                                                                                       :url=>{:action => "comment_pane",
+                                                                                              :board_id=>thread.d_bbs_board_id,
+                                                                                              :thread_id=>thread.id}
+        %>
+      </td>
+      <td colspan="2" style="text-align:right;" class="bbs_head_table_i" nowrap>
+        作成者：<%= thread.post_user_name %>&nbsp;&nbsp;&nbsp;作成日：<%= formatMD(thread.post_date) %>
+      </td>
+    </tr>
+  </table>
+  <br />
+<% end %>
+<% if @thread_list.size > 0%>
+  <table style="width:100%;">
+    <tr>
+      <td style="text-align:center;padding-left:10px;">
+      <%= will_paginate @thread_list, :renderer => RemoteLinkRenderer,
+                                      :update => 'thread_list',
+                                      :params=> { :action => 'thread_list',
+                                                  :board_id=>@thread_list[0].d_bbs_board_id,
+                                                  :mode=>@mode
+                                                },
+                                      :prev_label => "<<前へ",
+                                      :next_label => "次へ>>",
+                                      :method => :get %>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        $(document).scrollTop = 0;
+        $("input[name='btnDisp']").val("開く");
+        $("input[name='btnDisp']").click(
+          function dispDetail(){
+            // 押下されたボタンが操作対象とするthreadのIDを取得する。
+            thread_id = $(this).attr("id").replace("btn_", "thread_");
+            // 押下されたボタンの現在の状態を、ボタンのvalueから判断する。
+            valueBtn = $(this).val();
+            // ボタンのvalue属性が「開く」のときはスレッド詳細を開き、ボタンのvalue属性を「閉じる」に変更する。
+            if (valueBtn == "開く") {
+              $("#" + thread_id).show();
+              $(this).val("閉じる");
+            }else{
+              $("#" + thread_id).hide();
+              $(this).val("開く");
+            }
+          }
+        );
+        $("#d_bbs_threads_title").val("");
+        $("#d_bbs_threads_body").val("");
+        //$("input[name='btnDisp']").click();
+      }
+    );
+  //-->
+</script>

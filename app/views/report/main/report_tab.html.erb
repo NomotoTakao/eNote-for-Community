@@ -1,0 +1,220 @@
+<table>
+  <tr>
+    <td>
+      <table>
+        <tr>
+          <td>得意先一覧</td>
+        </tr>
+        <tr>
+          <td>
+            <select id="customer_list" size="5" style="width:230px;">
+              <%= render :partial=>"customer_list", :locals=>{:customer_list=>@customer_list} %>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td>
+      <table>
+        <tr>
+          <td>対象者</td>
+        </tr>
+        <tr>
+          <td>
+            <select id="action_target_list" size="5" style="width:230px;">
+              <%= render :partial=>"action_target_list", :locals=>{:action_target_list=>@action_target_list} %>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td>
+      <table>
+        <tr>
+          <td>活動分類</td>
+        </tr>
+        <tr>
+          <td>
+            <select id="action_group_list" size="5" style="width:230px;">
+              <%= render :partial=>"action_group_list", :locals=>{:action_group_list=>@action_group_list} %>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td>
+      <table>
+        <tr>
+          <td>活動詳細</td>
+        </tr>
+        <tr>
+          <td>
+            <select id="action_list" size="5" style="width:230px;"></select>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <table style="width:100%;">
+        <tr>
+          <td style="width:8%;vertical-align:top;">
+            <img class="enote_title_block" src="/images/widget_ico_on.gif" />コメント：&nbsp;
+          </td>
+          <td>
+            <textarea id="comment" class="ime_on" rows="5" cols="35"></textarea>
+          </td>
+          <td>
+            <img src="/images/widget_ico_on.gif" />活動時間：&nbsp;<input type="text" id="action_time" class="ime_off" size="8" style="text-align:right;" />&nbsp;時間<br />
+            <img src="/images/widget_ico_on.gif" />売上金額：&nbsp;<input type="text" id="sale_amount" class="ime_off" size="8" style="text-align:right;" />&nbsp;円
+          </td>
+          <td>
+            <input type="button" id="all_delete_button" class="submit_small" value="一括削除" />
+            <input type="button" id="register_button" class="submit_small" value="登録" />
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<input type="hidden" id="authenticity_token" value="<%=form_authenticity_token %>" />
+<script type="text/javascript">
+  <!--
+    /**
+     * 活動分類のセレクトボックスの項目を選択したときに発生するイベント。
+     * 活動の詳細セレクトボックスに表示する項目を取得する。
+     */
+    $("#action_group_list").change(
+      function(){
+        action_group_cd = $(this).val();
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/report/main/action_list",
+            data :
+              {
+                action_group_cd : action_group_cd
+              },
+            success :
+              function(data, datType){
+                $("#action_list").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     * 一括削除ボタンを押下したときのイベント
+     */
+    $("#all_delete_button").click(
+      function(){
+        var chk = $("input[name=chk]")
+        var ids = "";
+        for(i=0; i<chk.length; i++){
+          if(chk[i].checked){
+            if(ids != ""){
+              ids += ",";
+            }
+            ids += chk[i].value;
+          }
+        }
+        if(ids != ""){
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/report/main/delete_report",
+              data :
+                {ids : ids},
+              success :
+                function(data, dataType){
+                  alert("削除しました。");
+                  get_report_list();
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){
+                }
+            }
+          );
+        }else{
+          alert("削除する日報を選択してください。");
+        }
+      }
+    );
+
+    /**
+     * 登録ボタンを押下したときのイベント
+     */
+    $("#register_button").click(
+      function(){
+
+        var action_date = $("#input_report_date").val();
+        var selected_report_id = $("#selected_report_id").val();
+        var company_cd = $("#customer_list").val();
+        var action_target_cd = $("#action_target_list").val()
+        var action_group_cd = $("#action_group_list").val();
+        var action_cd = $("#action_list").val();
+        var comment = $("#comment").val();
+        var action_time = $("#action_time").val();
+        var sale_amount = $("#sale_amount").val();
+        var authenticity_token = $("#authenticity_token").val();
+
+        jQuery.ajax(
+          {
+            type : "POST",
+            url  : "/report/main/register_report",
+            data :
+              "id=" + selected_report_id + "&date=" + action_date + "&c=" + company_cd + "&t=" + action_target_cd + "&a=" + action_group_cd + "&d=" + action_cd + "&cmt=" + comment + "&time=" + action_time + "&sales=" + sale_amount + "&authenticity_token=" + authenticity_token,
+            success :
+              function(data, dataType){
+                alert("登録しました");
+                get_report_list();
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+             function(){
+            }
+          }
+        );
+      }
+    );
+
+    function get_report_list(){
+      jQuery.ajax(
+        {
+          type : "GET",
+          url  : "/report/main/report_list",
+          data :
+            {
+              date : $("#input_report_date").val()
+            },
+          success :
+            function(data, dataType){
+              $("#report_list").html(data);
+            },
+          error :
+            function(){
+              alert("通信エラー");
+            },
+          complete :
+            function(){}
+        }
+      );
+    }
+
+  -->
+</script>

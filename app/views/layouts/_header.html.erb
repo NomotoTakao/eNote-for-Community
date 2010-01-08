@@ -1,0 +1,82 @@
+<table class="header_table" style="width:100%;">
+  <tr><td colspan="5">
+    <div class="header_top_area" style="">
+      <table cellpadding="0" cellspacing="0" style="width:100%;margin:0px;padding:0px;"><tr>
+        <td style="text-align:left;">&nbsp;<%= @pankuzu if @pankuzu %></td>
+        <td style="width:40px;"></td>
+        <td style="width:80px;"><%= link_to("ログアウト", "/logout") %></td>
+      </tr></table>
+    </div>    
+  </td></tr>
+  <tr>
+    <td rowspan="2" class="header_left" style="width:80px;">
+      <%= link_to('<img name="logo" src="/images/header/logo.gif" alt="logo" />', "/") %>
+    </td>
+    <td class="header_right" style="width:300px;">
+      <div style="text-align:left;">
+        <Marquee scrolldelay="160"><%= @user_message %></marquee>
+      </div>
+    </td>
+    <td valign="middle" align="right" class="header_right" style="width:500px;padding-right:0px;text-align:right;">
+      <!-- サイト内検索/Google検索/Yahoo検索 -->
+      <table width="100%">
+      <tr>
+        <td nowrap="nowrap" valign="top" align="left" height="32">
+          <input type="text" id="search_word" name="search_word" size="24" maxlength="255" value="" style="width:200px;height:18px;" />
+        </td>
+        <td>
+          <!-- サイト内検索 -->
+          <form method="get" action="/search/main" style="margin:0px;padding:0px;">
+            <input type="submit" value="サイト内検索" class="submit_large" onclick="click_header_search_button(1);" />
+            <input type="hidden" id="site_search_word" name="site_search_word" value="" />
+          </form>
+        </td>
+        <td>
+          <!-- Google検索 -->
+          <form method="get" action="http://www.google.co.jp/custom" target="google_window">
+            <input type="submit" id="sa" name="sa" value="Google検索" class="submit_large" onclick="click_header_search_button(2);" />
+            <input type="hidden" id="q" name="q" value="" />
+            <input type="hidden" id="client" name="client" value="pub-5785162696714550" />
+            <input type="hidden" id="forid" name="forid" value="1" />
+            <input type="hidden" id="channel" name="channel" value="9432527696" />
+            <input type="hidden" id="ie" name="ie" value="UTF-8" />
+            <input type="hidden" id="oe" name="oe" value="UTF-8" />
+            <input type="hidden" id="flav" name="flav" value="0000" />
+            <input type="hidden" id="sig" name="sig" value="eJOPTdJSa9h558iR" />
+            <input type="hidden" id="hl" name="hl" value="ja" />
+          </form>
+        </td>
+        <td>
+          <!-- Yahoo検索 -->
+          <form method="get" action="http://search.yahoo.co.jp/search" target="_blank">
+            <input type="submit" value="Yahoo検索" class="submit_large" onclick="click_header_search_button(3);" />
+            <input type="hidden" id="p" name="p" value="">
+            <input type="hidden" id="fr" name="fr" value="yssn">
+            <input type="hidden" id="ei" name="ei" value="utf-8">
+          </form>
+        </td>
+      </tr>
+      </table>
+    </td>
+    <td class="header_right" align="center" style="width:50px;">
+      <%= link_to('<img src="/images/header/exit.gif" border="0" alt="ログアウト" />', "/logout") %>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4" style="width:100%;">
+      <table cellpadding="0" cellspacing="0" style="width:100%;">
+        <tr>
+          <td style="width:100px;">
+          </td>
+          <td><%= render(:partial => '/menu/menu') %></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+<!--
+
+-->
+</script>

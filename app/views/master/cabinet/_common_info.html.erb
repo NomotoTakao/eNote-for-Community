@@ -1,0 +1,133 @@
+<input type="hidden" id="success_common" value="<%= @result %>" />
+<table style="width:100%;">
+  <tr>
+    <td style="text-align:left;"><font style="font-weight:bold">共通</font></td>
+    <td style="text-align:right;">
+      <input type="button" class="submit_large" onClick="ClickBackToMasterList();" value="マスタ一覧へ戻る" />
+    </td>
+  </tr>
+  <tr>
+    <td style="width:650px;">
+      <table class="master_table2" style="width:650px;">
+        <tr>
+          <td class="master_table2_title" style="width:40%;">NEWアイコン期間(トップページ)</td>
+          <td class="master_table2_content" style="width:60%;">
+            <%= hidden_field :m_cabinet_settings, :new_icon_days, :size=>2, :maxlength=>2 %>
+            <select id="select_new_icon_days">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>日
+          </td>
+        </tr>
+        <tr>
+          <td class="master_table2_title">頁最大表示件数(共有キャビネット)</td>
+          <td class="master_table2_content">
+            <%= hidden_field :m_cabinet_settings, :page_max_count, :size=>2, :maxlength=>2 %>
+          <select id="select_page_max_count">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>件
+          </td>
+        </tr>
+<!--
+        <tr>
+          <td class="master_table2_title">マイメモリ有効期限初期値</td>
+          <td class="master_table2_content">
+            <%= hidden_field :m_cabinet_settings, :enable_day_default, :size=>2, :maxlength=>2 %>
+            <select id="select_enable_day_default">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
+              <option value="24">24</option>
+              <option value="25">25</option>
+              <option value="26">26</option>
+              <option value="27">27</option>
+              <option value="28">28</option>
+              <option value="29">29</option>
+              <option value="30">30</option>
+            </select>日
+          </td>
+        </tr>
+-->
+      </table>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td style="text-align:right;width:650px;">
+      <input type="submit" class="submit_small" value="登録" />
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        if($("#success_common").val() == "1"){
+          alert("登録が完了しました。");
+        }
+        new_icon_days = $("#m_cabinet_settings_new_icon_days").val();
+        condition = "option[value='" + new_icon_days + "']";
+        $("#select_new_icon_days").children(condition).attr("selected", true);
+
+        page_max_count = $("#m_cabinet_settings_page_max_count").val();
+        condition = "option[value='" + page_max_count + "']";
+        $("#select_page_max_count").children(condition).attr("selected", true);
+
+//        enable_day_default = $("#m_cabinet_settings_enable_day_default").val();
+//        condition = "option[value='" + enable_day_default + "']";
+//        $("#select_enable_day_default").children(condition).attr("selected", true);
+      }
+    );
+
+  $("#select_new_icon_days").change(
+      function(){
+        $("#m_cabinet_settings_new_icon_days").val($(this).val());
+      }
+    );
+
+    $("#select_page_max_count").change(
+      function(){
+        $("#m_cabinet_settings_page_max_count").val($(this).val());
+      }
+    );
+
+    $("#select_enable_day_default").change(
+      function(){
+        $("#m_cabinet_settings_enable_day_default").val($(this).val());
+      }
+    );
+  //-->
+</script>

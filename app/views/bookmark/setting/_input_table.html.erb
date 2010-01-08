@@ -1,0 +1,18 @@
+登録内容を確認してください。
+<table class="admin_pages_edit_table" cellpadding="1" cellspacing="0" style="width:100%;">
+  <tr>
+    <td class="admin_pages_edit_table_title">タイトル&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="admin_pages_edit_table_content">
+      <%= text_field_tag 'bookmark[title]', @bookmark.title,  {:size => 40, :maxlength => 128} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title">コメント</td>
+    <td class="admin_pages_edit_table_content">
+      <%= text_area_tag 'bookmark[memo]', @bookmark.memo,  {:cols => 60, :rows => 10} %>
+    </td>
+  </tr>
+</table>
+<%= hidden_field_tag 'bookmark[id]', @bookmark.id %>
+<%= hidden_field_tag 'bookmark[url]', @bookmark.url %>
+<%= hidden_field_tag 'bookmark[categories]', @bookmark.d_bookmark_category_id %>

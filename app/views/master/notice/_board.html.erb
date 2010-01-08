@@ -1,0 +1,42 @@
+<table style="width:100%;">
+  <tr>
+    <td style="text-align:left;"><font style="font-weight:bold;">お知らせ板編集</font</td>
+    <td style="text-align:right;">
+      <input type="button" class="submit_large" onClick="ClickBackToMasterList();" value="マスタ一覧へ戻る" />
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <select id="board_list" size="13" style="width:250px;">
+        <option value="">&nbsp;</option>
+      </select>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        jQuery.ajax(
+          {
+            type: "GET",
+            url : "/master/notice/board_list",
+            data :
+              {},
+            success:
+              function(data, dataType){
+                $("#board_list").html(data);
+              },
+            error:
+              function(){
+                alert("通信エラー");
+              },
+            complete:
+              function(){}
+          }
+        );
+      }
+    );
+  //-->
+</script>

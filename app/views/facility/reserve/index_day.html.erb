@@ -1,0 +1,76 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/tooltip/jquery.tooltip.js",
+      "jquery/timer/jquery.timer.js",
+      "app/facility"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/tooltip/jquery.tooltip.css",
+      "app/facility"
+    ]) %>
+<% end -%>
+
+<table class="frame_2pain">
+  <tr>
+    <td>
+      <!-- 一覧エリア -->
+      <div id="facility_list"></div>
+    </td>
+  </tr>
+</table>
+
+<div id="dialog_ins" title="予約の登録"></div>
+<div id="dialog_edit" title="予約の編集"></div>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 一覧エリアに日単位の施設一覧を表示
+  */
+  $("#facility_list").load(
+  "/facility/reserve/day?&group_checked_id=" + <%=@group_checked_id%> + "&day=" + <%=@day%>,
+  "",
+  function() {
+/*
+    //timer設定
+    $.timer(300000, function (timer) {
+      // jQueryでの処理
+      $.ajax({
+          type:'get',
+          url:"/facility/reserve/index_day?&group_checked_id=" + <%=@group_checked_id%> + "&day=" + <%=@day%>,
+          success:
+              function(request){
+                  // 受信結果を一覧エリアに反映させます。
+                  $('#facility_list').html(request);
+              }
+      });
+    });
+*/
+  });
+
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+    //ダイアログ
+    dialog_reserve_ins();
+    dialog_reserve_edit();
+
+    //tooltip(備考)
+    $('a.memo_disp').tooltip({
+      track: true,
+      delay: 0,
+      showURL: false,
+      opacity: 1,
+      fixPNG: true,
+      showBody: " - ",
+      extraClass: 'pretty',
+      top: -15,
+      left: 5  });
+  });
+-->
+</script>

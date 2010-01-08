@@ -1,0 +1,13 @@
+<div id="kakikake_list_head"></div>
+<div id="kakikake_list_body">
+<% break_i = 0 %>
+<% for blog in @blog_article %>
+    <div id="kakikake_list">
+        <%= link_to blog.send(:subject), :action => 'update', :id => blog.send(:id), :uid => blog.post_user_cd %>
+    </div>
+    <% break_i = break_i + 1 %>
+    <% break if break_i >= 10 %>
+<% end %>
+</div>
+<div id="kakikake_list_foot"></div>
+

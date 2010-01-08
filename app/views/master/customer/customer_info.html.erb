@@ -1,0 +1,94 @@
+<input type="hidden" id="edit_flg" value="<%= @edit_flg %>" />
+<table style="width:100%;">
+  <%
+    title = ""
+    unless @m_customer.company_cd.nil? or @m_customer.company_cd.empty?
+      title = "(" + @m_customer.company_cd + ") " + @m_customer.name
+    else
+      title = "新規登録"
+    end
+  %>
+  <input type="hidden" id="info_title" value="<%= title %>" />
+  <input type="hidden" id="customer_id" value="<%= @m_customer.id %>" />
+  <input type="hidden" id="company_cd" value="<%= @m_customer.company_cd%>" />
+<!--
+  <tr>
+    <td name="title">
+      <% unless @m_customer.company_cd.nil? or @m_customer.company_cd.empty? %>
+      (<%= @m_customer.company_cd %>)&nbsp;<%= @m_customer.name %>
+      <% else %>
+        新規登録
+      <% end %>
+    </td>
+  </tr>
+-->
+  <tr>
+    <td>
+      <div class="tabset" id="edit_tabs">
+        <input type="hidden" id="info_company_cd" value="<%= @m_customer.company_cd %>" />
+        <ul>
+          <li>
+            <a href="/master/customer/basic_info_tab">基本情報</a>
+          </li>
+          <% unless @m_customer.nil? or @m_customer.company_cd.nil? or @m_customer.company_cd.empty? %>
+            <li>
+              <a href="/master/customer/activity_reference_tab">活動内容参照</a>
+            </li>
+            <li>
+              <a href="/master/customer/customer_employee_tab">得意先社員</a>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    var tabs = new Array();
+    $("#button_close").click(
+      function(){
+        $("#contents").load("/master/customer/search_index");
+      }
+    );
+
+    /**
+     *
+     */
+    function customer_info_close(){
+
+      $("button:contains('閉じる')").click();
+      $("#button_search").click();
+    }
+
+    $(document).ready(
+      function(){
+        $("#customer_info").attr("title", $("#info_title").val());
+        $("#edit_tabs").tabs();
+        $("#edit_tabs").find("ul").attr("class", "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all");
+
+        // タブの枠線を描く
+        cls = "ui-widget-content ui-corner-bottom mbTabsetContainer";
+        hide = " ui-tabs-hide";
+        elements = $("#edit_tabs").find("ul").find("a");
+        key_string = "ui-tabs-";
+
+        for(i=0; i<elements.length; i++){
+          // ”ui-tabs-"を含む要素を取り出す。
+          if(String(elements[i]).search(key_string) > 0){
+            str = "#" + String(elements[i]).substring(String(elements[i]).search(key_string));
+            tabs[tabs.length] = str;
+          }
+        }
+
+        for(var i=0; i<tabs.length; i++){
+          if(i!=0){
+            cls += hide;
+          }
+          $(tabs[i]).attr("class", cls);
+        }
+      }
+    );
+  //-->
+</script>

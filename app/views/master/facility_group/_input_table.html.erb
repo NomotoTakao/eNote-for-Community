@@ -1,0 +1,26 @@
+<!-- エラー -->
+<% err = flash[:facility_group_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<table class="master_table2" style="margin:10px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">施設グループ名&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_facility_groups[name]', @m_facility_groups.name,  {:size => 100, :maxlength => 80} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">表示順</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_facility_groups[sort_no]', @m_facility_groups.sort_no,  {:size => 5, :maxlength => 2} %>
+    </td>
+  </tr>
+</table>
+<%= hidden_field_tag 'm_facility_groups[id]', @m_facility_groups.id %>
+<%= hidden_field_tag 'm_facility_groups[facility_group_cd]', @m_facility_groups.facility_group_cd %>

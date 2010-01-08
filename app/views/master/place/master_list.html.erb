@@ -1,0 +1,69 @@
+<!-- ボタン -->
+<table class="master_table_button">
+  <tr style="border:0px;">
+    <td style="text-align:left;">
+      <input id="new_button" type="submit" class="submit_small" value="新規" onclick="ClickNewButton()" />
+    </td>
+    <td style="text-align:right;">
+      <input id="back_list_button" type="button" class="submit_large" value="マスタ一覧へ戻る" onclick="ClickBackToMasterList()" />
+    </td>
+  </tr>
+</table>
+
+<!-- 一覧 -->
+<table class="master_table1" style="margin:10px 0px 0px 10px;">
+  <!-- タイトル -->
+  <tr class="master_table1_title">
+    <th style="width:600pt" class="master_table1_cell_bordered">拠点名称</th>
+    <th style="width:100pt" class="master_table1_cell_bordered">更新日時 </th>
+    <th style="width:100pt" class="master_table1_cell_bordered">編集/削除 </th>
+  </tr>
+
+  <!-- 内容 -->
+  <% @m_places.each do |place| %>
+    <tr style="height:50px; padding-left:5px;">
+      <td class="master_table1_cell_bordered" style="text-align:left;"><%= place.name %></td>
+      <td class="master_table1_cell_bordered" style="text-align:center;"><%= place.updated_at.strftime("%Y/%m/%d") %></td>
+      <td class="master_table1_cell_bordered" style="text-align:center;">
+        <a href="#" onclick="ClickEditButton(<%=place.id%>)" ><img src="/images/icons/icon_entry.gif"></a>
+        <%= link_to(image_tag("icons/icon_trash.gif"), {:action => "delete", :id => place.id}, {:confirm => "削除してよろしいですか？"}) %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<!-- ボタン -->
+<table class="master_table_button">
+  <tr style="border:0px;">
+    <td style="text-align:left;">
+      <input id="new_button" type="submit" class="submit_small" value="新規" onclick="ClickNewButton()" />
+    </td>
+    <td style="text-align:right;">
+      <input id="back_list_button" type="button" class="submit_large" value="マスタ一覧へ戻る" onclick="ClickBackToMasterList()" />
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+  });
+
+  /*
+   * 新規
+   */
+  function ClickNewButton(){
+    document.location = "/master/place/new";
+  }
+
+  /*
+   * 編集
+   */
+  function ClickEditButton(id){
+    document.location = "/master/place/edit?id=" + id;
+  }
+-->
+</script>

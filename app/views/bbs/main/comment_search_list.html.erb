@@ -1,0 +1,105 @@
+<%# コメント検索結果一覧 %>
+
+<% if @comment_list.size > 0 %>
+<h3>検索結果</h3>
+<table style="margin-left: 40px; width: 620px; text-align: left;">
+  <tr>
+  	<td style="text-align:center;">
+  <% if params[:mode]=="1" %>
+	<%= link_to_remote "新しいものから",
+                       :update=>"right_pane",
+                       :url=>{:action=>"comment_search_pane",
+                              :form_board_id=>@board_id,
+                              :form_thread_id=>@thread_id,
+                              :date_from=>@date_from,
+                              :date_to=>@date_to,
+                              :keyword=>@keyword,
+                              :mode=>"2"}
+    %>
+    &nbsp;&nbsp;&nbsp;<font color="#1e90ff">古い物から</font>
+  <% else %>
+    <font color="#1e90ff">新しい物から</font>&nbsp;&nbsp;&nbsp;
+	<%= link_to_remote "古いものから",
+                       :update=>"right_pane",
+                       :url=>{:action=>"comment_search_pane",
+                              :form_board_id=>@board_id,
+                              :form_thread_id=>@thread_id,
+                              :date_from=>@date_from,
+                              :date_to=>@date_to,
+                              :keyword=>@keyword,
+                              :mode=>"1"}
+    %>
+  <% end %>
+<% end %>
+    </td>
+  </tr>
+</table>
+<br />
+<% @comment_list.each do |comment| %>
+  <table class="bbs_head_table" style="margin-left: 40px; width: 620px; text-align: left;">
+    <tbody>
+      <tr>
+      	<td style="text-align: left;" class="bbs_head_table_i" colspan="2">
+		  <%= link_to_remote @board_list[comment.d_bbs_board_id],
+                             :update=>"right_pane",
+                             :url=>{:action=>:thread_pane,
+                                    :board_id=>comment.d_bbs_board_id}
+		  %>
+          <%#= @board_list[comment.d_bbs_board_id] %>
+		  >>
+		  <%= link_to_remote @thread_list[comment.d_bbs_thread_id],
+                             :update=>"right_pane",
+                             :url=>{:action=>:comment_pane,
+                                    :board_id=>comment.d_bbs_board_id,
+                                    :thread_id=>comment.d_bbs_thread_id}
+		  %>
+		  <%#= @thread_list[comment.d_bbs_thread_id] %>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: left; width: 320px;" class="bbs_head_table_i">
+		     作成者：<%= comment.post_user_name %>
+        </td>
+        <td style="text-align: right; width: 300px;" class="bbs_head_table_i">
+		  &nbsp;&nbsp;作成日：<%= formatMD(comment.post_date) %>
+        </td>
+      </tr>
+      <tr style="" class="desc1">
+        <td colspan="2" class="bbs_head_table_b" style="text-align:left;">
+          <%# コメントが押下された場合、コメントの一覧に遷移しさらに該当コメントのページを表示させたい。%>
+          <%= link_to_remote display(comment.body),
+                             :update=>"right_pane",
+                             :url=>{:action=>:comment_pane,
+                                    :board_id=>comment.d_bbs_board_id,
+                                    :thread_id=>comment.d_bbs_thread_id,
+                                    :comment_id=>comment.id}
+          %>
+          <%#= display(comment.body) %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+<% end %>
+<% if @comment_list.size > 0%>
+  <table style="width:100%;">
+    <tr>
+      <td style="text-align:left;padding-left:10px;">
+      <%= will_paginate @comment_list, :renderer => RemoteLinkRenderer,
+                                       :update => 'comment_search_list',
+                                       :params=> { :action => 'comment_search_list',
+                                                   :board_id=>@board_id,
+                                                   :thread_id=>@thread_id,
+                                                   :date_from=>@date_from,
+                                                   :date_to=>@date_to,
+                                                   :keyword=>@keyword,
+                                                   :mode=>@mode
+                                                 },
+                                       :prev_label => "<<前へ",
+                                       :next_label => "次へ>>",
+                                       :method => :get
+      %>
+      </td>
+    </tr>
+  </table>
+<% end %>

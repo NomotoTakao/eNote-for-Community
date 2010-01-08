@@ -1,0 +1,58 @@
+<% unless @bulletin_head.nil? %>
+  <% unless @bulletin_head.d_bulletin_file.nil? %>
+    <% d_bulletin_files = @bulletin_head.d_bulletin_file.reverse %>
+    <% d_bulletin_files.each do |d_bulletin_file| %>
+      <%= d_bulletin_file.file_name %>
+      <%= link_to_remote "[×]",
+                         :update=>"attachment_file",
+                         :url=>{:action=>:delete_file,
+                                :head_id=>@bulletin_head.id,
+                                :file_id=>d_bulletin_file.id
+                               }
+      %><br />
+    <% end %>
+  <% end %>
+<% end %>
+<!-- 新たな添付ファイルを指定する -->
+<!-- ここから添付関連タグのセット -->
+<br id="br_0">
+<input type="file" size="40" id="attachment_0" name="attachment[0]"/>
+<input type="button" class="submit_small" id="deleteButton_0" value="クリア" onClick="delete_file(0);" />
+<!-- ここまで添付関連タグのセット -->
+<input type="button" class="submit_small" value="追加" id="addButton" onClick="add_file();" />
+<iframe id='bulletin_create_form_upload_frame' name='bulletin_create_form_upload_frame' style='display:none;'></iframe>
+<input type="hidden" id="maxindex" value="0" />
+
+<script type="text/javascript">
+  <!--
+    function add_file(position){
+      //id用のインデックスを生成
+      var maxidx = (Number($("#maxindex").val()) + 1).toString();
+
+      //挿入するタグの文字列
+      var tag_str = "";
+      tag_str += "<br id='br_" + maxidx + "'>";
+      tag_str += "<input type='file' size='40' id='attachment_" + maxidx + "' name='attachment[" + maxidx + "]'/> ";
+      tag_str += "<input type='button' class='submit_small' id='deleteButton_" + maxidx + "' value='クリア' onClick='delete_file(" + maxidx + ");' /> ";
+
+      //追加ボタンの直前にタグを挿入する
+      $("#addButton").before(tag_str);
+      //インデックスをカウントアップ
+      $("#maxindex").val(maxidx);
+    }
+
+    function delete_file(index){
+  //fileフィールドの個数を取得
+  var cnt = $("input[type='file']").length;
+    //引数で指定されたIDを持つ各エレメントを削除
+    $("#attachment_" + index).remove();
+    $("#deleteButton_" + index).remove();
+    $("#br_" + index).remove();				//改行タグも消す
+
+    //最後の1個だったときは新規に1個を作る
+    if(cnt == 1){
+      add_file();
+    }
+    }
+  //-->
+</script>

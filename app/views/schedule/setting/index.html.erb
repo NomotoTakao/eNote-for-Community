@@ -1,0 +1,105 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/tooltip/jquery.tooltip.js",
+      "app/schedule"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/tooltip/jquery.tooltip.css",
+      "app/schedule"
+    ]) %>
+<% end -%>
+
+
+<%= form_tag :action => 'create' %>
+<% week_start_flg = 0 %>
+<% set_time_interval_flg = 0 %>
+<% if !@d_schedule_setting.nil? %>
+  <% week_start_flg = @d_schedule_setting.week_start_flg %>
+  <% set_time_interval_flg = @d_schedule_setting.set_time_interval_flg %>
+  <% other_member_init = @d_schedule_setting.other_member_init %>
+<% end %>
+
+<!-- エラー -->
+<% err = flash[:schedule_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+<br><br>
+<table class="admin_pages_edit_table" cellpadding="1" cellspacing="0" style="width:960px;margin-left:20px;">
+  <tr>
+    <td class="admin_pages_edit_table_title"><div style="text-align:left;margin-left:4px;">１週間の開始日（週単位の表示）</div></td>
+    <td class="admin_pages_edit_table_content">
+      <select id="week_start_flg" name="week_start_flg" style="width:170px">
+        <% if week_start_flg == 0 %>
+          <option value = 0 selected>本日始まり</option>
+        <% else %>
+          <option value = 0>本日始まり</option>
+        <% end %>
+        <% if week_start_flg == 1 %>
+          <option value = 1 selected>日曜始まり</option>
+        <% else %>
+          <option value = 1>日曜始まり</option>
+        <% end %>
+        <% if week_start_flg == 2 %>
+          <option value = 2 selected>月曜始まり</option>
+        <% else %>
+          <option value = 2>月曜始まり</option>
+        <% end %>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><div style="text-align:left;margin-left:4px;">登録する時間の間隔 </div></td>
+    <td class="admin_pages_edit_table_content">
+      <select id="set_time_interval_flg" name="set_time_interval_flg" style="width:170px">
+        <% if set_time_interval_flg == 0 %>
+          <option value = 0 selected>５分間隔</option>
+        <% else %>
+          <option value = 0>５分間隔</option>
+        <% end %>
+        <% if set_time_interval_flg == 1 %>
+          <option value = 1 selected>１０分間隔</option>
+        <% else %>
+          <option value = 1>１０分間隔</option>
+        <% end %>
+        <% if set_time_interval_flg == 2 %>
+          <option value = 2 selected>１５分間隔</option>
+        <% else %>
+          <option value = 2>１５分間隔</option>
+        <% end %>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="admin_pages_edit_table_title"><div style="text-align:left;margin-left:4px;">他メンバーリストの初期値</div></td>
+    <td class="admin_pages_edit_table_content">
+      <select id="other_member_init" name="other_member_init" style="width:270px">
+        <% for i in 0..(@belong_list.size - 1) %>
+          <% belong = @belong_list[i] %>
+          <% if @other_checked_id == i %>
+            <option value = <%=i%> selected><%=belong[2]%></option>
+          <% else %>
+            <option value = <%=i%>><%=belong[2]%></option>
+          <% end %>
+        <% end %>
+      </select>
+    </td>
+  </tr>
+</table>
+<br><br>
+<table style="width: 980px;">
+  <tr>
+    <td style="text-align:right;">
+      <input id="schedule_setting_new" type="submit" class="submit lh_valid_button" value="登録" />
+    </td>
+  </tr>
+</table>
+</form>

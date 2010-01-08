@@ -1,0 +1,76 @@
+<% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "app/search"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "app/search"
+    ]) %>
+<% end -%>
+
+<div style="padding:5px;">
+<table class="frame_2pain" style="">
+<tr>
+<!-- 左側エリア -->
+<td class="frame_2pain_left" style="">
+  <!-- 検索エリア -->
+  <div class="gadget" style="width:240px;">
+    <div id="" class="gadget_title" style="">
+      <h3 style=""><img src="/images/icons/icon_notice.gif" align="top" style="margin-right:5px;">対象機能</h3>
+    </div>
+    <%= form_remote_tag(:update => 'search_result', :url => {:action => :search_result}) %>
+      <div class="gadget_body">
+        <table>
+          <tr><td>
+            <input id="search_check1" type="checkbox" name="search_check1" value="1" class="check" checked="checked" />お知らせ
+          </td></tr>
+          <tr><td>
+            <input id="search_check2" type="checkbox" name="search_check2" value="1" class="check" checked="checked" />Webメモリ
+          </td></tr>
+          <tr><td>
+            <input id="search_check3" type="checkbox" name="search_check3" value="1" class="check" checked="checked" />掲示板
+          </td></tr>
+          <tr><td>
+            <input id="search_check4" type="checkbox" name="search_check4" value="1" class="check" checked="checked" />社内ブログ
+          </td></tr>
+          <tr><td>
+            <input id="search_check5" type="checkbox" name="search_check5" value="1" class="check" checked="checked" />共有キャビネット
+          </td></tr>
+          <tr><td>
+            <input id="search_check6" type="checkbox" name="search_check6" value="1" class="check" checked="checked" />リンク集
+          </td></tr>
+          <tr><td>
+            <input id="search_check7" type="checkbox" name="search_check7" value="1" class="check" checked="checked" />アドレス帳
+          </td></tr>
+        </table>
+      </div>
+      <div class="gadget_body">あいまい検索：<br>
+        <%= text_field_tag 'site_search_word',@site_search_word,{:size => 20, :style => "height:20px;width:150px;margin:0px;"} %>
+        <%= submit_tag "検索", :class => "submit_small", :style => "margin:0px;" %>
+      </div>
+    </form>
+  </div>
+</td>
+<!-- 右側エリア -->
+<td class="frame_2pain_right" style="">
+  <div id="search_result"></div>
+</td>
+</tr>
+</table>
+</div>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期設定
+  */
+  $(document).ready(function(){
+    //検索結果を表示する
+    $("#search_result").load("/search/main/search_result?site_search_word=" + encodeURIComponent('<%=@site_search_word%>') + "&from_mode=0");
+  });
+-->
+</script>
+

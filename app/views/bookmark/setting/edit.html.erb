@@ -1,0 +1,57 @@
+<div id="input_area">
+  <!-- エラー -->
+  <% if !flash[:bookmark_err_msg].nil? && flash[:bookmark_err_msg] != "" %>
+    <table style="width:550px; text-align:left;">
+      <tr style="color:red;">
+        <td><%= flash[:bookmark_err_msg] %></td>
+      </tr>
+      <tr>
+        <td style="text-align:right;">
+          <input id="d_bookmark_cancel" type="button" class="submit_large" value="閉じる" onclick="ClickCancel()" />
+        </td>
+      </tr>
+    </table>
+  <% else %>
+    <%= form_tag({:action=>'update'}) %>
+      <table style="width:550px;">
+         <tr>
+           <td colspan=2>
+             <!-- 入力フォーム -->
+             <%= render :partial => 'input_table' %>
+           </td>
+         </tr>
+         <tr>
+           <td style="width:50%; text-align:left;">
+             <input id="d_bookmark_edit" type="submit" class="submit_large" value="登録" onclick="return ClickEditButton()" />
+           </td>
+           <td style="width:50%; text-align:right;">
+             <input id="d_bookmark_cancel" type="button" class="submit_large" value="閉じる" onclick="ClickCancel()" />
+           </td>
+        </tr>
+      </table>
+    </form>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+<!--
+  /*
+   * 登録
+   */
+  function ClickEditButton(){
+    //入力チェック
+    result = CheckValidate();
+    if (!result) {
+      return result;
+    }
+    jQuery("#dialog_upd").dialog("close");
+    return true;
+  }
+  /*
+   * 閉じる
+   */
+  function ClickCancel(){
+    jQuery("#dialog_upd").dialog("close");
+  }
+-->
+</script>

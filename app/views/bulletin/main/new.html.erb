@@ -1,0 +1,120 @@
+<%= form_tag({:action=>'create'}, {:multipart=>true, :target=>'bulletin_create_form_upload_frame', :id => 'form_bulletin'}) %>
+	<%= hidden_field 'bulletin_head','post_user_cd' %>
+	<%= hidden_field 'bulletin_head','post_user_name' %>
+	<table class="admin_pages_edit_table" cellpadding="1" cellspacing="0" style="width:960px;margin-left:20px;">
+	    <tr>
+	      <td class="admin_pages_edit_table_title">タイトル<font style="font-weight:bold;color:#FF0000;">（必須）</font></td>
+	      <td class="admin_pages_edit_table_content">
+			<%= text_field 'bulletin_head','title',{:size => 60, :maxlength => 40, :style => "width:680px;height:25px;font-size:1.5em;", :class => 'enote_blog_subject_text ime_on' } %>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="admin_pages_edit_table_title">回覧先の選択<font style="font-weight:bold;color:#FF0000;">（必須）</font></td>
+	      <td class="admin_pages_edit_table_content">
+	      	<table cellpadding="0" cellspacing="2" border="0">
+	      		<tr><td colspan="2"><b>組織から選択</b></td>
+					<td></td>
+					<td><b>選択された社員</b></td>
+	      		</tr>
+	      		<tr><!-- 組織の選択 -->
+	      			<td><div id="org_area" style="border:1px solid gray;width:250px;height:250px;"></div></td>
+					<td><div id="org_users_area" style="border:1px solid gray;width:200px;height:250px;"></div></td>
+	      			<td style="width:50px;" valign="middle" align="center">
+				        <input id="btn_move_right_all" type="button" value=">>" style="border:0px;" onclick="ClickAddAllUser()" class="submit_small" />
+				        <br>
+						<input id="btn_move_right" type="button" value=">" style="border:0px;" onclick="ClickAddUser()" class="submit_small" />
+						<br>
+						<br>
+						<input id="btn_move_left" type="button" value="<" style="border:0px;" onclick="ClickDeleteUser()" class="submit_small" />
+						<br>
+				        <input id="btn_move_left_all" type="button" value="<<" style="border:0px;" onclick="ClickDeleteAllUser()" class="submit_small" />
+	      			</td>
+	      			<td>
+			          <% options = "" %>
+			          <% if !@users_decide.nil? %>
+						<% @users_decide.each do |member|%>
+						  <% options += "<option value=#{member.user_cd} >#{member.name}</options>" %>
+						<% end %>
+			          <% end %>
+                      <% unless @bulletin_head.nil? %>
+                        <% @bulletin_head.d_bulletin_bodies.each do |d_bulletin_body| %>
+                          <% options += "<option value=#{d_bulletin_body.user_cd} >#{MUser.get_user_name(d_bulletin_body.user_cd)}</option>" %>
+                        <% end %>
+                      <% end %>
+			          <%= select_tag('decided_users[]', options, :id => "decided_users", :size=>10, :multiple=>true, :style=>'width:200px;height:250px;border:1px solid gray;') %>
+				  	  <%= hidden_field_tag 'decided_user_cds' %>
+		  			</td>
+	      		</tr>
+	      	</table>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="admin_pages_edit_table_title">回覧期間<font style="font-weight:bold;color:#FF0000;">（必須）</font></td>
+	      <td class="admin_pages_edit_table_content">
+			<table border="0" cellpadding="0" cellspacing="0" style="margin-left:0px;">
+		  	<tr>
+	            <td><%= text_field 'bulletin_head','bulletin_date_from',{:value=>bulletin_date_from(@bulletin_head.bulletin_date_from), :class=>"ime_off", :size => 10, :style => "width:100px;"} %></td>
+	            <td align="center" width="50">～</td>
+	            <td><%= text_field 'bulletin_head','bulletin_date_to',{:value=>bulletin_date_to(@bulletin_head.bulletin_date_to), :class=>"ime_off", :size => 10, :style => "width:100px;"} %></td>
+          	</tr>
+			</table>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="admin_pages_edit_table_title">回覧先確認状況</td>
+	      <td class="admin_pages_edit_table_content">
+	        <%= radio_button("bulletin_head", "answer_public_kbn", "1", :class=>"check") %>公開する&nbsp;
+	        <%= radio_button("bulletin_head", "answer_public_kbn", "0", :class=>"check") %>公開しない&nbsp;
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="admin_pages_edit_table_title">内容の編集</td>
+	      <td class="admin_pages_edit_table_content">
+            <%= fckeditor_textarea 'bulletin_head', 'body', {:toolbarSet => "Simple", :width=>'100%', :height=>'500px', :class =>'enote_blog_body_text ime_on'} %>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="admin_pages_edit_table_title">添付するファイルの指定</td>
+	      <td class="admin_pages_edit_table_content">
+            <div id="attachment_file">
+              <%= render :partial=>"attachment_file" %>
+            </div>
+	      </td>
+	    </tr>
+	</table>
+    <table style="border:0px;width:100%;">
+      <tr>
+        <td align="center">
+          <%= button_to_function '登録', "SaveBulletin();", {:class => 'submit'} %>
+          &nbsp;&nbsp;
+          <%= button_to_function 'キャンセル', "CancelBulletin();", {:class=>'submit'} %>
+        </td>
+      </tr>
+    </table>
+	<input type="hidden" id="d_bulletin_head_id" name="d_bulletin_head[id]" value="" />
+</form>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(function(){
+  		$("#d_bulletin_head_id").val($("#edit_id").val());
+  		// 編集用のIDフィールドをクリア
+  		$("#edit_id").val("");
+		
+	  	$("#org_area").load("/common/tree/disp_org","",function(){
+  			//組織ツリーにクリックイベントを定義する
+  			$(".org").click(function(){
+  				var value = $(this).attr("id").replace("org_", "");
+  				jQuery("#org_users_area").load("/common/tree/disp_org_user?org_cd=" + value);
+  			})
+  		});
+
+      // カレンダー
+      setCalendar(jQuery("#bulletin_head_bulletin_date_from"));
+      setCalendar(jQuery("#bulletin_head_bulletin_date_to"));
+  
+      $(document).scrollTop = 0;
+    });
+
+  //-->
+</script>

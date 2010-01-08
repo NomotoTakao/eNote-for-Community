@@ -1,0 +1,133 @@
+<% unless @tmp_list.nil? %>
+  <ul id="tmp_tree" class="orgtree">
+    <% @tmp_list.each do |org| %>
+      <li class="closed">
+        <span id="org_<%= org.org_lvl %>_<%= org.org_cd %>" class="folder org report_tree">
+          <font>
+            <%= org.org_name %>
+          </font>
+        </span>
+        <% unless org.org_lvl == 4 %>
+          <ul></ul>
+        <% end %>
+    <% end%>
+    <% unless @user_list.nil? %>
+      <% @user_list.each do |user| %>
+        <li class="closed">
+          <span id="person_<%= user.user_cd %>" class="file person report_tree">
+            <font>
+              <%= user.user_name %>
+            </font>
+          </span>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+
+    /**
+     * 画面をロードしたときのイベント
+     */
+    $(document).ready(
+      function(){
+        $("#tmp_tree").treeview();
+        $("#tmp_tree").attr("id", "");
+        // イベントが複数回バインドされるのを防ぐため、一度unbindする。
+//        $(".org").unbind("hover");
+//        $(".org").unbind("click");
+        $(".person").unbind("hover");
+        $(".person").unbind("click");
+      }
+    );
+
+    /**
+     * 組織にマウスカーソルを合わせた場合、はずした場合のイベント
+     */
+    $(".org").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /**
+     * 組織をクリックしたときのイベント
+     */
+    $(".org").click(
+      function(){
+        bgChange($(this).children(), $(".report_tree").children());
+        var id = $(this).attr("id");
+        var org_lvl = "";
+        var org_cd = "";
+        if(id != ""){
+          var array_id = id.split("_");
+          org_lvl = array_id[1];
+          org_cd = array_id[2];
+        }
+        $("#org_cd").val(org_cd);
+        $("#user_cd").val("");
+        // 組織CD、組織レベルが取得できて、配下の組織がまだ取得できていないときは取得する。
+        if(org_lvl!="" && org_lvl!="4" && org_cd!="" && ($("#" + id).next().html() == null || $("#" + id).next().html() == "")){
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/report/main/tmp_list",
+              data :
+                {
+                  org_lvl : org_lvl,
+                  org_cd  : org_cd
+                },
+              success :
+                function(data, dataType){
+                  $("#"+id).after(data);
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){}
+            }
+          );
+        }
+      }
+    );
+
+    $(".person").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    $(".person").click(
+      function(){
+        bgChange($(this).children(), $(".report_tree").children());
+        var id = $(this).attr("id");
+        var user_cd = id.replace("person_", "");
+        $("#org_cd").val("");
+        $("#user_cd").val(user_cd);
+      }
+    );
+
+    /**
+     * ツリーの+/-ボタンがクリックされたときに発生するイベントです。
+     */
+    $(".hitarea").click(
+      function(){
+//        if ($(this).next().attr("data") == 0 && $(this).next().next().html() == "") {
+          $(this).next().click();
+          // ツリーの+/-ボタンの記号を'+'から'-'に変更する。(クラスの属性を置き換える)
+          $(this).attr("class", $(this).attr("class").replace("expandable", "collapsable"));
+//        }
+      }
+    );
+
+  //-->
+</script>

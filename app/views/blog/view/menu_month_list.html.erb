@@ -1,0 +1,33 @@
+<!-- 月別アーカイブ -->
+
+<div id="blog_month_list_head"></div>
+  <div id="blog_month_list_body">
+    <table>
+      <% prev_year = "" %>
+      <% @monthly_count_list.each do |monthly_count| %>
+        <tr>
+          <% if prev_year != monthly_count.year %>
+            <td>
+              <%= monthly_count.year %>年
+            </td>
+          <% else %>
+            <td>&nbsp;</td>
+          <% end %>
+
+          <td style="text-align:left;">
+            <%= link_to_remote monthly_count.month + "月",
+                               :update=>"right_pane",
+                               :url=>{:action=>:blog_list,
+                                      :user_cd=>@user_cd,
+                                      :year=>monthly_count.year,
+                                      :month=>monthly_count.month}
+            %>
+          </td>
+          <td style="text-align:left;">(<%= monthly_count.count %>)</td>
+        </tr>
+        <% prev_year = monthly_count.year %>
+      <% end %>
+    </table>
+  </div>
+<div id="blog_month_list_foot"></div>
+  

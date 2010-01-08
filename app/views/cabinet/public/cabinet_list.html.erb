@@ -1,0 +1,109 @@
+<!-- キャビネット一覧 -->
+
+<input type="hidden" id="list_cabinet_id" value="<%= @cabinet_id %>" />
+<input type="hidden" id="list_edit_id" value="<%= @edit_id %>" />
+<table class="enote_general_table1">
+  <tr class="enote_general_table1_title">
+    <th style="width:270pt" class="enote_general_table1_cell_bordered" order="title" mode="<%= @title_next %>" >
+    タイトル<%= order_mark(@title_next) %>
+    </th>
+    <th style="width:70pt" class="enote_general_table1_cell_bordered" order="updated_at" mode="<%= @updated_at_next %>">
+    更新日時<%= order_mark(@updated_at_next) %>
+    </th>
+    <th style="width:95pt" class="enote_general_table1_cell_bordered" order="post_org_cd" mode="<%= @post_org_cd_next %>">
+    投稿部署<%= order_mark(@post_org_cd_next) %>
+    </th>
+    <th style="width:95pt" class="enote_general_table1_cell_bordered" order="post_user_name" mode="<%= @post_user_name_next %>">
+    投稿者<%= order_mark(@post_user_name_next) %>
+    </th>
+    <th style="width:70pt" class="enote_general_table1_cell_bordered">&nbsp;</th>
+  </tr>
+
+  <% @cabinet_list.each do |cabinet| %>
+    <tr style="height:30px;">
+      <td class="enote_general_table1_cell_bordered" style="padding-left:5px;text-align:left;">
+        <%= link_to_remote(cabinet.title, :update=>"cabinet_list",
+                                          :url=>{:action=>:cabinet_detail,
+                                                 :id=>cabinet.id
+                                                }) %>
+      </td>
+      <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= datetime_strftime(cabinet.post_date) %></td>
+      <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= MOrg.get_org_name(cabinet.post_org_cd) %></td>
+      <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= cabinet.post_user_name %></td>
+      <td class="enote_general_table1_cell_bordered" style="text-align:center;">
+        <!-- 編集・削除ができるのは登録した本人か管理者) -->
+        <% if (cabinet.post_user_cd.to_i == current_m_user.user_cd.to_i  and cabinet.post_org_cd == (MUserBelong.new.get_main_org current_m_user.user_cd).org_cd) or current_m_user.admin_flg == 1 %>
+          <%= link_to_remote(image_tag("icons/icon_entry.gif"), :update=>"cabinet_list", :url=>{:action=>"edit", :body_id=>cabinet.id}, :class=>"submit") %>
+          <%= link_to_remote(image_tag("icons/icon_trash.gif"), :update=>'cabinet_list', :url=>{:action=>"delete",
+                                                                                                :cabinet_kbn=>cabinet.d_cabinet_head.cabinet_kbn,
+                                                                                                :cabinet_id=>cabinet.d_cabinet_head.id,
+                                                                                                :delete_id=>cabinet.id},
+                                                                                         :confirm=>"削除してよろしいですか？",
+                                                                                         :class =>"submit") %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<table style="width:100%;">
+  <tr>
+    <td style="text-align:center;padding-left:10px;">
+    <%= will_paginate(@cabinet_list, :renderer => RemoteLinkRenderer,
+                                    :update => 'cabinet_list',
+                                    :params=> { :action => 'cabinet_list',
+                                                :id=>@index_id,
+                                                :date_from=>@date_from,
+                                                :date_to=>@date_to,
+                                                :keyword=>@keyword
+                                              },
+                                    :prev_label => "<<前へ",
+                                    :next_label => "次へ>>",
+                                    :method => :get ) if @cabinet_list.size > 0 %>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+
+    $(document).ready(
+      function (){
+        $("#edit_id").val("");
+        var edit_id = $("#list_edit_id").val();
+        if(edit_id != ""){
+          // 親画面のフィールドに値をセットする。
+          $("#edit_id").val(edit_id);
+          // 新規作成タブを押下する
+          showTab(1);
+        }
+      }
+    );
+
+    $("th.enote_general_table1_cell_bordered").hover(
+      function(){
+        html = $(this).html();
+        if(html != "&nbsp;" && html != ""){
+          $(this).css("cursor","pointer");
+        }
+      },
+      function(){
+        $(this).css("cursor","default");
+      }
+    );
+
+    $("th.enote_general_table1_cell_bordered").click(
+      function(){
+        var order = $(this).attr("order");
+        var mode = $(this).attr("mode");
+        var cabinet_id = $("#selectedCabinet_").val();
+
+        if (typeof(order) == 'string') {
+          var url = "/cabinet/public/cabinet_list/?order=:order&mode=:mode&cabinet_id=:cabinet_id&cabinet_kbn=:cabinet_kbn"
+          url = url.replace(":order", order).replace(":mode", mode).replace(":cabinet_id", cabinet_id).replace(":cabinet_kbn", "<%= @cabinet_kbn %>")
+
+          $("#cabinet_list").load(url);
+        }
+      }
+    );
+  //-->
+</script>

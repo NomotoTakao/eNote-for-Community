@@ -1,0 +1,27 @@
+<input type="hidden" id="success_mine" value="<%= @result %>" />
+<table class="master_table2" style="width:500px;">
+  <tr>
+    <td class="master_table2_title">最大保存日数<font style="weight:bold;color:red">(必須)</font></td>
+    <td class="master_table2_content">
+      <%= text_field :d_cabinet_heads, :default_enable_day, :size=>3, :maxlength=>3 %>日
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">最大保存容量<font style="weight:bold;color:red">(必須)</font></td>
+    <td class="master_table2_content">
+      <%= text_field :d_cabinet_heads, :max_disk_size, :size=>3, :maxlength=>3 %>MB
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        if($("#success_mine").val() == "1"){
+          alert("登録が完了しました。");
+        }
+      }
+    );
+  //-->
+</script>

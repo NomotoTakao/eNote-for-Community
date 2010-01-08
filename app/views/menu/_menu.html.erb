@@ -1,0 +1,43 @@
+<div style="float: right;" id="enote_menu_header">
+  <table  border="0" cellpadding="0" cellspacing="0" class="container" style="width:740px;">
+    <tr>
+      <td class="myMenu" align="right" style="padding:3px;background-color:#fff;">
+        <!-- start horizontal menu -->
+        <table class="rootVoices" cellspacing='0' cellpadding='0' border='0'><tr>
+          <% @head_menus[:top].each do |menu| %>
+            <!-- 下に子メニューが存在する場合 -->
+            <% if MMenu.get_child_cnt(menu.id) > 0 %>
+              <td class="rootHeadMenuIcon">
+                <div class="rootVoice {menu: 'menu_<%= menu.id %>'}" onclick='window.open("<%= menu.url %>","<%= menu.target %>");'><%= menu.title %></div></td>
+            <% else %>
+              <td class="rootHeadMenuIcon">
+                <div class="rootVoice {menu: 'empty'}" onclick='window.open("<%= menu.url %>","<%= menu.target %>");'><%= menu.title %></div></td>
+            <% end %>
+          <% end %>
+        </tr></table>
+        <!-- end horizontal menu -->
+
+        <!-- dropdown menu start -->
+        <% @head_menus[:child].each do |menus| %>
+          <% i = 0 %>
+          <% menus.each do |menu| %>
+            <% if i == 0 %>
+              <div id="menu_<%= menu.parent_menu_id %>" class="menu">
+            <% end %>
+            <!-- 下に子メニューが存在する場合 -->
+            <% if MMenu.get_child_cnt(menu.id) > 0 %>
+              <a class="{menu: 'menu_<%= menu.id %>'}"><%= menu.title %></a>
+            <% else %>
+              <%= link_to menu.title, menu.url, :target => menu.target %>
+            <% end %>
+            <% i += 1 %>
+          <% end %>
+          <% if i != 0 %>
+            </div>
+          <% end %>
+        <% end %>
+        <!-- dropdown menu end -->
+      </td>
+    </tr>
+  </table>
+</div>

@@ -1,0 +1,48 @@
+<!-- エラー -->
+<% err = flash[:company_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<table style="width:100%;margin:10px 0px 0px 10px;">
+  <tr colspan=2 style="text-align:left;">
+    <td style="text-align:left;">※期末日１ ： 最小月(年初) → 期末日４ ： 最大月(年末) の順番で入力してください。</td>
+  </tr>
+</table>
+<table class="master_table2" style="margin:10px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">期末日１(MMDD)&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_companies[term_end1]', @m_companies.term_end1,  {:size => 10, :maxlength => 4} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">期末日２(MMDD)</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_companies[term_end2]', @m_companies.term_end2,  {:size => 10, :maxlength => 4} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">期末日３(MMDD)</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_companies[term_end3]', @m_companies.term_end3,  {:size => 10, :maxlength => 4} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">期末日４(MMDD)</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_companies[term_end4]', @m_companies.term_end4,  {:size => 10, :maxlength => 4} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">スクロール文言(ヘッダ部に表示されている文言)</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_companies[scroll_text]', @m_companies.scroll_text,  {:size => 100, :maxlength => 200} %>
+    </td>
+  </tr>
+</table>
+<%= hidden_field_tag 'm_companies[id]', @m_companies.id %>

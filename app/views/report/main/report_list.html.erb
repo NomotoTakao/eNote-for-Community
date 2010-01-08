@@ -1,0 +1,181 @@
+<% unless @d_report.nil? %>
+  <%
+    counter = 1
+    class_tr = "enote_general_table1_odd"
+    class_td = "enote_general_table1_cell_bordered"
+  %>
+  <table class="enote_general_table1_cell_bordered" style="width:940px;">
+    <% @d_report.d_report_customers.each do |report| %>
+      <%
+        if counter % 2 == 0
+          class_tr = "enote_general_table1_even"
+        else
+          class_tr = "enote_general_table1_odd"
+        end
+      %>
+      <tr class="<%= class_tr %>">
+        <td class="<%= class_td %>" rowspan="2" style="width:20px;">
+          <input type="checkbox" name="chk" value="<%= report.id %>" />
+        </td>
+        <td class="<%= class_td %>" rowspan="2" style="width:300px;">
+          &nbsp;<%= customer_name report.company_cd %>
+        </td>
+        <td class="<%= class_td %>" style="width:150px;">
+          &nbsp;<%= action_target_name report.action_target_cd %>
+        </td>
+        <td class="<%= class_td %>" style="width:120px;">
+          &nbsp;<%= action_group_name report.action_group_cd%>
+        </td>
+        <td class="<%= class_td %>" style="width:120px;">
+          &nbsp;<%= action_name report.action_cd %>
+        </td>
+        <td class="<%= class_td %>" style="width:80px;text-align:right;">
+          <%= time_helper report.action_time.to_f %>&nbsp;時間&nbsp;
+        </td>
+        <td class="<%= class_td %>" style="width:80px;text-align:right;">
+          <%= sales_helper report.sale_amount.to_i %>&nbsp;円&nbsp;
+        </td>
+        <td class="<%= class_td %>" rowspan="2" style="width:70px;">
+          &nbsp;
+          <% if report.d_report.user_cd == current_m_user.user_cd %>
+            <%= link_to image_tag("icons/icon_entry.gif", :alt=>"編集"), "javascript:edit_report(#{report.id});" %>
+            <%= link_to image_tag("icons/icon_trash.gif", :alt=>"削除"), "javascript:delete_report(#{report.id});" %>
+          <% end %>
+        </td>
+      </tr>
+      <tr class="<%= class_tr %>">
+        <td class="enote_general_table1_cell_bordered" style="text-align:center;font-weight:bold;background-color:#99CCFF;">コメント</td>
+        <td colspan="4" style="width:400px;"><%= report.comment %></td>
+      </tr>
+      <% counter = counter + 1 %>
+    <% end %>
+  </table>
+  <%
+    total_time = 0.0
+    total_sales = 0
+    unless @d_report.nil?
+      @d_report.d_report_customers.each do |report|
+        total_time += report.action_time.to_f
+        total_sales += report.sale_amount.to_i
+      end
+    end
+
+  %>
+  <input type="hidden" id="tmp_report_total_time" value="<%= total_time %>" />
+  <input type="hidden" id="tmp_report_total_sales" value="<%= total_sales %>" />
+  <div id="edit_report" />
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    /**
+     * 投稿されている日報の編集画面を表示する。
+     * @param {Object} id - 日報ID
+     */
+    function edit_report(id){
+
+      jQuery.ajax(
+        {
+          type     : "GET",
+          url      : "/report/main/edit_report",
+          data     :
+            {
+              id : id
+            },
+          success  :
+            function(data, dataType){
+              $("#edit_report").html(data);
+            },
+          error    :
+            function(){
+              alert("通信エラー");
+            },
+          complete :
+            function(){
+              $("#edit_report").dialog(
+                {
+                  bgiframe: true,
+                  modal     : true,
+                  autoOpen  : false,
+                  height    : 450,
+                  width     : 400,
+                  resizable : false,
+                  buttons: {
+                    "閉じる":
+                      function() {
+                        $(this).dialog('destroy');
+                        // ダイアログを閉じるときにid=edit_reportの内容をクリアしないと、
+                        // 続けてダイアログを読んだ時に古い情報が表示されてしまう。
+                        // 二度目にダイアログを開く時に、古いdiv要素をHTML内に残したまま
+                        // 新しい要素を作ってしまうので、idが重複してしまう。
+                        // なので、div要素を削除して作り直している。
+                        $(this).remove();
+                        var edit_report = document.createElement("div");
+                        edit_report.setAttribute("id", "edit_report");
+                        var report_list = document.getElementById("report_list");
+                        report_list.appendChild(edit_report);
+                      },
+                    "更新":
+                      function(){
+                        dialog_register();
+                        $(this).dialog("destroy");
+                        $(this).remove();
+                        var edit_report = document.createElement("div");
+                        edit_report.setAttribute("id", "edit_report");
+                        var report_list = document.getElementById("report_list");
+                        report_list.appendChild(edit_report);
+                      }
+                  }
+                }
+              );
+              // ダイアログボックスのタイトルバーを非表示にする。
+              $(".ui-dialog-titlebar").css("display", "none");
+              $("#edit_report").dialog("open");
+            }
+        }
+      );
+    }
+
+    /**
+     * 日報を削除する。
+     * @param {Object} id - 日報ID
+     */
+    function delete_report(id){
+
+      if(confirm("削除してよろしいですか？")){
+
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/report/main/delete_report",
+            data :
+              {
+                ids : id
+              },
+            success :
+              function(data, dataType){
+                get_input_list();
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    }
+
+    /**
+     * 画面がロードされたときに発生するイベント
+     */
+    $(document).ready(
+      function(){
+        // 総括タブの内容を設定する。
+        $("#summary_total_time").html($("#tmp_report_total_time").val());
+        $("#summary_total_sales").html($("#tmp_report_total_sales").val())
+      }
+    );
+  //-->
+</script>

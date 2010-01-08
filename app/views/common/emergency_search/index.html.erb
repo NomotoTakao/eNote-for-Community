@@ -1,0 +1,220 @@
+
+<div id="emergency_dialog_<%= @count %>" title="緊急メール送付先選択">
+  <table style="width:100%;">
+    <tr>
+      <td style="vertical-align:top;">
+        <div id="org_tree_dialog_<%= @count %>" style="border:1px solid black; background-color:rgb(255, 255, 255); text-align:left; width:200px; height:300px; overflow-y:auto;">
+        </div>
+      </td>
+      <td style="text-align:right;">
+        <table>
+          <tr>
+            <td style="vertical-align:top;">
+              <select id="user_list_<%= @count %>" size="20" style="width:200px;" multiple>
+              </select>
+            </td>
+            <td>
+              <input type="button" id="btnAddAll_<%= @count %>" class="submit_small" value=">>" />
+              <br />
+              <br />
+              <input type="button" id="btnAdd_<%= @count %>" class="submit_small" value=">" />
+              <br />
+              <br />
+              <input type="button" id="btnDelete_<%= @count %>" class="submit_small" value="<" />
+              <br />
+              <br />
+              <input type="button" id="btnDeleteAll_<%= @count %>" class="submit_small" value="<<" />
+            </td>
+            <td style="vertical-align:top;">
+              <select id="selected_list_<%= @count %>" size="20" style="width:200px;" multiple>
+              </select>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<script type="text/javascript">
+  <!--
+    $("#btnAdd_<%= @count %>").click(
+      function(){
+        ClickMoveMember(0);
+      }
+    );
+
+    $("#btnAddAll_<%= @count %>").click(
+      function(){
+        ClickMoveAllMember(0);
+      }
+    );
+
+    $("#btnDelete_<%= @count %>").click(
+      function(){
+        ClickMoveMember(1);
+      }
+    );
+
+    $("#btnDeleteAll_<%= @count %>").click(
+      function(){
+        ClickMoveAllMember(1);
+      }
+    );
+
+
+
+    /*
+     * 矢印クリック時の処理
+     */
+    function ClickMoveMember(moveMode) {
+      var undBox = document.getElementById("user_list_<%= @count %>");// 元
+      var dBox = document.getElementById("selected_list_<%= @count %>");// 先
+      var leftBox = undBox;
+      var rightBox = dBox;
+      var fromBox, toBox;
+
+      //移動元と移動先を決定する
+      if (moveMode == 0) {
+        fromBox = leftBox;
+        toBox = rightBox;
+      } else if (moveMode == 1) {
+        fromBox = rightBox;
+        toBox = leftBox;
+      }
+
+      //メンバーの移動を行う
+      if ((fromBox != null) && (toBox != null)) {
+        if(fromBox.length < 1 || fromBox.selectedIndex == -1) {
+          alert("移動するメンバーを選択してください。");
+          return false;
+        }
+        while (fromBox.selectedIndex >= 0) {
+          var newOption = new Option();
+          //選択値のチェック
+          if (moveMode == 0) {
+            for (var i = 0; i <dBox.length; i++) {
+              if (fromBox.options[fromBox.selectedIndex].value == dBox.options[i].value) {
+                alert("既に選択されているメンバーです。");
+                return false;
+              }
+            }
+          }
+          newOption.text = fromBox.options[fromBox.selectedIndex].text;
+          newOption.value = fromBox.options[fromBox.selectedIndex].value;
+          toBox.options[toBox.length] = newOption;
+          fromBox.remove(fromBox.selectedIndex);
+        }
+      }
+      //選択決定エリアのデータを全て取得
+      var member = new Array(dBox.length);
+      for (var i = 0; i < dBox.options.length; i++) {
+        member[i] = dBox.options[i].value;
+      }
+      document.getElementById("selected_list_<%= @count %>").value = member;
+    }
+
+    /*
+     * 矢印クリック時の処理(全て)
+     */
+    function ClickMoveAllMember(moveMode) {
+      var undBox = document.getElementById("user_list_<%= @count %>");
+      var dBox = document.getElementById("selected_list_<%= @count %>");
+      var leftBox = undBox;
+      var rightBox = dBox;
+      var fromBox, toBox;
+
+      //移動元と移動先を決定する
+      if (moveMode == 0) {
+        fromBox = leftBox;
+        toBox = rightBox;
+      } else if (moveMode == 1) {
+        fromBox = rightBox;
+        toBox = leftBox;
+      }
+      //全てを選択状態にする
+      for (var i = 0; i < fromBox.options.length; i++) {
+        fromBox.options[i].selected = true;
+      }
+      //矢印クリック時の処理(選択データのみ)
+      ClickMoveMember(moveMode);
+    }
+
+    /*
+     *
+     */
+    $(document).ready(
+      function(){
+        var selected = $("#<%= @name_field %>").val();
+        var selected_array = null;
+        var options = "";
+        if(selected != ""){
+          selected_array = selected.split(",");
+          for(i in selected_array){
+            name_address = selected_array[i].split("<");
+            name = name_address[0].replace('"', "").replace('"', "");
+            address = name_address[1].replace('>', "");
+            options += "<option value='" + address + "'>" + name + "</option>";
+            $("#selected_list_<%= @count %>").html(options);
+          }
+        }
+        $("#emergency_dialog_<%= @count %>").dialog(
+          {
+            modal    : true,
+            autoOpen : false,
+            height   : 450,
+            width    : 720,
+            buttons  :
+              {
+                "ＯＫ" :
+                  function(){
+                    // selected_listに格納されているオプションをすべて取得し、CSV形式で連結する。
+                    var elements = document.getElementById("selected_list_<%= @count %>").options;
+                    var data = "";
+                    for(var i=0; i<elements.length; i++){
+                      if(data != ""){
+                        data += ",";
+                      }
+                      data += '"' + elements[i].text + '"' + " <" + elements[i].value + ">";
+                    }
+                    // 結果文字列をname_fieldに格納する。
+                    $("#<%= @name_field %>").val(data);
+                    $("#org_tree_dialog_<%= @count %>").html("");
+                    $(this).dialog("close");
+                  },
+                "キャンセル" :
+                  function(){
+                    $("#org_tree_dialog_<%= @count %>").html("");
+                    $(this).dialog("close");
+                  }
+              }
+          }
+        );
+
+        var count = $("#btnEmergencySearch").attr("count");
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/common/emergency_search/tmp_tree",
+            data :
+              {
+                count : count
+              },
+            success :
+              function(data, dataType){
+                $("#org_tree_dialog_<%= @count %>").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+        $("#btnEmergencySearch").attr("count", Number($("#btnEmergencySearch").attr("count"))+1);
+        $("#emergency_dialog_<%= @count %>").dialog("open");
+      }
+    );
+  //-->
+</script>

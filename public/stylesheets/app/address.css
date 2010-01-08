@@ -1,0 +1,143 @@
+/******************************************
+ * アドレスページ Settings
+ ******************************************/
+
+.address_group {
+    width:180px;
+    height:30px;
+    margin:0px;
+    padding-top:5px;
+    background-image:url('/images/icons/icon_button_big.gif');
+    background-repeat:no-repeat;
+}
+
+.enote_general_table1 {
+  border:                       1px solid #b2b2b2;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_header {
+  border-collapse:              collapse;
+  color:                        #ffffff;
+  height:                       30px;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_footer {
+  background-color:             #ffffff;
+  border-collapse:              collapse;
+  color:                        cornsilk;
+  height:                       30px;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_title {
+/*  background-image:             url('../../../images/table1_header.gif'); */
+  background-image:             url('../../../images/titleback01.gif');
+  background-repeat:            repeat-x;
+  border-collapse:              collapse;
+/*  color:                        #4a4a4a; */
+  color:                        #000000;
+  height:                       20px;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_odd {
+  background-color:             #eeffcc;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_even {
+  background-color:             #ffffff;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+}
+.enote_general_table1_transparent {
+  background-color:             transparent;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+}
+
+.enote_general_table1_cell_bordered {
+  border:                       1px solid #b2b2b2;
+  border-collapse:              collapse;
+  padding:                      1px 0px;
+}
+.enote_general_table1_cell_header {
+  background-image:             url("../../../images/titleback01.gif");
+  background-repeat:            repeat-x;
+/*  width:                        100px;*/
+  padding:                      0px 3px 0px 3px;
+  color:                        #000000;
+  text-align:                   left;
+  vertical-align:               middle;
+  height:                       22px;
+}
+.enote_general_table1_cell_dotted {
+  border:                       none;
+  border-bottom:                1px dotted #333333;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      2px;
+}
+.enote_general_table1_cell_borderless {
+  border:                       none;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      2px;
+}
+.enote_general_table1_impact_cell_bordered {
+  background-color:             black;
+  border:                       1px solid black;
+  border-collapse:              collapse;
+  color:                        cornsilk;
+  margin:                       0px;
+  padding:                      2px;
+}
+.enote_general_table1_impact_cell_borderless {
+  background-color:             black;
+  border:                       none;
+  border-collapse:              collapse;
+  color:                        cornsilk;
+  margin:                       0px;
+  padding:                      2px;
+}
+
+.address_form_table {
+    width:                        100%;
+    border:                       0px;
+    border-collapse:              collapse;
+    margin:                       0px;
+    padding:                      0px;
+    clear:                        both;
+}
+
+.address_form_table_title {
+    background-color:             #ccffcc;
+    border:                       1px solid #666699;
+    color:                        #000000;
+    height:                       25px;
+    width:                        30%;
+    text-align:                   left;
+    vertical-align:               middle;
+    font-weight:                  bold;
+}
+
+.address_form_table_cell_bordered {
+    border:                       1px solid #666699;
+    text-align:                   left;
+    vertical-align:               middle;
+    height:                       25px;
+    width:                        70%;
+    padding-left:                 3px;
+}
+
+.address_list_cell_bordered {
+  border:                         1px solid #b2b2b2;
+  word-break:                     break-all;
+  text-align:                     center;
+}

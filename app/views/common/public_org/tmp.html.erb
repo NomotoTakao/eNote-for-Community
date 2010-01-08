@@ -1,0 +1,121 @@
+<% unless @org_list.nil? %>
+  <ul id="tmp" class="orgtree">
+    <% @org_list.each_with_index do |org, i| %>
+      <% children = MOrg.get_org_list org.org_lvl.to_i+1, org.org_cd %>
+      <li class="closed">
+        <span id="org_<%= org.org_cd %>" class="folder org">
+          <font style="font-size:10pt;">
+            <%
+              org_name = ""
+              if org.org_lvl == 1
+                org_name = org.org_name1
+              elsif org.org_lvl == 2
+                org_name = org.org_name2
+              elsif org.org_lvl == 3
+                org_name = org.org_name3
+              elsif org.org_lvl == 4
+                org_name = org.org_name4
+              end
+            %>
+            <%= org_name %>
+          </font>
+        </span>
+        <% if children.length > 0 and org.org_lvl != 3 %>
+          <ul></ul>
+        <% end %>
+    <% end %>
+  </ul>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    /*
+     * 画面ロード時のイベント
+     *
+     * 組織ツリーを構成する。
+     */
+    $(document).ready(
+      function(){
+        $("#tmp").treeview();
+        $("#tmp").css("display", "block");
+        $("#tmp").attr("id", "");
+      }
+    );
+
+    /*
+     * ツリーの項目にマウスカーソルを合わせた時・離した時のイベント
+     *
+     * マウスカーソルの形状を変更する。
+     */
+    $(".org").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /*
+     * ツリーの項目をクリックした時のイベント
+     *
+     * 下位の組織ツリーを取得する。
+     */
+    $(".org").click(
+      function(){
+        var id = $(this).attr("id");
+        var org_cd = id.replace("org_", "");
+        bgChange($(this).children(), $(".org").children());
+        var name = $(this).text();
+        $("#public_org_cd").val(name + "," + org_cd);
+        get_tree(id);
+      }
+    );
+
+    /*
+     * ツリーの+/-ボタンクリック時
+     */
+    $(".hitarea").click(
+      function(){
+        if($(this).attr("class").indexOf("collapsable-hitarea") != -1){
+          var val_id = $(this).next().attr("id");
+          get_tree(val_id);
+        }else{
+          $(this).attr("class", $(this).attr("class").replace("collapsable", "expansable"));
+        }
+      }
+    );
+
+    /*
+     * 組織ツリーを取得する処理
+     */
+    function get_tree(id){
+      var org_cd = id.replace("org_", "");
+      if(org_cd != "" && $("#" + id).next().html()==""){
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/common/public_org/tmp",
+            data :
+              {
+                org_cd : org_cd
+              },
+            success :
+              function(data, dataType){
+                if($("#" + id).next().html()==""){
+                  $("#" + id).after(data);
+                  $("#" + id).css("display", "block");
+                }
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    }
+  //-->
+</script>

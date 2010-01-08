@@ -1,0 +1,38 @@
+<% options = "" %>
+
+<!-- 2階層目を表示 -->
+<% if @target_level == 2 %>
+  <% if !@second_menu_list.nil? %>
+    <% @second_menu_list.each do |data|%>
+      <% options += "<option value=#{data.id} >#{data.title}</options>" %>
+    <% end %>
+  <% end %>
+  <%= select_tag('decided_second_menu', options, :size=>10, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickSecondMenu();') %>
+
+<!-- 3階層目を表示 -->
+<% elsif @target_level == 3 %>
+  <% if !@third_menu_list.nil? %>
+    <% @third_menu_list.each do |data|%>
+      <% options += "<option value=#{data.id} >#{data.title}</options>" %>
+    <% end %>
+  <% end %>
+  <%= select_tag('decided_third_menu', options, :size=>10, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickThirdMenu();') %>
+
+<!-- 4階層目を表示 -->
+<% elsif @target_level == 4 %>
+  <% if !@fourth_menu_list.nil? %>
+    <% @fourth_menu_list.each do |data|%>
+      <% options += "<option value=#{data.id} >#{data.title}</options>" %>
+    <% end %>
+  <% end %>
+  <%= select_tag('decided_fourth_menu', options, :size=>10, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickFourthMenu();') %>
+
+<!-- 5階層目を表示 -->
+<% elsif @target_level == 5 %>
+  <% if !@fifth_menu_list.nil? %>
+    <% @fifth_menu_list.each do |data|%>
+      <% options += "<option value=#{data.id} >#{data.title}</options>" %>
+    <% end %>
+  <% end %>
+  <%= select_tag('decided_fifth_menu', options, :size=>10, :multiple=>false, :style=>'width:300px;') %>
+<% end %>

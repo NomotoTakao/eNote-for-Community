@@ -1,0 +1,94 @@
+<% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "app/blog"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "app/blog"
+    ]) %>
+<% end -%>
+
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+function change_writer(linkLoc){
+  if(linkLoc !="") {
+    str1 = window.location + '';    //空白を追加してstringオブジェクトにする
+    pos = str1.indexOf('/user',0);
+    str = str1.substring(0,pos + 5) + "/" + linkLoc;
+    window.location.href = str;
+  }
+}
+-->
+</SCRIPT>
+
+<table class="enote_app_title">
+  <tr>
+    <td id="app_title" class="e_note_content_title" style="width: 500px;">
+      <%= h("ブログ > #{@title}") %>
+    </td>
+    <td style="width: 30px;">&nbsp;</td>
+    <td align="right"><%= button_to_function "新規投稿", "location.href='/blog/entry/edit'", :class => "submit" %></td>
+  </tr>
+</table>
+
+<table class="setting_frame"><tr>
+	<td id="enote_blog_frame_left">
+		<div id="enote_blog_left_box">
+			<h3>投稿者一覧</h3>
+			<ul id="enote_address_group"></ul>
+			<!-- 投稿者一覧ブロック -->    
+			<div id="blog_menu_bloger_list"></div><br />
+			<h3>新着記事</h3>
+			<ul id="enote_address_group"></ul> 
+			<!-- 新着記事ブロック -->            
+			<div id="blog_menu_new_article"></div><br />
+			<h3>月別一覧</h3>
+			<ul id="enote_address_group"></ul>
+			<!-- 月別一覧ブロック -->            
+			<div id="blog_menu_month_list"></div><br />
+			<h3>ブログ検索</h3>
+			<ul id="enote_address_group"></ul> 
+			<!-- ブログ検索ブロック -->      
+		    <div id="blog_menu_search_list"></div><br />
+		</div>
+	</td>
+
+<td class="setting_frame_main" align="">
+<div id="blog_main_frame">
+    <div id="blog_content_main">
+        <% for blog in @blog_article %>
+            <div class="vblog_article">
+    			<div class="vblog_article">
+        			<h3 class="vblog_article_subject"><%= link_to blog.send(:subject), :action => 'detail', :id => blog.send(:id) %></a></h3>
+        			<div class="vblog_atricle_head_meta"><%= disp_meta(blog) %></div>
+        		</div><br>
+        		<div class="vblog_article_body">
+           			<%= blog.send(:body) %>
+        		</div><br />
+		 		<div class="vblog_article_foot">
+		 		</div>	 
+     		</div><br />
+        <% end %>
+		
+    </div>
+</div>
+
+</td>
+</tr></table>
+
+<script type="text/javascript">
+  <!--
+  $(document).ready(function(){
+    $("#blog_menu_bloger_list").load("/blog/view/menu_bloger_list/","uid=<%= @writer_id %>");
+    $("#blog_menu_new_article").load("/blog/view/menu_new_article/","uid=<%= @writer_id %>");
+    $("#blog_menu_month_list").load("/blog/view/menu_month_list/","uid=<%= @writer_id %>");
+    $("#blog_menu_search_list").load("/blog/view/menu_search_list/","uid=<%= @writer_id %>");
+  });
+  -->
+</script>

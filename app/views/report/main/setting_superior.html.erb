@@ -1,0 +1,113 @@
+<div class="e_note_general_frame_borderless" style="width:100%;">
+  <table class="enote_app_title" style="width:100%;">
+    <tr style="vertical-align:middle;">
+      <td class="e_note_content_title" style="width:30%;">
+        <%= h("上司設定") %>
+      </td>
+      <td style="text-align:center;">日報を提出する上司を選択してください。</td>
+      <td style="width:30%;">
+      </td>
+    </tr>
+  </table>
+</div>
+<table>
+  <tr>
+    <td>&nbsp;</td>
+    <td style="width:200px;">
+      <div style="border:1px solid black;background-color:#fff;text-align:left;height:150px;overflow-y:auto;">
+        <input type="hidden" id="selected_superior_user_cd" value="" />
+        <% unless @org_list.nil? %>
+          <ul id="superior_select_tree" class="orgtree">
+            <% @org_list.each do |org| %>
+              <li id="closed">
+                <span id="org_<%= org.org_lvl %>_<%= org.org_cd %>" class="org folder">
+                  <font><%= org.org_name1 %></font>
+                </span>
+                <ul></ul>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
+    </td>
+    <td style="vertical-align:bottom;">
+      <input type="button" id="button_set_superior" class="submit_large" value="登録" />
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $(".org").hover(
+      function(){
+        $(this).css("cursor", "pointer");
+      },
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    $(".org").click(
+      function(){
+        var id = $(this).attr("id");
+        var org_lvl = (id.replace("org_", "").split("_"))[0];
+        var org_cd  = (id.replace("org_", "").split("_"))[1];
+        if(org_lvl!="" && org_cd!="" && ($("#" + id).next().html() == null || $("#" + id).next().html() == "")){
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/report/main/tmp_list",
+              data :
+                {
+                  org_lvl : org_lvl,
+                  org_cd  : org_cd,
+                  caller  : "superior"
+                },
+              success :
+                function(data, dataType){
+                  $("#" + id).after(data);
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){}
+            }
+          );
+        }
+      }
+    );
+
+    $("#button_set_superior").click(
+      function(){
+        var selected_superior_user_cd = $("#selected_superior_user_cd").val();
+        if(selected_superior_user_cd != ""){
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/report/main/register_superior",
+              data :
+                {
+                  user_cd : selected_superior_user_cd
+                },
+              success :
+                function(data, dataType){
+                  alert("登録しました。");
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){}
+            }
+          );
+        }else{
+          alert("上司を選択してください。");
+        }
+      }
+    );
+
+    $("#superior_select_tree").treeview();
+  //-->
+</script>

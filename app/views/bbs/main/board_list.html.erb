@@ -1,0 +1,68 @@
+<%# 「掲示板」 %>
+
+<% @board_list.each do |board| %>
+  <table class="bbs_head_table" style="width:660px;text-align:left;">
+    <tr>
+      <td class="bbs_head_table_t" style="width:520px;padding-left:10px;text-align:left;">
+        <h3><%= board.title %></h3>
+      </td>
+      <td class="bbs_head_table_t_noimg" style="width:140px;text-align:center;">
+	    <% unless board.lastpost_date.nil? %>
+            最終投稿日<br><%= formatMD(board.lastpost_date) %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align:right;" class="bbs_head_table_i">
+                作成者：<%= convertName(@users, board.created_user_cd) %>&nbsp;&nbsp;&nbsp;作成日：<%= formatMD(board.created_at) %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="bbs_head_table_b" style="text-align:left;">
+        <%= display(board.memo) %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align:right;" class="bbs_head_table_i">
+        <%= link_to_remote '詳細を読む', :update=>"right_pane",
+                                       :url=>{:action => "thread_pane",
+                                              :board_id => board.id}
+        %>
+      </td>
+    </tr>
+  </table>
+  <br />
+<% end %>
+<% if @board_list.size > 0%>
+  <table style="width:100%;">
+    <tr>
+      <td style="text-align:center;padding-left:10px;">
+      <%= will_paginate @board_list, :renderer => RemoteLinkRenderer,
+                                     :update => 'bbs',
+                                     :params=> { :action => 'board_list',
+                                                 :mode=>@mode
+                                               },
+                                     :prev_label => "<<前へ",
+                                     :next_label => "次へ>>",
+                                     :method => :get %>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+		
+		$("#form_board_id").val("");
+		$("#form_thread_id").val("");
+		
+        url = "/bbs/main/newly_list/"
+        $("#newly_list").load(url);
+		
+	    $("#newly_list").css("display", "block");
+	  }
+    );
+  //-->
+</script>

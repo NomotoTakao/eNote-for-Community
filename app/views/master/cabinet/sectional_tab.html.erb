@@ -1,0 +1,22 @@
+
+<%= form_tag :action=>:sectional_setting %>
+  <table style="width:100%;">
+    <tr>
+      <td style="text-align:left;">共有キャビネットの使用を許可する部署を選択してください。</td>
+      <td style="text-align:right;">
+        <input type="button" class="submit_large" onClick="ClickBackToMasterList();" value="マスタ一覧へ戻る" />
+      </td>
+    </tr>
+    <tr>
+      <td style="width:400px;">
+        <!-- 部品化された組織選択ツリー -->
+        <%= render :partial=>"org_selector" %>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr style="text-align:right;width:400px;">
+      <td><input type="submit" class="submit_small" name="btn" value="登録" /></td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+</form>

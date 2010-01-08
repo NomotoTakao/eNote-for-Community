@@ -1,0 +1,58 @@
+<!-- 一覧 -->
+<table class="master_table1" style="margin:10px 0px 0px 10px;">
+  <!-- タイトル -->
+  <tr class="master_table1_title">
+    <th style="width:100pt" class="master_table1_cell_bordered">社員コード</th>
+    <th style="width:200pt" class="master_table1_cell_bordered">社員名</th>
+    <th style="width:200pt" class="master_table1_cell_bordered">社員カナ</th>
+    <th style="width:220pt" class="master_table1_cell_bordered">組織</th>
+    <th style="width:80pt" class="master_table1_cell_bordered">更新日時 </th>
+    <th style="width:100pt" class="master_table1_cell_bordered">編集/削除 </th>
+  </tr>
+
+  <!-- 内容 -->
+  <% user_cd_new = "" %>
+  <% user_cd_old = "" %>
+  <% @m_users.each do |user| %>
+    <% user_cd_new = user.user_cd %>
+    <!-- 複数部署に所属しているユーザは１行だけ表示する -->
+    <% if user_cd_new != user_cd_old %>
+      <tr style="height:50px; padding-left:5px;">
+        <td class="master_table1_cell_bordered" style="text-align:left;"><%= user.user_cd %></td>
+        <td class="master_table1_cell_bordered" style="text-align:left;"><%= user.name %></td>
+        <td class="master_table1_cell_bordered" style="text-align:left;"><%= user.name_kana %></td>
+        <td class="master_table1_cell_bordered" style="text-align:left;">
+          <% if !@org_hash[user.user_cd][0].nil? %>
+            <% org_names =  @org_hash[user.user_cd] %>
+            <% org_names.each { |org_name| %>
+              <%= org_name %>&nbsp;
+            <% } %>
+          <% end %>
+        </td>
+        <td class="master_table1_cell_bordered" style="text-align:center;"><%= user.updated_at.strftime("%Y/%m/%d") %></td>
+        <td class="master_table1_cell_bordered" style="text-align:center;">
+          <a href="#" onclick="ClickEditButton('<%=user.user_cd%>')" ><img src="/images/icons/icon_entry.gif"></a>
+          <%= link_to(image_tag("icons/icon_trash.gif"), {:action => "delete", :user_cd => user.user_cd}, {:confirm => "削除してよろしいですか？"}) %>
+        </td>
+      </tr>
+    <% end %>
+    <% user_cd_old = user_cd_new %>
+  <% end %>
+</table>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期化
+  */
+  $(document).ready(function(){
+  });
+
+  /*
+   * 編集
+   */
+  function ClickEditButton(user_cd){
+    document.location = "/master/user/edit?user_cd=" + user_cd;
+  }
+-->
+</script>

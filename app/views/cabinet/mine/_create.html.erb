@@ -1,0 +1,62 @@
+<%# 新規保存ダイアログ%>
+
+<table class="enote_general_table1" style="width:460px;">
+  <tr class="enote_general_table1_title">
+    <th colspan="3" class="enote_general_table1_cell_bordered">タイトル</th>
+  </tr>
+  <tr style="height:30px;">
+    <td colspan="3" class="enote_general_table1_cell_bordered" style="padding-left:5px;">
+      <%= text_field_tag "title", "", :class=>"ime_on", :style => "width:400px;" %>
+    </td>
+  </tr>
+  <tr class="enote_general_table1_title">
+    <th colspan="3" class="enote_general_table1_cell_bordered">ファイルの説明</th>
+  </tr>
+  <tr style="height:30px;">
+    <td colspan="3" valign="top" class="enote_general_table1_cell_bordered" style="padding-left:5px;height:200px;">
+      <%= text_area_tag "body", "", :class=>"ime_on", :style => "width:400px;height:250px;" %>
+    </td>
+  </tr>
+  <tr class="enote_general_table1_title">
+    <th colspan="3" class="enote_general_table1_cell_bordered">登録するファイルの指定</th>
+  </tr>
+  <tr class="">
+    <td colspan="3" class="enote_general_table1_cell_bordered">
+      <%= file_field_tag 'attachment[0]', :style => "width:400px;" %>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(function(){
+      $("#create").dialog({
+        bgiframe: true,
+        modal: true,
+        autoOpen: false,
+        height: 500,
+        width: 500,
+        buttons: {
+          "登録":
+            function() {
+              //確認ダイアログ
+              result = confirm("登録して宜しいですか？");
+              if (!result) {
+                return result;
+              }
+              //入力チェック
+              result = CheckMineValidate();
+              if (!result) {
+                return result;
+              }
+              $("#create_form").submit();
+            },
+          "キャンセル":
+            function() {
+              $(this).dialog('close');
+            }
+        }
+      });
+    });
+  //-->
+</script>

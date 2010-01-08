@@ -1,0 +1,180 @@
+<% unless @tmp_list.nil? %>
+  <ul id="tmp_ul" class="filetree">
+    <% @tmp_list.each do |tmp| %>
+      <% children = MOrg.get_org_list tmp.org_lvl.to_i + 1, tmp.org_cd %>
+      <%
+        li_class = ""
+        span_class = ""
+        if children.length == 0
+          li_class = ""
+          span_class = "org_span2";
+        else
+          li_class = "closed"
+          span_class = "org_span";
+        end
+      %>
+      <li class="<%= li_class %>">
+        <span id="org_<%= tmp.org_cd %>" class="folder <%= span_class %>">
+          <font class="org_font">
+            <%
+              org_name = ""
+              unless tmp.org_name4.empty?
+                org_name = tmp.org_name4
+              else
+                unless tmp.org_name3.empty?
+                  org_name = tmp.org_name3
+                else
+                  unless tmp.org_name2.empty?
+                    org_name = tmp.org_name2
+                  end
+                end
+              end
+            %>
+            <%= org_name %>
+          </font>
+        </span>
+        <% if children.length > 0 %>
+          <ul></ul>
+        <% end %>
+    <% end %>
+  </ul>
+<% end %>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        $("#tmp_ul").treeview();
+//        $(".org_span").unbind("click");
+//        $(".org_span2").unbind("click");
+      }
+    );
+
+    /*
+     * org_spanの領域にマウスポインタが入った時の処理
+     */
+    $(".org_span").mouseover(
+      function(){
+        $(this).css("cursor", "pointer");
+      }
+    );
+
+    /*
+     * org_spanの領域からマウスポインタが外れた時の処理
+     */
+    $(".org_span").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /*
+     * org_spanの領域をクリックしたときの処理
+     */
+    $(".org_span").click(
+      function(){
+        val_id = $(this).attr("id");
+        bgChange($("#" + val_id).children(), $(".org_font"));
+        get_tree(val_id);
+        get_address_list(val_id);
+      }
+    );
+
+    /*
+     * org_span2の領域にマウスポインタが入った場合の処理
+     */
+    $(".org_span2").mouseover(
+      function(){
+        $(this).css("cursor", "pointer");
+      }
+    );
+
+    /*
+     * org_span2の領域からマウスポインタが外れたときの処理
+     */
+    $(".org_span2").mouseout(
+      function(){
+        $(this).css("cursor", "default");
+      }
+    );
+
+    /*
+     * ツリーの要素をクリックしたときの処理
+     */
+    $(".org_span2").click(
+      function(){
+        val_id = $(this).attr("id");
+        bgChange($("#" + val_id).children(), $(".org_font"));
+        get_address_list(val_id);
+      }
+    );
+
+    /*
+     * ツリーの+/-ボタンクリック時
+     */
+    $(".hitarea").click(
+      function(){
+        if($(this).attr("class").indexOf("collapsable-hitarea") != -1){
+          // ツリーを開く
+          val_id = $(this).next().attr("id");
+          get_tree(val_id);
+        }else{
+          // ツリーを閉じる
+          $(this).attr("class", $(this).attr("class").replace("collapsable", "expansable"));
+        }
+      }
+    );
+
+  /*
+   * 非同期通信により、ツリーの下位要素を取得する処理
+   * @param id - クリックされたHTML要素のID
+   */
+    function get_tree(id){
+      if ($("#" + id).next().html() == "") {
+        jQuery.ajax(
+          {
+            type : "GET",
+            url : "/address/main/tmp_list",
+            data :
+              {
+                org_cd: id.replace("org_", ""),
+                gkbn: <%=@address_kbn%>
+              },
+            success :
+              function(data, dataType){
+                if ($("#" + id).next().html() == "") {
+                  $("#" + id).after(data);
+                }
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){
+                // tmp_list.html.erbは使いまわされるので、ID:tmp_ulが重複しないように値をクリアする。
+                $("#tmp_ul").attr("id", "");
+              }
+          }
+        );
+    }
+    }
+
+
+    /*
+     * アドレス一覧を取得する処理
+     * @param id - クリックされたHTML要素のID
+     */
+    function get_address_list(id){
+      url = "";
+      id = $("#" + id);
+      name = $(id).children().text();
+      sword = "";
+      orgnm = name;
+
+      url = "/address/main/addrs_list?orgcd=:orgcd" + "&gid=0" + "&sword=" + sword + "&gkbn=<%=@address_kbn%>" + "&orgnm=" + encodeURIComponent(orgnm);
+      url = url.replace(":orgcd", id.attr("id").replace("org_", ""));
+      $("#enote_address_main").load(url);
+    }
+  //-->
+</script>

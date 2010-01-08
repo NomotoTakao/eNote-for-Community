@@ -1,0 +1,275 @@
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "jquery/mbTabset/mbTabset.js",
+      "app/master"
+    ]) %>
+<% end -%>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "jquery/mbTabset/mbTabset.css",
+      "app/master"
+    ]) %>
+<% end -%>
+
+<div class="e_note_general_frame_borderless" style="width:100%;">
+  <table class="enote_app_title" style="width:100%;">
+    <tr style="vertical-align:middle;">
+      <td class="e_note_content_title" style="width:30%;">
+        <%= h("お得意先情報") %>
+      </td>
+      <td style="text-align:center;">検索条件を指定してください。</td>
+      <td style="width:30%;">
+      </td>
+   </tr>
+  </table>
+</div>
+<table style="width:100%;height:500px;">
+  <tr style="height:40%;vertical-align:top;">
+    <td style="width:40%;">
+      <table style="width:100%;">
+        <tr>
+          <td style="text-align:left;">
+            <label>
+              <input type="radio" id="search_type_0" name="search_type" value="0" />担当者で検索
+            </label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div style="border:1px solid black;background-color:#fff;text-align:left;width:250px;height:150px;overflow-y:auto;">
+              <%= render :partial=>"org_tree", :locals=>{:org_list=>@org_list} %>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td style="width:40%;">
+      <table style="width:100%;">
+        <tr>
+          <td style="text-align:left;">
+            <label>
+              <input type="radio" id="search_type_1" name="search_type" value="1" />施設で検索
+            </label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table>
+              <tr>
+                <td style="text-align:left;">得意先コード</td>
+                <td style="text-align:left;">
+                  <input type="text" id="condition_company_cd" value="" size="10" class="ime_off" />
+                </td>
+                <td style="text-align:right;">
+                  <label><input type="checkbox" id="check_deleted" value="1" />削除済を含める</label>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:left;">得意先名</td>
+                <td style="text-align:left;">
+                  <input type="text" id="condition_customer_name" value="" size="20" class="ime_on" />
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="text-align:left;">得意先名(カナ)</td>
+                <td style="text-align:left;">
+                  <input type="text" id="condition_customer_name_kana" value="" size="20" class="ime_on" />
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="text-align:left;">得意先電話番号</td>
+                <td style="text-align:left;">
+                  <input type="text" id="condition_customer_tel" value="" size="15" class="ime_off" />
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td style="20%;vertical-align:bottom;">
+      <table style="width:100%;">
+        <tr>
+          <td style="text-align:right;">
+            <input id="button_register" type="button" class="submit_large" value="新規登録" />
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;">
+            <input id="button_search" type="button" class="submit_large" value="検索" />
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;">
+<!--
+            <input id="button_csv" type="button" class="submit_large" value="CSV出力" />
+-->
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colsPan="3">
+      <table class="enote_general_table1" style="width:98%;">
+        <tr class="enote_general_table1_title">
+          <th class="enote_general_table1_cell_bordered" style="width: 10%;">得意先コード</th>
+          <th class="enote_general_table1_cell_bordered" style="width: 25%;">得意先名</th>
+          <th class="enote_general_table1_cell_bordered" style="width: 15%;">担当者名</th>
+          <th class="enote_general_table1_cell_bordered" style="width: 15%;">電話番号</th>
+          <th class="enote_general_table1_cell_bordered" style="width: 35%;">URL</th>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" style="vertical-align:top;">
+      <div id="customer_list" style="width:100%;height:280px;overflow-y:scroll;" />
+    </td>
+  </tr>
+</table>
+<div id="customer_info" />
+<input type="hidden" id="authenticity_token" value="<%=form_authenticity_token %>" />
+
+<script type="text/javascript">
+  <!--
+
+    function customer_info(arg){
+      var edit_flg = 0;
+      if(arg == ""){
+        // 新規作成の時はedit_flgを立てる。
+        edit_flg = 1;
+      }
+      // ダイアログを表示する。
+      jQuery.ajax(
+        {
+          type : "GET",
+          url  : "/master/customer/customer_info",
+          data :
+            {
+              company_cd : arg,
+              edit_flg   : edit_flg
+            },
+          success :
+            function(data, dataType){
+              $("#customer_info").html(data);
+              $("#customer_info").dialog(
+                {
+                  bgiframe: true,
+                  modal: true,
+                  autoOpen: false,
+                  height: 600,
+                  width: 1000,
+                  buttons: {
+                    "閉じる":
+                      function() {
+                        // 同じIDのタグが二つ作られることを防ぐため、タグを作り直している。
+                        $(this).dialog('destroy');
+                        $(this).remove();
+                        var customer_info = document.createElement("div");
+                        customer_info.setAttribute("id", "customer_info");
+                        var customer_list = document.getElementById("customer_list");
+                        customer_list.appendChild(customer_info);
+                      }
+                  }
+                }
+              );
+              $("#customer_info").dialog("open");
+            },
+          error :
+            function(){
+              alert("通信エラー");
+            },
+          complete :
+            function(){}
+        }
+      );
+    }
+
+    $("#button_register").click(
+      function(){
+        customer_info("");
+      }
+    );
+
+    $("#button_search").click(
+      function(){
+        // ラジオボタンの選択を判定する。
+        var search_type = $("input:radio[name='search_type']:checked").val();
+        var org_cd = "";
+        var user_cd = "";
+        var company_cd = "";
+        var check_deleted = "";
+        var customer_name = "";
+        var customer_name_kana = "";
+        var customer_tel = "";
+        if(search_type == 0){
+//alert("search_type:0");//DEBUG
+          // 組織ツリーから、選択された組織コードを取得
+          org_cd = $("#org_cd").val();
+          user_cd = $("#user_cd").val();
+/* 選択されていないときは、検索範囲は「すべて」
+          if(org_cd==""&&user_cd==""){
+            alert("組織ツリーから組織または担当者を選択してください。");
+            return;
+          }
+*/
+        }else{
+          company_cd = $("#condition_company_cd").val();
+          check_deleted = $("#check_deleted").attr("checked");// true or false
+          customer_name = $("#condition_customer_name").val();
+          customer_name_kana = $("#condition_customer_name_kana").val();
+          customer_tel = $("#condition_customer_tel").val();
+        }
+
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/master/customer/customer_list",
+            data :
+              {
+                org_cd             : org_cd,
+                user_cd            : user_cd,
+                company_cd         : company_cd,
+                check_deleted      : check_deleted,
+                customer_name      : customer_name,
+                customer_name_kana : customer_name_kana,
+                tel                : customer_tel
+              },
+            success :
+              function(data, dataType){
+                $("#customer_list").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    $("#button_csv").click(
+      function(){
+alert("CSV出力");
+      }
+    );
+
+    $(document).ready(
+      function(){
+        $("#search_type_0").attr("checked", "checked");
+        $("#customer_list").load("/master/customer/customer_list");
+      }
+    );
+  //-->
+</script>

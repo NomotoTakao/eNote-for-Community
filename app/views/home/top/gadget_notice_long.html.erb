@@ -1,0 +1,57 @@
+<div id="" class="gadget_title" style="">
+    <h3 style=""><img src="/images/icons/icon_notice.gif" align="top" style="margin-right:5px;"><%= @gadget_title %></h3>
+</div>
+<!-- 設定データ取得 -->
+<% new_icon_days = 5 %>
+<% if !@notice_setting.nil? %>
+  <% new_icon_days = @notice_setting.new_icon_days %>
+<% end %>
+<div id="" class="gadget_body" style="">
+  <table cellpadding="0" cellspacing="0" style="width:100%;">
+    <% @notices.each do |notice| %>
+      <tr>
+        <td class="" style="width:88%;height:20px;">
+          <% if notice.post_date.to_date >= (Date.today - new_icon_days) %>
+            <img src="/images/icons/icon_balloon_new.gif" align="top" class="gadget_table_icon">
+          <% else %>
+            <img src="/images/icons/icon_balloon.gif" align="top" class="gadget_table_icon">
+          <% end %>
+          <%= link_to "#{cut_off(notice.title, 18)}<#{datetime_strftime(notice.post_date)}>", {:controller => "notice/main", :action => "index", :id => notice.d_notice_head_id, :message_id_def=>notice.id} %>
+        </td>
+        <td align="right" class="" style="width:12%;">
+          <%= datetime_strftime(notice.post_date) %>&nbsp;&nbsp;
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <table cellpadding="0" cellspacing="0" style="width:100%;">
+    <tr style="text-align:center;">
+      <td colspan="2" style="text-align:center;">
+        <%
+          if @top_disp_kbn == "0"
+            update = 'home_top_notice'
+          elsif @top_disp_kbn == "1"
+            update = 'home_top_eigyohonbu'
+          elsif @top_disp_kbn == "2"
+            update = 'home_top_kanrihonbu'
+          elsif @top_disp_kbn == "3"
+            update = 'home_top_di'
+          elsif @top_disp_kbn == "4"
+            update = 'home_top_jinji'
+          elsif @top_disp_kbn == "5"
+            update = 'home_top_keityou'
+          end
+        %>
+        <%= will_paginate(@notices, :renderer => RemoteLinkRenderer,
+                                    :update =>update,
+                                    :params=> { :action => 'gadget_notice',
+                                                :top_disp_kbn=>@top_disp_kbn
+                                              },
+                                    :prev_label => "<<前へ",
+                                    :next_label => "次へ>>",
+                                    :method => :get) if @notices.size > 0 
+        %>
+      </td>
+    </tr>
+  </table>
+</div>

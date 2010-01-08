@@ -1,0 +1,90 @@
+<!-- ブログ記事一覧 -->
+
+<table style="width:100%;">
+  <tr>
+    <td style="text-align:left;">
+      <h1 class="vblog_article_subject">
+        <%= @title %>
+      </h1>
+    </td>
+    <td style="text-align:right;">
+      <% unless @blog_head.nil? %>
+        <% if @favorite_flg %>
+          <%= button_to_remote "「お気に入りブログ」に追加",
+                               :update=>"blog_menu_favorite_list",
+                               :url=>{:controller=>"entry",
+                                      :action=>"favorite_create",
+                                      :head_id=>@blog_head.id
+                                     }
+          %>
+        <% end %>
+	  <% end %>
+    </td>
+  </tr>
+</table>
+<% if @blog_list.length == 0 %>
+  <table style="width:100%;">
+    <tr>
+      <td style="text-align:center;">この人はまだブログを書いていません。</td>
+	</tr>
+  </table>
+<% else %>
+  <% @blog_list.each do |blog| %>
+    <div class="vblog_article">
+      <div class="vblog_article" style="padding-left:10px;text-align:left;">
+        <h3 class="vblog_article_subject">
+          <%= link_to_remote blog.send(:title),
+                             :update=>"right_pane",
+                             :url=>{:action => 'detail',
+                                    :id => blog.send(:id)
+                                   }
+          %>
+        </h3>
+        <div class="vblog_atricle_head_meta"><%= disp_meta(blog) %></div>
+      </div>
+      <br>
+      <div class="vblog_article_body" style="width:700px;text-align:left;overflow-x:auto;">
+        <%= blog.send(:body) %>
+      </div><br />
+      <div class="vblog_article_foot">
+      </div>
+    </div><br />
+  <% end %>
+<% end %>
+
+<table style="border:0px;width:100%;">
+  <tr>
+    <td style="text-align:center;padding-left:10px;">
+      <%= will_paginate(@blog_list, :renderer => RemoteLinkRenderer,
+                                       :update => 'right_pane',
+                                       :params=> { :action => 'blog_list'
+                                                 },
+                                       :prev_label => "<<前へ",
+                                       :next_label => "次へ>>",
+                                       :method => :get) if @blog_list.size > 0
+      %>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+	    // 新着記事一覧を更新します。
+        $("#blog_menu_new_article").load("/blog/view/menu_new_article?uid=<%= @user_cd %>");
+		// パン屑リストを更新します。
+//		$("#breadcrumbs").html($(".vblog_article_subject").html());
+        // 月別アーカイブを更新します
+		$("#monthly_list").load("/blog/view/menu_month_list?uid=<%= @user_cd %>");
+		// タグ一覧を更新します。
+		$("#tag_list").load("/blog/view/tag_list?uid=<%= @user_cd %>");
+		// 検索領域のユーザーコードのユーザーコードを更新
+		$("#user_cd_s").val(<%= @user_cd %>);
+		// ブロガー一覧を更新します。
+// ブロガー一覧を更新してしまうと、ツリーが閉じてしまうので、更新しない。（top.html.erbで呼び出す）
+//        $("#blog_menu_bloger_list").load("/blog/view/menu_bloger_list/");
+      }
+    );
+  //-->
+</script>

@@ -1,0 +1,78 @@
+<!-- 共有キャビネット(詳細表示) -->
+
+<div style="border:1px;solid gray;width:95%;padding:10px;">
+  <div style="width:700px;text-align:left;overflow-x:auto;">
+    <%= @cabinet_detail.body %>
+  </div>
+  <% unless @cabinet_file.length == 0 %>
+    <table class="enote_general_table1" style="width:95%;margin:10px 1px 0px 2px;">
+      <tr class="enote_general_table1_title">
+        <th style="width:220px;" class="enote_general_table1_cell_bordered">ファイル名</th>
+        <th style="width:80px;"class="enote_general_table1_cell_bordered">サイズ</th>
+        <th style="width:100px;" class="enote_general_table1_cell_bordered">投稿部署</th>
+        <th style="width:85px;" class="enote_general_table1_cell_bordered">投稿者</th>
+        <th style="width:100px;" class="enote_general_table1_cell_bordered">更新日時</th>
+        <th style="width:80px;" class="enote_general_table1_cell_bordered">&nbsp;</th>
+      </tr>
+      <% @cabinet_file.reverse! %>
+      <% @cabinet_file.each do |file| %>
+        <tr style="height:30px;">
+          <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%=h file.file_name %></td>
+          <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%=h file_size(file.file_size) %></td>
+          <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%=h @orgs[file.post_org_cd] %></td>
+          <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%=h file.post_user_name %></td>
+          <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%=h datetime_strftime(file.post_date) %></td>
+          <td class="enote_general_table1_cell_bordered" style="text-align:center;">
+             <%= link_to "<img src='/images/icons/icon_download_file.gif' />", :action=>:download, :id=>file.id %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+  <hr />
+  <table style="border:0px;width:100%;">
+    <tr>
+      <td>このページへのリンクURL：&nbsp;
+          <%= link_to "http://#{request.env['HTTP_HOST']}",
+             {:controller => "/cabinet/public",
+              :action => "index",
+              :auto =>@cabinet_detail.d_cabinet_head.cabinet_kbn.to_s + "_" + @cabinet_detail.d_cabinet_head.id.to_s + "_" + @cabinet_detail.id.to_s},
+              {:id=>"link_target"} %>
+      </td>
+    </tr>
+    <tr style="text-align:right;">
+      <td colspan="6">
+        <input type="button" class="submit_large" value="一覧へ戻る" onClick="returnList('<%= @cabinet_detail.d_cabinet_head.cabinet_kbn %>' + '_' + '<%= @cabinet_detail.d_cabinet_head_id %>');" />
+      </td>
+    </tr>
+  </table>
+</div>
+
+<script type="text/javascript">
+  <!--
+
+    /*
+     * 「戻る」アンカーを押下した時の処理。
+     */
+    function returnList(id){
+    // 「共有キャビネット」で選択されている要素のIDを取得します。
+    //id = $("#selectedCabinet_").val();
+        // 「検索」ボタンが存在するフォームのcategory_idフィールドに値を代入します。
+//		$("#category_id_").val(String(id));
+
+    // 「検索」ボタンを押下します。
+//		$("[value='検索']").click();
+        // category_idフィールドの値をクリアします。
+//        $("#category_id_").val("");
+$("#" + id).click();
+    }
+
+    $(document).ready(
+      function(){
+        var target_url = $("#link_target").attr("href");
+        $("#link_target").html(target_url);
+      }
+    );
+  -->
+</script>
+<br>

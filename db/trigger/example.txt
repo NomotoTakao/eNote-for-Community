@@ -1,0 +1,53 @@
+-- トリガー 
+--   操作名称(INSERT/UPDATE/DELETE)、対象テーブル名、対象レコードID、操作者ID,操作日時を記録します。
+
+-- トリガーが既に存在するときは削除する
+DROP FUNCTION IF EXISTS :function_name() CASCADE;
+
+create function
+  :function_name() returns trigger
+AS  '
+  DECLARE OPERATION_NAME TEXT;
+  DECLARE TARGET_ID INTEGER;
+  DECLARE OPERATOR_CD TEXT;
+  DECLARE OPERATION_DATE TIMESTAMP;
+  DECLARE row RECORD;
+
+  BEGIN
+    IF TG_OP = ''INSERT'' THEN
+      OPERATION_NAME := TG_OP;
+      TARGET_ID := new.id;
+      OPERATOR_CD := new.created_user_cd;
+      OPERATION_DATE := new.created_at;
+    ELSIF TG_OP = ''UPDATE'' THEN
+      IF old.delf = ''0'' AND new.delf = ''1'' THEN
+        -- 削除フラグを立てる処理は削除とみなす
+        OPERATION_NAME := ''DELETE'';
+      ELSE
+        OPERATION_NAME := TG_OP;
+      END IF;
+      TARGET_ID := new.id;
+      OPERATOR_CD := new.updated_user_cd;
+      OPERATION_DATE := new.updated_at;
+    ELSIF TG_OP = ''DELETE'' THEN
+      -- SQLのDELETEコマンド
+      OPERATION_NAME := TG_OP;
+      TARGET_ID := old.id;
+      OPERATOR_CD := ''0000000'';
+      OPERATION_DATE := now();
+    END IF;
+    
+    INSERT INTO d_logs(table_name, manipulate_name, manipulate_id, created_user_cd, created_at)
+                values('':table_name'', OPERATION_NAME, TARGET_ID, OPERATOR_CD, OPERATION_DATE);
+
+    RETURN row;
+  END ;
+  '
+LANGUAGE 'plpgsql';
+
+CREATE TRIGGER :trigger_name
+  AFTER INSERT OR UPDATE OR DELETE
+  ON :table_name
+  FOR EACH ROW
+  EXECUTE PROCEDURE :function_name() ;
+

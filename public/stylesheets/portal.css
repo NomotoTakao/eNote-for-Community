@@ -1,0 +1,358 @@
+/* サイト全体共通用CSS */
+
+/*--[Common settings through site]---------------*/
+body {
+    background-color:             #ffffff;
+    color:                        #000000;
+    font-family:                  Verdana, Arial, Helvetica, sans-serif;
+    font-size:                    9pt;
+    margin:                       0px;
+    padding:                      0px;
+}
+
+a {
+    color:                        #4a4a4a;
+    text-decoration:              underline;
+/*    text-decoration:              none;*/
+}
+a:hover, a:active {
+    color:                        #919b33;
+    text-decoration:              none;
+}
+
+form {
+    margin:                       0px;
+    padding:                      0px;
+}
+
+hr {
+    border:                       1px #b2b2b2;
+    border-style:                 dashed none none none;
+    height:                       1px;
+}
+
+img {
+    border:                       none;
+}
+
+h1,h2,h3,h4 {
+    margin: 0px;
+    padding: 0px;
+}
+
+input, select, textarea {
+    background-color:             #ffffff;
+    border:                       1px solid #808080;
+    padding:                      0px 0px 0px 3px;
+}
+
+input:disabled {
+    color:                        #b2b2b2;
+    cursor:                       default;
+}
+
+.check {
+    border: 0px;
+    padding:0px;
+    margin:0px;
+}
+
+/* ボタン用クラス通常サイズ */
+input.submit {
+    background-repeat:            no-repeat;
+    background-image:             url('/images/icons/icon_button_m.gif');
+    background-color:             transparent;
+    border:                       0px;
+    color:                        #000;
+    cursor:                       pointer;
+    height:                       20px;
+    margin:                       0px 0px 3px 0px;
+    padding:                      1px;
+    text-align:                   center;
+    vertical-align:               middle;
+    width:                        80px;
+}
+/* ボタン用クラス小サイズ */
+input.submit_small {
+    background-repeat:            no-repeat;
+    background-image:             url('/images/icons/icon_button_s.gif');
+    background-color:             transparent;
+    border:                       0px;
+    color:                        #000;
+    cursor:                       pointer;
+    height:                       20px;
+    margin:                       0px 0px 3px 0px;
+    padding:                      1px;
+    text-align:                   center;
+    vertical-align:               middle;
+    width:                        60px;
+}
+/* ボタン用クラス大サイズ */
+input.submit_large {
+    background-repeat:            no-repeat;
+    background-image:             url('/images/icons/icon_button_l.gif');
+    background-color:             transparent;
+    border:                       0px;
+    color:                        #000;
+    cursor:                       pointer;
+    height:                       20px;
+    margin:                       0px 0px 3px 0px;
+    padding:                      1px;
+    text-align:                   center;
+    vertical-align:               middle;
+    width:                        100px;
+}
+/* ボタン用クラス特大サイズ */
+input.submit_ex_large {
+    background-repeat:            no-repeat;
+    background-image:             url('/images/icons/icon_button_ll.gif');
+    background-color:             transparent;
+    border:                       0px;
+    color:                        #000;
+    cursor:                       pointer;
+    height:                       20px;
+    margin:                       0px 0px 3px 0px;
+    padding:                      1px;
+    text-align:                   center;
+    vertical-align:               middle;
+    width:                        200px;
+}
+
+/* 全体を区切るフレーム用DIV */
+div.standard_frame {
+    background-color:             #ffffff;
+    border:                       0px;
+    margin:                       0px;
+    padding:                      0px;
+    width:                        100%;
+}
+
+table.layout_table {
+    border:                       0px;
+    margin:                       0px;
+    padding:                      0px;
+    width:                        960px;
+}
+
+/* ヘッダー表示エリア */
+div.standard_header {
+    margin:                       0px;
+    padding:                      0px;
+    width:                        100%;
+}
+/* メイン表示エリア */
+div.standard_main {
+    border:                       0px;
+    margin:                       0px;
+    padding:                      0px;
+    width:                        760px;
+}
+/* フッター表示エリア */
+div.standard_footer {
+    border:                       0px;
+    margin:                       0px;
+    padding:                      0px;
+    width:                        100%;
+    clear:                        both;
+}
+
+/* ２ペイン画面フレーム */
+table.frame_2pain{
+    width:                        960px;
+    height:                       100%;
+    margin:                       0px;
+    padding:                      0px;
+    background-color:             #ffffff;
+    border:                       0px;
+    border-collapse:              collapse;
+}
+/* ２ペイン画面の左側サイドバー */
+td.frame_2pain_left{
+    width:                        200px;
+    margin:                       0px;
+    padding:                      10px;
+/*    background-color:             #95b3de;*/
+    vertical-align:               top;
+    text-align:                   center;
+    border-right:                 1px solid black;
+    border-left:                  0;
+    border-top:                   0;
+    border-bottom:                0;  /*1px solid black;*/
+}
+/* ２ペイン画面の右側サイドバー */
+td.frame_2pain_right{
+    width:                        740px;
+    margin:                       0px;
+    padding:                      5px;
+    background-color:             #ffffff;
+    vertical-align:               top;
+}
+
+/* ツリー表示用DIVボックス */
+div.tree_box{
+/*    border:1px solid black;*/
+    background-color:#fff;
+    text-align:left;
+}
+
+/* ガジェット風のボックスの外枠 */
+div.gadget{
+    padding: 0px;
+    margin-bottom: 10px;
+    border: 1px solid #CCCCCC;
+    background-color: #f3f3f3;
+    text-align:left;
+/* 角丸にするCSS　ただし、IEでは無効 */
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* ガジェット風のボックス用タイトルエリア */
+div.gadget_title{
+    width:100%;
+    height:25px;
+    color:#fff;
+    margin:0px;
+    padding-top:2px;
+    text-indent:6px;
+    background-image:url('/images/background/title_bg.gif');
+    background-repeat:repeat-x;
+/* 角丸にするCSS　ただし、IEでは無効 */
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+/* ガジェット風のボックス用メインエリア */
+.gadget_body{
+    width:100%;
+    padding:5px 0px 5px 0px;
+    text-indent:5px;
+}
+
+.gadget_table_icon {
+    margin-left:5px;
+}
+
+.shortcut_image {
+    margin:0px 5px 0px 5px;
+    width:21px;
+}
+
+.enote_form_table {
+    border:                       0px; /* 1px solid #666699;*/
+    border-collapse:              collapse;
+    margin:                       0px;
+    padding:                      0px;
+    clear:                        both;
+}
+
+.enote_form_table_title {
+    background-color:             #ccffcc;
+    border:                       1px solid #666699;
+    color:                        #000000;
+    height:                       25px;
+    width:                        160px;
+    padding:                      5px 0px 0px 5px;
+    margin:                       0px;
+    vertical-align:               middle;
+    font-weight:                  bold;
+    float:                        left;
+}
+
+.enote_form_table_cell_bordered {
+    border:                       1px solid #666699;
+    border-left:                  0;
+    padding:                      5px 0px 0px 10px;
+    margin:                       0px;
+    vertical-align:               middle;
+    height:                       25px;
+    width:                        710px;
+}
+
+.admin_pages_edit_table {
+    border:  1px solid #000;
+    width:  720px;
+}
+.admin_pages_edit_table_title {
+    border:  1px solid #000;
+    background-color:  #add4e9;
+    font-weight:  bold;
+    padding-left:  10px;
+    width:  200px;
+    height: 30px;
+    text-align: left;
+}
+.admin_pages_edit_table_content {
+    border:  1px solid #000;
+    background-color:  white;
+    padding: 5px 5px 5px 10px;;
+    text-align: left;
+}
+.admin_pages_edit_table_content_top {
+    border-top:  1px solid #000;
+    border-right:  1px solid #000;
+    border-left:  1px solid #000;
+    background-color:  white;
+    padding-left:  10px;
+}
+.admin_pages_edit_table_content_top_left {
+    border-top:  1px solid #000;
+    border-left:  1px solid #000;
+    background-color:  white;
+    padding-left:  10px;
+}
+.admin_pages_edit_table_content_top_right {
+    border-top:  1px solid #000;
+    border-right:  1px solid #000;
+    background-color:  white;
+    padding-left:  10px;
+}
+.admin_pages_edit_table_content_bottom {
+    border-right:  1px solid #000;
+    border-left:  1px solid #000;
+    border-bottom:  1px solid #000;
+    background-color:  white;
+    padding-left:  10px;
+}
+
+.admin_pages_edit_select_box {
+    width:100%;
+    padding:5px 0px 5px 0px;
+    text-indent:0px;
+}
+
+.title{
+    padding: 0px;
+    border: 1px solid #CCCCCC;
+    background-color: #f3f3f3;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* カレンダーを出すアイコン */
+.ui-datepicker-trigger{
+    margin-left:3px;
+    vertical-align: middle;
+}
+
+/* タブ表示のときの一番外の枠を消す */
+.tabset {
+    border:0px;
+}
+
+/* 日本語を入力可能する(全角が初期モード)。 */
+.ime_on{
+  ime-mode : active;
+}
+
+/* 日本語を入力不可能にする。 */
+.ime_off{
+  ime-mode : disabled;
+}
+
+/* 日本語を入力可能する(半角が初期モード)。 */
+.ime_inactive{
+  ime-mode : inactive;
+}

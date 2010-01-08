@@ -1,0 +1,86 @@
+<!--
+  partialにしているのは？
+  →
+  board_tab.html.erbを表示したときに、表示の遅れが発生するのを防ぐため。
+-->
+<select id="select_board"  size="5" style="width:250px;">
+  <option value="">&nbsp;</option>
+</select>
+
+<script type="text/javascript">
+  <!--
+    /*
+     * 画面ロード時に実行されるイベント
+     */
+    $(document).ready(
+      function(){
+        initialize();
+      }
+    );
+
+    /*
+     * セレクトボックスの項目変更時に実行されるイベント
+     * マウスクリック時、キーボード操作時の両方に対応できるように
+     * changeイベントに記述している。
+     */
+    $("#select_board").change(
+      function(){
+        get_board_info();
+      }
+    );
+	
+    /*
+     * 初期化処理
+     */
+    function initialize(){
+      // セレクトボックスの内容を取得してロードする。
+      jQuery.ajax(
+        {
+          type: "GET",
+          url: "/master/bbs/board_list",
+          data:
+            {},
+          success:
+            function(data, dataType){
+              $("#select_board").html(data);
+            },
+          error:
+            function(){
+              alert("通信エラー");
+            },
+          complete:
+            function(){}
+        }
+      );
+    }
+
+    /*
+     * 掲示板詳細情報取得処理
+     */
+    function get_board_info(){
+      id = $("#select_board").val();
+      if(id != ""){
+        jQuery.ajax(
+          {
+            type: "GET",
+            url: "/master/bbs/_board_info",
+            data:
+              {
+                id: id
+              },
+            success:
+              function(data, dataType){
+                $("#board_info").html(data);
+              },
+            error:
+              function(){
+                alert("通信エラー");
+              },
+            complete:
+              function(){}
+          }
+        );
+      }
+    }
+  //-->
+</script>

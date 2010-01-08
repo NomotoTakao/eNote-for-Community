@@ -1,0 +1,80 @@
+<% unless @d_report.nil? %>
+  <%
+    counter = 1
+    class_tr = "enote_general_table1_odd"
+    class_td = "enote_general_table1_cell_bordered"
+  %>
+  <input type="hidden" id="nil_flg" value="0" />
+  <table class="enote_general_table1_cell_bordered" style="width:940px;">
+    <% counter = 1 %>
+    <% @d_report.d_report_customers.each do |comment| %>
+      <%
+        if counter % 2 == 0
+          class_tr = "enote_general_table1_even"
+        else
+          class_tr = "enote_general_table1_odd"
+        end
+      %>
+      <tr class="<%= class_tr %>">
+        <td class="<%= class_td %>" rowspan="2" style="width:20px;">&nbsp;</td>
+        <td class="<%= class_td %>" rowspan="2" style="width:300px;"><%= customer_name comment.company_cd %></td>
+        <td class="<%= class_td %>" style="width:150px;"><%= action_target_name comment.action_target_cd %></td>
+        <td class="<%= class_td %>" style="width:120px;"><%= action_group_name comment.action_group_cd %></td>
+        <td class="<%= class_td %>" style="width:120px;"><%= action_name comment.action_cd %></td>
+        <td class="<%= class_td %>" style="width:80px;text-align:right;"><%= comment.action_time.to_f %>&nbsp;時間</td>
+        <td class="<%= class_td %>" style="width:80px;text-align:right;"><%= comment.sale_amount.to_i %>&nbsp;円</td>
+        <td class="<%= class_td %>" style="width:67px;">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="enote_general_table1_cell_bordered" style="text-align:center;font-weight:bold;background-color:#99CCFF;">コメント</td>
+        <td class="<%= class_td %>" colspan="5"><%= comment.comment %></td>
+      </tr>
+      <% counter = counter + 1 %>
+    <% end %>
+  </table>
+  <%= hidden_field :d_report, :comment %>
+  <%= hidden_field :d_report, :superior_comment %>
+  <%
+    total_time = 0.0
+    total_sales = 0
+    unless @d_report.nil?
+      @d_report.d_report_customers.each do |report|
+        total_time += report.action_time.to_f
+        total_sales += report.sale_amount.to_i
+      end
+    end
+  %>
+  <input type="hidden" id="tmp_comment_total_time" value="<%= total_time %>" />
+  <input type="hidden" id="tmp_comment_total_sales" value="<%= total_sales %>" />
+<% else %>
+  <input type="hidden" id="nil_flg" value="1" />
+<% end %>
+<input type="hidden" id="next_unconfirmed_report" value="<%= @next_unconfirmed_report.action_date unless @next_unconfirmed_report.nil? %>" />
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        // 表示している日付以降に未読日報が存在しなければ、「次の未読」ボタンを非活性状態にする。
+        if($("#next_unconfirmed_report").val()!=""){
+          $("#button_next").attr("disabled", "");
+        }else{
+          $("#button_next").attr("disabled", "disabled");
+        }
+
+        if($("#nil_flg").val() == "1"){
+          $("#button_confirm").attr("disabled", "disabled");
+          $("#subordinate_comment").html("");
+          $("#superior_comment").html("");
+        }else{
+          $("#button_confirm").attr("disabled", "");
+          $("#subordinate_comment").html($("#d_report_comment").val());
+          $("#superior_comment").html($("#d_report_superior_comment").val());
+        }
+
+        $("#total_time").html($("#tmp_comment_total_time").val());
+        $("#total_sales").html($("#tmp_comment_total_sales").val());
+      }
+    );
+  //-->
+</script>

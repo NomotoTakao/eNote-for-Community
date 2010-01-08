@@ -1,0 +1,48 @@
+<!-- ブックマーク一覧 -->
+<table class="enote_general_table1">
+  <tr class="enote_general_table1_title">
+    <th style="width:500pt" class="enote_general_table1_cell_bordered" order="title" mode="<%= @title_next %>" >
+    リンク
+    </th>
+    <th style="width:80pt" class="enote_general_table1_cell_bordered" order="post_user_name" mode="<%= @post_user_name_next %>">
+    更新日時
+    </th>
+  </tr>
+
+  <% @bookmarks.each do |bookmark| %>
+    <tr style="height:50px;">
+      <td class="enote_general_table1_cell_bordered" style="padding-left:5px;text-align:left;">
+	  	<h3><%= link_to bookmark.title, bookmark.url, :target => "_blank" %></h3>
+		<span style="padding-left:10px;"><%= bookmark.url %></span>
+      </td>
+      <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= bookmark.updated_at.strftime("%Y/%m/%d") %></td>
+    </tr>
+	<% if !bookmark.memo.nil? && !bookmark.memo.blank? %>
+	<tr>
+      <td colspan="2" class="enote_general_table1_cell_bordered" style="padding-left:25px;text-align:left;"><%= bookmark.memo %></td>
+	</tr>
+	<% end %>
+  <% end %>
+</table>
+<table style="width:100%;">
+  <tr>
+    <td style="text-align:center;padding-left:10px;">
+    <%#= will_paginate @cabinet_list, :renderer => RemoteLinkRenderer,
+                                    :update => 'cabinet_list',
+                                    :params=> { :action => 'cabinet_list',
+                                                :id=>@index_id,
+                                                :date_from=>@date_from,
+                                                :date_to=>@date_to,
+                                                :keyword=>@keyword
+                                              },
+                                    :prev_label => "<<前へ",
+                                    :next_label => "次へ>>",
+                                    :method => :get %>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  //-->
+</script>

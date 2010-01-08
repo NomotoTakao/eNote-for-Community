@@ -1,0 +1,34 @@
+<div id="basic_info" />
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        var company_cd = $("#company_cd").val();
+        var edit_flg = $("#edit_flg").val();
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/master/customer/basic_info",
+            data :
+              {
+                company_cd : company_cd,
+                edit_flg   : edit_flg
+              },
+            success :
+              function(data, dataType){
+                $("#basic_info").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+  //-->
+</script>

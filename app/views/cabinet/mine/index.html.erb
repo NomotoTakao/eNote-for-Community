@@ -1,0 +1,59 @@
+<% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "jquery/mbTabset/mbTabset.js",
+      "app/cabinet"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "jquery/mbTabset/mbTabset.css",
+      "app/cabinet",
+      "pagenate.css"
+    ]) %>
+<% end -%>
+
+<div style="padding:10px;">
+  <div id="cabinet_list"></div>
+  <%# ダイアログ %>
+  <div id="dialog" title="ファイルの詳細">
+    <%= render :partial=>"dialog" %>
+  </div>
+
+  <%# 新規保存ダイアログ %>
+  <div id="create" title="ファイルの登録">
+    <%= form_tag({:action=>'create'}, {:multipart=>true, :target=>'cabinet_create_form_upload_frame', :id=>'create_form'}) %>
+      <iframe id='cabinet_create_form_upload_frame' name='cabinet_create_form_upload_frame' style='display:none;'></iframe>
+      <%= render :partial=>"create" %>
+    </form>
+  </div>
+</div>
+
+<br>
+
+<script type="text/javascript">
+  <!--
+
+    $(document).ready(function(){
+		url = "/cabinet/mine/cabinet_list"
+		$("#cabinet_list").load(url);
+	});
+
+	/*
+	 * 詳細画面を表示します。
+	 */
+    function open_dialog(){
+      $('#dialog').dialog('open');
+    };
+
+	/*
+	 *
+	 */
+    function new_dialog(){
+      $('#create').dialog('open');
+    };
+  -->
+</script>

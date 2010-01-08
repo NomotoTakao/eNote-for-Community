@@ -1,0 +1,124 @@
+<!-- スレッド一覧ペイン -->
+
+<table class="bbs_head_table" style="width:660px; text-align:left;">
+  <tr>
+    <td class="bbs_head_table_t" style="width:520px;padding-left:10px;text-align:left;">
+      <h3>
+      <%= @board.title %>
+    </h3>
+    </td>
+    <td class="bbs_head_table_t_noimg" style="text-align:center;background-image:'';">
+      <% unless @board.lastpost_date.nil? %>
+        最終投稿日<br><%= formatMD(@board.lastpost_date) %>
+      <% end %>
+      <input type="button" id="btnCreateTopic" value="トピックを新規作成する" style="width:200px;" >
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" style="text-align:right;" class="bbs_head_table_i">
+        作成者：<%= convertName(@users, @board.created_user_cd) %>&nbsp;&nbsp;&nbsp;作成日：<%= formatMD(@board.created_at) %>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bbs_head_table_b" style="text-align:left;">
+    <%= display(@board.memo) %>
+    </td>
+  </tr>
+</table >
+
+<br />
+
+<div id="div_topic_create" style="display:none;">
+  <% form_remote_tag :update=>"thread_list", :url=>{:action =>:thread_create} do %>
+    <%= hidden_field "d_bbs_threads", "d_bbs_board_id", :value=>@board.id %>
+    <table class="bbs_head_table" style="width:620px;text-align:left;margin-left:40px;">
+      <tr>
+        <td colspan="3" class="bbs_head_table_t_noimg" style="padding-left:10px;height:25px;" nowrap>
+          <h3>トピックを作成する</h3>
+        </td>
+      </tr>
+      <tr class="rowCreateTopic">
+        <td class="bbs_head_table_i" style="width:100px;font-weight:bold;"> タイトル</td>
+        <td colspan="2" class="bbs_head_table_b" style="text-align:left;padding:10px;">
+          <%= text_field 'd_bbs_threads', 'title', :class=>"ime_on", :size => 50, :maxlength => 40, :style => "height:20px;width:100%;font-size:1.5em;"  %>
+        </td>
+      </tr>
+      <tr class="rowCreateTopic">
+        <td class="bbs_head_table_i" style="width:100px;font-weight:bold;">内容</td>
+        <td colspan="2" class="bbs_head_table_b" style="text-align:left;padding:10px;">
+          <%= text_area "d_bbs_threads", "body", {:class=>"ime_on", :cols=>50, :rows=>7, :style => "width:100%;height:100%;"} %>
+        </td>
+      </tr>
+    </table>
+
+    <table border="0" style="width:620px;">
+      <tr>
+        <td align="center">
+          <%= submit_tag '投稿する',{:class => 'submit', :onclick => 'return ClickContributeButton()'} %>
+      &nbsp;&nbsp;&nbsp;
+      <%= button_to_remote '一覧に戻る', {:update=>"right_pane", :url=>{:action =>'bbs_tab'}}, {:class =>'submit'} %>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+  <hr />
+</div>
+
+<div id="thread_list"></div>
+<br />
+
+<script type="text/javascript">
+  <!--
+
+    $(document).ready(
+      function(){
+      board_id = $("#d_bbs_threads_d_bbs_board_id").val();
+    // 左領域にある、"form_board_id"に掲示板IDを設定
+    $("#form_board_id").val(board_id);
+    $("#form_thread_id").val("");
+    // 新着記事一覧を表示
+    url = "/bbs/main/newly_list?board_id=:board_id"
+    url = url.replace(":board_id", board_id);
+    $("#newly_list").load(url);
+
+    // スレッド一覧を表示
+      url = "/bbs/main/thread_list?board_id=:board_id"
+    url = url.replace(":board_id", board_id);
+    $("#thread_list").load(url);
+
+//		if($("#btnCreateTopic").val() == "閉じる"){
+//          $("#btnCreateTopic").click();
+//		}
+    }
+    );
+
+    $("#btnCreateTopic").click(
+      function(){
+        // トピックを新規作成するフォームを表示する。
+        $("#div_topic_create").show();
+      }
+    );
+
+
+
+    /*
+     * 「投稿」ボタンが押下された時の処理。
+     * 入力チェックを行います。
+     */
+    function ClickContributeButton(){
+      //確認ダイアログ
+      result = confirm("投稿して宜しいですか？");
+      if (!result) {
+        return result;
+      }
+      //入力チェック
+      result = CheckTopicValidate();
+      if (!result) {
+        return result;
+      }else{
+        // トピックを新規作成するフォームを非表示にする。
+        $("#div_topic_create").hide();
+      }
+    }
+  //-->
+</script>

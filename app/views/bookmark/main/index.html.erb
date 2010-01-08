@@ -1,0 +1,89 @@
+<% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "app/bookmark"
+    ]) %>
+<% end -%>
+<% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "app/bookmark"
+    ]) %>
+<% end -%>
+
+<div style="padding:5px;">
+<table class="frame_2pain" style="">
+<tr>
+<!-- 左側エリア -->
+<td class="frame_2pain_left" style="">
+  <div class="gadget" style="width:240px;">
+    <div id="" class="gadget_title" style="">
+      <h3 style=""><img src="/images/icons/icon_bookmark.gif" align="top" style="margin-right:5px;">カテゴリー</h3>
+    </div>
+    <!-- 条件選択エリア -->
+    <div class="gadget_body">
+    <div style="border:0px;background-color:white;text-align:left;overflow-y:scroll;height:200px;">
+      <ul id="category_browser" class="filetree">
+        <% @categories.each do |category|%>
+            <li><span class="file"><font id="category_id_<%= category.id %>" class="folder_category"><%= category.title %></font></span></li>
+      <% end %>
+    </ul>
+      </div>
+  </div>
+  </div>
+  <br><br>
+  <!-- 検索エリア -->
+  <div class="gadget" style="width:240px;">
+    <div id="" class="gadget_title" style="">
+      <h3 style=""><img src="/images/icons/icon_bookmark.gif" align="top" style="margin-right:5px;">リンクを検索</h3>
+    </div>
+  <div class="gadget_body">あいまい検索：<br>
+    <%= text_field_tag 'sword','',{:size => 20, :style => "height:20px;width:150px;margin:0px;"} %>
+    <%= button_to_function "検索", "bookmark_search($('#sword').val());", :class => "submit_small", :style => "margin:0px;" %>
+  </div>
+  </div>
+  <div style="text-align:center;">
+    <img name="logo" src="/images/icons/icon_kakeru.gif" border="0" alt=""/>
+  </div>
+</td>
+<!-- 右側エリア -->
+<td class="frame_2pain_right" style="">
+  <div id="bookmark_list"></div>
+</td>
+</tr>
+</table>
+</div>
+
+<script type="text/javascript">
+  //カテゴリーツリーを構成
+  $("#category_browser").treeview();
+  //カテゴリーツリーにクリックイベントを定義する
+  $(".folder_category").click(function(){
+    value = $(this).attr("id").replace("category_id_", "");
+    bgChange($(this), $(".folder_category"));
+    $("#bookmark_list").load("/bookmark/main/bookmark_list?category_id=" + value);
+  });
+
+  /*
+  * ページロード時に右領域にブックマーク一覧を表示します。
+  */
+  $("#bookmark_list").load("/bookmark/main/bookmark_list?category_id=1");
+
+  //カテゴリーツリーのMouseOverイベント
+  $(".folder_category").mouseover(
+    function(){
+      $(this).css("cursor", "pointer");
+    }
+  );
+
+  //カテゴリーツリーのMouseOutイベント
+  $(".folder_category").mouseout(
+    function(){
+      $(this).css("cursor", "default");
+    }
+  );
+
+</script>
+

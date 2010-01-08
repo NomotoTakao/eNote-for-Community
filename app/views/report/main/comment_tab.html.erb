@@ -1,0 +1,303 @@
+    <table class="enote_app_title">
+        <tr>
+            <td class="e_note_content_title" style="width:120px;">
+                <%= h("日報確認") %>
+            </td>
+            <td style="width:180px;">&nbsp;</td>
+            <td style="width:70px; text-align:right;">
+                <%#= title_span('日付：','65px') %>
+            </td>
+            <td style="width:200px; text-align;left;">
+                <%#= exec_validate("enote_boss_inputdate", "/^([12][0-9]{3})-(0?0[1-9]|1[0-2])-(0?0[1-9]|[12][0-9]|3[01])$/", "") %>
+                <div>
+                    <span class='enote_icon_arrow_left' onclick="ClickBeforeDay_comment();">&nbsp;</span>
+                    <input type="text" id="comment_report_date" value="<%= Date.today %>" size="11" maxlength="11" />
+                    <span class='enote_icon_arrow_right' onclick="ClickNextDay_comment();">&nbsp;</span>
+                    <span id='enote_boss_inputdate_msg'></span>
+                </div>
+                <div id="lh_pull_down_calendar_menu"></div>
+            </td>
+            <td style="width:70px; text-align:right;">担当者</td>
+            <td style="width:200px; text-align;left;">
+                <div>
+                    <% unless @subordinate_list.nil? %>
+                      <select id="person" size="1">
+                        <option value="">&nbsp;</option>
+                        <% @subordinate_list.each do |subordinate| %>
+                          <option value="<%= subordinate.user_cd %>"><%= user_name subordinate.user_cd %></option>
+                        <% end %>
+                      </select>
+                    <% end %>
+                </div>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+
+  <table style="width: 940px;">
+    <tr>
+      <td style="width: 940px;">
+        <div id="RightColumn">
+          <table id='action_table_title_0' class="enote_general_table1_cell_bordered" style='width: 940px;'>
+            <tr class="enote_general_table1_title">
+              <th class="enote_general_table1_cell_bordered" style="width: 20px;">
+                    &nbsp;
+              </th>
+              <th class="enote_general_table1_cell_bordered" style="text-align:center;width:300px;">
+                    <%= h("得意先") %>
+              </th>
+              <th class="enote_general_table1_cell_bordered" style="width: 150px;text-align:center;">
+                    <%= h("対象者") %>
+              </th>
+              <th class="enote_general_table1_cell_bordered" style="width: 120px;text-align:center;">
+                    <%= h("活動内容") %>
+              </th>
+              <th class="enote_general_table1_cell_bordered" style="width: 120px;text-align:center;">
+                    <%= h("活動詳細") %>
+              </th>
+              <%# if ftime == 1 %>
+                <th class="enote_general_table1_cell_bordered" style="width: 80px;text-align:center;">
+                    <%= h("活動時間") %>
+              </th>
+              <%# end %>
+              <%# if fsales == 1 %>
+              <th class="enote_general_table1_cell_bordered" style="width: 80px;text-align:center;">
+                    <%= h("売上金額") %>
+              </th>
+                <%# end %>
+              <th class="enote_general_table1_cell_bordered" style="width: 70px;">
+                    &nbsp;
+              </th>
+            </tr>
+          </table>
+        </div>
+        <div id="comment_list" style="overflow-y:scroll;width:957px;height:200px;"></div>
+        <input type="hidden" id="selected_report_id" value="" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <td>
+              <table>
+                <tr>
+                  <td>総括コメント</td>
+                </tr>
+                <tr>
+                  <td>
+                    <textarea id="subordinate_comment" class="ime_on" rows="5" cols="60" tabindex="-1" readonly ></textarea>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <table>
+                <tr>
+                  <td>上司コメント</td>
+                </tr>
+                <tr>
+                  <td>
+                    <textarea id="superior_comment" class="ime_on" rows="5" cols="60" ></textarea>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <input type="button" id="button_next" class="submit_large" value="次の未読" /><br />
+              <input type="button" id="button_confirm" class="submit_large" value="確認" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table style="width:100%;">
+                <tr>
+                  <td style="width:80px;">活動時間計</td>
+                  <td style="width:80px;"><span id="total_time" />h</span></td>
+                  <td style="width:80px;">売上金額計</td>
+                  <td style="width:80px;"><span id="total_sales" />円</td>
+                </tr>
+              </table>
+            </td>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+<input type="hidden" id="comment_authenticity_token" value="<%=form_authenticity_token %>" />
+<div id="next_confirmed_date" style="display:none;" />
+
+<script type="text/javascript">
+  <!--
+    /**
+     *
+     */
+    $("#person").change(
+      function(){
+        get_comment_list();
+      }
+    );
+
+    /**
+     *
+     *
+     */
+    $("#comment_report_date").change(
+      function(){
+        // 入力された日付が正当なものであれば、一覧を取得する。
+        var report_date = $("#comment_report_date").val();
+        if(!checkDateValidity(report_date)){
+          alert("入力された日付が正しくありません。");
+          return;
+        }
+        get_comment_list();
+      }
+    );
+
+    /**
+     *
+     */
+    function get_comment_list(){
+      // 対象の日付を取得
+      var comment_report_date = $("#comment_report_date").val();
+      // 選択された担当者のユーザーコードを取得
+      var person = $("#person").val();
+
+      jQuery.ajax(
+        {
+          type : "GET",
+          url  : "/report/main/comment_list",
+          data :
+            {
+              date   : comment_report_date,
+              person : person
+            },
+          success :
+            function(data, dataType){
+              $("#comment_list").html(data);
+            },
+          error :
+            function(){
+              alert("通信エラー");
+            },
+          complete :
+            function(){}
+        }
+      );
+    }
+
+    /**
+     *
+     */
+    $("#button_confirm").click(
+      function(){
+        var report_date = $("#comment_report_date").val();
+        var person = $("#person").val();
+        var superior_comment = $("#superior_comment").val();
+        var authenticity_token = $("#authenticity_token").val();
+        jQuery.ajax(
+          {
+            type : "POST",
+            url  : "/report/main/register_superior_comment",
+            data : "date=" + report_date + "&p=" + person + "&cmt=" + superior_comment + "&authenticity_token=" + authenticity_token,
+            success :
+              function(data, dataType){
+                alert("確認しました。");
+                // 次の未読ボタンを押下する。
+                $("#button_next").click();
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     *
+     */
+    $("#button_next").click(
+      function(){
+        // 当日以降の日付で、confirm_dateが入力されていない日付を選択する。
+        var report_date = $("#comment_report_date").val();
+        var user_cd = $("#person").val();
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/report/main/get_next_unconfirmed_date",
+            data :
+              {
+                date : report_date,
+                user_cd : user_cd
+              },
+            success :
+              function(data, dataType){
+                $("#next_confirmed_date").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     *
+     */
+    function ClickBeforeDay_comment(){
+
+      var report_date = $("#comment_report_date").val();
+      // 入力日付の正当性をチェックする
+      if(!checkDateValidity(report_date)){
+        alert("入力された日付が正しくありません。");
+        return;
+      }
+      // 前日日付をセットし、一覧を取得する。
+      var previous_date = getPreviousDate(report_date);
+
+      $("#comment_report_date").val(previous_date);
+      get_comment_list();
+    }
+
+    /**
+     *
+     */
+    function ClickNextDay_comment(){
+
+      var report_date = $("#comment_report_date").val();
+      // 入力日付の正当性をチェックする
+      if(!checkDateValidity(report_date)){
+        alert("入力された日付が正しくありません。");
+        return;
+      }
+      // 翌日日付をセットし、一覧を取得する。
+      var next_date = getNextDate(report_date);
+
+      $("#comment_report_date").val(next_date);
+      get_comment_list();
+    }
+
+    /**
+     *
+     */
+    $(document).ready(
+      function(){
+        setCalendar($("#comment_report_date"));
+      }
+    );
+  -->
+</script>
+
+

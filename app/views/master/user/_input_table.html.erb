@@ -1,0 +1,199 @@
+<!-- エラー -->
+<% err = flash[:user_err_msg] %>
+<% if !err.nil? && err != "" %>
+  <table style="margin:10px 0px 0px 10px;">
+    <tr style="color:red;">
+      <td><%= err %></td>
+    </tr>
+  </table>
+<% end %>
+
+<!-- ユーザーマスタ -->
+<table class="master_table2" style="margin:0px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">ログインＩＤ&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <% if !@m_users.id.nil? && @m_users.user_cd != "" %>
+        <%= @m_users.login %>
+      <% else %>
+        <%= text_field_tag 'm_users[login]', @m_users.login,  {:size => 50, :maxlength => 40, :class => "ime_off"} %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">社員コード&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <% if !@m_users.id.nil? && @m_users.user_cd != "" %>
+        <%= @m_users.user_cd %>
+      <% else %>
+        <%= text_field_tag 'm_users[user_cd]', @m_users.user_cd,  {:size => 50, :maxlength => 32, :class => "ime_off"} %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">社員名&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_users[name]', @m_users.name,  {:size => 50, :maxlength => 40, :class => "ime_on"} %>
+    </td>
+  </tr>
+<!--
+  <tr>
+    <td class="master_table2_title">メールアドレス</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_users[email]', @m_users.email,  {:size => 100, :maxlength => 128} %>
+    </td>
+  </tr>
+-->
+  <tr>
+    <td class="master_table2_title">パスワード&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= password_field_tag 'm_users[passwd]', @m_users.passwd, :size => 70, :maxlength => 64 %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">最終ログイン日時</td>
+    <td class="master_table2_content">
+      <%= format_datetime(@m_users.lastlogin_at) %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">最終パスワード変更日時</td>
+    <td class="master_table2_content">
+      <%= format_datetime(@m_users.last_change_passwd_at) %>
+    </td>
+  </tr>
+</table>
+<hr style="clear:both;" />
+<!-- ユーザー属性マスタ -->
+<table class="master_table2" style="margin:10px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">社員カナ名</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_users[name_kana]', @m_users.name_kana,  {:size => 50, :maxlength => 40, :class => "ime_on"} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">職位区分（eNoteでの職位）</td>
+    <td class="master_table2_content">
+      <% if @m_positions.size > 0 %>
+      <table>
+        <tr>
+          <td style="width:250px;">
+            <select id="select_position_cd" name="select_position_cd" style="width:250px">
+              <% for position in @m_positions %>
+                <% if @m_users.position_cd == position.position_cd %>
+                  <option value = <%=position.position_cd%> selected><%=position.position_cd%> : <%=position.name%></option>
+                <% else %>
+                  <option value = <%=position.position_cd%>><%=position.position_cd%> : <%=position.name%></option>
+                <% end %>
+              <% end %>
+            </select>
+          </td>
+        </tr>
+      </table>
+    <% end %>
+    </td>
+  </tr>
+<!--
+  <tr>
+    <td class="master_table2_title">職種区分</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_users[job_kbn]', @m_users.job_kbn,  {:size => 5, :maxlength => 2} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">権限区分</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_users[authority_kbn]', @m_users.authority_kbn,  {:size => 5, :maxlength => 2} %>
+    </td>
+  </tr>
+-->
+  <tr>
+    <td class="master_table2_title">入社年月日</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_users[joined_date]',@m_users.joined_date, {:size => 10, :style => "width:120px;", :class => "ime_off"} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">備考</td>
+    <td class="master_table2_content">
+      <%= text_area_tag 'm_users[memo]', @m_users.memo,  {:cols => 60, :rows => 5, :class => "ime_on"} %>
+    </td>
+  </tr>
+</table>
+<hr style="clear:both;" />
+<!-- アドレス帳 -->
+<table class="master_table2" style="margin:10px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">メールアドレス</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_users[email_address1]', @m_users.email_address1,  {:size => 100, :maxlength => 128, :class => "ime_off"} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">携帯電話番号</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_users[mobile_no]', @m_users.mobile_no,  {:size => 30, :maxlength => 20, :class => "ime_off"} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">携帯メールアドレス</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_users[mobile_address]', @m_users.mobile_address,  {:size => 100, :maxlength => 128, :class => "ime_off"} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">携帯電話会社</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_users[mobile_company]', @m_users.mobile_company,  {:size => 30, :maxlength => 10, :class => "ime_on"} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">携帯機種</td>
+    <td class="master_table2_content">
+      <%= text_field_tag 'm_users[mobile_kind]', @m_users.mobile_kind,  {:size => 30, :maxlength => 20, :class => "ime_on"} %>
+    </td>
+  </tr>
+</table>
+<hr style="clear:both;" />
+<!-- ユーザー所属マスタ -->
+<table class="master_table2" style="margin:10px 0px 0px 10px;">
+  <tr>
+    <td class="master_table2_title">所属</td>
+    <td class="master_table2_content">
+      <div id="belong"></div>
+    </td>
+  </tr>
+</table>
+
+<%= hidden_field_tag 'm_users[id]', @m_users.id %>
+<%= hidden_field_tag 'decided_org_cd', "" %>
+<%= hidden_field_tag 'decided_org_name', "" %>
+<%= hidden_field_tag 'decided_sub_org_all', "" %>
+<% if !@m_users.id.nil? && @m_users.user_cd != "" %>
+  <%= hidden_field_tag 'm_users[login]', @m_users.login %>
+  <%= hidden_field_tag 'm_users[user_cd]', @m_users.user_cd %>
+<% end %>
+
+<script type="text/javascript">
+<!--
+  /*
+  * 初期設定
+  */
+  $(document).ready(function(){
+    // カレンダー
+    setCalendar(jQuery("#m_users_joined_date"));
+    // 所属エリアを表示
+    $("#belong").load("/master/user/belong?user_cd=" + $("#m_users_user_cd").val());
+  });
+
+  /*
+   * 主所属に追加
+   */
+  function ClickAddMainBelong(org_cd, org_name){
+    //選択された名称取得
+    $("#m_users_main_belong_cd").val(org_cd);  //組織コード
+    $("#m_users_main_belong_name").val(org_name); //組織名
+  }
+-->
+</script>

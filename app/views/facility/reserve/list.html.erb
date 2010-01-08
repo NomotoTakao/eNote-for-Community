@@ -1,0 +1,220 @@
+<!-- エラー -->
+<% if !flash[:duplicate_msg].nil? && flash[:duplicate_msg] != "" %>
+  <table style="width:100%;">
+    <tr style="color:red;">
+      <td>下記の施設が既に予約されていた為、予約できませんでした。<br>詳細は、マイページをご覧ください。</td>
+    </tr>
+    <tr style="color:red;">
+      <td><%= flash[:duplicate_msg] %></td>
+    </tr>
+    <tr style="height:5px;"></tr>
+  </table>
+<% end -%>
+
+<!-- ヘッダ -->
+<table cellpadding="1" cellspacing="0" style="width:100%;">
+  <tr>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "facility_list",
+      :url => {:action => "list", :month => ((@current_date << 2) - 1).strftime("%Y%m%d"), :facility_cd => @select_facility_cd}) %></a>
+    </td>
+    <td style="width:30px;">
+      <%=button_to_remote("今日", :update => "facility_list", :url => {:action => "list", :facility_cd => @select_facility_cd})%>
+    </td>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "facility_list",
+      :url => {:action => "list", :month => ((@current_date >> 2) + 1).strftime("%Y%m%d"), :facility_cd => @select_facility_cd}) %></a>
+    </td>
+    <td style="width:250px;">
+      <% end_date = @current_date >> 2 %>
+      <%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月<%= @current_date.day.to_s %>日
+                     ～
+      <%= end_date.year.to_s %>年<%= end_date.month.to_s %>月<%= end_date.day.to_s %>日
+    </td>
+    <td>&nbsp;</td>
+    <!-- 施設選択リスト -->
+    <% if @facility_list.size > 0 %>
+      <td style="width:250px;">
+        <select id="facility_cd_h" name="facility_cd_h" style="width:250px;z-index:-10;" onchange="SelectFacilityList(0);">
+          <% for facility_list in @facility_list %>
+            <% if @select_facility_cd == facility_list.facility_cd %>
+              <option value = <%=facility_list.facility_cd%> selected><%=facility_list.name%><%=facility_list.case%></option>
+            <% else %>
+              <option value = <%=facility_list.facility_cd%>><%=facility_list.name%><%=facility_list.case%></option>
+            <% end %>
+          <% end %>
+        </select>
+      </td>
+      <td>&nbsp;</td>
+    <% end %>
+    <td style="width:20px;">
+      <%=button_to("日", :action => "index_day")%>
+    </td>
+    <td style="width:20px;">
+      <%=button_to("週", :action => "index_week")%>
+    </td>
+    <td style="width:20px;">
+      <%=button_to("月", :action => "index_month", :facility_cd => @select_facility_cd)%>
+    </td>
+    <td style="width:50px;"><%=button_to("予定リスト", :action => "index_list", :facility_cd => @select_facility_cd)%></td>
+  </tr>
+</table>
+
+<!-- 内容 -->
+<table class="calendar" border="0" cellspacing="0" cellpadding="0">
+  <tr class="dayName">
+    <th style="width:150px;">日付</th>
+    <th style="width:150px;">時間</th>
+    <th style="width:150px;">内容</th>
+    <th style="width:150px;">登録者</th>
+    <th style="width:250px;">備考</th>
+  </tr>
+
+  <!-- 日付ごとの施設を設定 -->
+  <% wdays = ["日", "月", "火", "水", "木", "金", "土"] %>
+  <% for reserve_list in @cell_reserves %>
+    <% target_day = reserve_list[0] %>
+    <% reserve = reserve_list[1] %>
+    <% if target_day == @current_date %>
+      <% class_name = "dayList today" %>
+    <% elsif target_day.wday == 0 || target_day.wday == 6 %>
+      <% class_name = "dayList weekendDay" %>
+    <% elsif !@holiday_hash[target_day][0].nil? %>
+      <% class_name = "dayList holiday" %>
+    <% else %>
+      <% class_name = "dayList" %>
+    <% end %>
+    <tr>
+      <!-- 日付 -->
+      <td class="<%=class_name%>">
+        <% day_disp = target_day.year.to_s + "年" + target_day.month.to_s + "月" + target_day.day.to_s + "日(" + wdays[target_day.wday] + ")" %>
+        <%=day_disp%>
+      </td>
+      <!-- 時間 -->
+      <td class="<%=class_name%>">
+        <!-- 時間指定の場合 -->
+        <% if reserve.plan_allday_flg == 0 %>
+          <!-- 開始日の場合 -->
+          <% if target_day == reserve.plan_date_from %>
+            <%=reserve.plan_time_from.strftime("%H:%M")%>-
+            <!-- 終了日と同日の場合 -->
+            <% if target_day == reserve.plan_date_to %>
+              <%=reserve.plan_time_to.strftime("%H:%M")%>
+            <% else %>
+              24:00
+            <% end %>
+            <br>
+          <!-- 終了日の場合 -->
+          <% elsif target_day == reserve.plan_date_to %>
+            00:00-<%=reserve.plan_time_to.strftime("%H:%M")%><br>
+          <% else %>
+            00:00-24:00
+          <% end %>
+        <% else %>
+                                 終日
+        <% end %>
+        <br>
+      </td>
+      <!-- 内容 -->
+      <td class="<%=class_name%>">
+        <% if reserve.repeat_facility_id.nil? %>
+          <% repeat_flg = '0' %>
+        <% else %>
+          <% repeat_flg = '1' %>
+        <% end %>
+        <a href="#" class="memo_disp" title="<%=reserve.memo%>" onclick="dialog_reserve_open_edit('<%=reserve.id%>', '<%=repeat_flg%>'); return false;">
+        <%=reserve.title%>
+        <br></a>
+      </td>
+      <!-- 登録者 -->
+      <td class="<%=class_name%>">
+        <%=reserve.create_user_name%>
+      </td>
+      <!-- 備考 -->
+      <td class="<%=class_name%>">
+        <% memo = "" %>
+        <% if !reserve.memo.nil? %>
+          <% memo = reserve.memo.gsub(/\r\n|\r|\n/, "<br />") %>
+        <% end %>
+        <%= memo %><br>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<!-- フッタ -->
+<table cellpadding="1" cellspacing="0" style="width:100%;">
+  <tr>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "facility_list",
+      :url => {:action => "list", :month => ((@current_date << 2) - 1).strftime("%Y%m%d"), :facility_cd => @select_facility_cd}) %></a>
+    </td>
+    <td style="width:30px;">
+      <%=button_to_remote("今日", :update => "facility_list", :url => {:action => "list", :facility_cd => @select_facility_cd})%>
+    </td>
+    <td style="width:15px;">
+      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "facility_list",
+      :url => {:action => "list", :month => ((@current_date >> 2) + 1).strftime("%Y%m%d"), :facility_cd => @select_facility_cd}) %></a>
+    </td>
+    <td style="width:250px;">
+      <% end_date = @current_date >> 2 %>
+      <%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月<%= @current_date.day.to_s %>日
+                     ～
+      <%= end_date.year.to_s %>年<%= end_date.month.to_s %>月<%= end_date.day.to_s %>日
+    </td>
+    <td>&nbsp;</td>
+    <!-- 施設選択リスト -->
+    <% if @facility_list.size > 0 %>
+      <td style="width:250px;">
+        <select id="facility_cd_f" name="facility_cd_f" style="width:250px;z-index:-10;" onchange="SelectFacilityList(1);">
+          <% for facility_list in @facility_list %>
+            <% if @select_facility_cd == facility_list.facility_cd %>
+              <option value = <%=facility_list.facility_cd%> selected><%=facility_list.name%><%=facility_list.case%></option>
+            <% else %>
+              <option value = <%=facility_list.facility_cd%>><%=facility_list.name%><%=facility_list.case%></option>
+            <% end %>
+          <% end %>
+        </select>
+      </td>
+      <td>&nbsp;</td>
+    <% end %>
+    <td style="width:20px;">
+      <%=button_to("日", :action => "index_day")%>
+    </td>
+    <td style="width:20px;">
+      <%=button_to("週", :action => "index_week")%>
+    </td>
+    <td style="width:20px;">
+      <%=button_to("月", :action => "index_month", :facility_cd => @select_facility_cd)%>
+    </td>
+    <td style="width:50px;"><%=button_to("予定リスト", :action => "index_list", :facility_cd => @select_facility_cd)%></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+<!--
+  /*
+   * 施設選択時の処理
+   */
+  function SelectFacilityList(click_flg){
+    //ヘッダ
+    if (click_flg == 0) {
+      facility_cd = $("#facility_cd_h").val()
+    //フッタ
+    } else {
+      facility_cd = $("#facility_cd_f").val()
+    }
+
+    // jQueryでの処理
+    $.ajax({
+        type:'get',
+        url:'/facility/reserve/list?&facility_cd=' + facility_cd+ "&month=" + <%=session[:list_start_month]%>,
+        success:
+            function(request){
+                // 受信結果を一覧エリアに反映させます。
+                $('#facility_list').html(request);
+            }
+    });
+  }
+-->
+</script>

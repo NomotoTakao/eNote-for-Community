@@ -1,0 +1,46 @@
+<%# お知らせボードの選択 %>
+
+<div style="border:1px solid black;width:180px;background-color:#fff;text-align:left;">
+  <%
+    options = ""
+    selected = "" 
+  %>
+  <% @d_notice_indices.each do |head|%>
+    <%# if @auths[head.id] %>
+      <%
+        if @d_notice_body.d_notice_head_id == head.id
+          selected = "selected"
+        else
+          selected = ""
+        end
+      %>
+      <% options += "<option value=#{head.id} #{selected}>#{head.title}</option>" %>
+    <% end %>
+  <%# end%>
+  <select id="notice_board" size="1" style="width:100%;boarder:0px;">
+    <%= options %>
+  </select>
+  <%= hidden_field "d_notice_body", "d_notice_head_id" %>
+</div>
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        var val = $("#d_notice_body_d_notice_head_id").val();
+        var selected = $("#notice_board").val();
+        if(val != ""){
+        }else{
+          $("#d_notice_body_d_notice_head_id").val(selected);
+        }
+      }
+    );
+
+    $("#notice_board").change(
+      function(){
+        $("#d_notice_body_d_notice_head_id").val($(this).val());
+//		$("#sub_directory").val($(this).val());
+      }
+    );
+  //-->
+</script>
