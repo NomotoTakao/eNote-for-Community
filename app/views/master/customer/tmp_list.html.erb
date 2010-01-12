@@ -3,7 +3,7 @@
     <% @tmp_list.each do |org| %>
       <li class="closed">
         <span id="org_<%= org.org_lvl %>_<%= org.org_cd %>" class="folder org report_tree">
-          <font>
+          <font style="font-size:9pt;">
             <%= org.org_name %>
           </font>
         </span>
@@ -15,7 +15,7 @@
       <% @user_list.each do |user| %>
         <li class="closed">
           <span id="person_<%= user.user_cd %>" class="file person report_tree">
-            <font>
+            <font style="font-size:9pt;">
               <%= user.user_name %>
             </font>
           </span>

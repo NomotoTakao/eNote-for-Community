@@ -1,55 +1,53 @@
 <% #JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる %>
 <% content_for(:add_scripts) do -%>
   <%= javascript_include_tag([
-      "app/webmail",
       "app/home"
     ]) %>
 <% end -%>
 <% #StyleSheet(CSS)ファイルを<HEAD>で読み込ませる %>
 <% content_for(:add_styles) do -%>
   <%= stylesheet_link_tag([
-      "app/webmail",
       "app/home"
     ]) %>
 <% end -%>
 
 <div style="padding:5px;">
-	<table class="enote_general_table1" style="margin:10px 0px 0px 10px;">
-	  <tr class="enote_general_table1_title">
-	    <th style="width:600pt" class="enote_general_table1_cell_bordered">
-	    	RSSリンク
-	    </th>
-	    <th style="width:80pt" class="enote_general_table1_cell_bordered">
-	    	更新日時
-	    </th>
-	    <th style="width:80pt" class="enote_general_table1_cell_bordered">
-	    	削除
-	    </th>
-	  </tr>
-	
-	  <% @trunks.each do |trunk| %>
-	    <tr style="height:50px;">
-	      <td class="enote_general_table1_cell_bordered" style="padding-left:5px;text-align:left;">
-		  	<h3><%= link_to trunk.name, trunk.url, :target => "_blank" %></h3>
-			<span style="padding-left:10px;"><%= trunk.rss_url %></span>
-	      </td>
-	      <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= trunk.updated_at.strftime("%Y/%m/%d") %></td>
-	      <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= link_to "削除", :action => "rss_delete", :id => trunk.id %></td>
-	    </tr>
-	  <% end %>
-	</table>
+  <table class="enote_general_table1" style="margin:10px 0px 0px 10px;">
+    <tr class="enote_general_table1_title">
+      <th style="width:600pt" class="enote_general_table1_cell_bordered">
+        RSSリンク
+      </th>
+      <th style="width:80pt" class="enote_general_table1_cell_bordered">
+        更新日時
+      </th>
+      <th style="width:80pt" class="enote_general_table1_cell_bordered">
+        削除
+      </th>
+    </tr>
+
+    <% @trunks.each do |trunk| %>
+      <tr style="height:50px;">
+        <td class="enote_general_table1_cell_bordered" style="padding-left:5px;text-align:left;">
+        <h3><%= link_to trunk.name, trunk.url, :target => "_blank" %></h3>
+      <span style="padding-left:10px;"><%= trunk.rss_url %></span>
+        </td>
+        <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= trunk.updated_at.strftime("%Y/%m/%d") %></td>
+        <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= link_to "削除", :action => "rss_delete", :id => trunk.id %></td>
+      </tr>
+    <% end %>
+  </table>
 
 <%= form_tag({:action=>'rss_new'}, {:multipart=>true, :id => 'form_general'}) %>
     <table style="border:0px;width:100%;margin-top:20px;">
       <tr>
         <td align="center" valign="top" style="height:22px;">
-        	<img src="/images/icons/rss_url_entry.gif" style="margin:0px;" align="middle">
-			<%= text_field_tag "rss_url_new", "", :style => "margin:0px;width:500px;height:20px;" %><span id="enote_rss_setting_msg"></span>
+          <img src="/images/icons/rss_url_entry.gif" style="margin:0px;" align="middle">
+      <%= text_field_tag "rss_url_new", "", :style => "margin:0px;width:500px;height:20px;" %><span id="enote_rss_setting_msg"></span>
         </td>
       </tr>
       <tr>
         <td align="center">
-        	<%= button_to_function "新規登録", "ClickRssRegistButton()", :class => 'submit' %>
+          <%= button_to_function "新規登録", "ClickRssRegistButton()", :class => 'submit' %>
         </td>
       </tr>
     </table>
