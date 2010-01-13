@@ -1,0 +1,17 @@
+<input type="hidden" id="superior_user_name" value="<%= user_name @superior.superior_user_cd %>" />
+<input type="hidden" id="superior_user_cd"   value="<%= @superior.superior_user_cd %>" />
+
+<script type="text/javascript">
+  <!--
+    $(document).ready(
+      function(){
+        var superior_user_cd = $("#superior_user_cd").val();
+        var superior_user_name = $("#superior_user_name").val();
+//alert(superior_user_cd + ":" + superior_user_name);//DEBUG
+        $("#selected_superior_user_cd").val(superior_user_cd);
+        $("#selected_superior_user_name").val(superior_user_name);
+        $("#selected_superior").val(superior_user_name);
+      }
+    );
+  //-->
+</script>

@@ -112,7 +112,10 @@
         bgChange($(this).children(), $(".person2").children());
         var id = $(this).attr("id");
         var user_cd = id.replace("person_", "");
+        var user_name = $("#" + id).children().text();
+
         $("#selected_superior_user_cd").val(user_cd);
+        $("#selected_superior_user_name").val(user_name);
       }
     );
 

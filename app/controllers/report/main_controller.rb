@@ -1,7 +1,7 @@
 class Report::MainController < ApplicationController
   layout "portal", :except=>[:input_tab, :search_tab, :comment_tab, :report_tab, :summary_tab, :customer_list, :tmp_list, :summary_comment, :get_next_unconfirmed_date,
                    :detail_list, :register_report, :delete_report, :report_list, :search_list, :comment_list, :action_list, :register_superior_comment,
-                   :setting_tab, :setting_admin, :setting_superior, :user_tree, :selected_tree, :edit_report]
+                   :setting_tab, :setting_admin, :setting_superior, :user_tree, :selected_tree, :edit_report, :get_superior]
 
   skip_before_filter :verify_authenticity_token, :register_report, :register_summary
 
@@ -426,5 +426,13 @@ class Report::MainController < ApplicationController
     @customer_list = MCustomer.get_customer_list current_m_user.user_cd
     @action_target_list = MActionTarget.find(:all, :conditions=>{:delf=>'0'}, :order=>:sort_no)
     @action_group_list = MActionGroup.find(:all, :conditions=>{:delf=>'0'}, :order=>:sort_no)
+  end
+
+  #
+  # ログインユーザーに設定されている上司を取得するアクション
+  #
+  def get_superior
+    @superior = MSuperior.find(:first, :conditions=>{:delf=>0, :user_cd=>current_m_user.user_cd})
+@superior
   end
 end

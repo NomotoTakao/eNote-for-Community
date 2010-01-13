@@ -107,7 +107,8 @@
             "authenticity_token=" + authenticity_token,
           success :
             function(data, dataType){
-              close();
+              alert("更新しました");
+              $("button:contains('閉じる')").click();
             },
           error :
             function(){

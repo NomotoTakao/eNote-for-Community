@@ -16,6 +16,7 @@
     <td style="width:200px;">
       <div style="border:1px solid black;background-color:#fff;text-align:left;height:150px;overflow-y:auto;">
         <input type="hidden" id="selected_superior_user_cd" value="" />
+        <input type="hidden" id="selected_superior_user_name" value="" />
         <% unless @org_list.nil? %>
           <ul id="superior_select_tree" class="orgtree">
             <% @org_list.each do |org| %>
@@ -27,13 +28,23 @@
             <% end %>
           </ul>
         <% end %>
-      </div>
+      </div>&nbsp;
+    </td>
+    <td style="vertical-align:middle;">
+      <input type="button" id="button_add" class="submit_small" value=">" />
+      <br />
+      <br />
+      <input type="button" id="button_remove" class="submit_small" value="<" />
+    </td>
+    <td>
+      &nbsp;<input type="text" id="selected_superior" style="width:200px;" />
     </td>
     <td style="vertical-align:bottom;">
       <input type="button" id="button_set_superior" class="submit_large" value="登録" />
     </td>
   </tr>
 </table>
+<div id="get_superior" />
 
 <script type="text/javascript">
   <!--
@@ -78,6 +89,23 @@
       }
     );
 
+    $("#button_add").click(
+      function(){
+        if($("#selected_superior").val()==""){
+          var selected_superior_user_name = $("#selected_superior_user_name").val();
+          $("#selected_superior").val(selected_superior_user_name.replace(/^\s+|\s+$/g, ""));
+        }else{
+          alert("上司は一人しか設定できません。");
+        }
+      }
+    );
+
+    $("#button_remove").click(
+      function(){
+        $("#selected_superior").val("");
+      }
+    );
+
     $("#button_set_superior").click(
       function(){
         var selected_superior_user_cd = $("#selected_superior_user_cd").val();
@@ -108,6 +136,29 @@
       }
     );
 
-    $("#superior_select_tree").treeview();
+
+    $(document).ready(
+      function(){
+        $("#superior_select_tree").treeview();
+        //TODO ログインユーザが既に上司設定をおこなっている場合は、上司を初期表示する。
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/report/main/get_superior",
+            data : {},
+            success :
+              function(data, dataType){
+                $("#get_superior").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
   //-->
 </script>

@@ -5,15 +5,15 @@
   <table cellpadding="0" cellspacing="0" style="width:100%;">
     <% @notices.each do |notice| %>
       <tr>
-        <td class="" style="width:88%;height:20px;">
+        <td style="text-align:left;height:20px;">
           <% if notice.post_date.to_date >= (Date.today - 5) %>
             <img src="/images/icons/icon_balloon_new.gif" align="top" class="gadget_table_icon">
           <% else %>
             <img src="/images/icons/icon_balloon.gif" align="top" class="gadget_table_icon">
           <% end %>
-          <%= link_to "#{cut_off(notice.title, 18)}<#{datetime_strftime(notice.post_date)}>", {:controller => "notice/main", :action => "index", :id => notice.d_notice_head_id, :message_id_def=>notice.id} %>
+          <%= link_to "#{cut_off(notice.title, 18)}", {:controller => "notice/main", :action => "index", :id => notice.d_notice_head_id, :message_id_def=>notice.id} %>
         </td>
-        <td align="right" class="" style="width:12%;">
+        <td style="text-align:right;" nowrap>
           <%= datetime_strftime(notice.post_date) %>&nbsp;&nbsp;
         </td>
       </tr>
@@ -44,7 +44,7 @@
                                               },
                                     :prev_label => "<<前へ",
                                     :next_label => "次へ>>",
-                                    :method => :get) if @notices.size > 0 
+                                    :method => :get) if @notices.size > 0
         %>
       </td>
     </tr>

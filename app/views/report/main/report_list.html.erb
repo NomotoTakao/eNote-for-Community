@@ -118,12 +118,6 @@
                     "更新":
                       function(){
                         dialog_register();
-                        $(this).dialog("destroy");
-                        $(this).remove();
-                        var edit_report = document.createElement("div");
-                        edit_report.setAttribute("id", "edit_report");
-                        var report_list = document.getElementById("report_list");
-                        report_list.appendChild(edit_report);
                       }
                   }
                 }
