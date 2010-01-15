@@ -1,0 +1,5 @@
+<% unless @categories.nil? %>
+  <% @categories.each do |category| %>
+    <option value="<%= category.id %>"><%= category.title %></option>
+  <% end %>
+<% end %>
