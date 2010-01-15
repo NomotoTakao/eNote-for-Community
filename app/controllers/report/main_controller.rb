@@ -433,6 +433,8 @@ class Report::MainController < ApplicationController
   #
   def get_superior
     @superior = MSuperior.find(:first, :conditions=>{:delf=>0, :user_cd=>current_m_user.user_cd})
-@superior
+    if @superior.nil?
+      @superior = MSuperior.new
+    end
   end
 end
