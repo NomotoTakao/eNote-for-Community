@@ -1,0 +1,189 @@
+<table style="width:100%;">
+  <tr>
+    <td>登録されているカテゴリ</td>
+    <td>
+      <select id="dialog_select_category" size="5">
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <div id="dialog_category_detail" />
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" style="text-align:right;">
+      <input type="button" id="button_dialog_category_new" class="submit" value="新規" />
+      <input type="button" id="button_dialog_category_register" class="submit" value="登録" />
+      <input type="button" id="button_dialog_category_delete" class="submit" value="削除" />
+      <input type="button" id="button_dialog_category_close" class="submit" value="閉じる" >
+    </td>
+  </tr>
+</table>
+<input type="hidden" id="authenticity_token" value="<%= form_authenticity_token %>" />
+
+<script type="text/javascript">
+  <!--
+    /**
+     * 「登録されているカテゴリ」セレクトボックスの項目を選択したときに発生するイベント
+     * @param {Object} "#dialog_select_category"
+     */
+    $("#dialog_select_category").change(
+      function(){
+        var id = $("#dialog_select_category").val();
+
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/bookmark/setting/dialog_category_detail",
+            data :
+              {
+                id : id
+              },
+            success :
+              function(data, dataType){
+                $("#dialog_category_detail").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     * 「新規登録」ボタンがクリックされた時に発生するイベント
+     */
+    $("#button_dialog_category_new").click(
+      function(){
+        $("#dialog_select_category").val(-1);
+        $("#d_bookmark_category_title").val("");
+        $("#d_bookmark_category_memo").val("");
+      }
+    );
+
+    /**
+     * 「登録」ボタンがクリックされた時に発生するイベント
+     */
+    $("#button_dialog_category_register").click(
+      function(){
+        var id = $("#dialog_select_category").val();
+        var title = $("#d_bookmark_category_title").val();
+        var memo = $("#d_bookmark_category_memo").val();
+        var authenticity_token = $("#authenticity_token").val();
+
+        jQuery.ajax(
+          {
+            type : "POST",
+            url  : "/bookmark/setting/dialog_category_register",
+            data :
+              "id=" + id + "&" +
+              "title=" + title + "&" +
+              "memo=" + memo + "&" +
+              "authenticity_token=" + authenticity_token,
+            success :
+              function(data, dataType){
+                $("#dialog_select_category").html(data);
+                  $("#d_bookmark_category_title").val("");
+                  $("#d_bookmark_category_memo").val("");
+                alert("登録しました。");
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     * 「削除」ボタンがクリックされた時に発生するイベント
+     */
+    $("#button_dialog_category_delete").click(
+      function(){
+        var id = $("#dialog_select_category").val();
+
+        if(id!=null && id>-1){
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/bookmark/setting/dialog_category_delete",
+              data :
+                {
+                  id : id
+                },
+              success :
+                function(data, dataType){
+                  $("#dialog_select_category").html(data);
+                  $("#d_bookmark_category_title").val("");
+                  $("#d_bookmark_category_memo").val("");
+                  alert("削除しました。");
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){}
+            }
+          );
+        }else{
+          alert("削除するカテゴリを選択してください。")
+        }
+      }
+    );
+
+    /**
+     * 「閉じる」ボタンがクリックされた時に発生するイベント
+     */
+    $("#button_dialog_category_close").click(
+      function(){
+        // closeでは要素の内容がクリアされず、再度ダイアログを呼び出したときに同一のIDを持つ要素が新たに作られてしまう。
+        // DOM要素自体を削除してすることで対応。
+        $("#dialog_category").dialog('destroy');
+        $("#dialog_category").remove();
+      }
+    );
+
+    /**
+     * 画面がロードされた時に発生するイベント
+     */
+    $(document).ready(
+      function(){
+        dialog_select_category();
+        $("#dialog_category_detail").load("/bookmark/setting/dialog_category_detail");
+      }
+    );
+
+    /**
+     * 登録されているカテゴリ一覧を取得し、「登録されているカテゴリ」セレクトボックスに設定する処理
+     */
+    function dialog_select_category(){
+      jQuery.ajax(
+        {
+          type : "GET",
+          url  : "/bookmark/setting/select_category",
+          data :
+            {},
+          success :
+            function(data, dataType){
+              $("#dialog_select_category").html(data);
+            },
+          error :
+            function(){
+              alert("通信エラー");
+            },
+          complete :
+            function(){}
+        }
+      );
+    }
+  //-->
+</script>
