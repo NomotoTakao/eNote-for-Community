@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(:version => 21091810000000) do
     t.datetime "created_at"
     t.string   "updated_user_cd",      :limit => 32
     t.datetime "updated_at"
+    t.string   "employee_cd",          :limit => 8
   end
 
   add_index "d_addresses", ["address_kbn", "company_cd"], :name => "idx_d_addresses_2"
@@ -982,7 +983,7 @@ ActiveRecord::Schema.define(:version => 21091810000000) do
     t.datetime "updated_at"
   end
 
-  add_index "d_reports", ["user_cd", "action_date"], :name => "idx_d_reports_1"
+  add_index "d_reports", ["action_date", "user_cd"], :name => "idx_d_reports_1"
 
   create_table "d_reserves", :force => true do |t|
     t.string   "facility_cd",         :limit => 16,                 :null => false
@@ -1453,7 +1454,7 @@ ActiveRecord::Schema.define(:version => 21091810000000) do
     t.datetime "updated_at"
   end
 
-  create_table "m_customer_staffs", :force => true do |t|
+  create_table "m_customer_employees", :force => true do |t|
     t.string   "user_cd",         :limit => 32
     t.string   "name"
     t.string   "name_kana"
@@ -1911,7 +1912,7 @@ ActiveRecord::Schema.define(:version => 21091810000000) do
     t.datetime "updated_at"
   end
 
-  add_index "m_user_belongs", ["user_cd", "org_cd", "belong_kbn"], :name => "idx_m_user_belongs_1"
+  add_index "m_user_belongs", ["belong_kbn", "org_cd", "user_cd"], :name => "idx_m_user_belongs_1"
 
   create_table "m_users", :force => true do |t|
     t.string   "login",                     :limit => 40,                  :null => false
@@ -1961,10 +1962,9 @@ ActiveRecord::Schema.define(:version => 21091810000000) do
     t.string   "deleted_user_cd", :limit => 32
     t.datetime "deleted_at"
     t.string   "created_user_cd", :limit => 32
-    t.datetime "creatd_at"
+    t.datetime "created_at"
     t.string   "updated_user_cd", :limit => 32
     t.datetime "updated_at"
-    t.datetime "created_at"
   end
 
   create_table "sessions", :force => true do |t|

@@ -2,7 +2,10 @@ require 'hpricot'
 require 'open-uri'
 
 class Bookmark::SettingController < ApplicationController
-  layout "portal", :except=>[:bookmark_list, :bookmark_delete, :new, :edit, :create, :update]
+  layout "portal", :except=>[:bookmark_list, :bookmark_delete, :new, :edit, :create, :update,
+                   :dialog_category, :select_category, :dialog_category_detail, :dialog_category_register]
+
+  skip_before_filter :verify_authenticity_token, :dialog_category_register
 
   def index
     #パンくずリストに表示させる
@@ -106,6 +109,60 @@ class Bookmark::SettingController < ApplicationController
       flash[:bookmark_err_msg] = "削除処理中に異常が発生しました。"
     end
     redirect_to :action => "index"
+  end
+
+  #
+  # カテゴリ編集画面を取得するアクション
+  #
+  def dialog_category
+    @categories = DBookmarkCategory.find(:all, :conditions => "delf = 0 AND public_flg = 0", :order => "sort_no")
+  end
+
+  #
+  # 登録されているリンクカテゴリの一覧を取得するアクション
+  #
+  def select_category
+
+    @categories = DBookmarkCategory.find(:all, :conditions => "delf = 0 AND public_flg = 0", :order => "sort_no")
+  end
+
+  #
+  # カテゴリ編集ダイアログにおいて、選択されたカテゴリの詳細情報を取得するアクション
+  #
+  def dialog_category_detail
+    id = params[:id]
+
+    unless id.nil? or id.empty?
+      @d_bookmark_category = DBookmarkCategory.find(:first, :conditions=>{:delf=>0, :id=>id});
+    else
+      @d_bookmark_category = DBookmarkCategory.new
+    end
+  end
+
+  #
+  # カテゴリ編集ダイアログボックスで、登録ボタンが押された時のアクション
+  #
+  def dialog_category_register
+    id = params[:id]
+    unless id.nil? or id.empty?
+      # 更新・登録
+      DBookmarkCategory.register(params, current_m_user.user_cd)
+    end
+
+    redirect_to :action=>:select_category
+  end
+
+  #
+  # カテゴリ編集ダイアログボックスで、削除ボタンが押された時のアクション
+  #
+  def dialog_category_delete
+    id = params[:id]
+    unless id.nil? or id.empty?
+      # 削除
+      DBookmarkCategory.delete(params, current_m_user.user_cd)
+    end
+
+    redirect_to :action=>:select_category
   end
 
 private

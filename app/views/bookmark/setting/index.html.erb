@@ -26,11 +26,10 @@
     <tr>
       <td style="width:250px;">
         <select id="categories" name="categories" style="width:250px;" onchange="SelectCategories();">
-          <% for i in 0..(@categories.size - 1) %>
-            <% category = @categories[i] %>
-            <option value = <%=category.id%>><%=category.title%></option>
-          <% end %>
         </select>
+      </td>
+      <td>
+        <input type="button" id="button_edit_category" class="submit" value="編集" />
       </td>
     </tr>
   </table>
@@ -44,22 +43,88 @@
 
 <script type="text/javascript">
   <!--
-  /*
-  * 初期化
-  */
-  $(document).ready(function(){
-    //ダイアログ
-    dialog_bookmark_ins();
-    dialog_bookmark_upd();
-    //一覧表示
-    $("#bookmark_list").load(
-    "/bookmark/setting/bookmark_list?&category_id=" + $("#categories").val(),
-    "",
-    function() {
-    });
-  });
+  /**
+   * 編集ボタンがクリックされた時に発生するイベント
+   */
+  $("#button_edit_category").click(
+    function(){
+      var dialog_category = $("<div />");
+      var button_edit_category = $("#button_edit_category");
 
-  /*
+      dialog_category.attr("id", "dialog_category");
+      button_edit_category.after(dialog_category);
+
+      jQuery.ajax(
+        {
+          type : "GET",
+          url  : "/bookmark/setting/dialog_category",
+          data :
+            {},
+          success :
+            function(data, dataType){
+              $("#dialog_category").html(data);
+            },
+          error :
+            function(){
+              alert("通信エラー");
+            },
+          complete :
+            function(){
+              dialog_category.dialog(
+                {
+                  title    : "カテゴリ編集",
+                  bgiframe : true,
+                  modal    : true,
+                  autoOpen : true,
+                  height   : 300,
+                  width    : 370,
+                  resizable : false,
+                  buttons: {
+                    // ライブラリの提供するボタンは使わない。
+                  }
+                }
+              );
+              $(".ui-dialog-titlebar-close").css("display", "none");
+            }
+        }
+      );
+    }
+  );
+
+  /**
+   * 初期化
+   */
+  $(document).ready(
+    function(){
+      //ダイアログ
+      dialog_bookmark_ins();
+      dialog_bookmark_upd();
+
+      jQuery.ajax(
+        {
+           type : "GET",
+          url  : "/bookmark/setting/select_category",
+          data :
+            {},
+          success :
+            function(data, dataType){
+              $("#categories").html(data);
+            },
+          error :
+            function(){
+              alert("通信エラー");
+            },
+          complete :
+            function(){
+              // セレクトボックスで選択されているカテゴリのブックマークを表示する。
+              $("#bookmark_list").load("/bookmark/setting/bookmark_list?&category_id=" + $("#categories").val());
+            }
+        }
+      );
+    }
+  );
+
+  /**
    * カテゴリ選択時の処理
    */
   function SelectCategories(){
@@ -73,6 +138,30 @@
                 $('#bookmark_list').html(request);
             }
     });
+  }
+
+  /**
+   * 登録されているカテゴリ一覧を取得し、セレクトボックスに設定する処理
+   */
+  function select_category(){
+    jQuery.ajax(
+      {
+        type : "GET",
+        url  : "/bookmark/setting/select_category",
+        data :
+          {},
+        success :
+          function(data, dataType){
+            $("#categories").html(data);
+          },
+        error :
+          function(){
+            alert("通信エラー");
+          },
+        complete :
+          function(){}
+      }
+    );
   }
   -->
 </script>
