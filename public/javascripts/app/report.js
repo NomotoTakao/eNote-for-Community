@@ -14,7 +14,8 @@ function getPreviousDate(currentDate){
   var objCurrentDate = new Date(Number(currentDate_array[0]), Number(currentDate_array[1])-1, currentDate_array[2]);
   var objPreviousDate = new Date();
   // 前日日付を得るため、日から'1'を引く
-  objPreviousDate.setYear(Number(objCurrentDate.getYear()) + 1900);
+  var year = Number(objCurrentDate.getYear()) > 1900 ? objCurrentDate.getYear() : Number(objCurrentDate.getYear()) + 1900;
+  objPreviousDate.setYear(year);
   objPreviousDate.setMonth(objCurrentDate.getMonth());
   objPreviousDate.setDate(objCurrentDate.getDate() - 1);
   var arrayPreviousDate = objPreviousDate.toGMTString().split(" ");
@@ -52,7 +53,8 @@ function getNextDate(currentDate){
   var objCurrentDate = new Date(currentDate_array[0], Number(currentDate_array[1]), currentDate_array[2]);
   var objNextDate = new Date();
   // 翌日日付を得るため、'1'を足す
-  objNextDate.setYear(Number(objCurrentDate.getYear()) + 1900);
+  var year = Number(objCurrentDate.getYear()) > 1900 ? objCurrentDate.getYear() : Number(objCurrentDate.getYear()) + 1900;
+  objNextDate.setYear(year);
   objNextDate.setMonth(objCurrentDate.getMonth()-1);
   objNextDate.setDate(objCurrentDate.getDate() + 1);
 
