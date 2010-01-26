@@ -63,6 +63,7 @@ class Report::MainController < ApplicationController
   #
   def register_report
 
+    # d_reportsテーブルのレコードは日付ごとに作成されるので、日付をキーにしても一意に検索出来る。
     d_report = DReport.find(:first, :conditions=>{:delf=>0, :user_cd=>current_m_user.user_cd, :action_date=>params[:date]})
 
     if d_report.nil?
@@ -70,7 +71,7 @@ class Report::MainController < ApplicationController
       d_report.user_cd = current_m_user.user_cd
       d_report.action_date = params[:date]
       d_report.created_user_cd = current_m_user.user_cd
-      d_report.updated_user_cd = current_m_user.user_cd
+#      d_report.updated_user_cd = current_m_user.user_cd
     end
 
     begin
@@ -78,10 +79,8 @@ class Report::MainController < ApplicationController
       d_report.save
 
       d_report_customer = nil
-      d_report.d_report_customers.each do |report_customer|
-        if report_customer.id.to_s == params[:id]
-          d_report_customer = report_customer
-        end
+      unless params[:id].nil? or params[:id].empty?
+        d_report_customer = DReportCustomer.find(:first, :conditions=>{:delf=>0, :id=>params[:id]})
       end
 
       if d_report_customer.nil?
@@ -100,7 +99,7 @@ class Report::MainController < ApplicationController
       d_report_customer.updated_user_cd = current_m_user.user_cd
 
       begin
-        d_report_customer.save
+        d_report_customer.save!
       rescue
         p $!
       end

@@ -1,6 +1,8 @@
 <%= hidden_field :d_report_customer, :id %>
 <table class="admin_pages_edit_table" cellspacing="0" cellpadding="1" style="width:380px;">
-  <caption style="text-align:right;"><%= report_date @d_report_customer.d_report.action_date %></caption>
+  <caption style="text-align:right;">報告日：
+    <input type="text" id="dialog_report_date" size="11" maxlength="11" value="<%= @d_report_customer.d_report.action_date %>" style="ime-mode:disabled;" />
+  </caption>
   <tr>
     <td class="admin_pages_edit_table_title">得意先</td>
     <td class="admin_pages_edit_table_content">
@@ -80,7 +82,7 @@
     function dialog_register(){
 
       var id = $("#d_report_customer_id").val();
-      var action_date = $("#input_report_date").val();
+      var action_date = $("#dialog_report_date").val();
       var company_cd = $("#d_report_customer_company_cd").val();
       var action_target_cd = $("#d_report_customer_action_target_cd").val();
       var action_group_cd = $("#d_report_customer_action_group_cd").val();
@@ -168,6 +170,8 @@
         var target_cd = $("#d_report_customer_action_target_cd").val();
         var group_cd = $("#d_report_customer_action_group_cd").val();
         var action_cd = $("#d_report_customer_action_cd").val();
+
+        setCalendar($("#dialog_report_date"));
 
         // 活動内容の値(group_cd)から活動詳細の一覧を取得して、活動詳細のセレクトボックスにセットする。
         action_list(group_cd, action_cd);
