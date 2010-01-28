@@ -43,8 +43,8 @@ function dialog_reserve_open_ins(date){
 }
 
 //更新用
-function dialog_reserve_open_edit(id){
+function dialog_reserve_open_edit(id, repeat_flg){
   //画面遷移
-  document.location = "/schedule/reserve/" + id + "/edit";
+  document.location = "/schedule/reserve/" + id + "/edit?repeat_flg=" + repeat_flg;
   return false;
 }

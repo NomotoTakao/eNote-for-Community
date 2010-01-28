@@ -21,8 +21,9 @@ class CreateDAddresses < ActiveRecord::Migration
       t.string   "mobile_address",             :limit => 128
       t.string   "mobile_company",             :limit => 10
       t.string   "mobile_kind",                :limit => 20
-      t.string   "homepage_url"
+      t.string   "homepage_url",               :limit => 256
       t.date     "birthday"
+      t.string   "employee_cd",                :limit => 32
       t.string   "memorial_name1",             :limit => 40
       t.date     "memorial_date1"
       t.string   "memorial_name2",             :limit => 40
@@ -40,7 +41,7 @@ class CreateDAddresses < ActiveRecord::Migration
       t.string   "company_tel1",               :limit => 20
       t.string   "company_tel2",               :limit => 20
       t.string   "company_fax",                :limit => 20
-      t.string   "company_homepage_url"
+      t.string   "company_homepage_url",       :limit => 256
       t.text     "meta_tag"
       t.text     "memo"
       t.integer  "etcint1",                                                                  :default => 0

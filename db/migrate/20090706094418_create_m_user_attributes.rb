@@ -10,6 +10,7 @@ class CreateMUserAttributes < ActiveRecord::Migration
       t.date     "joined_date"
       t.text     "memo"
       t.integer  "director_flg",  :default=>0
+      t.string   "position_cd_org", :limit => 8
       t.integer  "sort_no",       :default=>0
       t.integer  "etcint1",                                                     :default => 0
       t.integer  "etcint2",                                                     :default => 0

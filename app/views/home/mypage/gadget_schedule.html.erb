@@ -78,8 +78,13 @@
             <% if target_day == @week_list[i][0] %>
               <% match_count = match_count + 1 %>
               <table><tr><td>
+                <% if reserve.repeat_schedule_id.nil? %>
+                  <% repeat_flg = '0' %>
+                <% else %>
+                  <% repeat_flg = '1' %>
+                <% end %>
                 <a href="#" class="memo_disp" title="<%=reserve.memo%>" style="text-decoration:none;"
-                onclick="dialog_reserve_open_edit('<%=reserve.id%>'); return false;">
+                onclick="dialog_reserve_open_edit('<%=reserve.id%>', '<%=repeat_flg%>'); return false;">
                   <span>◆</span>
                   <!-- 色指定 -->
                   <% if !@plan_color_list[reserve.plan_kbn][0].nil? %>
