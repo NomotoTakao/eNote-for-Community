@@ -101,6 +101,7 @@
           return;
         }
         get_input_list();
+        get_summary_comment();
       }
     );
 
@@ -117,6 +118,7 @@
       // 設定
       $("#input_report_date").val(next_date);
       get_input_list();
+      get_summary_comment();
     }
 
     function ClickBeforeDay_input(){
@@ -131,6 +133,7 @@
       // 設定
       $("#input_report_date").val(previous_date);
       get_input_list();
+      get_summary_comment();
     }
 
     function get_input_list(){
