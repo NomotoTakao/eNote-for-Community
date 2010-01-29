@@ -79,9 +79,15 @@
       function(){
         $("#summary_total_time").html($("#tmp_report_total_time").val());
         $("#summary_total_sales").html($("#tmp_report_total_sales").val());
+        get_summary_comment();
+      }
+    );
 
-        report_date = $("#input_report_date").val();
-        // 総括コメント・上司確認コメントを取得する。
+    function get_summary_comment(){
+
+      report_date = $("#input_report_date").val();
+      // 総括コメント・上司確認コメントを取得する。
+      if(report_date!=""){
         jQuery.ajax(
           {
             type : "GET",
@@ -103,6 +109,6 @@
           }
         );
       }
-    );
+    }
   //-->
 </script>
