@@ -355,12 +355,15 @@ class Report::MainController < ApplicationController
   end
 
   #
-  #
+  # 総括コメントタブの内容を取得
   #
   def summary_comment
 
     date = params[:date]
     @d_report = DReport.find(:first, :conditions=>{:delf=>0, :action_date=>date})
+    if @d_report.nil?
+      @d_report = DReport.new
+    end
   end
 
   #
