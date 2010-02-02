@@ -1,6 +1,0 @@
-"id","facility_cd","facility_group_cd","place_cd","org_cd","name","facility_kbn","sort_no","memo","enable_flg","delf","created_user_cd","created_at","updated_user_cd","updated_at"
-1,"10","1","10","0","会議室",1,1,,0,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
-2,"20","2","20","1020","ベッド１",2,2,,0,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
-3,"21","2","20","1020","ベッド２",2,3,,0,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
-4,"22","2","20","1020","ベッド３",2,4,,0,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
-5,"30","3","0","0","オデッセイ",3,5,,0,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"

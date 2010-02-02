@@ -1,7 +1,0 @@
-"id","org_cd","org_lvl","org_cd1","org_cd2","org_cd3","org_cd4","org_name1","org_name2","org_name3","org_name4","place_cd","sort_no","delf","created_user_cd","created_at","updated_user_cd","updated_at"
-1,"10",1,"10",,,,"全社",,,,"10",10,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
-2,"1010",2,"10","10",,,"全社","It事業部",,,"10",20,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
-3,"101010",3,"10","10","10",,"全社","It事業部","営業部",,"10",30,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
-4,"101020",3,"10","10","20",,"全社","It事業部","開発部",,"10",40,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
-5,"1020",2,"10","20",,,"全社","エステティック事業部",,,"20",10,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
-6,"102010",3,"10","20","10",,"全社","エステティック事業部","平尾本店",,"20",20,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
