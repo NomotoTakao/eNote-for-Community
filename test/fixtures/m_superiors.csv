@@ -1,3 +1,0 @@
-id,user_cd,superior_user_cd,created_user_cd,created_at,updated_user_cd,updated_at
-1,1000001,9999999,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
-2,1000002,1000001,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"

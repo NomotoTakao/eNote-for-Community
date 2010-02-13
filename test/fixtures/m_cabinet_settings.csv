@@ -1,2 +1,0 @@
-id,app_cd,new_icon_days,page_max_count,enable_day_default,delf,created_user_cd,created_at,updated_user_cd,updated_at
-1,cabinet,5,10,30,0,9999999,<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>,9999999,<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>

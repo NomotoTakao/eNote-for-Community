@@ -268,7 +268,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:"/schedule/reserve/week?other_checked_id=" + <%=@other_checked_id%> + "&week=" + <%=session[:week_start_date]%>,
+        url:"/schedule/reserve/week?other_checked_id=<%=@other_checked_id%>&week=<%=session[:week_start_date]%>",
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。
@@ -292,7 +292,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/schedule/reserve/week?&other_checked_id=' + other_checked_id + '&week=' + <%=session[:week_start_date]%>,
+        url:'/schedule/reserve/week?&other_checked_id=' + other_checked_id + '&week=<%=session[:week_start_date]%>',
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。

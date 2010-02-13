@@ -44,20 +44,21 @@ function getPreviousDate(currentDate){
 /**
  * 引数に渡された日付の翌日日付を取得する。
  *
- * @param currentDate - 基準となる日付
+ * @param currentDate - 基準となる日付(yyyy-mm-dd)
  * @return - 基準日付の翌日日付
  */
 function getNextDate(currentDate){
 
   var currentDate_array = currentDate.split("-");
-  var objCurrentDate = new Date(currentDate_array[0], Number(currentDate_array[1]), currentDate_array[2]);
+  // Dateオブジェクトの月は0-11で表されるので、引数に渡された月から1を引いている。
+  var objCurrentDate = new Date(currentDate_array[0], Number(currentDate_array[1], 10)-1, Number(currentDate_array[2], 10) + 1);
   var objNextDate = new Date();
-  // 翌日日付を得るため、'1'を足す
+
+  // ブラウザによって挙動が異なるため、年が1900より小さいときは、1900を加える。
   var year = Number(objCurrentDate.getYear()) > 1900 ? objCurrentDate.getYear() : Number(objCurrentDate.getYear()) + 1900;
   objNextDate.setYear(year);
-  objNextDate.setMonth(objCurrentDate.getMonth()-1);
-  objNextDate.setDate(objCurrentDate.getDate() + 1);
-
+  objNextDate.setMonth(objCurrentDate.getMonth());
+  objNextDate.setDate(objCurrentDate.getDate());
   var arrayNextDate = objNextDate.toGMTString().split(" ");
 
   var nextYear = arrayNextDate[3];
@@ -83,7 +84,7 @@ function getNextDate(currentDate){
   return nextYear + "-" + nextMonth + "-" + nextDay;
 }
 
-/*
+/**
  * 入力された日付が正当な日付かどうかを確認します。
  *
  *  @param date - チェック対象の日付
@@ -115,7 +116,7 @@ function checkDateValidity(date){
   return result;
 }
 
-/*
+/**
  * 指定されたクラス属性をもつオブジェクトの背景色と前景色を変更します。
  *
  * @param element - 操作対象のjQueryオブジェクト(ID指定))
@@ -129,3 +130,32 @@ function bgChange(element, cls){
   element.css('background-color', '#0066FF');
   element.css('color', '#FFFFFF');
 }
+
+
+    function get_summary_comment(){
+
+      report_date = $("#input_report_date").val();
+      // 総括コメント・上司確認コメントを取得する。
+      if(report_date!=""){
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/report/main/summary_comment",
+            data :
+              {
+                date : report_date
+              },
+            success :
+              function(data, dataType){
+                $("#summary_comment").parent().after(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    }

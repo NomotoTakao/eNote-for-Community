@@ -71,7 +71,5 @@ class DRssTrunk < ActiveRecord::Base
     end     
     return true
   end
-  
-  
 
 end

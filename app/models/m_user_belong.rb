@@ -216,9 +216,10 @@ class MUserBelong < ActiveRecord::Base
   end
 
   #
+  # @param params -
+  # @param user_cd -
   #
-  #
-  def self.register params
+  def self.register params, user_cd
 
     unless params[:m_user_belongs].nil?
 

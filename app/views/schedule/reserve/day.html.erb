@@ -395,7 +395,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:"/schedule/reserve/day?other_checked_id=" + <%=@other_checked_id%> + "&day=" + <%=@day%>,
+        url:"/schedule/reserve/day?other_checked_id=<%=@other_checked_id%>&day=<%=@day%>",
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。
@@ -419,7 +419,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/schedule/reserve/day?&other_checked_id=' + other_checked_id + '&day=' + <%=@day%>,
+        url:'/schedule/reserve/day?&other_checked_id=' + other_checked_id + '&day=<%=@day%>',
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。

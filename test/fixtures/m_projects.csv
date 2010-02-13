@@ -1,3 +1,0 @@
-"id","name","enable_date_from","enable_date_to","delf","created_user_cd","created_at","updated_user_cd","updated_at"
-1,"プロジェクトＡ",2009/10/01,2010/03/31,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
-2,"プロジェクトＢ",2009/10/01,2012/09/30,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"

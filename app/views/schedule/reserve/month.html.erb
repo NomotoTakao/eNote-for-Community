@@ -203,12 +203,12 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/schedule/reserve/month?month=' + <%=@month%> + "&secretaries_user_cd=" + <%=@select_secretaries_user_cd%>,
+        url:'/schedule/reserve/month?month=<%=@month%>&secretaries_user_cd=<%=@select_secretaries_user_cd%>',
         success:
-            function(request){
-                // 受信結果を一覧エリアに反映させます。
-                $('#schedule_list').html(request);
-            }
+          function(request){
+              // 受信結果を一覧エリアに反映させます。
+              $('#schedule_list').html(request);
+          }
     });
   }
 
@@ -227,7 +227,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/schedule/reserve/month?&secretaries_user_cd=' + secretaries_user_cd + "&month=" + <%=@month%>,
+        url:'/schedule/reserve/month?&secretaries_user_cd=' + secretaries_user_cd + "&month=<%=@month%>",
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。

@@ -185,6 +185,8 @@
     setCalendar(jQuery("#m_users_joined_date"));
     // 所属エリアを表示
     $("#belong").load("/master/user/belong?user_cd=" + $("#m_users_user_cd").val());
+
+    $("#m_users_login").focus();
   });
 
   /*
@@ -193,7 +195,7 @@
   function ClickAddMainBelong(org_cd, org_name){
     //選択された名称取得
     $("#m_users_main_belong_cd").val(org_cd);  //組織コード
-    $("#m_users_main_belong_name").val(org_name); //組織名
+    $("#m_users_main_belong_name").val(org_name.replace(/^[ 　]*/gim, "").replace(/[ 　]*$/gim, "")); //組織名
   }
 -->
 </script>

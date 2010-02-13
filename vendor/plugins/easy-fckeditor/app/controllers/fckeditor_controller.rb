@@ -162,10 +162,9 @@ class FckeditorController < ActionController::Base
 
   ##############################################################################
   # Copy tmp file to current_directory_path/tmp_file.original_filename
-  # 
+  #
   def copy_tmp_file(tmp_file)
     # パラメータに含まれる"function_name"の値のサブディレクトリに格納する。
-    #path = current_directory_path + "/" + params[:function_name] + "/" + tmp_file.original_filename
     path = current_directory_path + "/" + tmp_file.original_filename
 
     File.open(path, "wb", 0664) do |fp|

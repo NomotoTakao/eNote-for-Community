@@ -30,7 +30,7 @@
   * 一覧エリアに2か月単位のスケジュール一覧を表示
   */
   $("#schedule_list").load(
-  "/schedule/reserve/list?month=" + <%=session[:list_start_month]%> + "&secretaries_user_cd=" + <%=@select_secretaries_user_cd%>,
+  "/schedule/reserve/list?month=<%=session[:list_start_month]%>&secretaries_user_cd=<%=@select_secretaries_user_cd%>",
   "",
   function() {
     //timer設定

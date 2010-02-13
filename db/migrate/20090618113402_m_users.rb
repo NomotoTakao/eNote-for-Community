@@ -1,7 +1,7 @@
 class MUsers < ActiveRecord::Migration
   def self.up
     create_table "m_users", :force => true do |t|
-      t.string   "login",                     :limit => 40,                                                 :null => false
+      t.string   "login",                     :limit => 128,                                                :null => false
       t.string   "user_cd",                   :limit => 32,                                                 :null => false
       t.string   "name",                      :limit => 40,                                 :default => "", :null => false
       t.integer  "admin_flg",                 :limit => 1,   :default => 0

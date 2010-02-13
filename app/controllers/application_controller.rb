@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
-
   before_filter :login_required
 
   #  before_filter :authorize, :except => [:login]
@@ -28,5 +27,5 @@ class ApplicationController < ActionController::Base
       @side_menus = MMenu.get_menu_side_data(current_m_user.user_cd)
     end
   end
-
+  
 end

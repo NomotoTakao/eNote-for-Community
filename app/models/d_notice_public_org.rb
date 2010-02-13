@@ -1,8 +1,6 @@
 class DNoticePublicOrg < ActiveRecord::Base
   belongs_to :d_notice_body
 
-  ADMIN_USER_CD = '9999999'
-
   #
   # お知らせの公開対象組織レコードを作成する
   #
@@ -16,7 +14,6 @@ class DNoticePublicOrg < ActiveRecord::Base
 
     public_org.d_notice_body_id = body_id
     public_org.org_cd = org_cd
-    #public_org.etcstr1 = ADMIN_USER_CD # 管理者はすべてのお知らせを閲覧できるようにする。
     public_org.created_user_cd = user_cd
     public_org.updated_user_cd = user_cd
 

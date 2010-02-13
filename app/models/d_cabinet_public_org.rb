@@ -1,8 +1,6 @@
 class DCabinetPublicOrg < ActiveRecord::Base
   belongs_to :d_cabinet_body
 
-  ADMIN_USER_CD = '9999999'
-
   #
   # 共有キャビネットの公開対象組織のレコードを作成する
   #
@@ -16,7 +14,6 @@ class DCabinetPublicOrg < ActiveRecord::Base
 
     org.d_cabinet_body_id = body_id
     org.org_cd = org_cd
-    #org.etcstr1 = ADMIN_USER_CD
     org.delf = 0
     org.created_user_cd = user_cd
     org.updated_user_cd = user_cd

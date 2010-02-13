@@ -18,13 +18,13 @@
     <table style="width:980px;margin-top:100px;">
       <tr>
         <td align="center" valign="top">
-          <table cellpadding="0" border="0" background="/images/login/login-logo.gif" style="width:300px;height:350px;">
+          <table cellpadding="0" border="0" background="/images/login/login-logo.gif" style="width:395px;height:340px;">
             <tr>
               <td height="50">&nbsp;</td>
             </tr>
             <tr>
               <td>
-                <div title="Change_passwd" id="change_passwd_form" class="form">
+                <div title="Change_passwd" id="change_passwd_form" class="form" style="padding-left:20px;">
                   <table cellpadding="0" border="0" height="120" style="margin-top:80px;width:100%;">
                     <tr height="30">
                       <td colspan=2 style="text-align:center;">パスワードを変更してください。</td>
@@ -32,37 +32,36 @@
                     <tr height="30">
                       <td style="text-align:right;width:170px;">現在のパスワード：</td>
                       <td style="text-align:left;">
-                        <%= password_field_tag 'password_old', nil, :size=>15 %>
+                        <%= password_field_tag 'password_old', nil, :size=>20 %>
                       </td>
                     </tr>
                     <tr height="30">
                       <td style="text-align:right;">新規パスワード：</td>
                       <td style="text-align:left;">
-                        <%= password_field_tag 'password_new', nil, :size=>15 %>
+                        <%= password_field_tag 'password_new', nil, :size=>20 %>
                       </td>
                     </tr>
                     <tr height="30">
                       <td style="text-align:right;">確認用パスワード：</td>
                       <td style="text-align:left;">
-                        <%= password_field_tag 'password_confirm', nil, :size=>15 %>
+                        <%= password_field_tag 'password_confirm', nil, :size=>20 %>
                       </td>
                     </tr>
-                    <tr height="40">
+                    <tr height="20">
+                      <td align="center" colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr height="30">
                       <td align="center" colspan="2">
                         <%= submit_tag '変更', :class => "submit", :onclick=>"return ClickEditButton();"  %>
                       </td>
                     </tr>
-                    <!-- エラーメッセージ -->
-                    <tr height="40">
-                      <td align="center" colspan="2">
-                        <% if @message %>
-                          <p id="message" style="width:90%;text-align:center;color:red;font-weight:bold;">
-                            <%= @message %>
-                          </p>
-                        <% end %>
-                      </td>
-                    </tr>
                   </table>
+                  <!-- エラーメッセージ -->
+                  <% if @message %>
+                    <p id="message" style="width:90%;text-align:center;color:red;font-weight:bold;">
+                      <%= @message %>
+                    </p>
+                  <% end %>
                 </div>
               </td>
             </tr>

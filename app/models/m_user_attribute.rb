@@ -52,8 +52,9 @@ class MUserAttribute < ActiveRecord::Base
   # すでに、同一のユーザーCDのレコードが存在する場合(削除フラグ=0)、レコードを更新します。
   #
   # @param - params -
+  # @param - user_cd -
   #
-  def self.register params
+  def self.register params, user_cd
 
     unless params[:m_user_attributes].nil?
       m_user_attribute = find(:first, :conditions=>{:delf=>0,:user_cd=>params[:m_user_attributes][:user_cd]})

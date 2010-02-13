@@ -237,7 +237,7 @@
     $.ajax({
         type:'get',
         url:'/schedule/reserve/spare_time_other_member?&day=' + $("#select_date_other_member").val()
-              + "&select_proxy_user_cd=" + <%=@proxy_user_cd%> + "&member=" + $("#member").val(),
+              + "&select_proxy_user_cd=<%=@proxy_user_cd%>&member=" + $("#member").val(),
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。

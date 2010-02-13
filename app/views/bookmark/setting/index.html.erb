@@ -24,8 +24,10 @@
   <!-- カテゴリ選択 -->
   <table style="margin:10px 0px 0px 10px;">
     <tr>
+      <td>カテゴリ：</td>
       <td style="width:250px;">
         <select id="categories" name="categories" style="width:250px;" onchange="SelectCategories();">
+          <option value="">&nbsp;</option>
         </select>
       </td>
       <td>
@@ -100,6 +102,7 @@
       dialog_bookmark_ins();
       dialog_bookmark_upd();
 
+      var category = $("#categories").val();
       jQuery.ajax(
         {
            type : "GET",
@@ -117,7 +120,7 @@
           complete :
             function(){
               // セレクトボックスで選択されているカテゴリのブックマークを表示する。
-              $("#bookmark_list").load("/bookmark/setting/bookmark_list?&category_id=" + $("#categories").val());
+              $("#bookmark_list").load("/bookmark/setting/bookmark_list?&category_id=" + category);
             }
         }
       );
@@ -128,6 +131,7 @@
    * カテゴリ選択時の処理
    */
   function SelectCategories(){
+
     // jQueryでの処理
     $.ajax({
         type:'get',

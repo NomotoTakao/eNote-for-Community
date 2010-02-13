@@ -1,13 +1,13 @@
 require 'digest/md5'
 class DCabinetFile < ActiveRecord::Base
   belongs_to :d_cabinet_body
-  
+
   #
   # ファイルをアップロードします。
-  # @param params - 
+  # @param params -
   # @param  current_m_user -
-  # @param head_id - 
-  # @param body_id - 
+  # @param head_id -
+  # @param body_id -
   # @param dir - データを保存するディレクトリ　例)"/cabinet_public"
   #
   def self.save_upload(params, current_m_user, head_id, body_id, dir)
@@ -37,11 +37,11 @@ class DCabinetFile < ActiveRecord::Base
       file_rec.mime_type = attachment.content_type
       file_rec.created_user_cd = current_m_user.user_cd
       file_rec.updated_user_cd = current_m_user.user_cd
-      
+
       file_rec.save!
     end
   end
-  
+
   #
   # 指定されたIDの添付ファイル情報を取得します。
   #
@@ -49,17 +49,17 @@ class DCabinetFile < ActiveRecord::Base
   # @return 添付ファイル情報
   #
   def get_cabinetfile_by_id cabinet_id
-    
+
     conditions_sql = ""
     conditions_param = {}
-    
+
     conditions_sql = " delf = :delf "
     conditions_param[:delf] = "0"
     conditions_sql += " AND id = :id "
     conditions_param[:id] = cabinet_id
     DCabinetFile.find(:first, :conditions=>[conditions_sql, conditions_param])
   end
-  
+
   #
   # 指定されたキャビネット詳細IDに紐づけられた添付ファイル情報の配列を取得します。
   #
@@ -67,18 +67,18 @@ class DCabinetFile < ActiveRecord::Base
   # @return 添付ファイル情報の配列
   #
   def get_cabinetfile_by_cabinet_body_id body_id
-    
+
     conditions_sql = ""
     conditions_param = {}
-    
+
     conditions_sql = " delf = :delf "
     conditions_param[:delf] = 0
     conditions_sql += " AND d_cabinet_body_id = :body_id "
     conditions_param[:body_id] = body_id
-    
+
     DCabinetFile.find(:all, :conditions=>[conditions_sql, conditions_param])
   end
-  
+
   #
   # 指定されたキャビネットの添付ファイルを削除します
   #
@@ -86,16 +86,16 @@ class DCabinetFile < ActiveRecord::Base
   # @param user_cd - 削除するユーザーCD
   #
   def delete_by_id id, user_cd
-    
+
     cabinetfile = get_cabinetfile_by_id id
-    
+
     unless cabinetfile.nil?
       cabinetfile.delf = 1
       cabinetfile.deleted_user_cd = user_cd
       cabinetfile.deleted_at = Time.now
-      
+
       cabinetfile.save
     end
   end
-  
+
 end

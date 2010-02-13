@@ -340,7 +340,7 @@ class Cabinet::PublicController < ApplicationController
     cabinet_id = params[:id]
 
     @d_cabinet_body = DCabinetBody.new.get_cabinetbody_by_id cabinet_id
-    @cabinet_file = DCabinetFile.find(:all, :conditions=>{:d_cabinet_body_id=>cabinet_id})[0]
+    @cabinet_file = DCabinetFile.find(:first, :conditions=>{:d_cabinet_body_id=>cabinet_id})
 
     # 組織名の取得 組織名と組織コードのハッシュマップを作ります。
     @orgs = {}

@@ -9,10 +9,11 @@ require 'rss/content'
 require 'rss/trackback'
 require 'rss/image'
 
-require "/app/gw/rails/enote/config/environment"
+#require "/app/rails/enotecloud/config/environment"
+require "/Users/yoshikuni/workspace/eNote/config/environment"
 require 'parsedate'
 
-puts "MAIL SEND IS STARTING ...."
+puts "MAIL SEND IS STARTING .... #{DateTime.now.strftime('%Y-%m-%d %H:%M:%S')}"
 
 #本日送信分のデータ取得(メール)
 @reminders_email = DReminder.get_today_mail_list(1)
@@ -66,4 +67,4 @@ end
   end
 end
 
-puts "MAIL SEND IS FINISHED."
+puts "MAIL SEND IS FINISHED. #{DateTime.now.strftime('%Y-%m-%d %H:%M:%S')}"

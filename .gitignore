@@ -3,5 +3,11 @@
 database.yml
 environment.rb
 .project
-db/schema.rb
-tmp/*
+.loadpath
+schema.rb
+common.js
+common.css
+rss_run.sh
+dayly_run.sh
+fixtures.sample
+

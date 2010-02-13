@@ -33,11 +33,9 @@ class MKbn < ActiveRecord::Base
     conditions_sql += " AND kbn_cd = :kbn_cd"
     conditions_param[:kbn_cd] = 'd_notice_bodies_top_disp_kbn'
     conditions_sql += " AND kbn_id <> -1"
-#    unless user_cd == "9999999"
-      unless tmp_conditions_sql.empty?
-        conditions_sql += " AND (#{tmp_conditions_sql})"
-      end
-#    end
+    unless tmp_conditions_sql.empty?
+      conditions_sql += " AND (#{tmp_conditions_sql})"
+    end
     order_sql += " sort_no ASC"
 
     MKbn.find(:all, :select=>select_sql, :joins=>joins_sql, :conditions=>[conditions_sql, conditions_param], :order=>order_sql)

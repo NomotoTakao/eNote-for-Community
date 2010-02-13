@@ -22,13 +22,13 @@
 <input type="hidden" id="sub_directory" name="sub_directory" value="<%= current_m_user.user_cd %>" />
 <div style="padding:5px;">
   <div class="tabset" id="tabset" style="border:0;text-align:left;">
-	<ul>
-	  <li><a href="/notice/main/notice_list_tab?id=<%=@id %>&message_id_def=<%=@message_id_def%>">お知らせ</a></li>
-	  <li><a href="/notice/main/notice_create_tab">新規投稿</a></li>
+  <ul>
+    <li><a href="/notice/main/notice_list_tab?id=<%=@id %>&message_id_def=<%=@message_id_def%>">お知らせ</a></li>
+    <li><a href="/notice/main/notice_create_tab">新規投稿</a></li>
 <!--
-	  <li><a href="/notice/main/notice_settings_tab">設定</a></li>
+    <li><a href="/notice/main/notice_settings_tab">設定</a></li>
 -->
-	</ul>
+  </ul>
   </div>
 </div>
 <%# メニューでお知らせのカテゴリが選択された時は、ここに選択された値を格納する。 %>
@@ -38,21 +38,21 @@
 <br>
 <script type="text/javascript">
   <!--
-  
+
   var tabs = new Array();
   $(document).ready(function(){
-	
+
     //タブを表示
     $("#tabset").tabs();
     // class: ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all ui-widget-header
     $("#tabset").find("ul").attr("class", "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all");
-  
+
     // タブの枠線を描く
     cls = "ui-widget-content ui-corner-bottom mbTabsetContainer";
     hide = " ui-tabs-hide";
     elements = $("#tabset").find("ul").find("a");
     key_string = "ui-tabs-";
-  
+
     for(i=0; i<elements.length; i++){
       // ”ui-tabs-"を含む要素を取り出す。
       if(String(elements[i]).search(key_string) > 0){
@@ -60,7 +60,7 @@
         tabs[tabs.length] = str;
       }
     }
-      
+
     for(i=0; i<tabs.length; i++){
       if(i!=0){
         cls += hide;
@@ -68,24 +68,24 @@
       $(tabs[i]).attr("class", cls);
     }
   });
-  
+
   /*
    * 引数によってタブを切り替えます。
-   * 
+   *
    * @param tabIndex - 0: お知らせ
    *                   1: 新規投稿
    *                   2: 設定
    */
   function showTab(tabIndex){
-  	
-	if(tabIndex == 0){
-		$("a:contains('お知らせ')").click();
-	}else if(tabIndex == 1){
-		$("a:contains('新規投稿')").click();
-	}else if(tabIndex == 2){
-		$("a:contains('設定')").click();
-	}
+
+  if(tabIndex == 0){
+    $("a:contains('お知らせ')").click();
+  }else if(tabIndex == 1){
+    $("a:contains('新規投稿')").click();
+  }else if(tabIndex == 2){
+    $("a:contains('設定')").click();
   }
-      
+  }
+
   -->
 </script>

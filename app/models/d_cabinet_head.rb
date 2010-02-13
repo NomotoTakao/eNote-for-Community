@@ -228,10 +228,12 @@ class DCabinetHead < ActiveRecord::Base
       begin
         d_cabinet_index.save
       rescue
-p "★" + $!
+        p $!
+        raise
       end
     rescue
-p "★"+$! #DEBUG
+      p $!
+      raise
     end
   end
 
@@ -248,10 +250,12 @@ p "★"+$! #DEBUG
         begin
           d_cabinet_index.save
         rescue
-p "★" + $!
+          p $!
+          raise
         end
       rescue
-p "★" + $!
+        p $!
+        raise
       end
     end
   end

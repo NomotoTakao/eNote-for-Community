@@ -213,7 +213,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:"/schedule/reserve/list?month=" + <%=session[:list_start_month]%> + "&secretaries_user_cd=" + <%=@select_secretaries_user_cd%>,
+        url:"/schedule/reserve/list?month=<%=session[:list_start_month]%>&secretaries_user_cd=<%=@select_secretaries_user_cd%>",
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。
@@ -237,7 +237,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/schedule/reserve/list?&secretaries_user_cd=' + secretaries_user_cd + "&month=" + <%=session[:list_start_month]%>,
+        url:'/schedule/reserve/list?&secretaries_user_cd=' + secretaries_user_cd + "&month=<%=session[:list_start_month]%>",
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。

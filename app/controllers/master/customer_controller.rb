@@ -159,21 +159,17 @@ class Master::CustomerController < ApplicationController
   end
 
   def activity_reference_tab
-p "★activity_reference_tab"#DEBUG
   end
 
   def activity_reference
-p "★activity_reference"#DEBUG
     @action_target_list = MActionTarget.find(:all, :conditions=>{:delf=>0}, :order=>"action_target_cd ASC")
     @action_group_list = MActionGroup.find(:all, :conditions=>{:delf=>0}, :order=>"action_group_cd ASC")
   end
 
   def customer_employee_tab
-p "★customer_employee_tab"
-end
+  end
 
   def customer_employee
-
   end
 
   #

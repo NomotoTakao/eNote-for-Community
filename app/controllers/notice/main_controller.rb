@@ -4,8 +4,6 @@ class Notice::MainController < ApplicationController
   layout "portal", :except => [:notice_list_tab, :notice_create_tab, :notice_settings_tab, :notice_list_right, :add_list, :delete_file,
                    :create, :public_org, :notice_index, :notice_list, :notice_create, :notice_settings, :search_member, :setting]
 
-  ADMIN_USER_CD = "9999999"
-
   #
   # INDEXアクション
   #
@@ -93,11 +91,11 @@ class Notice::MainController < ApplicationController
     conditions_sql = ""
     conditions_param = {}
     joins_sql = ""
-    
+
     joins_sql = " INNER JOIN d_notice_heads ON d_notice_heads.id = d_notice_bodies.d_notice_head_id "
     joins_sql += " INNER JOIN d_notice_public_orgs ON d_notice_bodies.id = d_notice_public_orgs.d_notice_body_id "
     joins_sql += " LEFT JOIN d_notice_files ON d_notice_bodies.id = d_notice_files.d_notice_body_id "
-    
+
     # 削除フラグを確認する。
     conditions_sql = " d_notice_bodies.delf = :delf "
     conditions_sql += " AND d_notice_heads.delf = :delf "
@@ -219,7 +217,7 @@ class Notice::MainController < ApplicationController
     unless edit_id.nil? or edit_id.empty?
 
       d_notice_body = DNoticeBody.find(:first, :conditions=>{:delf=>0, :id=>edit_id})
-      
+
       d_notice_body.d_notice_head_id = params[:d_notice_body][:d_notice_head_id]
       d_notice_body.title = params[:d_notice_body][:title]
       d_notice_body.body = params[:d_notice_body][:body]

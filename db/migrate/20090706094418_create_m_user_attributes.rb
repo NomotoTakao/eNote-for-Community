@@ -1,7 +1,7 @@
 class CreateMUserAttributes < ActiveRecord::Migration
   def self.up
     create_table "m_user_attributes", :force => true do |t|
-      t.string   "user_cd",       :limit => 32,                                                 :null => false
+      t.string   "user_cd",       :limit => 32,                      :null => false
       t.string   "name_kana",     :limit => 40
       t.string   "position_cd",   :limit => 8
       t.integer  "job_kbn"

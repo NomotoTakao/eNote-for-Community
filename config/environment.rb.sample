@@ -41,7 +41,10 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 
   #全システムで共有する
-  config.action_controller.session_store = :active_record_store
+
+  #セッション情報は共有サーバ（coredb）内に保存・参照する。
+  #sessionに関する諸設定はconfig/initializers/session_store.rbを参照してください。
+
   #ActionMailerの設定
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
@@ -61,3 +64,4 @@ require 'will_paginate'
 
 #プロキシが必要な場合はここに定義する（RSS、リンク集）で利用
 HTTP_PROXY_URI = ""
+

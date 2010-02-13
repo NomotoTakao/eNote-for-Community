@@ -220,7 +220,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/schedule/reserve/spare_time_facility?&day=' + $("#select_date_facility").val() + "&select_proxy_user_cd=" + <%=@proxy_user_cd%>
+        url:'/schedule/reserve/spare_time_facility?&day=' + $("#select_date_facility").val() + "&select_proxy_user_cd=<%=@proxy_user_cd%>"
              + "&facility_group_cd=" + $("#facility_group_cd").val() + "&select_facility_list=" + $("#select_facility_list").val(),
         success:
             function(request){

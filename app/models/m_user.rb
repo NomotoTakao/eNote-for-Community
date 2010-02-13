@@ -13,26 +13,22 @@ class MUser < ActiveRecord::Base
   include Authentication::ByCookieToken
 
   validates_presence_of     :login
-  validates_length_of       :login,    :within => 3..40
-#  validates_uniqueness_of   :login
+  validates_length_of       :login,    :within => 3..128
+  validates_uniqueness_of   :login
   validates_format_of       :login,    :with => Authentication.login_regex, :message => Authentication.bad_login_message
 
   validates_format_of       :name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
-  validates_length_of       :name,     :maximum => 100
+  validates_length_of       :name,     :maximum => 40
 
 #  validates_presence_of     :email
 #  validates_length_of       :email,    :within => 6..100 #r@a.wk
 #  validates_uniqueness_of   :email
 #  validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
 
-
-
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
   attr_accessible :login, :user_cd, :email, :name, :password, :password_confirmation, :passwd, :last_change_passwd_at, :updated_user_cd
-
-
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
@@ -45,8 +41,9 @@ class MUser < ActiveRecord::Base
     #プレインパスワードでの認証を行う
 #    u = find_by_login(login.downcase) # need to get the salt
 #    u && u.authenticated?(password) ? u : nil
-    u = find(:first, :conditions => ["login = ? AND delf = '0'", login])
-    u && u.passwd == password ? u :nil
+      u = find(:first, :conditions => ["login = ? AND delf = 0", login])
+      u && u.passwd == password ? u :nil
+#    end
   end
 
   def login=(value)
@@ -60,13 +57,9 @@ class MUser < ActiveRecord::Base
   #
   #最終ログイン日時を更新する
   #
-  #@param id - 更新対象のid
-  #
-  def update_lastlogin(id)
-    data = MUser.find(id)
-    data.update_attribute(:lastlogin_at, Time.now)
+  def update_lastlogin
+    update_attribute(:lastlogin_at, Time.now)
   end
-
 
   #
   # ユーザーCDをキーとしたユーザー名のハッシュテーブルを取得します。
@@ -427,8 +420,10 @@ class MUser < ActiveRecord::Base
 
   #
   #
+  # @param params -
+  # @param user_cd -
   #
-  def self.register params
+  def self.register params, user_cd
 
     unless params[:m_users].nil?
 
@@ -437,6 +432,9 @@ class MUser < ActiveRecord::Base
         m_user = MUser.new
       end
       m_user.user_cd = params[:m_users][:user_cd]
+      unless params[:m_users][:login].nil?
+        m_user.login = params[:m_users][:login]
+      end
       unless params[:m_users][:name].nil?
         m_user.name = params[:m_users][:name]
       end
@@ -467,8 +465,8 @@ class MUser < ActiveRecord::Base
 
       begin
         m_user.save!
-        MUserAttribute.register params
-        MUserBelong.register params
+        MUserAttribute.register params, user_cd
+        MUserBelong.register params, user_cd
       rescue
         p $!
         raise

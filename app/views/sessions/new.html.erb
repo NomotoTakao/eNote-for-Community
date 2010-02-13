@@ -25,88 +25,99 @@
 
 <% form_tag session_path do -%>
 <div align="center" style="width:100%;">
-    <table style="width:800px;margin-top:100px;">
-        <tr>
-            <td align="center" valign="top" style="width:350px;">
-              <table cellpadding="0" width="300" border="0" height="350" background="/images/login/login-logo.gif">
-              <tr><td height="50">
-                &nbsp;
-              </td></tr>
-              <tr>
-                <td>
-                <div title="Account login" id="loginform" class="form" style="padding-left:20px;">
-                    <table cellpadding="0" width="280" border="0" height="120" style="margin-top:80px;">
-                        <tr height="30">
-                            <td align="right" width="100">
-                              ログインID：
-                            </td>
-                            <td align="left" width="100">
-                              <%= text_field_tag 'login', @login, :class=>"ime_off", :size => 15 %>
-                            </td>
-                        </tr>
-                        <tr height="30">
-                            <td align="right" width="100">
-                              パスワード：
-                            </td>
-                            <td align="left" width="100">
-                              <%= password_field_tag 'password', nil, :size => 15 %>
-                            </td>
-                        </tr>
-                        <tr height="40">
-                        <td align="center" colspan="2">
-                            <%= submit_tag 'ログイン', :class => "submit", :onclick=>"return ClickLoginButton();" %>
-                            <!-- Uncomment this if you want this functionality
-                            <p><%= label_tag 'remember_me', 'Remember me' %>
-                            <%= check_box_tag 'remember_me', '1', @remember_me %></p>
-                            -->
-                        </td>
-                    </table>
-                </div>
-              </td>
-              </tr>
-              </table>
+  <table style="width:800px;margin-top:100px;">
+    <tr>
+      <td align="center" valign="top" style="width:400px;">
+        <table cellpadding="0" width="395" border="0" height="340" background="/images/login/login-logo.gif">
+          <tr>
+            <td height="50">&nbsp;</td>
+          </tr>
+          <tr>
+            <td>
+              <div title="Account login" id="loginform" class="form" style="padding-left:60px;">
+                <table cellpadding="0" width="320" border="0" height="120" style="margin-top:80px;">
+                  <tr height="30">
+                    <td align="right" width="110">メールアドレス：</td>
+                    <td align="left">
+                      <%= text_field_tag 'login', @login, :class=>"ime_off", :style => "width:180px;" %>
+                    </td>
+                  </tr>
+                  <tr height="30">
+                    <td align="right">パスワード：</td>
+                    <td align="left">
+                      <%= password_field_tag 'password', nil, :style => "width:180px;" %>
+                    </td>
+                  </tr>
+                  <tr height="50">
+                    <td colspan="2">&nbsp;</td>
+                  </tr>
+                  <tr height="40">
+                    <td align="center" colspan="2">
+                      <%= submit_tag 'ログイン', :class => "submit", :onclick=>"return ClickLoginButton();" %>
+                      <!-- Uncomment this if you want this functionality
+                      <p><%= label_tag 'remember_me', 'Remember me' %>
+                      <%= check_box_tag 'remember_me', '1', @remember_me %></p>
+                      -->
+                    </td>
+                  </tr>
+<!--
+                  <tr style="height:40px;">
+                    <td align="center" colspan="2">
+                      <input type="button" class="submit" id="register" value="新規登録" />
+                    </td>
+                  </tr>
+-->
+                </table>
+              </div>
             </td>
-            <td style="width:400px;">
-                <table cellpadding="10" cellspacing="0" width="320" border="1" height="328" bordercolor="#dcdcdc" style="background-color:#e8eefa;">
-                  <tr><td valign="top">
-                    <div class="box">
-                      <h3 align="center">このサイトはeNote2.0βのデモサイトです</h3>
-                      <hr>
-                      <div align="center" style="margin:20px 0px 20px 0px;">
-                      <h3 align="center">ご自由にログインしてご利用ください。</h3>
-                      <table border="1" cellpadding="2" cellspacing="0" width="250">
-                        <tr>
-                            <th>ログインID</th>
-                            <th>パスワード</th>
-                            <th>ユーザ種別</th>
-                        </tr>
-                        <tr>
-                            <td>admin</td>
-                            <td>password</td>
-                            <td>管理者</td>
-                        </tr>
-                        <tr>
-                            <td>user1001</td>
-                            <td>user1001</td>
-                            <td>一般ユーザ</td>
-                        </tr>
-                        <tr>
-                            <td>user1002</td>
-                            <td>user1002</td>
-                            <td>一般ユーザ</td>
-                        </tr>
-                      </table>
-                      </div>
-                      <hr>
+          </tr>
+        </table>
+      </td>
+<!--
+      <td style="width:400px;">
+        <table cellpadding="10" cellspacing="0" width="320" border="1" height="328" bordercolor="#dcdcdc" style="background-color:#e8eefa;">
+          <tr>
+            <td valign="top">
+              <div class="box">
+                <h3 align="center">このサイトはeNote2.0βのデモサイトです</h3>
+                <hr>
+                <div align="center" style="margin:20px 0px 20px 0px;">
+                  <h3 align="center">ご自由にログインしてご利用ください。</h3>
+                  <table border="1" cellpadding="2" cellspacing="0" width="250">
+                    <tr>
+                      <th>ログインID</th>
+                      <th>パスワード</th>
+                      <th>ユーザ種別</th>
+                    </tr>
+                    <tr>
+                      <td>admin</td>
+                      <td>password</td>
+                      <td>管理者</td>
+                    </tr>
+                    <tr>
+                      <td>user1001</td>
+                      <td>user1001</td>
+                      <td>一般ユーザ</td>
+                    </tr>
+                    <tr>
+                      <td>user1002</td>
+                      <td>user1002</td>
+                      <td>一般ユーザ</td>
+                    </tr>
+                  </table>
+                </div>
+                <hr>
                       ※入力されたデータやアップロードされたファイルについては、保証は一切いたしません。<br>
                       ※不定期でデータ等初期化いたします。<br>
                       ※デモ、評価以外などの目的で利用しないで下さい。<br>
-                    </div>
-                  </td></tr>
-                </table>
+              </div>
             </td>
-        </tr>
-    </table>
+          </tr>
+        </table>
+      </td>
+-->
+    </tr>
+  </table>
 </div>
 <% if @message %>
 <p id="message" style="width:90%;text-align:center;color:red;font-weight:bold;">

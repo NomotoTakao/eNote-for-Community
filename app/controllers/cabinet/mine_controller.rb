@@ -115,7 +115,7 @@ class Cabinet::MineController < ApplicationController
     conditions_param[:cabinet_kbn] = "0"
     conditions_sql += " AND private_user_cd = :private_user_cd "
     conditions_param[:private_user_cd] = current_m_user.user_cd
-    @head = DCabinetHead.find(:all, :conditions=>[conditions_sql, conditions_param])[0]
+    @head = DCabinetHead.find(:first, :conditions=>[conditions_sql, conditions_param])
 
     conditions_sql = " delf = :delf"
     conditions_param[:delf] = "0"
@@ -123,13 +123,13 @@ class Cabinet::MineController < ApplicationController
     conditions_param[:d_cabinet_head_id] = @head.id
     conditions_sql += " AND id = :id "
     conditions_param[:id] = cabinet_id
-    @cabinet = DCabinetBody.find(:all, :order=>" post_date DESC ", :conditions=>[conditions_sql, conditions_param])[0]
+    @cabinet = DCabinetBody.find(:first, :order=>" post_date DESC ", :conditions=>[conditions_sql, conditions_param])
 
     conditions_sql = " delf = :delf "
     conditions_param[:delf] = "0"
     conditions_sql += " AND d_cabinet_body_id = :d_cabinet_body_id"
     conditions_param[:d_cabinet_body_id] = @cabinet.id
-    @cabinet_file = DCabinetFile.find(:all, :conditions=>[conditions_sql, conditions_param])[0]
+    @cabinet_file = DCabinetFile.find(:first, :conditions=>[conditions_sql, conditions_param])
 
     render :action=>"_dialog"
   end
@@ -194,7 +194,7 @@ class Cabinet::MineController < ApplicationController
     conditions_sql = ""
     conditions_param = {}
 
-    record = DCabinetBody.find(:all, :order=>'id', :conditions=>['id=?', cabinet_id])[0]
+    record = DCabinetBody.find(:first, :order=>'id', :conditions=>['id=?', cabinet_id])
     record.delf = '1'
     record.deleted_user_cd = current_m_user.id
     record.updated_user_cd = current_m_user.id
@@ -206,7 +206,7 @@ class Cabinet::MineController < ApplicationController
       conditions_param[:delf] = "0"
       conditions_sql += " AND d_cabinet_body_id = :d_cabinet_body_id "
       conditions_param[:d_cabinet_body_id] = cabinet_id
-      file = DCabinetFile.find(:all, :conditions=>[conditions_sql, conditions_param])[0]
+      file = DCabinetFile.find(:first, :conditions=>[conditions_sql, conditions_param])
       file.delf = "1"
       file.deleted_user_cd = current_m_user.user_cd
       file.updated_user_cd = current_m_user.user_cd
@@ -223,7 +223,7 @@ class Cabinet::MineController < ApplicationController
   # キャビネットファイルのダウンロード
   #
   def download
-    file_rec = DCabinetFile.find(:all, :conditions=>{:d_cabinet_body_id=>params[:cabinet_id]})[0]
+    file_rec = DCabinetFile.find(:first, :conditions=>{:d_cabinet_body_id=>params[:cabinet_id]})
 
     dirname = "#{RAILS_ROOT}/data/cabinet_mine/"
 

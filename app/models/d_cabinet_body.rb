@@ -3,8 +3,6 @@ class DCabinetBody < ActiveRecord::Base
   belongs_to :d_cabinet_head
   has_many :d_cabinet_files, :conditions=>"delf=0"
 
-  ADMIN_USER_CD = '9999999'
-
   #
   # キャビネットのIDを指定して、キャビネット情報を取得します。
   #

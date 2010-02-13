@@ -18,10 +18,10 @@
     <!-- 複数部署に所属しているユーザは１行だけ表示する -->
     <% if user_cd_new != user_cd_old %>
       <tr style="height:50px; padding-left:5px;">
-        <td class="master_table1_cell_bordered" style="text-align:left;"><%= user.user_cd %></td>
-        <td class="master_table1_cell_bordered" style="text-align:left;"><%= user.name %></td>
-        <td class="master_table1_cell_bordered" style="text-align:left;"><%= user.name_kana %></td>
-        <td class="master_table1_cell_bordered" style="text-align:left;">
+        <td class="master_table1_cell_bordered" style="text-align:left;">&nbsp;<%= user.user_cd %></td>
+        <td class="master_table1_cell_bordered" style="text-align:left;">&nbsp;<%= user.name %></td>
+        <td class="master_table1_cell_bordered" style="text-align:left;">&nbsp;<%= user.name_kana %></td>
+        <td class="master_table1_cell_bordered" style="text-align:left;">&nbsp;
           <% if !@org_hash[user.user_cd][0].nil? %>
             <% org_names =  @org_hash[user.user_cd] %>
             <% org_names.each { |org_name| %>

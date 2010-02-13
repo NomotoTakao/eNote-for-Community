@@ -96,8 +96,9 @@ class Bookmark::SettingController < ApplicationController
 
   #リンク集一覧の表示
   def bookmark_list
-    @bookmarks = DBookmark.find(:all, :conditions => ["delf = 0 AND public_flg = 0 AND d_bookmark_category_id = ?", params[:category_id]],
-    :order => "sort_no, id")
+    unless params[:category_id].nil? or params[:category_id].empty?
+      @bookmarks = DBookmark.find(:all, :conditions => ["delf = 0 AND public_flg = 0 AND d_bookmark_category_id = ?", params[:category_id]], :order => "sort_no, id")
+    end
   end
 
   #リンク集の削除
