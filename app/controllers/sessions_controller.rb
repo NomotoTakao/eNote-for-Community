@@ -45,7 +45,7 @@ class SessionsController < ApplicationController
       flash[:notice] = "Logged in successfully"
 
       #最終ログイン日時を更新する
-      MUser.new.update_lastlogin(m_user.id)
+      m_user.update_lastlogin
 
       #パスワード変更画面へ遷移する場合(初期ログイン時, 最終パスワード変更日から半年経過時)
       last_change_passwd_at = current_m_user.last_change_passwd_at
