@@ -15,5 +15,3 @@ ActionController::Base.session = {
 # (create the session table with "rake db:sessions:create")
 ActionController::Base.session_store = :active_record_store
 
-#セッション情報は共有サーバ（coredb）内のsessionsテーブルに保存・参照する。
-ActiveRecord::SessionStore::Session.establish_connection "coredb"
