@@ -1,0 +1,2 @@
+"id","login","user_cd","name","passwd","admin_flg","delf","created_user_cd","created_at","updated_user_cd","updated_at"
+1,"admin","9999999","管理者","password",1,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"

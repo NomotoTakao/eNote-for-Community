@@ -1,0 +1,2 @@
+id,app_cd,new_icon_days,page_max_count,delf,created_user_cd,created_at,updated_user_cd,updated_at
+1,blog,5,10,0,9999999,<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>,9999999,<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>

@@ -1,0 +1,2 @@
+"id","place_cd","name","sort_no","memo","delf","created_user_cd","created_at","updated_user_cd","updated_at"
+1,"10","本社",1,,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"

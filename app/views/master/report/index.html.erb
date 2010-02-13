@@ -1,0 +1,194 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "app/master"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "app/master"
+    ]) %>
+<% end -%>
+
+<table style="width:100%;">
+  <tr>
+    <td style="text-align:right;">
+      <input type="button" class="submit_large" value="マスタ一覧へ戻る" onClick="ClickBackToMasterList();" />
+    </td>
+  </tr>
+</table>
+
+<table style="width:100%;">
+  <tr>
+    <td>&nbsp;</td>
+    <td style="width:100%;">
+      <table>
+        <tr>
+          <td style="width:100%;">
+            <div>
+              <table style="text-align:left;">
+                <tr>
+                  <td colspan="2">
+                    <h4>【活動内容】</h4>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="vertical-align:top;">
+                    <select id="select_action_groups" size="5" style="width:300px;height:80px;">
+                    </select>
+                  </td>
+                  <td style="vertical-align:top;">
+                    <select id="select_actions" size="5" style="width:300px;height:80px;">
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="button" id="button_action_groups" class="submit_small" value="選択" />
+                  </td>
+                  <td>
+                    <input type="button" id="button_actions" class="submit_small" value="選択" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div id="input_form" style="width:100%;"/>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td>&nbsp;</td>
+</table>
+
+<script type="text/javascript">
+  <!--
+    /**
+     * 活動内容グループセレクトボックスの項目が選択されたときに、
+     * そのグループに関連する詳細活動内容を取得して、表示する。
+     * @param {Object} "#select_action_groups"
+     */
+    $("#select_action_groups").change(
+      function(){
+        var action_group_cd = $("#select_action_groups").val();
+        if(action_group_cd != ""){
+          jQuery.ajax(
+            {
+              type: "GET",
+              url: "/master/report/action_list",
+              data: {
+                action_group_cd: action_group_cd
+              },
+              success: function(data, dataType){
+                $("#select_actions").html(data);
+              },
+              error: function(){
+                alert("通信エラー");
+              },
+              complete: function(){
+              }
+            }
+          );
+        }
+      }
+    );
+
+    /**
+     * 活動内容グループの「選択」ボタンが押下されたときに、
+     * 活動内容グループの項目が選択されていればその内容を取得し、入力フォームを表示する。
+     */
+    $("#button_action_groups").click(
+      function(){
+        var action_group_cd = $("#select_action_groups").val();
+
+        if (action_group_cd != null && action_group_cd != "") {
+          jQuery.ajax(
+            {
+              type: "GET",
+              url: "/master/report/input_action_group",
+              data: {
+                action_group_cd: action_group_cd
+              },
+              success: function(data, dataType){
+                $("#input_form").html(data);
+              },
+              error: function(){
+                alert("通信エラー");
+              },
+              complete: function(){
+              }
+            }
+          );
+        }
+      }
+    );
+
+    /**
+     * 活動内容の「選択」ボタンが押下されたときに、
+     * 活動内容セレクトボックスの項目が選択されていればその内容を取得し、入力フォームを表示する。
+     */
+    $("#button_actions").click(
+      function(){
+        var action_group_cd = $("#select_action_groups").val();
+        var action_cd = $("#select_actions").val();
+
+        if(action_cd != null && action_cd != ""){
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/master/report/input_action",
+              data :
+                {
+                  action_group_cd : action_group_cd,
+                  action_cd : action_cd
+                },
+              success :
+                function(data, dataType){
+                  $("#input_form").html(data);
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){}
+            }
+          );
+        }
+      }
+    );
+
+    /**
+     * 画面がロードされたときに実行されるイベント
+     * 活動内容グループのリストを取得します。
+     */
+    $(document).ready(
+      function(){
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/master/report/action_group_list",
+            data :
+              {},
+            success :
+              function(data, dataType){
+                $("#select_action_groups").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+  -->
+</script>

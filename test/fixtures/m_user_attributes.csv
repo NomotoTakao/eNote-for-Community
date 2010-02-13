@@ -1,0 +1,2 @@
+"id","user_cd","name_kana","position_cd","job_kbn","authority_kbn","place_cd","joined_date","memo","delf","created_user_cd","created_at","updated_user_cd","updated_at"
+1,"9999999","カンリシャ","99",1,1,"10",2009/04/01,,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"

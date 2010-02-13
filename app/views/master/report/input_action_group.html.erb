@@ -1,0 +1,156 @@
+<table class="master_table2">
+  <tr>
+    <td class="master_table2_title">活動内容グループCD</td>
+    <td class="master_table2_content">
+      <%= hidden_field :m_action_groups, :id %>
+      <%= text_field :m_action_groups, :action_group_cd, :class=>"ime_off", :size=>4 %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">活動内容グループ名</td>
+    <td class="master_table2_content">
+      <%= text_field :m_action_groups, :action_group_name, :class=>"ime_on" %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">表示順</td>
+    <td class="master_table2_content">
+      <%= text_field :m_action_groups, :sort_no, :class=>"ime_off", :size=>3 %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">備考</td>
+    <td class="master_table2_content">
+      <%= text_area :m_action_groups, :memo, :rows=>5, :cols=>30, :class=>"ime_on" %>
+    </td>
+  </tr>
+</table>
+<br />
+<table>
+  <tr>
+    <td>
+      <input type="button" id="button_add" class="submit_small" value="追加" />
+      <input type="button" id="button_update" class="submit_small" value="更新" />
+      <input type="button" id="button_delete" class="submit_small" value="削除" />
+    </td>
+  </tr>
+</table>
+<input type="hidden" id="authenticity_token" value="<%= form_authenticity_token %>" />
+
+<script type="text/javascript">
+  <!--
+    /**
+     *
+     * @param {Object} {type:"POST"
+     * @param {Object} url:"/master/report/action_group_add"
+     * @param {Object} data:get_formdata(
+     */
+    $("#button_add").click(
+      function(){
+        jQuery.ajax(
+          {
+            type : "POST",
+            url  : "/master/report/action_group_add",
+            data : get_formdata(),
+            success :
+              function(data, dataType){
+                $("#select_action_groups").html(data);
+                // 活動内容セレクトボックスの内容をクリアする。
+                $("#select_actions").html("");
+                // 入力フォームをクリアスる。
+                $("#input_form").html("");
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     *
+     */
+    $("#button_update").click(
+      function(){
+        jQuery.ajax(
+          {
+            type : "POST",
+            url  : "/master/report/action_group_update",
+            data : get_formdata(),
+            success :
+              function(data, dataType){
+                $("#select_action_groups").html(data);
+                // 活動内容セレクトボックスの内容をクリアする。
+                $("#select_actions").html("");
+                // 入力フォームをクリアスる。
+                $("#input_form").html("");
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     *
+     */
+    $("#button_delete").click(
+      function(){
+        jQuery.ajax(
+          {
+            type : "POST",
+            url  : "/master/report/action_group_delete",
+            data : get_formdata(),
+            success :
+              function(data, dataType){
+                $("#select_action_groups").html(data);
+                // 活動内容セレクトボックスの内容をクリアする。
+                $("#select_actions").html("");
+                // 入力フォームをクリアスる。
+                $("#input_form").html("");
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     *
+     */
+    function get_formdata(){
+
+      var result = "";
+
+      var action_group_id = $("#m_action_groups_id").val();
+      var action_group_cd = $("#m_action_groups_action_group_cd").val();
+      var action_group_name = $("#m_action_groups_action_group_name").val();
+      var action_group_sort_no = $("#m_action_groups_sort_no").val();
+      var action_group_memo = $("#m_action_groups_memo").val();
+      var authenticity_token = $("#authenticity_token").val();
+
+      result = "id=" + action_group_id + "&" +
+               "action_group_cd=" + action_group_cd + "&" +
+               "action_group_name=" + action_group_name + "&" +
+               "sort_no=" + action_group_sort_no + "&" +
+               "memo=" + action_group_memo + "&" +
+               "authenticity_token=" + authenticity_token;
+
+      return result;
+    }
+  -->
+</script>

@@ -1,0 +1,9 @@
+#export PATH=$PATH:/usr/local/pgsql/bin:/usr/local/pgsql/lib
+#export LD_LIBRARY_PATH=/usr/local/pgsql/lib
+
+ENOTE_PATH=`/app/rails/enotecloud`
+
+cd $ENOTE_PATH
+
+/usr/local/bin/ruby $ENOTE_PATH/rss_update.rb
+
