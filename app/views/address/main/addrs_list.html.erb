@@ -79,10 +79,9 @@
     <!-- 携帯メールアドレス -->
     <td class="address_list_cell_bordered">&nbsp;
       <% mobile_address = address.send(:mobile_address) %>
-      <% if !mobile_address.nil? && mobile_address.strip != "" %>
-        <a href="#"
-          onclick="open_mail_edit_window('/webmail/main/mail_edit?to_addr=' + '<%= mobile_address %>');">
-          <%=h mobile_address %>
+      <% unless mobile_address.nil? or mobile_address.strip.empty? %>
+        <a href="mailto:<%= mobile_address %>">
+          <%= mobile_address %>
         </a>
       <% end %>
     </td>
