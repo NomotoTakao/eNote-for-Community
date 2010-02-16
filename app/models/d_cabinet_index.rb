@@ -321,8 +321,15 @@ class DCabinetIndex < ActiveRecord::Base
     end
 
     order_sql = " d_cabinet_indices.cabinet_kbn"
-    order_sql += " ,d_cabinet_indices.parent_cabinet_head_id"
-    order_sql += " ,d_cabinet_indices.order_display ASC"
+    # 引数で渡されるparent_cabinet_head_idがnilの時、parent_cabinet_head_idは検索条件には含まないが、
+    # 表示順を決めるときにorder_displayだけでは値が重複することがあるので、ORDER節の指定順を変更している。
+    unless parent_cabinet_head_id.nil?
+      order_sql += " ,d_cabinet_indices.parent_cabinet_head_id"
+      order_sql += " ,d_cabinet_indices.order_display ASC"
+    else
+      order_sql += " ,d_cabinet_indices.order_display "
+      order_sql += " ,d_cabinet_indices.parent_cabinet_head_id ASC"
+    end
 
     result = DCabinetIndex.find(:all, :select=>select_sql, :joins=>joins_sql, :conditions=>[conditions_sql, conditions_param], :order=>order_sql)
   end
