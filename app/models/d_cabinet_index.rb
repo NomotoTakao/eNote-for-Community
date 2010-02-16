@@ -31,7 +31,7 @@ class DCabinetIndex < ActiveRecord::Base
     conditions_sql += " AND d_cabinet_indices.cabinet_kbn = :cabinet_kbn "
     conditions_param[:cabinet_kbn] = kbn_id
 
-    order_sql = " id "
+    order_sql = " order_display ASC "
 
     DCabinetIndex.find(:all, :joins=>joins_sql, :conditions=>[conditions_sql, conditions_param], :order=>order_sql)
   end
