@@ -1,6 +1,171 @@
 class MOrg < ActiveRecord::Base
   has_many :d_cabinet_body
 
+  #
+  # 組織を新規に登録する処理
+  #
+  def self.create_org params, user_cd
+    m_org = MOrg.new
+
+    unless params[:org_cd].nil?
+      m_org.org_cd = params[:org_cd]
+      if m_org.org_cd.length == 2
+        m_org.org_cd1 = m_org.org_cd
+        m_org.org_cd2 = ""
+        m_org.org_cd3 = ""
+        m_org.org_cd4 = ""
+      elsif m_org.org_cd.length == 4
+        m_org.org_cd1 = m_org.org_cd[0..1]
+        m_org.org_cd2 = m_org.org_cd[2..3]
+        m_org.org_cd3 = ""
+        m_org.org_cd4 = ""
+      elsif m_org.org_cd.length == 6
+        m_org.org_cd1 = m_org.org_cd[0..1]
+        m_org.org_cd2 = m_org.org_cd[2..3]
+        m_org.org_cd3 = m_org.org_cd[4..5]
+        m_org.org_cd4 = ""
+      elsif m_org.org_cd.length == 8
+        m_org.org_cd1 = m_org.org_cd[0..1]
+        m_org.org_cd2 = m_org.org_cd[2..3]
+        m_org.org_cd3 = m_org.org_cd[4..5]
+        m_org.org_cd4 = m_org.org_cd[6..7]
+      end
+    end
+    unless params[:org_cd1].nil?
+      m_org.org_cd1 = params[:org_cd1]
+    end
+    unless params[:org_cd2].nil?
+      org_cd2 = params[:org_cd2][params[:org_cd1].length..params[:org_cd2].length]
+      m_org.org_cd2 = org_cd2
+    end
+    unless params[:org_cd3].nil?
+      org_cd3 = params[:org_cd3][params[:org_cd2].length..params[:org_cd3].length]
+      m_org.org_cd3 = org_cd3
+    end
+    unless params[:org_lvl].nil?
+      m_org.org_lvl = params[:org_lvl]
+    end
+    unless params[:org_name1].nil?
+      m_org.org_name1 = params[:org_name1]
+    end
+    unless params[:org_name2].nil?
+      m_org.org_name2 = params[:org_name2]
+    end
+    unless params[:org_name3].nil?
+      m_org.org_name3 = params[:org_name3]
+    end
+    unless params[:org_name4].nil?
+      m_org.org_name4 = params[:org_name4]
+    end
+    unless params[:org_name].nil?
+      if m_org.org_lvl == 1
+        m_org.org_name1 = params[:org_name]
+      elsif m_org.org_lvl == 2
+        m_org.org_name2 = params[:org_name]
+      elsif m_org.org_lvl == 3
+        m_org.org_name3 = params[:org_name]
+      elsif m_org.org_lvl == 4
+        m_org.org_name4 = params[:org_name]
+      end
+    end
+    unless params[:tel].nil?
+      m_org.tel = params[:tel]
+    end
+    unless params[:fax].nil?
+      m_org.fax = params[:fax]
+    end
+    unless params[:sort_no].nil?
+      m_org.sort_no = params[:sort_no]
+    end
+
+    m_org.created_user_cd = user_cd
+    m_org.created_at = Time.now
+    m_org.updated_user_cd = user_cd
+    m_org.updated_at = Time.now
+
+    begin
+      m_org.save!
+    rescue
+      p $!
+      raise
+    end
+  end
+
+  #
+  # 既存組織の登録情報を更新する処理
+  #
+  def self.update_org params, user_cd
+
+    m_org = MOrg.find(:first, :conditions=>{:delf=>0, :id=>params[:id]})
+    unless m_org.nil?
+      unless params[:org_lvl].nil?
+        m_org.org_lvl = params[:org_lvl]
+      end
+      unless params[:org_name1].nil?
+        m_org.org_name1 = params[:org_name1]
+      end
+      unless params[:org_name2].nil?
+        m_org.org_name2 = params[:org_name2]
+      end
+      unless params[:org_name3].nil?
+        m_org.org_name3 = params[:org_name3]
+      end
+      unless params[:org_name4].nil?
+        m_org.org_name4 = params[:org_name4]
+      end
+      unless params[:org_name].nil?
+        if m_org.org_lvl == 1
+          m_org.org_name1 = params[:org_name]
+        elsif m_org.org_lvl == 2
+          m_org.org_name2 = params[:org_name]
+        elsif m_org.org_lvl == 3
+          m_org.org_name3 = params[:org_name]
+        elsif m_org.org_lvl == 4
+          m_org.org_name4 = params[:org_name]
+        end
+      end
+      unless params[:tel].nil?
+        m_org.tel = params[:tel]
+      end
+      unless params[:fax].nil?
+        m_org.fax = params[:fax]
+      end
+      unless params[:sort_no].nil?
+        m_org.sort_no = params[:sort_no]
+      end
+
+      m_org.updated_user_cd = user_cd
+      m_org.updated_at = Time.now
+
+      begin
+        m_org.save!
+      rescue
+        p $!
+        raise
+      end
+    end
+  end
+
+  #
+  # 既存組織を論理削除する処理
+  #
+  def self.delete_org params, user_cd
+
+    m_org = MOrg.find(:first, :conditions=>{:delf=>0, :id=>params[:id]})
+    unless m_org.nil?
+      m_org.delf = 1
+
+      m_org.deleted_user_cd = user_cd
+      m_org.deleted_at = Time.now
+
+      begin
+        m_org.save!
+      rescue
+        p$!
+        raise
+      end
+    end
+  end
 
   #
   # 登録されているすべての組織情報を取得する。
