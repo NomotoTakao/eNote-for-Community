@@ -1,0 +1,15 @@
+<% unless @m_orgs.nil? %>
+  <% @m_orgs.each do |m_org| %>
+    <%
+      org_name = ""
+      if @org_lvl.to_i == 1
+        org_name = m_org.org_name1
+      elsif @org_lvl.to_i == 2
+        org_name = m_org.org_name2
+      elsif @org_lvl.to_i == 3
+        org_name = m_org.org_name3
+      end
+    %>
+    <option value="<%= m_org.org_cd %>"><%= org_name %></option>
+  <% end %>
+<% end %>

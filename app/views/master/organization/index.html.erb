@@ -1,0 +1,184 @@
+<!-- JavaScriptライブラリ＆JSファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_scripts) do -%>
+  <%= javascript_include_tag([
+      "jquery/treeview/jquery.treeview.js",
+      "app/master"
+    ]) %>
+<% end -%>
+<!-- StyleSheet(CSS)ファイルを<HEAD>で読み込ませる -->
+<% content_for(:add_styles) do -%>
+  <%= stylesheet_link_tag([
+      "jquery/treeview/jquery.treeview.css",
+      "app/master"
+    ]) %>
+<% end -%>
+
+<table style="width:100%;">
+  <tr>
+    <td style="text-align:right;">
+      <input type="button" class="submit_large" value="マスタ一覧へ戻る" onClick="ClickBackToMasterList();" />
+    </td>
+  </tr>
+</table>
+
+<table style="width:100%;">
+  <tr>
+    <td>&nbsp;</td>
+    <td style="width:100%;">
+      <table>
+        <tr>
+          <td style="width:100%;">
+            <div>
+              <table style="text-align:left;">
+                <tr>
+                  <td>
+                    <select id="select_org_lvl1" size="5" style="width:150px;height:80px;"></select>
+                  </td>
+                  <td>
+                    <select id="select_org_lvl2" size="5" style="width:150px;height:80px;"></select>
+                  </td>
+                  <td>
+                    <select id="select_org_lvl3" size="5" style="width:150px;height:80px;"></select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="button" id="button_org_lvl1" class="submit_small" value="選択" />
+                  </td>
+                  <td>
+                    <input type="button" id="button_org_lvl2" class="submit_small" value="選択" />
+                  </td>
+                  <td>
+                    <input type="button" id="button_org_lvl3" class="submit_small" value="選択" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+          <tr>
+            <td colspan="3">
+              <div id="input_form"></div>
+            </td>
+          </tr>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+    $("#select_org_lvl1").change(
+      function(){
+        var org_cd = $(this).val();
+        if(org_cd == null){
+          org_cd = "";
+        }
+        select_org(2, org_cd);
+      }
+    );
+
+    $("#select_org_lvl2").change(
+      function(){
+        var org_cd = $(this).val();
+        if(org_cd == null){
+          org_cd = "";
+        }
+        select_org(3, org_cd);
+      }
+    );
+
+    $("#button_org_lvl1").click(
+      function(){
+        // select_org_lvl1で選択されている組織コードを取得する。
+        var org_cd = $("#select_org_lvl1").val();
+        if(org_cd == null){
+          org_cd = "";
+        }
+        // 選択されている組織の入力/編集フォームを表示する
+        input_form(org_cd, 1);
+      }
+    );
+
+    $("#button_org_lvl2").click(
+      function(){
+        var org_cd = $("#select_org_lvl2").val();
+        if(org_cd == null){
+          org_cd = "";
+        }
+        input_form(org_cd, 2);
+      }
+    );
+
+    $("#button_org_lvl3").click(
+      function(){
+        var org_cd = $("#select_org_lvl3").val();
+        if(org_cd == null){
+          org_cd = "";
+        }
+        input_form(org_cd, 3)
+      }
+    );
+
+    $(document).ready(
+      function(){
+        select_org(1, "");
+      }
+    );
+
+    function select_org(org_lvl, org_cd){
+      if(org_lvl != ""){
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/master/organization/select_org",
+            data :
+              {
+                org_lvl : org_lvl,
+                org_cd  : org_cd
+              },
+            success :
+              function(data, dataType){
+                if(org_lvl == 2){
+                  $("#select_org_lvl2").html("");
+                  $("#select_org_lvl3").html("");
+                }
+                $("#select_org_lvl" + org_lvl).html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    }
+
+    function input_form(org_cd, org_lvl){
+
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/master/organization/input_form",
+            data :
+              {
+                org_cd  : org_cd,
+                org_lvl : org_lvl
+              },
+            success :
+              function(data, dataType){
+                $("#input_form").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+    }
+  -->
+</script>

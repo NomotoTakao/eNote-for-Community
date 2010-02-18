@@ -1,0 +1,299 @@
+<%
+  cd_length = 0
+  if @org_lvl.to_i == 1
+    cd_length = 2
+  elsif @org_lvl.to_i == 2
+    cd_length = 4
+  elsif @org_lvl.to_i == 3
+    cd_length = 6
+  end
+%>
+<table class="master_table4">
+  <%= hidden_field :m_org, :id %>
+  <tr>
+    <td class="master_table2_title">組織CD&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field :m_org, :org_cd, :class=>:ime_off, :style=>"width:60px;", :maxlength=>cd_length %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">組織レベル</td>
+    <td class="master_table2_content">
+      <select id="select_org_lvl" size="1" style="width:50px;">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+      <input type="hidden" id="m_org_org_lvl" value="<%= @org_lvl %>"
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">組織名&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%
+        org_name = ""
+        if @m_org.org_lvl == 1
+          org_name = @m_org.org_name1
+        elsif @m_org.org_lvl == 2
+          org_name = @m_org.org_name2
+        elsif @m_org.org_lvl == 3
+          org_name = @m_org.org_name3
+        elsif @m_org.org_lvl == 4
+          org_name = @m_org.org_name4
+        end
+      %>
+      <input type="text" id="org_name" class="ime_on" value="<%= org_name %>" />
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">電話番号</td>
+    <td class="master_table2_content">
+      <%= text_field :m_org, :tel, :class=>:ime_off, :size=>13, :maxlength=>13 %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">FAX番号</td>
+    <td class="master_table2_content">
+      <%= text_field :m_org, :fax, :class=>:ime_off, :size=>13, :maxlength=>13 %>
+    </td>
+  </tr>
+  <tr>
+    <td class="master_table2_title">表示順&nbsp;<span style="color:red;">（必須）</span></td>
+    <td class="master_table2_content">
+      <%= text_field :m_org, :sort_no, :class=>:ime_off, :size=>3, :maxlength=>2, :style=>"text-align:right;" %>
+    </td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <td>
+      <input type="button" id="button_add" class="submit_small" value="追加" />
+      <input type="button" id="button_update" class="submit_small" value="更新" />
+      <input type="button" id="button_delete" class="submit_small" value="削除" />
+    </td>
+  </tr>
+</table>
+<input type="hidden" id="authenticity_token" value="<%= form_authenticity_token %>" />
+<div id="org_exists" style="display:none;"></div>
+
+<script type="text/javascript">
+  <!--
+    $("#select_org_lvl").change(
+      function(){
+        var org_lvl = $(this).val();
+        var maxlength = 0;
+        $("#m_org_org_lvl").val(org_lvl);
+        if(org_lvl == 1){
+          maxlength = 2;
+        }else if(org_lvl == 2){
+          maxlength = 4
+        }else if(org_lvl == 3){
+          maxlength = 6
+        }
+
+        $("#m_org_org_cd").attr("maxlength", maxlength);
+      }
+    );
+
+    $("#button_add").click(
+      function(){
+        var org_lvl = $("#select_org_lvl").val();
+        var org_exists_msg = "";
+
+        if(check_input()){
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/master/organization/org_exists",
+              data :
+                {
+                  org_cd : $("#m_org_org_cd").val()
+                },
+              success :
+                function(data, dataType){
+                  $("#org_exists").html(data);
+                },
+              errror :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){
+                  org_exists_msg = $("#org_exists_msg").val();
+                  if(org_exists_msg == ""){
+                    jQuery.ajax(
+                      {
+                        type : "POST",
+                        url  : "/master/organization/org_add",
+                        data : get_form_data(),
+                        success :
+                          function(data, dataType){
+                            if(org_lvl == 1){
+                              $("#select_org_lvl1").html(data);
+                              $("#select_org_lvl2").html("");
+                              $("#select_org_lvl3").html("");
+                            }else if(org_lvl == 2){
+                              $("#select_org_lvl2").html(data);
+                              $("#select_org_lvl3").html("");
+                            }else if(org_lvl == 3){
+                              $("#select_org_lvl3").html(data);
+                            }
+                            alert("登録しました。");
+                            $("#input_form").html("");
+                          },
+                        error :
+                          function(){
+                            alert("通信エラー");
+                          },
+                        complete :
+                          function(){}
+                      }
+                    );
+                  }
+                }
+            }
+          );
+        }
+      }
+    );
+
+    $("#button_update").click(
+      function(){
+        if(check_input()){
+          var org_lvl = $("#select_org_lvl").val();
+          jQuery.ajax(
+            {
+              type : "POST",
+              url  : "/master/organization/org_update",
+              data : get_form_data(),
+              success :
+                function(data, dataType){
+                  if(org_lvl == 1){
+                    $("#select_org_lvl1").html(data);
+                    $("#select_org_lvl2").html("");
+                    $("#select_org_lvl3").html("");
+                  }else if(org_lvl == 2){
+                    $("#select_org_lvl2").html(data);
+                    $("#select_org_lvl3").html("");
+                  }else if(org_lvl == 3){
+                    $("#select_org_lvl3").html(data);
+                  }
+                  alert("更新しました。");
+                  $("#input_form").html("");
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){}
+            }
+          );
+        }
+      }
+    );
+
+    $("#button_delete").click(
+      function(){
+        var org_lvl = $("#select_org_lvl").val();
+        jQuery.ajax(
+          {
+            type : "POST",
+            url  : "/master/organization/org_delete",
+            data : get_form_data(),
+            success :
+              function(data, dataType){
+                if(org_lvl == 1){
+                  $("#select_org_lvl1").html(data);
+                  $("#select_org_lvl2").html("");
+                  $("#select_org_lvl3").html("");
+                }else if(org_lvl == 2){
+                  $("#select_org_lvl2").html(data);
+                  $("#select_org_lvl3").html("");
+                }else if(org_lvl == 3){
+                  $("#select_org_lvl3").html(data);
+                }
+                alert("削除しました。");
+                $("#input_form").html("");
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+
+
+
+    $(document).ready(
+      function(){
+
+        // 組織レベルが設定されている場合(既存組織の場合)セレクトボックスの値を合わせる。
+        var org_lvl = $("#m_org_org_lvl").val();
+        if(org_lvl != ""){
+          $("#select_org_lvl").val(org_lvl);
+        }
+
+        // 組織を新規登録する場合、更新ボタンを削除ボタンは使用不可能にしておく
+        if($("#m_org_org_cd").val() == ""){
+          $("#button_update").attr("disabled", "disabled");
+          $("#button_delete").attr("disabled", "disabled");
+        }else{
+          $("#button_update").attr("disabled", "");
+          $("#button_delete").attr("disabled", "");
+        }
+      }
+    );
+
+
+    function check_input(){
+
+      var result = false;
+      var cd_length = 0;
+      var org_lvl = $("#m_org_org_lvl").val();
+      if(org_lvl == 1){
+        cd_length = 2;
+      }else if(org_lvl == 2){
+        cd_length = 4;
+      }else if(org_lvl == 3){
+        cd_length = 6;
+      }
+
+      var result1 = inValueChk($("#m_org_org_cd").val(), 2, 0, 1, cd_length, cd_length, "組織CD");
+      var result2 = inValueChk($("#org_name").val(), 99, 1, 1, 0, 0, "組織名");
+      var result3 = inValueChk($("#m_org_tel").val(), 6, 0, 0, 0, 0, "電話番号");
+      var result4 = inValueChk($("#m_org_fax").val(), 6, 0, 0, 0, 0, "FAX番号");
+      var result5 = inValueChk($("#m_org_sort_no").val(), 0, 0, 1, 2, 1, "表示順");
+
+      if(result1 && result2 && result3 && result4 && result5){
+        result = true;
+      }
+
+      return result;
+    }
+
+    /**
+     * 入力フォームの内容を取得します。
+     */
+    function get_form_data(){
+
+      var result = "";
+
+      result  = "id="                 + $("#m_org_id").val()        + "&";
+      result += "org_cd="             + $("#m_org_org_cd").val()    + "&";
+      result += "org_lvl="            + $("#m_org_org_lvl").val()   + "&";
+      result += "org_name="           + $("#org_name").val()        + "&";
+      result += "tel="                + $("#m_org_tel").val()       + "&";
+      result += "fax="                + $("#m_org_fax").val()       + "&";
+      result += "sort_no="            + $("#m_org_sort_no").val()   + "&";
+      result += "authenticity_token=" + $("#authenticity_token").val();
+
+      return result;
+    }
+  -->
+</script>
