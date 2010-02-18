@@ -77,7 +77,10 @@
     $("#select_action_groups").change(
       function(){
         var action_group_cd = $("#select_action_groups").val();
-        if(action_group_cd != ""){
+        if(action_group_cd == null){
+          action_group_cd = "";
+        }
+//        if(action_group_cd == ""){
           jQuery.ajax(
             {
               type: "GET",
@@ -95,7 +98,7 @@
               }
             }
           );
-        }
+//        }
       }
     );
 
@@ -106,8 +109,6 @@
     $("#button_action_groups").click(
       function(){
         var action_group_cd = $("#select_action_groups").val();
-
-        if (action_group_cd != null && action_group_cd != "") {
           jQuery.ajax(
             {
               type: "GET",
@@ -125,7 +126,6 @@
               }
             }
           );
-        }
       }
     );
 
@@ -138,29 +138,27 @@
         var action_group_cd = $("#select_action_groups").val();
         var action_cd = $("#select_actions").val();
 
-        if(action_cd != null && action_cd != ""){
-          jQuery.ajax(
-            {
-              type : "GET",
-              url  : "/master/report/input_action",
-              data :
-                {
-                  action_group_cd : action_group_cd,
-                  action_cd : action_cd
-                },
-              success :
-                function(data, dataType){
-                  $("#input_form").html(data);
-                },
-              error :
-                function(){
-                  alert("通信エラー");
-                },
-              complete :
-                function(){}
-            }
-          );
-        }
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/master/report/input_action",
+            data :
+              {
+                action_group_cd : action_group_cd,
+                action_cd : action_cd
+              },
+            success :
+              function(data, dataType){
+                $("#input_form").html(data);
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
       }
     );
 

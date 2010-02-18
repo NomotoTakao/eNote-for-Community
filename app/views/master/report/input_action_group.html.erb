@@ -1,21 +1,23 @@
-<table class="master_table2">
+<table class="master_table4">
   <tr>
-    <td class="master_table2_title">活動内容グループCD</td>
+    <td class="master_table2_title">活動内容グループCD<font style="weight:bold;color:red">(必須)</font></td>
     <td class="master_table2_content">
       <%= hidden_field :m_action_groups, :id %>
-      <%= text_field :m_action_groups, :action_group_cd, :class=>"ime_off", :size=>4 %>
+      <%= text_field :m_action_groups, :action_group_cd, :class=>"ime_off", :size=>4, :maxlength=>4, :style=>"text-align:right;" %>
+      <input type="checkbox" id="action_group_cd_auto_number" value="1" />自動採番
+      <div id="auto_number_result"></div>
     </td>
   </tr>
   <tr>
-    <td class="master_table2_title">活動内容グループ名</td>
+    <td class="master_table2_title">活動内容グループ名<font style="weight:bold;color:red">(必須)</font></td>
     <td class="master_table2_content">
       <%= text_field :m_action_groups, :action_group_name, :class=>"ime_on" %>
     </td>
   </tr>
   <tr>
-    <td class="master_table2_title">表示順</td>
+    <td class="master_table2_title">表示順<font style="weight:bold;color:red">(必須)</font></td>
     <td class="master_table2_content">
-      <%= text_field :m_action_groups, :sort_no, :class=>"ime_off", :size=>3 %>
+      <%= text_field :m_action_groups, :sort_no, :class=>"ime_off", :size=>3, :maxlength=>2, :style=>"text-align:right;" %>
     </td>
   </tr>
   <tr>
@@ -36,72 +38,105 @@
   </tr>
 </table>
 <input type="hidden" id="authenticity_token" value="<%= form_authenticity_token %>" />
+<div id="action_group_exists" style="display:none;"></div>
 
 <script type="text/javascript">
   <!--
     /**
-     *
+     * 「追加」ボタンが押下されたときに発生するイベント
      * @param {Object} {type:"POST"
      * @param {Object} url:"/master/report/action_group_add"
      * @param {Object} data:get_formdata(
      */
     $("#button_add").click(
       function(){
-        jQuery.ajax(
-          {
-            type : "POST",
-            url  : "/master/report/action_group_add",
-            data : get_formdata(),
-            success :
-              function(data, dataType){
-                $("#select_action_groups").html(data);
-                // 活動内容セレクトボックスの内容をクリアする。
-                $("#select_actions").html("");
-                // 入力フォームをクリアスる。
-                $("#input_form").html("");
-              },
-            error :
-              function(){
-                alert("通信エラー");
-              },
-            complete :
-              function(){}
-          }
-        );
+        var action_group_exists_msg = "";
+        if(check_input()){
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/master/report/action_group_exists",
+              data :
+                {
+                  action_group_cd : $("#m_action_groups_action_group_cd").val()
+                },
+              success :
+                function(data, dataType){
+                  $("#action_group_exists").html(data);
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){
+                  action_group_exists_msg = $("#action_group_exists_msg").val();
+                  // action_group_exists.html.erbのmsgフィールドにメッセージが入っていない場合、登録処理を続行
+                  if(action_group_exists_msg == ""){
+                    jQuery.ajax(
+                      {
+                        type : "POST",
+                        url  : "/master/report/action_group_add",
+                        data : get_formdata(),
+                        success :
+                          function(data, dataType){
+                            alert("登録しました。");
+                            $("#select_action_groups").html(data);
+                            // 活動内容セレクトボックスの内容をクリアする。
+                            $("#select_actions").html("");
+                            // 入力フォームをクリアスる。
+                            $("#input_form").html("");
+                          },
+                        error :
+                          function(){
+                            alert("通信エラー");
+                          },
+                        complete :
+                          function(){}
+                      }
+                    );
+                  }
+                }
+            }
+          );
+        }
       }
     );
 
     /**
-     *
+     * 「更新」ボタンが押下されたときに発生するイベント
      */
     $("#button_update").click(
       function(){
-        jQuery.ajax(
-          {
-            type : "POST",
-            url  : "/master/report/action_group_update",
-            data : get_formdata(),
-            success :
-              function(data, dataType){
-                $("#select_action_groups").html(data);
-                // 活動内容セレクトボックスの内容をクリアする。
-                $("#select_actions").html("");
-                // 入力フォームをクリアスる。
-                $("#input_form").html("");
-              },
-            error :
-              function(){
-                alert("通信エラー");
-              },
-            complete :
-              function(){}
-          }
-        );
+        if(check_input){
+          jQuery.ajax(
+            {
+              type : "POST",
+              url  : "/master/report/action_group_update",
+              data : get_formdata(),
+              success :
+                function(data, dataType){
+                  alert("更新しました。");
+                  $("#select_action_groups").html(data);
+                  // 活動内容セレクトボックスの内容をクリアする。
+                  $("#select_actions").html("");
+                  // 入力フォームをクリア
+                  $("#input_form").html("");
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){}
+            }
+          );
+        }
       }
     );
 
     /**
-     *
+     * 「削除」ボタンが押下されたときに発生するイベント
      */
     $("#button_delete").click(
       function(){
@@ -112,6 +147,7 @@
             data : get_formdata(),
             success :
               function(data, dataType){
+                alert("削除しました。");
                 $("#select_action_groups").html(data);
                 // 活動内容セレクトボックスの内容をクリアする。
                 $("#select_actions").html("");
@@ -130,7 +166,74 @@
     );
 
     /**
-     *
+     * 「自動採番」チェックボックスのチェックが付けられたとき/外されたときに発生するイベント
+     */
+    $("#action_group_cd_auto_number").click(
+      function(){
+        var checked = $(this).attr("checked");
+        if(checked){
+          $("#m_action_groups_action_group_cd").attr("readonly", "readonly");
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/master/report/action_group_cd_auto_number",
+              data : {},
+              success :
+                function(data, dataType){
+                  $("#auto_number_result").html(data);
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){}
+            }
+          );
+        }else{
+          $("#m_action_groups_action_group_cd").attr("readonly", "");
+        }
+      }
+    );
+
+    /**
+     * 画面がロードされたときに発生するイベント
+     */
+    $(document).ready(
+      function(){
+        var action_group_cd = $("#m_action_groups_action_group_cd").val();
+        if(action_group_cd != ""){
+          $("#button_update").attr("disabled", "");
+          $("#button_delete").attr("disabled", "");
+        }else{
+          $("#button_update").attr("disabled", "disabled");
+          $("#button_delete").attr("disabled", "disabled");
+        }
+      }
+    );
+
+    /**
+     * 入力項目の必須・文字種・文字列長のチェック処理
+     */
+    function check_input(){
+      var result = false;
+      var action_group_cd = $("#m_action_groups_action_group_cd").val();
+      var action_group_name = $("#m_action_groups_action_group_name").val();
+      var sort_no = $("#m_action_groups_sort_no").val();
+
+      var result1 = inValueChk(action_group_cd, 2, 0, 1, 4, 4, "活動内容グループCD");
+      var result2 = inValueChk(action_group_name, 99, 1, 1, 0, 0, "活動内容グループ名");
+      var result3 = inValueChk(sort_no, 0, 0, 1, 2, 1, "表示順");
+
+      if(result1 && result2 && result3){
+        result = true;
+      }
+
+      return result;
+    }
+
+    /**
+     * 入力フォームの入力内容を取得する処理
      */
     function get_formdata(){
 

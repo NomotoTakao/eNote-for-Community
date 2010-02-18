@@ -1,22 +1,32 @@
-<table class="master_table2">
+<table class="master_table4">
   <tr class="master_table2_title">
-    <td class="master_table2_title">活動内容CD</td>
+    <td class="master_table2_title">活動内容グループ</td>
+    <td class="master_table2_content">
+      <select id="list_action_groups" size="1" style="width:300px;">
+
+      </select>
+      <%= hidden_field :m_actions, :action_group_cd %>
+    </td>
+  </tr>
+  <tr class="master_table2_title">
+    <td class="master_table2_title">活動内容CD<font style="weight:bold;color:red">(必須)</font></td>
     <td class="master_table2_content">
       <%= hidden_field :m_actions, :id %>
-      <%= hidden_field :m_actions, :action_group_cd %>
-      <%= text_field :m_actions, :action_cd, :class=>"ime_off", :size=>4 %>
+      <%= text_field :m_actions, :action_cd, :class=>"ime_off", :size=>4, :maxlength=>4, :style=>"text-align:right;" %>
+      <input type="checkbox" id="action_cd_auto_number" value="1" />自動採番&nbsp<span style="color:red;font-size:8pt;">*自動採番のチェックを付けると、活動内容グループの変更はできません。</span>
+      <div id="auto_number_result"></div>
     </td>
   </tr>
   <tr>
-    <td class="master_table2_title">活動内容</td>
+    <td class="master_table2_title">活動内容<font style="weight:bold;color:red">(必須)</font></td>
     <td class="master_table2_content">
       <%= text_field :m_actions, :action_name, :class=>"ime_on" %>
     </td>
   </tr>
   <tr>
-    <td class="master_table2_title">表示順</td>
+    <td class="master_table2_title">表示順<font style="weight:bold;color:red">(必須)</font></td>
     <td class="master_table2_content">
-      <%= text_field :m_actions, :sort_no, :class=>"ime_off", :size=>3 %>
+      <%= text_field :m_actions, :sort_no, :class=>"ime_off", :size=>3, :maxlength=>2, :style=>"text-align:right;" %>
     </td>
   </tr>
   <tr>
@@ -37,68 +47,102 @@
   </tr>
 </table>
 <input type="hidden" id="authenticity_token" value="<%= form_authenticity_token %>" />
+<div id="action_exists" style="display:none;"></div>
 
 <script type="text/javascript">
   <!--
     /**
-     *
+     * 「追加」ボタンが押下された時に発生するイベント
      * @param {Object} {type:"POST"
      * @param {Object} url:"/master/report/action_add"
      * @param {Object} data:get_formdata(
      */
     $("#button_add").click(
       function(){
-        jQuery.ajax(
-          {
-            type : "POST",
-            url  : "/master/report/action_add",
-            data : get_formdata(),
-            success :
-              function(data, dataType){
-                $("#select_actions").html(data);
-                // 入力フォームをクリアスる。
-                $("#input_form").html("");
-              },
-            error :
-              function(){
-                alert("通信エラー");
-              },
-            complete :
-              function(){}
-          }
-        );
+        if(check_input()){
+          var action_exists_msg = "";
+          // 入力フォームに入力された活動内容CDが既に登録されていないかを調べます。
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/master/report/action_exists",
+              data :
+                {
+                  action_group_cd : $("#m_actions_action_group_cd").val(),
+                  action_cd       : $("#m_actions_action_cd").val()
+                },
+              success :
+                function(data, dataType){
+                  $("#action_exists").html(data);
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){
+                  action_exists_msg = $("#action_exists_msg").val();
+                  if(action_exists_msg == ""){
+                    jQuery.ajax(
+                      {
+                        type : "POST",
+                        url  : "/master/report/action_add",
+                        data : get_formdata(),
+                        success :
+                          function(data, dataType){
+                            alert("登録しました。");
+                            $("#select_actions").html(data);
+                            // 入力フォームをクリア
+                            $("#input_form").html("");
+                          },
+                        error :
+                          function(){
+                            alert("通信エラー");
+                          },
+                        complete :
+                          function(){}
+                      }
+                    );
+                  }
+                }
+            }
+          );
+        }
       }
     );
 
     /**
-     *
+     * 「更新」ボタンが押下された時に発生するイベント
      */
     $("#button_update").click(
       function(){
-        jQuery.ajax(
-          {
-            type : "POST",
-            url  : "/master/report/action_update",
-            data : get_formdata(),
-            success :
-              function(data, dataType){
-                $("#select_actions").html(data);
-                // 入力フォームをクリアスる。
-                $("#input_form").html("");
-              },
-            error :
-              function(){
-                alert("通信エラー");
-              },
-            complete :
-              function(){}
-          }
-        );
+        if(check_input()){
+          jQuery.ajax(
+            {
+              type : "POST",
+              url  : "/master/report/action_update",
+              data : get_formdata(),
+              success :
+                function(data, dataType){
+                  alert("更新しました。");
+                  $("#select_actions").html(data);
+                  // 入力フォームをクリア
+                  $("#input_form").html("");
+                },
+              error :
+                function(){
+                  alert("通信エラー");
+                },
+              complete :
+                function(){}
+            }
+          );
+        }
       }
     );
 
     /**
-     *
+     * 「削除」ボタンが押下されたときに発生するイベント
      */
     $("#button_delete").click(
       function(){
@@ -109,8 +153,9 @@
             data : get_formdata(),
             success :
               function(data, dataType){
+                alert("削除しました。");
                 $("#select_actions").html(data);
-                // 入力フォームをクリアスる。
+                // 入力フォームをクリア
                 $("#input_form").html("");
               },
             error :
@@ -125,7 +170,121 @@
     );
 
     /**
-     *
+     * 活動内容グループリストボックスの内容が変更されたときに発生するイベント
+     */
+    $("#list_action_groups").change(
+      function(){
+        var action_group_cd = $(this).val();
+        $("#m_actions_action_group_cd").val(action_group_cd);
+        $("#m_actions_action_cd").val("");
+      }
+    );
+
+    /**
+     * 「自動採番」チェックボックスのチェックが付けられた時/外されたときに発生するイベント
+     */
+    $("#action_cd_auto_number").click(
+      function(){
+        var checked = $(this).attr("checked");
+        if(checked){
+          $("#m_actions_action_cd").attr("readonly", "readonly");
+          $("#list_action_groups").attr("disabled", "disabled");
+          var action_group_cd = $("#m_actions_action_group_cd").val();
+          jQuery.ajax(
+            {
+              type : "GET",
+              url  : "/master/report/action_cd_auto_number",
+              data :
+                {
+                  action_group_cd : action_group_cd
+                },
+              success :
+                function(data, dataType){
+                  $("#auto_number_result").html(data);
+                }
+            }
+          );
+        }else{
+          $("#m_actions_action_cd").attr("readonly", "");
+          $("#list_action_groups").attr("disabled", "");
+        }
+      }
+    );
+
+    /**
+     * 画面がロードされた時に発生するイベント
+     */
+    $(document).ready(
+      function(){
+        var select_action_groups_val = $("#select_action_groups").val();
+        var m_actions_action_group_cd = $("#m_actions_action_group_cd").val();
+        var m_actions_action_cd = $("#m_actions_action_cd").val();
+
+        if(action_cd != ""){
+          $("#button_update").attr("disabled", "");
+          $("#button_delete").attr("disabled", "");
+        }else{
+          $("#button_update").attr("disabled", "disabled");
+          $("#button_delete").attr("disabled", "disabled");
+        }
+
+        jQuery.ajax(
+          {
+            type : "GET",
+            url  : "/master/report/action_group_list",
+            data : {},
+            success :
+              function(data, dataType){
+                // 活動内容グループリストの設定
+                $("#list_action_groups").html(data);
+                if(select_action_groups_val != null && select_action_groups_val != ""){
+                  $("#m_actions_action_group_cd").val(select_action_groups_val);
+                }else{
+                  $("#m_actions_action_group_cd").val($("#list_action_groups").val());
+                }
+                $("#list_action_groups").val($("#m_actions_action_group_cd").val());
+
+                // 既存の活動内容詳細のCDの付け替えは、データの一貫性を保つため許可しない。
+                if(m_actions_action_cd != ""){
+                  $("#list_action_groups").attr("disabled", "disabled");
+                  $("#m_actions_action_cd").attr("readonly", "readonly");
+                  $("#action_cd_auto_number").attr("disabled", "disabled");
+                }
+              },
+            error :
+              function(){
+                alert("通信エラー");
+              },
+            complete :
+              function(){}
+          }
+        );
+      }
+    );
+
+    /**
+     * 入力項目の必須・文字種・文字列長のチェック処理
+     */
+    function check_input(){
+
+      var result = false;
+      var action_cd = $("#m_actions_action_cd").val();
+      var action_name = $("#m_actions_action_name").val();
+      var sort_no = $("#m_actions_sort_no").val();
+
+      var result1 = inValueChk(action_cd, 2, 0, 1, 4, 4, "活動内容CD");
+      var result2 = inValueChk(action_name, 99, 1, 1, 0, 0, "活動内容名");
+      var result3 = inValueChk(sort_no, 0, 0, 1, 2, 1, "表示順");
+
+      if(result1 && result2 && result3){
+        result = true;
+      }
+
+      return result;
+    }
+
+    /**
+     * 入力フォームのデータを取得する処理
      */
     function get_formdata(){
 
