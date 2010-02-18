@@ -54,6 +54,13 @@
   width:                        1000px;
   text-align:                   left;
 }
+.master_table4 {
+  border:                       1px solid #000;
+  border-collapse:              collapse;
+  margin:                       0px;
+  padding:                      0px;
+  width:                        950px;
+}
 
 .master_table_button {
   width:                        1000px;
