@@ -360,6 +360,9 @@ class Report::MainController < ApplicationController
 
     date = params[:date]
     @d_report = DReport.find(:first, :conditions=>{:delf=>0, :action_date=>date})
+    if @d_report.nil?
+      @d_report = DReport.new
+    end
   end
 
   #
