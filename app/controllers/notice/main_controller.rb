@@ -171,9 +171,8 @@ class Notice::MainController < ApplicationController
       @index_name = "すべて"
     end
 
-
     if @hottopic_flg == "0"
-      @index_name = "ホットトピック"
+      @index_name = "お勧め情報"
     end
 
     # 組織名の取得

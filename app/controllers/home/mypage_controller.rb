@@ -1,22 +1,18 @@
 class Home::MypageController < ApplicationController
-  layout "portal", :except => [:gadget_hottopic,:gadget_bbs,:gadget_alert,:gadget_new_message,:gadget_notice,:gadget_blog_long,:gadget_kbn99,:gadget_cabinet_long,:gadget_schedule]
+  layout "portal", :except => [:gadget_hottopic,:gadget_bbs,:gadget_alert,:gadget_new_message,:gadget_notice,:gadget_blog_long,:gadget_notice_new,:gadget_cabinet_long,:gadget_schedule]
 
   @@limit_count = 10
 
   def index
     #パンくずリストに表示させる
     @pankuzu += "ホーム"
-
     @my_org = MUserBelong.get_main_org(current_m_user.user_cd)
-
   end
 
   def gadget_hottopic
-
     conditions_sql = ""
     conditions_param = {}
     order_sql = ""
-
 
     # お知らせ一覧の取得
     select_sql = " DISTINCT d_notice_bodies.* "
@@ -187,9 +183,9 @@ class Home::MypageController < ApplicationController
     @gadget_title = "更新情報（共有キャビネット）"
   end
 
-  def gadget_kbn99
+  def gadget_notice_new
     @notice_setting = MNoticeSetting.new.get_notice_settings
-    @kbn99_list = DNoticeBody.get_gadget_kbn99 params[:page], 5, current_m_user.user_cd
+    @notice_new_list = DNoticeBody.get_gadget_notice_new params[:page], 5, current_m_user.user_cd
     @gadget_title = "新着情報（お知らせ）"
   end
 

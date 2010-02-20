@@ -38,4 +38,3 @@
 37,37,"0",,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
 38,38,"0",,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
 39,39,"0",,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
-40,40,"0",,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"

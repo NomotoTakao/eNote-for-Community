@@ -136,7 +136,7 @@ class DNoticeBody < ActiveRecord::Base
   # @param per_page - 1ページあたりの最大表示件数
   # @param user_cd - ログインユーザーCD
   #
-  def self.get_gadget_kbn99 page, per_page, user_cd
+  def self.get_gadget_notice_new page, per_page, user_cd
 
     select_sql = ""
     joins_sql = ""

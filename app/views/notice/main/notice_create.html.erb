@@ -36,23 +36,23 @@
         <table>
           <tr>
             <td>
-          <div id="public_org_select" />
+              <div id="public_org_select" />
             </td>
-      <td style="vertical-align:middle;">
-        <input type="button" id="public_org_add" class="submit_small" value=">" />
-        <br />
-        <br />
-        <input type="button" id="public_org_delete" class="submit_small" value="<" />
-      </td>
-      <td valign="top" text-align="left">
-        <div style="border:1px solid black;width:150px;height:210px;background-color:#fff;text-align:left;">
-          <%= select_tag("public_org_list", options, :size=>13, :style=>'width:100%;height:100%;border:0;', :multiple=>true) %>
-          <input type="hidden" id="selected_public_org_list" name="selected_public_org_list" value="<%= hidden_value %>" />
-          <input type="hidden" id="deleted_public_org_list" name="deleted_public_org_list" value="" />
-        </div>
-      </td>
-    </tr>
-  </table>
+            <td style="vertical-align:middle;">
+              <input type="button" id="public_org_add" class="submit_small" value=">" />
+              <br />
+              <br />
+              <input type="button" id="public_org_delete" class="submit_small" value="<" />
+            </td>
+            <td valign="top" text-align="left">
+              <div style="border:1px solid black;width:200px;height:210px;background-color:#fff;text-align:left;">
+                <%= select_tag("public_org_list", options, :size=>13, :style=>'width:100%;height:100%;border:0;', :multiple=>true) %>
+                <input type="hidden" id="selected_public_org_list" name="selected_public_org_list" value="<%= hidden_value %>" />
+                <input type="hidden" id="deleted_public_org_list" name="deleted_public_org_list" value="" />
+              </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
     <tr>
@@ -87,7 +87,7 @@
       </td>
     </tr>
     <tr>
-      <td class="admin_pages_edit_table_title">ホットトピック</td>
+      <td class="admin_pages_edit_table_title">お勧め情報への表示</td>
       <td class="admin_pages_edit_table_content">
       <!-- 「ホットトピック」 -->
       <%= render :partial=>"hottopic", :locals=>{:hottopic_kbn=>@hot_topic_kbn, :hottopic_flg=>@d_notice_body.hottopic_flg} %>

@@ -19,15 +19,22 @@
       <!-- 選択された階層の全データ -->
       <tr style="width:100%;text-align:left;">
         <td>
-          <div id="select_menu">
-            <% options = "" %>
-            <% if !@edit_menu_list.nil? %>
-              <% @edit_menu_list.each do |data|%>
-                <% options += "<option value=#{data.id} >#{data.title}</options>" %>
-              <% end %>
-            <% end %>
-            <%= select_tag('decided_select_menu', options, :size=>10, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickTargetMenu();') %>
-          </div>
+          <table class="master_table2">
+            <tr>
+              <td class="master_table2_title">メニュー項目&nbsp;</td>
+              <td class="master_table2_content">
+                <div id="select_menu">
+                  <% options = "" %>
+                  <% if !@edit_menu_list.nil? %>
+                    <% @edit_menu_list.each do |data|%>
+                      <% options += "<option value=#{data.id} >#{data.title}&nbsp;&nbsp;&nbsp;&nbsp;（表示順：#{data.sort_no}）</options>" %>
+                    <% end %>
+                  <% end %>
+                  <%= select_tag('decided_select_menu', options, :size=>10, :multiple=>false, :style=>'width:300px;', :onchange=>'ClickTargetMenu();') %>
+                </div>
+              </td>
+            </tr>
+          </table>
         </td>
       </tr>
 

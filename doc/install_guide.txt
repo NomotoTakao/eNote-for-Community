@@ -1,0 +1,47 @@
+●eNote for Community インストールガイド   Version 0.9.1   2010/02/20
+
+　◯用意するもの
+　　・Ruby 1.8.7 (http://www.ruby-lang.org/ja/)
+　　・RubyGems 1.3.5 (http://rubyforge.org/projects/rubygems/)
+　　　　actionmailer  （gemコマンドを使ってインストール）
+　　　　actionpack    （gemコマンドを使ってインストール）
+　　　　activerecord  （gemコマンドを使ってインストール）
+　　　　activeresource（gemコマンドを使ってインストール）
+　　　　activesupport （gemコマンドを使ってインストール）
+　　　　fastercsv     （gemコマンドを使ってインストール）
+　　　　hpricot       （gemコマンドを使ってインストール）
+　　　　pg            （gemコマンドを使ってインストール）
+　　　　rack          （gemコマンドを使ってインストール）
+　　　　rake          （gemコマンドを使ってインストール）
+　　・PostgreSQL8.4 (http://www.postgresql.org/)
+　　・eNote-for-Community (http://community.enote.jp/contents/page/view/4)
+
+　◯環境設定手順
+　　1.  Rubyを適当なディレクトリにインストールします。
+　　2.  RubyGeｍを利用してeNote-for-Communityの実行に必要な拡張機能をインストールします。
+　　　　railsをインストールすると、以下のgemsも同時にインストールされます。
+　　　　　actionmailer
+　　　　　actionpack
+　　　　　activerecord
+　　　　　activeresource
+　　　　　activesupport
+　　　　　rack
+　　　　　rake
+　　　　以下のgemsは個別にインストールしてください。
+　　　　fastercsv (CSV解析プラグイン)
+　　　　hpricot   (Ruby用のHTMLパーサ)
+　　　　pg        (PostgreSQL接続ドライバ)
+　　
+　　3.　PostgreSQLのインストール
+　　4.　eNote-for-Communityのソースを適当なディレクトリに展開します。
+　　5.　展開したディレクトリの配下に存在する、"database.yml.sample"と"environment.rb.sample"
+　　　　の2つのファイルのファイル名から、末尾の".sample"を取り除きます。
+　　6.　展開したディレクトリに実行し、rakeを実行してデータベースを作成し、
+　　　　初期データを投入します。
+　　　　">rake db:create"
+　　　　">rake db:migrate"
+　　7.　WEBrickを起動します。
+　　　　">ruby script/server"
+　　8.　Webブラウザで"http://localhost:3000"にアクセスすると、eNoteの画面が表示されます。
+
+
