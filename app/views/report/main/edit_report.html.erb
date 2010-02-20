@@ -1,13 +1,15 @@
 <%= hidden_field :d_report_customer, :id %>
-<table class="admin_pages_edit_table" cellspacing="0" cellpadding="1" style="width:380px;">
-  <caption style="text-align:right;">報告日：
-    <input type="text" id="dialog_report_date" size="11" maxlength="11" value="<%= @d_report_customer.d_report.action_date %>" style="ime-mode:disabled;" />
-  </caption>
+<table class="admin_pages_edit_table" cellspacing="0" cellpadding="1" style="width:480px;">
+  <tr>
+    <td class="admin_pages_edit_table_title" style="width:80px;">報告日</td>
+    <td class="admin_pages_edit_table_content">
+      <input type="text" id="dialog_report_date" size="11" maxlength="11" value="<%= @d_report_customer.d_report.action_date %>" style="ime-mode:disabled;" />
+    </td>
+  </tr>
   <tr>
     <td class="admin_pages_edit_table_title">得意先</td>
     <td class="admin_pages_edit_table_content">
       <select id="select_customer" style="width:230px;">
-        <option value="">&nbsp;</option>
         <% unless @customer_list.nil? %>
           <% @customer_list.each do |customer| %>
             <option value="<%= customer.company_cd %>"><%= customer.name %></option>
@@ -21,7 +23,6 @@
     <td class="admin_pages_edit_table_title">対象者</td>
     <td class="admin_pages_edit_table_content">
       <select id="select_target" style="width:230px;">
-        <option value="">&nbsp;</option>
         <% unless @action_target_list.nil? %>
           <% @action_target_list.each do |target| %>
             <option value="<%= target.action_target_cd %>"><%= target.action_target_name %></option>
@@ -35,7 +36,6 @@
     <td class="admin_pages_edit_table_title">活動内容</td>
     <td class="admin_pages_edit_table_content">
       <select id="select_group" style="width:230px;">
-        <option value="">&nbsp;</option>
         <% unless @action_group_list.nil? %>
           <% @action_group_list.each do |group| %>
             <option value="<%= group.action_group_cd %>"><%= group.action_group_name %></option>
@@ -49,7 +49,6 @@
     <td class="admin_pages_edit_table_title">活動詳細</td>
     <td class="admin_pages_edit_table_content">
       <select id="select_action" style="width:230px;">
-        <option value="">&nbsp;</option>
       </select>
       <%= hidden_field :d_report_customer, :action_cd %>
     </td>
@@ -69,7 +68,7 @@
   <tr>
     <td class="admin_pages_edit_table_title">コメント</td>
     <td class="admin_pages_edit_table_content">
-      <%= text_area :d_report_customer, :comment, :rows=>"5", :cols=>"35", :class=>"ime_on" %>
+      <%= text_area :d_report_customer, :comment, :rows=>"5", :class=>"ime_on", :style => "width:300px;" %>
     </td>
   </tr>
 </table>
@@ -166,6 +165,8 @@
      */
     $(document).ready(
       function(){
+        $("#edit_report").attr("title", "日報の修正");
+        
         var company_cd = $("#d_report_customer_company_cd").val();
         var target_cd = $("#d_report_customer_action_target_cd").val();
         var group_cd = $("#d_report_customer_action_group_cd").val();

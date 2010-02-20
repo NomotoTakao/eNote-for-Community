@@ -1,79 +1,74 @@
-    <table class="enote_app_title">
-        <tr>
-            <td class="e_note_content_title" style="width:120px;">
-                <%= h("日報確認") %>
-            </td>
-            <td style="width:180px;">&nbsp;</td>
-            <td style="width:70px; text-align:right;">
-                <%#= title_span('日付：','65px') %>
-            </td>
-            <td style="width:200px; text-align;left;">
-                <%#= exec_validate("enote_boss_inputdate", "/^([12][0-9]{3})-(0?0[1-9]|1[0-2])-(0?0[1-9]|[12][0-9]|3[01])$/", "") %>
-                <div>
-                    <span class='enote_icon_arrow_left' onclick="ClickBeforeDay_comment();">&nbsp;</span>
-                    <input type="text" id="comment_report_date" value="<%= Date.today %>" size="11" maxlength="11" />
-                    <span class='enote_icon_arrow_right' onclick="ClickNextDay_comment();">&nbsp;</span>
-                    <span id='enote_boss_inputdate_msg'></span>
-                </div>
-                <div id="lh_pull_down_calendar_menu"></div>
-            </td>
-            <td style="width:70px; text-align:right;">担当者</td>
-            <td style="width:200px; text-align;left;">
-                <div>
-                    <% unless @subordinate_list.nil? %>
-                      <select id="person" size="1">
-                        <option value="">&nbsp;</option>
-                        <% @subordinate_list.each do |subordinate| %>
-                          <option value="<%= subordinate.user_cd %>"><%= user_name subordinate.user_cd %></option>
-                        <% end %>
-                      </select>
-                    <% end %>
-                </div>
-            </td>
-            <td>
-                &nbsp;
-            </td>
-        </tr>
-    </table>
+<div style="margin-left:10px;">
+  <table class="enote_app_title">
+      <tr>
+          <td class="e_note_content_title" style="width:120px;">
+              <%= h("日報確認") %>
+          </td>
+          <td style="width:180px;">&nbsp;</td>
+          <td style="width:70px; text-align:right;">
+            <img class="enote_title_block" src="/images/widget_ico_on.gif"/>日付：
+          </td>
+          <td style="width:200px; text-align;left;">
+              <%#= exec_validate("enote_boss_inputdate", "/^([12][0-9]{3})-(0?0[1-9]|1[0-2])-(0?0[1-9]|[12][0-9]|3[01])$/", "") %>
+              <div>
+                  <span class='enote_icon_arrow_left' onclick="ClickBeforeDay_comment();">&nbsp;</span>
+                  <input type="text" id="comment_report_date" value="<%= Date.today %>" size="11" maxlength="11" style="" />
+                  <span class='enote_icon_arrow_right' onclick="ClickNextDay_comment();">&nbsp;</span>
+                  <span id='enote_boss_inputdate_msg'></span>
+              </div>
+              <div id="lh_pull_down_calendar_menu"></div>
+          </td>
+          <td style="width:70px; text-align:right;">担当者</td>
+          <td style="width:200px; text-align;left;">
+              <div>
+                  <% unless @subordinate_list.nil? %>
+                    <select id="person" size="1" style="width:120px;">
+                      <option value="">&nbsp;</option>
+                      <% @subordinate_list.each do |subordinate| %>
+                        <option value="<%= subordinate.user_cd %>"><%= user_name subordinate.user_cd %></option>
+                      <% end %>
+                    </select>
+                  <% end %>
+              </div>
+          </td>
+          <td>
+              &nbsp;
+          </td>
+      </tr>
+  </table>
 
-  <table style="width: 940px;">
+  <table border="0" cellpadding="0" cellspacing="0" style="margin-left:5px;">
     <tr>
-      <td style="width: 940px;">
+      <td style="">
         <div id="RightColumn">
-          <table id='action_table_title_0' class="enote_general_table1_cell_bordered" style='width: 940px;'>
+          <table id='action_table_title_0' class="enote_general_table1_cell_bordered" style='width:940px;margin-left:1px;'>
             <tr class="enote_general_table1_title">
-              <th class="enote_general_table1_cell_bordered" style="width: 20px;">
-                    &nbsp;
-              </th>
-              <th class="enote_general_table1_cell_bordered" style="text-align:center;width:300px;">
+              <th class="enote_general_table1_cell_bordered" style="text-align:center;width:310px;padding:0px;">
                     <%= h("得意先") %>
               </th>
-              <th class="enote_general_table1_cell_bordered" style="width: 150px;text-align:center;">
+              <th class="enote_general_table1_cell_bordered" style="width: 150px;text-align:center;padding:0px;">
                     <%= h("対象者") %>
               </th>
-              <th class="enote_general_table1_cell_bordered" style="width: 120px;text-align:center;">
+              <th class="enote_general_table1_cell_bordered" style="width: 140px;text-align:center;padding:0px;">
                     <%= h("活動内容") %>
               </th>
-              <th class="enote_general_table1_cell_bordered" style="width: 120px;text-align:center;">
+              <th class="enote_general_table1_cell_bordered" style="width: 140px;text-align:center;padding:0px;">
                     <%= h("活動詳細") %>
               </th>
               <%# if ftime == 1 %>
-                <th class="enote_general_table1_cell_bordered" style="width: 80px;text-align:center;">
+                <th class="enote_general_table1_cell_bordered" style="width: 100px;text-align:center;padding:0px;">
                     <%= h("活動時間") %>
               </th>
               <%# end %>
               <%# if fsales == 1 %>
-              <th class="enote_general_table1_cell_bordered" style="width: 80px;text-align:center;">
+              <th class="enote_general_table1_cell_bordered" style="width: 100px;text-align:center;padding:0px;">
                     <%= h("売上金額") %>
               </th>
                 <%# end %>
-              <th class="enote_general_table1_cell_bordered" style="width: 70px;">
-                    &nbsp;
-              </th>
             </tr>
           </table>
         </div>
-        <div id="comment_list" style="overflow-y:scroll;width:957px;height:200px;"></div>
+        <div id="comment_list" style="overflow-y:scroll;width:957px;height:240px;border-left:1px solid #b2b2b2;border-bottom:1px solid #b2b2b2;"></div>
         <input type="hidden" id="selected_report_id" value="" />
       </td>
     </tr>
@@ -88,7 +83,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <textarea id="subordinate_comment" class="ime_on" rows="5" cols="60" tabindex="-1" readonly ></textarea>
+                    <textarea id="subordinate_comment" class="ime_on" rows="5" tabindex="-1" readonly style="width:400px;"></textarea>
                   </td>
                 </tr>
               </table>
@@ -100,7 +95,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <textarea id="superior_comment" class="ime_on" rows="5" cols="60" ></textarea>
+                    <textarea id="superior_comment" class="ime_on" rows="5" style="width:400px;"></textarea>
                   </td>
                 </tr>
               </table>
@@ -115,9 +110,10 @@
               <table style="width:100%;">
                 <tr>
                   <td style="width:80px;">活動時間計</td>
-                  <td style="width:80px;"><span id="total_time" />h</span></td>
+                  <td style="width:80px;" align="right"><span id="total_time" />h</span></td>
+                  <td style="width:10px;">&nbsp;</td>
                   <td style="width:80px;">売上金額計</td>
-                  <td style="width:80px;"><span id="total_sales" />円</td>
+                  <td style="width:80px;" align="right"><span id="total_sales" />円</td>
                 </tr>
               </table>
             </td>
@@ -130,7 +126,8 @@
 
 <input type="hidden" id="comment_authenticity_token" value="<%=form_authenticity_token %>" />
 <div id="next_confirmed_date" style="display:none;" />
-
+</div>
+  
 <script type="text/javascript">
   <!--
     /**

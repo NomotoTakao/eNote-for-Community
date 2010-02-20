@@ -1,6 +1,6 @@
-<table>
+<table border="0" cellpadding="3px" cellspacing="0" style="width:100%;">
   <tr>
-    <td>活動日</td>
+    <td style="width:80px;">活動日</td>
     <td colspan="3">
       <input type="text" id="date_from" size="11" />&nbsp;～&nbsp;<input type="text" id="date_to" size="11" />
     </td>
@@ -41,7 +41,7 @@
         <option value="">&nbsp;</option>
       </select>
     </td>
-    <td>
+    <td align="center">
       <input type="button" id="button_reference_search" class="submit_large" value="検索" />
 <!--
       <input type="button" id="button_reference_csv" class="submit_large" value="CSV出力" />
@@ -49,29 +49,26 @@
     </td>
   </tr>
 </table>
-<table style="width:100%;">
+<table border="0" cellpadding="0" cellspacing="0" style="width:100%;margin-top:5px;">
   <tr>
     <td>
-      <div style="width:100%;">
-        <table class="enote_general_table1" style="width:98%;">
-          <tr class="enote_general_table1_title">
-            <th class="enote_general_table1_cell_bordered" style="width:33px;;">&nbsp;</th>
-            <th class="enote_general_table1_cell_bordered" style="width:32px;">行</th>
-            <th class="enote_general_table1_cell_bordered" id="activity_date" style="width:10%;">日付</th>
-            <th class="enote_general_table1_cell_bordered" id="activity_user_cd" style="width:10%;">担当者</th>
-            <th class="enote_general_table1_cell_bordered" style="width:30%;">得意先</th>
-            <th class="enote_general_table1_cell_bordered" style="width:10%;">対象者</th>
-            <th class="enote_general_table1_cell_bordered" style="width:10%;">活動分類</th>
-            <th class="enote_general_table1_cell_bordered" style="width:10%;">活動詳細</th>
-            <th class="enote_general_table1_cell_bordered" style="width:10%;">活動時間</th>
-          </tr>
-        </table>
-      </div>
+      <table class="enote_general_table1" border="0" cellpadding="0" cellspacing="0" style="width:860px;">
+        <tr class="enote_general_table1_title">
+          <th class="enote_general_table1_cell_bordered" id="activity_date" style="width:80px;padding:0px;">日付</th>
+          <th class="enote_general_table1_cell_bordered" id="activity_user_cd" style="width:100px;padding:0px;">担当者</th>
+          <th class="enote_general_table1_cell_bordered" style="width:220px;padding:0px;">得意先</th>
+          <th class="enote_general_table1_cell_bordered" style="width:100px;padding:0px;">対象者</th>
+          <th class="enote_general_table1_cell_bordered" style="width:100px;padding:0px;">活動分類</th>
+          <th class="enote_general_table1_cell_bordered" style="width:100px;padding:0px;">活動詳細</th>
+          <th class="enote_general_table1_cell_bordered" style="width:80px;padding:0px;">活動時間</th>
+          <th class="enote_general_table1_cell_bordered" style="width:80px;padding:0px;">売上金額</th>
+        </tr>
+      </table>
     </td>
   </tr>
   <tr>
     <td>
-      <div id="activity_reference_list" style="width:100%;height:340px;overflow-y:scroll;"></div>
+      <div id="activity_reference_list" style="width:877px;height:250px;overflow-y:scroll;border-bottom:1px solid #b2b2b2;border-left:1px solid #b2b2b2;"></div>
     </td>
   </tr>
 </table>

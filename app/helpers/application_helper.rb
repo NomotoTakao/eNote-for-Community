@@ -40,6 +40,7 @@ module ApplicationHelper
     end
   end
 
+  #Datetimeを年月日もしくは月日もしくは時刻を表示
   def datetime_strftime(indate)
     if indate.nil?
       return '---'
@@ -48,6 +49,20 @@ module ApplicationHelper
       if w_date.strftime('%y%m%d') == Date::today.strftime('%y%m%d')
         return w_date.strftime('%H:%M').to_s
       elsif w_date.strftime('%y') == Date::today.strftime('%y')
+        return w_date.strftime('%m月%d日').to_s
+      else
+        return w_date.strftime('%y/%m/%d').to_s
+      end
+    end
+  end
+
+  #Dateを年月日もしくは月日で表示
+  def date_strftime(indate)
+    if indate.nil?
+      return '---'
+    else
+      w_date = indate
+      if w_date.strftime('%y') == Date::today.strftime('%y')
         return w_date.strftime('%m月%d日').to_s
       else
         return w_date.strftime('%y/%m/%d').to_s

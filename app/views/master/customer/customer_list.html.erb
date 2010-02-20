@@ -1,5 +1,5 @@
 <% unless @customer_list.nil? %>
-  <table class="enote_general_table1_cell_bordered" style="width:100%;">
+  <table class="enote_general_table1_cell_bordered" cellpadding="0" cellspacing="0" style="width:940px;">
     <%
       counter = 1
       class_tr = "enote_general_table1_odd"
@@ -13,22 +13,22 @@
           class_tr = "enote_general_table1_odd"
         end
       %>
-      <tr class="<%= class_tr %>">
-        <td class="enote_general_table1_cell_bordered" style="width:10%;text-align:center;">
+      <tr class="<%= class_tr %>" style="height:25px;">
+        <td class="enote_general_table1_cell_bordered" style="width:100px;text-align:center;">
           <a href="javascript:customer_anchor('<%= customer.company_cd %>');">
             <%= customer.company_cd %>
           </a>
         </td>
-        <td class="enote_general_table1_cell_bordered" style="width:25%;">
-          &nbsp;<%= customer.name %>
+        <td class="enote_general_table1_cell_bordered" style="width:330px;">
+          <div style="margin:0px 4px;"><%= customer.name %></div>
         </td>
-        <td class="enote_general_table1_cell_bordered" style="width:15%;">
-          &nbsp;<%= customer.tanto_name%>
-        <td class="enote_general_table1_cell_bordered" style="width:15%;">
-          &nbsp;<%= customer.tel1 %>
+        <td class="enote_general_table1_cell_bordered" style="width:150px;">
+          <div style="margin:0px 4px;"><%= customer.tanto_name%></div>
+        <td class="enote_general_table1_cell_bordered" style="width:100px;">
+          <div style="margin:0px 4px;"><%= customer.tel1 %></div>
         </td>
-        <td class="enote_general_table1_cell_bordered" style="width:35%;">
-          &nbsp;<a href="<%= customer.url %>" target="_blank"><%= customer.url %></a>
+        <td class="enote_general_table1_cell_bordered" style="width:260px;">
+          <div style="margin:0px 4px;"><a href="<%= customer.url %>" target="_blank"><%= customer.url %></a></div>
         </td>
       </tr>
       <% counter += 1 %>

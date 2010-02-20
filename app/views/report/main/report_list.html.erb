@@ -4,7 +4,7 @@
     class_tr = "enote_general_table1_odd"
     class_td = "enote_general_table1_cell_bordered"
   %>
-  <table class="enote_general_table1_cell_bordered" style="width:940px;">
+  <table class="enote_general_table1_cell_bordered" border="0" cellpadding="0" cellspacing="0" style="width:940px;">
     <% @d_report.d_report_customers.each do |report| %>
       <%
         if counter % 2 == 0
@@ -14,29 +14,28 @@
         end
       %>
       <tr class="<%= class_tr %>">
-        <td class="<%= class_td %>" rowspan="2" style="width:20px;">
-          <input type="checkbox" name="chk" value="<%= report.id %>" />
+        <td class="<%= class_td %>" rowspan="2" valign="middle" style="text-align:center;width:25px;">
+          <input type="checkbox" name="chk" value="<%= report.id %>" style="border:0px;margin:0px;" />
         </td>
-        <td class="<%= class_td %>" rowspan="2" style="width:300px;">
-          &nbsp;<%= customer_name report.company_cd %>
+        <td class="<%= class_td %>" rowspan="2" valign="top" style="width:300px;">
+          <div style="margin:0px 4px;"><%= customer_name report.company_cd %></div>
         </td>
         <td class="<%= class_td %>" style="width:150px;">
-          &nbsp;<%= action_target_name report.action_target_cd %>
+          <div style="margin:0px 4px;"><%= action_target_name report.action_target_cd %></div>
         </td>
         <td class="<%= class_td %>" style="width:120px;">
-          &nbsp;<%= action_group_name report.action_group_cd%>
+          <div style="margin:0px 4px;"><%= action_group_name report.action_group_cd%></div>
         </td>
         <td class="<%= class_td %>" style="width:120px;">
-          &nbsp;<%= action_name report.action_cd %>
+          <div style="margin:0px 4px;"><%= action_name report.action_cd %></div>
         </td>
         <td class="<%= class_td %>" style="width:80px;text-align:right;">
-          <%= time_helper report.action_time.to_f %>&nbsp;時間&nbsp;
+          <div style="margin:0px 4px;"><%= time_helper report.action_time.to_f %>&nbsp;h</div>
         </td>
         <td class="<%= class_td %>" style="width:80px;text-align:right;">
-          <%= sales_helper report.sale_amount.to_i %>&nbsp;円&nbsp;
+          <div style="margin:0px 4px;"><%= sales_helper report.sale_amount.to_i %>&nbsp;円</div>
         </td>
-        <td class="<%= class_td %>" rowspan="2" style="width:70px;">
-          &nbsp;
+        <td class="<%= class_td %>" rowspan="2" style="width:65px;" align="center">
           <% if report.d_report.user_cd == current_m_user.user_cd %>
             <%= link_to image_tag("icons/icon_entry.gif", :alt=>"編集"), "javascript:edit_report(#{report.id});" %>
             <%= link_to image_tag("icons/icon_trash.gif", :alt=>"削除"), "javascript:delete_report(#{report.id});" %>
@@ -45,7 +44,7 @@
       </tr>
       <tr class="<%= class_tr %>">
         <td class="enote_general_table1_cell_bordered" style="text-align:center;font-weight:bold;background-color:#99CCFF;">コメント</td>
-        <td colspan="4" style="width:400px;"><%= report.comment %></td>
+        <td class="<%= class_td %>" colspan="4" style=""><div style="margin:0px 4px;"><%= report.comment %></div></td>
       </tr>
       <% counter = counter + 1 %>
     <% end %>
@@ -73,7 +72,6 @@
      * @param {Object} id - 日報ID
      */
     function edit_report(id){
-
       jQuery.ajax(
         {
           type     : "GET",
@@ -97,8 +95,8 @@
                   bgiframe: true,
                   modal     : true,
                   autoOpen  : false,
-                  height    : 450,
-                  width     : 400,
+                  height    : 445,
+                  width     : 510,
                   resizable : false,
                   buttons: {
                     "閉じる":
@@ -123,7 +121,7 @@
                 }
               );
               // ダイアログボックスのタイトルバーを非表示にする。
-              $(".ui-dialog-titlebar").css("display", "none");
+              //$(".ui-dialog-titlebar").css("display", "none");
               $("#edit_report").dialog("open");
             }
         }

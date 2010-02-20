@@ -1,13 +1,12 @@
 <% unless @customer_employee_list.nil? %>
-  <table class="enote_general_table1" style="width:100%;">
+  <table class="enote_general_table1" border="0" cellpadding="0" cellspacing="0" style="width:860px;">
   <% @customer_employee_list.each do |employee| %>
-    <tr>
-      <td class="enote_general_table1_cell_bordered" style="width:10%;">&nbsp;<%= employee.company_post %></td>
-      <td class="enote_general_table1_cell_bordered" style="width:10%;">&nbsp;<%= employee.company_job %></td>
-      <td class="enote_general_table1_cell_bordered" style="width:20%;">&nbsp;<a href="javascript:customer_employee_edit(String('<%= employee.id %>'))"><%= employee.name %></a></td>
-      <td class="enote_general_table1_cell_bordered" style="width:30%;">&nbsp;<a href="mailto:<%= employee.email_address1 %>"><%= employee.email_address1 %></a></td>
-      <td class="enote_general_table1_cell_bordered" style="width:15%;">&nbsp;<%= employee.mobile_no %></td>
-      <td class="enote_general_table1_cell_bordered" style="width:15%;">&nbsp;<%= employee.tel1 %></td>
+    <tr style="height:25px;">
+      <td class="enote_general_table1_cell_bordered" style="width:150px;">&nbsp;<%= employee.company_job %></td>
+      <td class="enote_general_table1_cell_bordered" style="width:130px;">&nbsp;<%= employee.company_post %></td>
+      <td class="enote_general_table1_cell_bordered" style="width:200px;">&nbsp;<a href="javascript:customer_employee_edit(String('<%= employee.id %>'))"><%= employee.name %></a></td>
+      <td class="enote_general_table1_cell_bordered" style="width:250px;">&nbsp;<a href="mailto:<%= employee.email_address1 %>"><%= employee.email_address1 %></a></td>
+      <td class="enote_general_table1_cell_bordered" style="width:130px;">&nbsp;<%= employee.mobile_no %></td>
     </tr>
   <% end %>
   </table>

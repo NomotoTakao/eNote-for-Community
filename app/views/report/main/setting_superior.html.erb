@@ -1,3 +1,4 @@
+<div style="margin-left:10px;">
 <div class="e_note_general_frame_borderless" style="width:100%;">
   <table class="enote_app_title" style="width:100%;">
     <tr style="vertical-align:middle;">
@@ -10,11 +11,10 @@
     </tr>
   </table>
 </div>
-<table>
+<table border="0" cellpadding="0" cellspacing="0" style="width:900px;">
   <tr>
-    <td>&nbsp;</td>
-    <td style="width:200px;">
-      <div style="border:1px solid black;background-color:#fff;text-align:left;height:150px;overflow-y:auto;">
+    <td style="width:230px;">
+      <div style="border:1px solid black;background-color:#fff;text-align:left;width:230px;height:180px;overflow-y:auto;">
         <input type="hidden" id="selected_superior_user_cd" value="" />
         <input type="hidden" id="selected_superior_user_name" value="" />
         <% unless @org_list.nil? %>
@@ -28,23 +28,27 @@
             <% end %>
           </ul>
         <% end %>
-      </div>&nbsp;
+      </div>
     </td>
-    <td style="vertical-align:middle;">
-      <input type="button" id="button_add" class="submit_small" value=">" />
+    <td style="vertical-align:middle;width:150px;" align="center">
+      <input type="button" id="button_add" class="submit_large" value="上司にする" />
       <br />
       <br />
-      <input type="button" id="button_remove" class="submit_small" value="<" />
+      <input type="button" id="button_remove" class="submit_large" value="設定を解除" />
     </td>
-    <td>
-      &nbsp;<input type="text" id="selected_superior" style="width:200px;" />
+    <td valign="top" align="left" style="width:150px;">
+      <input type="text" id="selected_superior" style="width:150px;" />
     </td>
-    <td style="vertical-align:bottom;">
-      <input type="button" id="button_set_superior" class="submit_large" value="登録" />
+    <td style="vertical-align:bottom;" style="width:150px;" align="right">
+      <input type="button" id="button_set_superior" class="submit" value="登録" />
     </td>
+    <td valign="top" align="left" style="">&nbsp;</td>
   </tr>
 </table>
+<br>
 <div id="get_superior" />
+</div>
+
 
 <script type="text/javascript">
   <!--

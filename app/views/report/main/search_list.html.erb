@@ -5,7 +5,7 @@
     class_td = "enote_general_table1_cell_bordered"
   %>
   <input type="hidden" id="current_order" value="<%= @current_order %>" />
-  <table class="enote_general_table1_cell_bordered" style="width:100%;">
+  <table class="enote_general_table1_cell_bordered" cellpadding="0" cellspacing="0" style="width:910px;">
     <% counter = 1%>
     <% @search_list.each do |search| %>
       <%
@@ -16,22 +16,19 @@
         end
       %>
       <tr class="<%= class_tr %>">
-        <td class="<%= class_td %>" rowspan="2" style="width:23px;text-align:center;vertical-align:middle;">&nbsp;
-          <input type="checkbox" value="<%= search.id %>" />
-        </td>
-        <td class="<%= class_td %>" rowspan="2" style="width:51px;text-align:center;">&nbsp;<%= counter %></td>
-        <td class="<%= class_td %>" rowspan="2" style="width:100px;">&nbsp;<%= search.d_report.action_date %></td>
-        <td class="<%= class_td %>" style="width:120px;">&nbsp;<%= user_name search.d_report.user_cd %></td>
-        <td class="<%= class_td %>" style="width:120px;">&nbsp;<%= customer_name search.company_cd %></td>
-        <td class="<%= class_td %>" style="width:120px;">&nbsp;<%= action_target_name search.action_target_cd %></td>
-        <td class="<%= class_td %>" style="width:120px;">&nbsp;<%= action_group_name search.action_group_cd %></td>
-        <td class="<%= class_td %>" style="width:120px;">&nbsp;<%= action_name search.action_cd %></td>
-        <td class="<%= class_td %>" style="width:120px;text-align:center;">&nbsp;<%= search.action_time.to_f %>h/<%= search.sale_amount.to_i %>円</td>
+        <td class="<%= class_td %>" rowspan="2" style="width:30px;text-align:center;"><%= counter %></td>
+        <td class="<%= class_td %>" rowspan="2" style="width:80px;text-align:center;"><%= date_strftime(search.d_report.action_date) %></td>
+        <td class="<%= class_td %>" style="width:100px;"><div style="padding:0px 4px;"><%= user_name search.d_report.user_cd %></div></td>
+        <td class="<%= class_td %>" style="width:260px;"><div style="padding:0px 4px;"><%= customer_name search.company_cd %></div></td>
+        <td class="<%= class_td %>" style="width:120px;"><div style="padding:0px 4px;"><%= action_target_name search.action_target_cd %></div></td>
+        <td class="<%= class_td %>" style="width:100px;"><div style="padding:0px 4px;"><%= action_group_name search.action_group_cd %></div></td>
+        <td class="<%= class_td %>" style="width:100px;"><div style="padding:0px 4px;"><%= action_name search.action_cd %></div></td>
+        <td class="<%= class_td %>" style="width:120px;text-align:center;"><div style="padding:0px 4px;"><%= search.action_time.to_f %>h/<%= search.sale_amount.to_i %>円</div></td>
       </tr>
       <tr>
         <td class="enote_general_table1_cell_bordered" style="text-align:center;font-weight:bold;background-color:#99CCFF;">コメント</td>
-        <td class="<%= class_td %>" colspan="5">&nbsp;
-          <%= search.comment %>
+        <td class="<%= class_td %>" colspan="5">
+          <div style="padding:0px 4px;"><%= search.comment %></div>
         </td>
       </tr>
       <% counter = counter + 1 %>

@@ -1,5 +1,5 @@
 <input type="hidden" id="edit_flg" value="<%= @edit_flg %>" />
-<table style="width:100%;">
+<table border="0" cellpadding="0" cellspacing="0" style="width:910px;">
   <%
     title = ""
     unless @m_customer.company_cd.nil? or @m_customer.company_cd.empty?
@@ -11,17 +11,6 @@
   <input type="hidden" id="info_title" value="<%= title %>" />
   <input type="hidden" id="customer_id" value="<%= @m_customer.id %>" />
   <input type="hidden" id="company_cd" value="<%= @m_customer.company_cd%>" />
-<!--
-  <tr>
-    <td name="title">
-      <% unless @m_customer.company_cd.nil? or @m_customer.company_cd.empty? %>
-      (<%= @m_customer.company_cd %>)&nbsp;<%= @m_customer.name %>
-      <% else %>
-        新規登録
-      <% end %>
-    </td>
-  </tr>
--->
   <tr>
     <td>
       <div class="tabset" id="edit_tabs">
@@ -52,12 +41,10 @@
         $("#contents").load("/master/customer/search_index");
       }
     );
-
     /**
      *
      */
     function customer_info_close(){
-
       $("button:contains('閉じる')").click();
       $("#button_search").click();
     }

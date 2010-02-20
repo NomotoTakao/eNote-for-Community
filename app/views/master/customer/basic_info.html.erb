@@ -9,9 +9,9 @@
   </tr>
   <tr>
     <td>
-      <table class="admin_pages_edit_table" cellspacing="0" cellpadding="1" style="width:90%;">
+      <table class="admin_pages_edit_table" cellspacing="0" cellpadding="1" style="width:100%;">
         <tr>
-          <td class="admin_pages_edit_table_title" style="width:20%;">得意先コード&nbsp;
+          <td class="admin_pages_edit_table_title" style="width:180px;">得意先コード&nbsp;
             <% if @m_customer.company_cd.nil? or @m_customer.company_cd.empty? %>
               <span style="color:red;">（必須）</span>
             <% end %>
@@ -204,7 +204,7 @@
           <td class="admin_pages_edit_table_title" >備考</td>
           <td class="admin_pages_edit_table_content" colspan="3">
             <% if @edit_flg != "0" %>
-              <%= text_area :m_customer, :memo, :class=>"ime_on", :rows=>"5", :cols=>"50" %>
+              <%= text_area :m_customer, :memo, :class=>"ime_on", :rows=>"5", :cols=>"60" %>
             <% else %>
               <%= @m_customer.memo %>&nbsp;
             <% end %>
@@ -235,57 +235,60 @@
                 <%= delete_flag @m_customer.delf %>
               <% end %>
             </td>
-          <% end %>
+          </tr>
+        <% end %>
+        <tr>
+          <td class="admin_pages_edit_table_title" >担当社員</td>
+          <td class="admin_pages_edit_table_content" colspan="3" align="center">
+            <table border="0" cellpadding="2" cellspacing="2" style="">
+              <tr>
+                <td id="employee_area" style="text-align:right;">
+                  <select id="employee_list_select" size="8" style="width:200px;" multiple>
+                    <% unless @user_list.nil? %>
+                      <% @user_list.each do |user| %>
+                        <option value="<%= user.user_cd %>"><%= user.name %></option>
+                      <% end %>
+                    <% end %>
+                  </select>
+                </td>
+                <td id="button_area" style="text-align:center;">
+                  <input type="button" id="add_staff_button" class="submit_small" value=">" />
+                  <br />
+                  <input type="button" id="remove_staff_button" class="submit_small" value="<" />
+                </td>
+                <td id="selected_area" style="text-align:left;">
+                  <select id="selected_list_select" size="8" style="width:200px;" multiple>
+                    <% selected_list = "" %>
+                    <% unless @worker_list.nil? %>
+                      <% @worker_list.each do |worker| %>
+                        <option value="<%= worker.user_cd %>"><%= user_name worker.user_cd %></option>
+                        <%
+                          unless selected_list.empty?
+                            selected_list += ","
+                          end
+                          selected_list += worker.user_cd
+                        %>
+                      <% end %>
+                    <% end %>
+                  </select>
+                  <input type="hidden" id="selected_list" value="<%= selected_list %>" />
+                  <input type="hidden" id="deleted_list" value="" />
+                </td>
+              </tr>
+            </table>
+          </td>
         </tr>
       </table>
     </td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
   </tr>
   <tr>
     <td>
-      <table style="width:100%;">
-        <tr>
-          <td colspan="3" style="text-align:center;">作業対応者</td>
-        </tr>
-        <tr>
-          <td id="employee_area" style="text-align:right;">
-            <select id="employee_list_select" size="8" style="width:150px;" multiple>
-              <% unless @user_list.nil? %>
-                <% @user_list.each do |user| %>
-                  <option value="<%= user.user_cd %>"><%= user.name %></option>
-                <% end %>
-              <% end %>
-            </select>
-          </td>
-          <td id="button_area" style="text-align:center;">
-            <input type="button" id="add_staff_button" class="submit_small" value=">" />
-            <br />
-            <input type="button" id="remove_staff_button" class="submit_small" value="<" />
-          </td>
-          <td id="selected_area" style="text-align:left;">
-            <select id="selected_list_select" size="8" style="width:150px;" multiple>
-              <% selected_list = "" %>
-              <% unless @worker_list.nil? %>
-                <% @worker_list.each do |worker| %>
-                  <option value="<%= worker.user_cd %>"><%= user_name worker.user_cd %></option>
-                  <%
-                    unless selected_list.empty?
-                      selected_list += ","
-                    end
-                    selected_list += worker.user_cd
-                  %>
-                <% end %>
-              <% end %>
-            </select>
-            <input type="hidden" id="selected_list" value="<%= selected_list %>" />
-            <input type="hidden" id="deleted_list" value="" />
-          </td>
-        </tr>
-      </table>
+      <input type="button" name="button_register" class="submit_large" value="登録" />
+      <input type="button" name="button_edit" class="submit_large" value="編集" />
+      <input type="button" name="button_delete" class="submit_large" value="削除" />
+      <input type="button" name="button_cancel" class="submit_large" value="キャンセル" />
     </td>
-  </tr>
+  </tr>  
 </table>
 
 <script type="text/javascript">

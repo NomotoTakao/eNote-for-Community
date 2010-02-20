@@ -38,3 +38,5 @@
 37,36,20,"日報入力","/report/main","_self",0,0,,,,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
 38,36,10,"得意先設定","/master/customer/index","_self",0,0,,,,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
 39,6,10,"パスワード変更","/master/password/index","_self",0,0,,,,0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
+40,0,220,"日報ー活動内容マスタ","/master/report","_self",9,0,,,"日報入力で使用される「活動分類」と「活動詳細」の登録・編集・削除を行います。",0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"
+41,0,230,"組織マスタ","/master/organization","_self",9,0,,,"組織マスタの登録・編集・削除を行います。",0,"9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>","9999999","<%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %>"

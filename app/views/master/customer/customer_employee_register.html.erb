@@ -1,16 +1,16 @@
 <table style="width:100%;">
   <tr>
     <td>
-      <input type="button" class="submit_large" id="button_customer_employee_register" value="登録" />
-      <input type="button" class="submit_large" id="button_customer_employee_cancel" value="キャンセル" />
+      <input type="button" class="submit_large" name="button_customer_employee_register" value="登録" />
+      <input type="button" class="submit_large" name="button_customer_employee_cancel" value="キャンセル" />
     </td>
   </tr>
   <tr>
     <td>
       <%= hidden_field :d_address, :id %>
-      <table class="admin_pages_edit_table" cellspacing="0" cellpadding=="1">
+      <table class="admin_pages_edit_table" cellspacing="0" cellpadding="1" border="0" style="width:100%;">
         <tr>
-          <td class="admin_pages_edit_table_title">名前</td>
+          <td class="admin_pages_edit_table_title" style="width:200px;">名前</td>
           <td class="admin_pages_edit_table_content">
             <%= text_field :d_address, :name, :class=>"ime_on", :size=>"40", :maxlength=>"40" %>
           </td>
@@ -54,11 +54,11 @@
         <tr>
           <td class="admin_pages_edit_table_title">勤務先</td>
           <td class="admin_pages_edit_table_content">
-            <table>
+            <table border="0" cellpadding="1" cellspacing="0" style="width:100%;">
               <tr>
-                <td>会社名：</td>
+                <td style="width:70px;">会社名：</td>
                 <td>
-                  <%= @m_customer.name %>
+                  <%= @m_customer.name %>&nbsp;
                 </td>
               </tr>
               <tr>
@@ -79,13 +79,13 @@
         <tr>
           <td class="admin_pages_edit_table_title">勤務先名カナ</td>
           <td class="admin_pages_edit_table_content">
-            <%= @m_customer.kana %>
+            <%= @m_customer.kana %>&nbsp;
           </td>
         </tr>
         <tr>
           <td class="admin_pages_edit_table_title">勤務先郵便番号</td>
           <td class="admin_pages_edit_table_content">
-            <%= @m_customer.zip_cd %>
+            <%= @m_customer.zip_cd %>&nbsp;
           </td>
         </tr>
         <tr>
@@ -94,13 +94,13 @@
             <table>
               <tr>
                 <td>
-                  <%= @m_customer.address1 %>
+                  <%= @m_customer.address1 %>&nbsp;
                 </td>
                 <td>
-                  <%= @m_customer.address2 %>
+                  <%= @m_customer.address2 %>&nbsp;
                 </td>
                 <td>
-                  <%= @m_customer.address3 %>
+                  <%= @m_customer.address3 %>&nbsp;
                 </td>
               </tr>
             </table>
@@ -109,25 +109,25 @@
         <tr>
           <td class="admin_pages_edit_table_title">勤務先電話番号１</td>
           <td class="admin_pages_edit_table_content">
-            <%= @m_customer.tel1 %>
+            <%= @m_customer.tel1 %>&nbsp;
           </td>
         </tr>
         <tr>
           <td class="admin_pages_edit_table_title">勤務先電話番号２</td>
           <td class="admin_pages_edit_table_content">
-            <%= @m_customer.tel2 %>
+            <%= @m_customer.tel2 %>&nbsp;
           </td>
         </tr>
         <tr>
           <td class="admin_pages_edit_table_title">勤務先FAX</td>
           <td class="admin_pages_edit_table_content">
-            <%= @m_customer.fax %>
+            <%= @m_customer.fax %>&nbsp;
           </td>
         </tr>
         <tr>
           <td class="admin_pages_edit_table_title">勤務先Webページ</td>
           <td class="admin_pages_edit_table_content">
-            <a href="<%= @m_customer.url %>" target="_blank"><%= @m_customer.url %></a>
+            <a href="<%= @m_customer.url %>" target="_blank"><%= @m_customer.url %></a>&nbsp;
           </td>
         </tr>
         <tr>
@@ -139,35 +139,41 @@
         <tr>
           <td class="admin_pages_edit_table_title">備考</td>
           <td class="admin_pages_edit_table_content">
-            <%= text_area :d_address, :memo, :rows=>8, :cols=>30, :class=>"ime_on" %>
+            <%= text_area :d_address, :memo, :rows=>8, :class=>"ime_on", :style => "width:95%;" %>
           </td>
         </tr>
         <tr>
           <td class="admin_pages_edit_table_title">登録者</td>
           <td class="admin_pages_edit_table_content">
-            <%=h user_name @d_address.created_user_cd %>
+            <%=h user_name @d_address.created_user_cd %>&nbsp;
           </td>
         </tr>
         <tr>
           <td class="admin_pages_edit_table_title">登録日</td>
           <td class="admin_pages_edit_table_content">
-            <%= datetime_strftime @d_address.created_at %>
+            <%= datetime_strftime @d_address.created_at %>&nbsp;
           </td>
         </tr>
         <tr>
           <td class="admin_pages_edit_table_title">更新日</td>
           <td class="admin_pages_edit_table_content">
-            <%= datetime_strftime @d_address.updated_at %>
+            <%= datetime_strftime @d_address.updated_at %>&nbsp;
           </td>
         </tr>
       </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="button" class="submit_large" name="button_customer_employee_register" value="登録" />
+      <input type="button" class="submit_large" name="button_customer_employee_cancel" value="キャンセル" />
     </td>
   </tr>
 </table>
 
 <script type="text/javascript">
   <!--
-    $("#button_customer_employee_register").click(
+    $("input[name='button_customer_employee_register']").click(
       function(){
         var id = $("#d_address_id").val();
         var company_cd = $("#company_cd").val();
@@ -221,7 +227,7 @@
     /**
      * キャンセルボタンが押下された時のイベント
      */
-    $("#button_customer_employee_cancel").click(
+    $("input[name='button_customer_employee_cancel']").click(
       function(){
         $("#customer_employee").load("/master/customer/customer_employee");
       }

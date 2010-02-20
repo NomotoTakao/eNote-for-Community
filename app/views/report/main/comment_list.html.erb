@@ -5,7 +5,7 @@
     class_td = "enote_general_table1_cell_bordered"
   %>
   <input type="hidden" id="nil_flg" value="0" />
-  <table class="enote_general_table1_cell_bordered" style="width:940px;">
+  <table class="enote_general_table1_cell_bordered" border="0" cellpadding="0" cellspacing="0" style="width:940px;">
     <% counter = 1 %>
     <% @d_report.d_report_customers.each do |comment| %>
       <%
@@ -16,18 +16,16 @@
         end
       %>
       <tr class="<%= class_tr %>">
-        <td class="<%= class_td %>" rowspan="2" style="width:20px;">&nbsp;</td>
-        <td class="<%= class_td %>" rowspan="2" style="width:300px;"><%= customer_name comment.company_cd %></td>
-        <td class="<%= class_td %>" style="width:150px;"><%= action_target_name comment.action_target_cd %></td>
-        <td class="<%= class_td %>" style="width:120px;"><%= action_group_name comment.action_group_cd %></td>
-        <td class="<%= class_td %>" style="width:120px;"><%= action_name comment.action_cd %></td>
-        <td class="<%= class_td %>" style="width:80px;text-align:right;"><%= comment.action_time.to_f %>&nbsp;時間</td>
-        <td class="<%= class_td %>" style="width:80px;text-align:right;"><%= comment.sale_amount.to_i %>&nbsp;円</td>
-        <td class="<%= class_td %>" style="width:67px;">&nbsp;</td>
+        <td class="<%= class_td %>" rowspan="2" style="width:310px;"><div style="margin:0px 4px;"><%= customer_name comment.company_cd %></div></td>
+        <td class="<%= class_td %>" style="width:150px;"><div style="margin:0px 4px;"><%= action_target_name comment.action_target_cd %></div></td>
+        <td class="<%= class_td %>" style="width:140px;"><div style="margin:0px 4px;"><%= action_group_name comment.action_group_cd %></div></td>
+        <td class="<%= class_td %>" style="width:140px;"><div style="margin:0px 4px;"><%= action_name comment.action_cd %></div></td>
+        <td class="<%= class_td %>" style="width:100px;text-align:right;"><div style="margin:0px 4px;"><%= comment.action_time.to_f %>&nbsp;時間</div></td>
+        <td class="<%= class_td %>" style="width:100px;text-align:right;"><div style="margin:0px 4px;"><%= comment.sale_amount.to_i %>&nbsp;円</div></td>
       </tr>
       <tr>
         <td class="enote_general_table1_cell_bordered" style="text-align:center;font-weight:bold;background-color:#99CCFF;">コメント</td>
-        <td class="<%= class_td %>" colspan="5"><%= comment.comment %></td>
+        <td class="<%= class_td %>" colspan="4"><div style="margin:0px 4px;"><%= comment.comment %></div></td>
       </tr>
       <% counter = counter + 1 %>
     <% end %>

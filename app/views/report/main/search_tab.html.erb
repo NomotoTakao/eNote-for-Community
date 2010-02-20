@@ -1,3 +1,4 @@
+<div style="margin-left:10px;">
   <div class="e_note_general_frame_borderless" style="width:100%;">
     <table class="enote_app_title" style="width:100%;">
       <tr style="vertical-align:middle;">
@@ -10,23 +11,24 @@
       </tr>
     </table>
   </div>
-<table>
-  <tr>
-    <td rowspan="5" style="width:200px;">
-      <div style="border:1px solid black;background-color:#fff;text-align:left;height:150px;overflow-y:auto;">
+
+  <table border="0" style="width:910px;">
+    <tr>
+    <td rowspan="5" style="width:280px;">
+      <div style="border:1px solid black;background-color:#fff;text-align:left;width:250px;height:150px;overflow-y:auto;">
         <%= render :partial=>"org_tree", :locals=>{:org_list=>@org_list} %>
       </div>
     </td>
-    <td>
+    <td style="height:30px;width:140px;">
       <img class="enote_title_block" src="/images/widget_ico_on.gif"/>日付：
     </td>
-    <td>
+    <td style="width:400px;">
       <input type="text" id="search_date_from" class="ime_off" size="10" />&nbsp;~&nbsp;<input type="text" id="search_date_to" class="ime_off" size="10" />
     </td>
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td>
+    <td style="height:30px;">
       <img class="enote_title_block" src="/images/widget_ico_on.gif"/>活動のコメント：
     </td>
     <td>
@@ -35,7 +37,7 @@
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td>
+    <td style="height:30px;">
       <img class="enote_title_block" src="/images/widget_ico_on.gif"/>対象者：
     </td>
     <td>
@@ -51,7 +53,7 @@
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td>
+    <td style="height:30px;">
       <img class="enote_title_block" src="/images/widget_ico_on.gif"/>活動分類：
     </td>
     <td>
@@ -67,7 +69,7 @@
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td>
+    <td style="height:30px;">
       <img class="enote_title_block" src="/images/widget_ico_on.gif"/>活動詳細：
     </td>
     <td>
@@ -84,31 +86,31 @@
   </tr>
 </table>
 
-<table style="width:940px;">
+<table border="0" cellpadding="0" cellspacing="0" style="width:940px;margin-top:10px;">
   <tr>
     <td>
-      <table class="enote_general_table1_cell_bordered">
+      <table class="enote_general_table1_cell_bordered" cellpadding="0" cellspacing="0" style="width:910px;margin-left:1px;">
         <tr class="enote_general_table1_title">
-          <th class="enote_general_table1_cell_bordered" style="width:20px;text-align:center;">&nbsp;</th>
-          <th class="enote_general_table1_cell_bordered" style="width:50px;text-align:center;">行</th>
-          <th class="enote_general_table1_cell_bordered search_date" style="width:100px;text-align:center;">日付</th>
-          <th class="enote_general_table1_cell_bordered search_tanto" style="width:120px;text-align:center;">担当者</th>
-          <th class="enote_general_table1_cell_bordered search_customer" style="width:120px;text-align:center;">得意先</th>
-          <th class="enote_general_table1_cell_bordered" style="width:120px;text-align:center;">対象者</th>
-          <th class="enote_general_table1_cell_bordered" style="width:120px;text-align:center;">活動分類</th>
-          <th class="enote_general_table1_cell_bordered" style="width:120px;text-align:center;">活動詳細</th>
-          <th class="enote_general_table1_cell_bordered" style="width:120px;text-align:center;">活動時間・金額</th>
+          <th class="enote_general_table1_cell_bordered" style="width:30px;text-align:center;padding:0px;">行</th>
+          <th class="enote_general_table1_cell_bordered search_date" style="width:80px;text-align:center;padding:0px;">日付</th>
+          <th class="enote_general_table1_cell_bordered search_tanto" style="width:100px;text-align:center;padding:0px;">担当者</th>
+          <th class="enote_general_table1_cell_bordered search_customer" style="width:260px;text-align:center;padding:0px;">得意先</th>
+          <th class="enote_general_table1_cell_bordered" style="width:120px;text-align:center;padding:0px;">対象者</th>
+          <th class="enote_general_table1_cell_bordered" style="width:100px;text-align:center;padding:0px;">活動分類</th>
+          <th class="enote_general_table1_cell_bordered" style="width:100px;text-align:center;padding:0px;">活動詳細</th>
+          <th class="enote_general_table1_cell_bordered" style="width:120px;text-align:center;padding:0px;">活動時間・金額</th>
         </tr>
       </table>
     </td>
   </tr>
   <tr>
     <td>
-      <div id="search_list" style="overflow-y:scroll;height:200px;width:918px;"></div>
+      <div id="search_list" style="overflow-y:scroll;height:250px;width:927px;border-bottom:1px solid #b2b2b2;border-left:1px solid #b2b2b2;"></div>
     </td>
   </tr>
 </table>
-
+<br>
+</div>
 <script type="text/javascript">
   <!--
     /**
