@@ -354,12 +354,12 @@ class Report::MainController < ApplicationController
   end
 
   #
-  #
+  # 日報入力画面の総括コメントタブの内容を表示するアクション
   #
   def summary_comment
 
     date = params[:date]
-    @d_report = DReport.find(:first, :conditions=>{:delf=>0, :action_date=>date})
+    @d_report = DReport.find(:first, :conditions=>{:delf=>0, :action_date=>date, :user_cd=>current_m_user.user_cd})
     if @d_report.nil?
       @d_report = DReport.new
     end
