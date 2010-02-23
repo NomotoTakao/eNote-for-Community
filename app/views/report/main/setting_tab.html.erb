@@ -14,6 +14,12 @@
 */
           url = "/report/main/setting_superior";
 //        }
+        // 日報検索タブのコンテンツをクリアする。
+        // 1) <a>タグのうち、内容が「日報検索」である要素のhref属性求める。
+        tab_id = $("a:contains('日報検索')").attr("href").replace("#", "");
+        // 2) idが{tab_id}の要素の内容をクリアする。
+        $("#" + tab_id).html("");
+        // 設定タブの内容をロード
         $("#setting_contents").load(url);
       }
     );
