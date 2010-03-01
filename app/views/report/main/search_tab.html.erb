@@ -194,7 +194,7 @@
 
         // 設定タブのコンテンツをクリアする。
         // 1) <a>タグのうち、内容が「設定」である要素のhref属性求める。
-        tab_id = $("a:contains('設定')").attr("href").replace("#", "");
+        tab_id = $("a[href^='#ui-']:contains('設定')").attr("href").replace("#", "");
         // 2) idが{tab_id}の要素の内容をクリアする。
         $("#" + tab_id).html("");
       }
