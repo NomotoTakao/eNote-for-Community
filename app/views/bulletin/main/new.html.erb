@@ -101,11 +101,11 @@
   		// 編集用のIDフィールドをクリア
   		$("#edit_id").val("");
 		
-	  	$("#org_area").load("../../common/tree/disp_org","",function(){
+	  	$("#org_area").load("/common/tree/disp_org","",function(){
   			//組織ツリーにクリックイベントを定義する
   			$(".org").click(function(){
   				var value = $(this).attr("id").replace("org_", "");
-  				jQuery("#org_users_area").load("../../common/tree/disp_org_user?org_cd=" + value);
+  				jQuery("#org_users_area").load("/common/tree/disp_org_user?org_cd=" + value);
   			})
   		});
 

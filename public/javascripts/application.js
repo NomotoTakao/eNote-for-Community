@@ -11,7 +11,7 @@ function make_header_menu(){
         menuWidth: 200,
         openOnRight: false,
         menuSelector: ".menuContainer",
-        iconPath: "/images/jquery/mbMenu/",
+        iconPath: "../images/jquery/mbMenu/",
         hasImages: true,
         fadeInTime: 1,
         fadeOutTime: 1,
@@ -52,7 +52,7 @@ function click_header_search_button(button_flg){
 function setCalendar(elem){
     elem.datepicker({
         showOn: 'button',
-        buttonImage: '/images/icons/icon-calendar.gif',
+        buttonImage: '../images/icons/icon-calendar.gif',
         buttonImageOnly: true,
         prompt: "日付の選択",
         clearText: 'クリア',
