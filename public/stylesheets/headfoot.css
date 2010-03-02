@@ -4,7 +4,7 @@
 
 /* フッター部 */
 table.footer_table {
-    background-image:             url('/images/header/head_back02.gif');
+    background-image:             url('../images/header/head_back02.gif');
     background-repeat:            repeat-x;
     border-collapse:              collapse;
     height:                       34px;
@@ -20,7 +20,7 @@ div.header_top_area{
     background-color:             #93c1dc;
 }
 table.header_table{
-    background-image:             url('/images/header/head_back02.gif');
+    background-image:             url('../images/header/head_back02.gif');
     background-repeat:            repeat-x;
     background-color:             white;
     margin:                       10px 0px 0px 0px;
