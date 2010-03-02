@@ -40,7 +40,7 @@ function folderChange(element, prefix, target_value){
  * 回覧板の詳細画面を表示する
  */
 function disp_bulletin_detail(id){
-  $("#bulletin_area").load("/bulletin/main/detail?id=" + id);
+  $("#bulletin_area").load("main/detail?id=" + id);
 }
 
 /*
@@ -186,7 +186,7 @@ function bulletin_search(sword){
   if(sword == ""){
     alert("検索キーワードを指定してください。")
   } else {
-    $("#bulletin_area").load("/bulletin/main/bulletin_list?kbn_id=9&sword=" + encodeURIComponent(sword));
+    $("#bulletin_area").load("main/bulletin_list?kbn_id=9&sword=" + encodeURIComponent(sword));
   }
   return false;
 }
