@@ -60,7 +60,7 @@ input:disabled {
 /* ボタン用クラス通常サイズ */
 input.submit {
     background-repeat:            no-repeat;
-    background-image:             url('../images/icons/icon_button_m.gif');
+    background-image:             url('../../images/icons/icon_button_m.gif');
     background-color:             transparent;
     border:                       0px;
     color:                        #000;
@@ -75,7 +75,7 @@ input.submit {
 /* ボタン用クラス小サイズ */
 input.submit_small {
     background-repeat:            no-repeat;
-    background-image:             url('../images/icons/icon_button_s.gif');
+    background-image:             url('../../images/icons/icon_button_s.gif');
     background-color:             transparent;
     border:                       0px;
     color:                        #000;
@@ -90,7 +90,7 @@ input.submit_small {
 /* ボタン用クラス大サイズ */
 input.submit_large {
     background-repeat:            no-repeat;
-    background-image:             url('../images/icons/icon_button_l.gif');
+    background-image:             url('../../images/icons/icon_button_l.gif');
     background-color:             transparent;
     border:                       0px;
     color:                        #000;
@@ -105,7 +105,7 @@ input.submit_large {
 /* ボタン用クラス特大サイズ */
 input.submit_ex_large {
     background-repeat:            no-repeat;
-    background-image:             url('../images/icons/icon_button_ll.gif');
+    background-image:             url('../../images/icons/icon_button_ll.gif');
     background-color:             transparent;
     border:                       0px;
     color:                        #000;
@@ -216,7 +216,7 @@ div.gadget_title{
     margin:0px;
     padding-top:2px;
     text-indent:6px;
-    background-image:url('../images/background/title_bg.gif');
+    background-image:url('../../images/background/title_bg.gif');
     background-repeat:repeat-x;
 /* 角丸にするCSS　ただし、IEでは無効 */
     -webkit-border-radius: 10px;

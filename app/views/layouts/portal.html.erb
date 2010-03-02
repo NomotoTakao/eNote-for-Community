@@ -70,9 +70,9 @@
             </table>
         </div>
         <script type="text/javascript">
+          var base_uri = "<%= @base_uri %>";
           $(document).ready(
             function(){
-              base_uri = "<%= @base_uri %>";
               make_header_menu();   //ヘッダーメニューを作成
             }
           );

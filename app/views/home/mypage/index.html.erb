@@ -35,15 +35,15 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-    $("#mypage_schedule").load("gadget_schedule");
-    $("#mypage_hottopic").load("gadget_hottopic");
-    $("#mypage_bbs").load("gadget_bbs");
-    $("#mypage_alert").load("gadget_alert");
-    $("#mypage_new_message").load("gadget_new_message");
-    $("#mypage_notice_new").load("gadget_notice_new");
-    $("#mypage_notice").load("gadget_notice?top_disp_kbn=0");
-    $("#mypage_cabinet").load("gadget_cabinet_long")
-    $("#mypage_blog").load("gadget_blog_long");
+    $("#mypage_schedule").load(base_uri + "/home/mypage/gadget_schedule");
+    $("#mypage_hottopic").load(base_uri + "/home/mypage/gadget_hottopic");
+    $("#mypage_bbs").load(base_uri + "/home/mypage/gadget_bbs");
+    $("#mypage_alert").load(base_uri + "/home/mypage/gadget_alert");
+    $("#mypage_new_message").load(base_uri + "/home/mypage/gadget_new_message");
+    $("#mypage_notice_new").load(base_uri + "/home/mypage/gadget_notice_new");
+    $("#mypage_notice").load(base_uri + "/home/mypage/gadget_notice?top_disp_kbn=0");
+    $("#mypage_cabinet").load(base_uri + "/home/mypage/gadget_cabinet_long")
+    $("#mypage_blog").load(base_uri + "/home/mypage/gadget_blog_long");
     GetRSSReader();
   });
 </script>
