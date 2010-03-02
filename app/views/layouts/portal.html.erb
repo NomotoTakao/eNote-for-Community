@@ -70,7 +70,12 @@
             </table>
         </div>
         <script type="text/javascript">
-          make_header_menu();		//ヘッダーメニューを作成
+          $(document).ready(
+            function(){
+              base_uri = "<%= @base_uri %>";
+              make_header_menu();   //ヘッダーメニューを作成
+            }
+          );
         </script>
     </body>
 </html>

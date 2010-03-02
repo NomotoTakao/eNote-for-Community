@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
 
   #ヘッダ部やメニュー用のデータを生成します
   def disp_head
+    @base_uri = ActionController::Base.relative_url_root.nil? ? "" : ActionController::Base.relative_url_root
     @pankuzu = "eNote > "
     if logged_in?
       @user_message = "お疲れさまです。" + current_m_user.name + " さん。"

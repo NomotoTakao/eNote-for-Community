@@ -8,10 +8,10 @@
             <!-- 下に子メニューが存在する場合 -->
             <% if MMenu.get_child_cnt(menu.id) > 0 %>
               <td class="rootHeadMenuIcon">
-                <div class="rootVoice {menu: 'menu_<%= menu.id %>'}" onclick='window.open("<%= url_for(menu.url) %>","<%= menu.target %>");'><%= menu.title %></div></td>
+                <div class="rootVoice {menu: 'menu_<%= menu.id %>'}" onclick='window.open(base_uri + "<%= url_for(menu.url) %>","<%= menu.target %>");'><%= menu.title %></div></td>
             <% else %>
               <td class="rootHeadMenuIcon">
-                <div class="rootVoice {menu: 'empty'}" onclick='window.open("<%= url_for(menu.url) %>","<%= menu.target %>");'><%= menu.title %></div></td>
+                <div class="rootVoice {menu: 'empty'}" onclick='window.open(base_uri + "<%= url_for(menu.url) %>","<%= menu.target %>");'><%= menu.title %></div></td>
             <% end %>
           <% end %>
         </tr></table>
@@ -29,7 +29,7 @@
             <% if MMenu.get_child_cnt(menu.id) > 0 %>
               <a class="{menu: 'menu_<%= menu.id %>'}"><%= menu.title %></a>
             <% else %>
-              <%= link_to menu.title, menu.url, :target => menu.target %>
+              <%= link_to menu.title, @base_uri + menu.url, :target => menu.target %>
             <% end %>
             <% i += 1 %>
           <% end %>
