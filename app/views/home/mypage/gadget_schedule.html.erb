@@ -5,14 +5,14 @@
     <% start_day = @week_list[0][0] %>
     <% end_date = start_day + 6 %>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "mypage_schedule",
+      <%= link_to_remote("<img src='../../images/icons/icon_arrow_left2.gif'>", :update => "mypage_schedule",
       :url => {:action => "gadget_schedule", :week => (start_day - 7).strftime("%Y%m%d")}) %></a>
     </td>
     <td style="width:30px;">
       <%=button_to_remote("今週", :update => "mypage_schedule", :url => {:action => "gadget_schedule"})%>
     </td>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "mypage_schedule",
+      <%= link_to_remote("<img src='../../images/icons/icon_arrow_right2.gif'>", :update => "mypage_schedule",
       :url => {:action => "gadget_schedule", :week => (start_day + 7).strftime("%Y%m%d")}) %></a>
     </td>
     <td style="width:250px;">
@@ -126,7 +126,3 @@
   <% end %>
 </table>
 
-<script type="text/javascript">
-<!--
--->
-</script>

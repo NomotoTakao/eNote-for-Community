@@ -8,10 +8,10 @@
             <!-- 下に子メニューが存在する場合 -->
             <% if MMenu.get_child_cnt(menu.id) > 0 %>
               <td class="rootHeadMenuIcon">
-                <div class="rootVoice {menu: 'menu_<%= menu.id %>'}" onclick='window.open("<%= menu.url %>","<%= menu.target %>");'><%= menu.title %></div></td>
+                <div class="rootVoice {menu: 'menu_<%= menu.id %>'}" onclick='window.open("<%= url_for(menu.url) %>","<%= menu.target %>");'><%= menu.title %></div></td>
             <% else %>
               <td class="rootHeadMenuIcon">
-                <div class="rootVoice {menu: 'empty'}" onclick='window.open("<%= menu.url %>","<%= menu.target %>");'><%= menu.title %></div></td>
+                <div class="rootVoice {menu: 'empty'}" onclick='window.open("<%= url_for(menu.url) %>","<%= menu.target %>");'><%= menu.title %></div></td>
             <% end %>
           <% end %>
         </tr></table>

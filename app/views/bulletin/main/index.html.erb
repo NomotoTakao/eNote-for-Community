@@ -22,8 +22,8 @@
   <div class="tabset" id="tabset">
     <input type="hidden" id="edit_id" value="<%= @edit_id %>" />
     <ul>
-      <li><a href="/bulletin/main/list?kbn_id=<%=@kbn_id%>">回覧板一覧</a></li>
-      <li><a href="/bulletin/main/new_tab">新規作成</a></li>
+      <li><%= link_to("回覧板一覧", :action => "list", :kbn_id => @kbn_id) %></li>
+      <li><%= link_to("新規作成", :action => "new_tab") %></li>
     </ul>
   </div>
 </div>

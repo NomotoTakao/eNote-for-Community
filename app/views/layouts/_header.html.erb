@@ -10,7 +10,7 @@
   </td></tr>
   <tr>
     <td rowspan="2" class="header_left" style="width:80px;">
-      <%= link_to('<img name="logo" src="/images/header/logo.gif" alt="logo" />', "/") %>
+      <%= link_to(image_tag("header/logo.gif", :name => "logo", :alt => "logo"), "/") %>
     </td>
     <td class="header_right" style="width:300px;">
       <div style="text-align:left;">
@@ -26,10 +26,10 @@
         </td>
         <td>
           <!-- サイト内検索 -->
-          <form method="get" action="/search/main" style="margin:0px;padding:0px;">
+          <% form_tag "/search/main", :method => :get, :style => "margin:0px;padding:0px;" do %>
             <input type="submit" value="サイト内検索" class="submit_large" onclick="click_header_search_button(1);" />
             <input type="hidden" id="site_search_word" name="site_search_word" value="" />
-          </form>
+          <% end %>
         </td>
         <td>
           <!-- Google検索 -->
@@ -59,7 +59,7 @@
       </table>
     </td>
     <td class="header_right" align="center" style="width:50px;">
-      <%= link_to('<img src="/images/header/exit.gif" border="0" alt="ログアウト" />', "/logout") %>
+      <%= link_to(image_tag("header/exit.gif", :border => "0", :alt => "ログアウト"), "/logout") %>
     </td>
   </tr>
   <tr>
@@ -74,9 +74,3 @@
     </td>
   </tr>
 </table>
-
-<script type="text/javascript">
-<!--
-
--->
-</script>

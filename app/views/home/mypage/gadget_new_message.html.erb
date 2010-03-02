@@ -1,5 +1,5 @@
 <div id="" class="gadget_title" style="">
-    <h3 style=""><img src="/images/icons/icon_message.gif" align="top" style="margin-right:5px;"><%= @gadget_title %></h3>
+    <h3 style=""><img src="../../images/icons/icon_message.gif" align="top" style="margin-right:5px;"><%= @gadget_title %></h3>
 </div>
 <div id="" class="gadget_body" style="">
   <table cellpadding="0" cellspacing="0" style="width:100%;">
@@ -34,7 +34,7 @@
             <% end %>
 
             <!-- 内容表示 -->
-            <img src="/images/icons/icon_balloon.gif" align="top" class="gadget_table_icon">
+            <img src="../../images/icons/icon_balloon.gif" align="top" class="gadget_table_icon">
             <%= link_to "<今日の予定>[#{(disp_time)}]#{reserve.title}",
             {:controller => "schedule/reserve/", :action => "index_day"} %>
           </td>
@@ -46,7 +46,7 @@
         <tr>
           <td>
             <!-- 内容表示 -->
-            <img src="/images/icons/icon_balloon.gif" align="top" class="gadget_table_icon">
+            <img src="../../images/icons/icon_balloon.gif" align="top" class="gadget_table_icon">
             <!-- スケジュールへの遷移 -->
             <% if message.etcint1 == 1 %>
               <%= link_to "<スケジュール>#{message.title}",
@@ -84,7 +84,7 @@
         <% memory = target[1] %>
         <tr>
           <td colspan=2>
-            <img src="/images/icons/icon_balloon.gif" align="top" class="gadget_table_icon">
+            <img src="../../images/icons/icon_balloon.gif" align="top" class="gadget_table_icon">
             <%= link_to "&lt;Webメモリー&gt;[#{memory.d_cabinet_files[0].file_name unless memory.d_cabinet_files.length == 0}]の有効期限を確認してください。", {:controller=>"cabinet/mine/", :action=>"index"} %>
           </td>
         </tr>
@@ -146,7 +146,7 @@
   function PageControl(target_page){
     $.ajax({
         type:'get',
-        url:'/home/mypage/gadget_new_message?page=' + target_page,
+        url:'gadget_new_message?page=' + target_page,
         success:
             function(request){
                 $('#mypage_new_message').html(request);
