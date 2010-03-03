@@ -98,9 +98,8 @@
         var cabinet_id = $("#selectedCabinet_").val();
 
         if (typeof(order) == 'string') {
-          var url = "/cabinet/public/cabinet_list/?order=:order&mode=:mode&cabinet_id=:cabinet_id&cabinet_kbn=:cabinet_kbn"
+          var url = base_uri + "/cabinet/public/cabinet_list/?order=:order&mode=:mode&cabinet_id=:cabinet_id&cabinet_kbn=:cabinet_kbn"
           url = url.replace(":order", order).replace(":mode", mode).replace(":cabinet_id", cabinet_id).replace(":cabinet_kbn", "<%= @cabinet_kbn %>")
-
           $("#cabinet_list").load(url);
         }
       }

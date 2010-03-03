@@ -57,16 +57,16 @@
         // 管理者の選択ツリーを表示
         $("#sosiki_browser2").treeview();
 
-        $("#add_box").load("/notice/main/add_list/");
+        $("#add_box").load(base_uri + "/notice/main/add_list/");
 
         $("#board_list").change(
           function(){
             // リスト変更後の項目のvalueを取得する。
             val = $(this).val();
             // 取得したvalue値でお知らせ権限テーブルを検索し、右側のセレクトボックスを更新する。
-            url = "/notice/main/add_list?notice_head_id=:id";
-			url = url.replace(":id", val);
-			$("add_box").load(url);
+            url = base_uri + "/notice/main/add_list?notice_head_id=:id";
+      			url = url.replace(":id", val);
+      			$("add_box").load(url);
           }
         );
 
@@ -93,7 +93,6 @@
               $("#add_list").append($('<option>').attr({value:arrayVal[i]}).text(arrayTxt[i]));
             }
             $("#add_array_").val($("#add_array_").val() + "," + hval);
-//	  	$("#member_list option:selected").remove();
           }
         );
 	

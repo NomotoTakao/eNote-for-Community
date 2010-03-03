@@ -1,12 +1,10 @@
 class Common::PublicOrgController < ApplicationController
 
   def index
-
     @org_list = MOrg.find(:all, :conditions=>{:delf=>0, :org_lvl=>1}, :order=>" org_cd ASC")
   end
 
   def tmp
-
     org_cd = params[:org_cd]
     m_org = MOrg.find(:first, :conditions=>{:delf=>0, :org_cd=>org_cd})
 

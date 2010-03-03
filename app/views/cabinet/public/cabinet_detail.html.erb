@@ -23,7 +23,7 @@
           <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%=h file.post_user_name %></td>
           <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%=h datetime_strftime(file.post_date) %></td>
           <td class="enote_general_table1_cell_bordered" style="text-align:center;">
-             <%= link_to "<img src='/images/icons/icon_download_file.gif' />", :action=>:download, :id=>file.id %>
+             <%= link_to image_tag("icons/icon_download_file.gif"), :action=>:download, :id=>file.id %>
           </td>
         </tr>
       <% end %>
@@ -64,7 +64,7 @@
 //		$("[value='検索']").click();
         // category_idフィールドの値をクリアします。
 //        $("#category_id_").val("");
-$("#" + id).click();
+      $("#" + id).click();
     }
 
     $(document).ready(

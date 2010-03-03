@@ -296,12 +296,12 @@ class Notice::MainController < ApplicationController
     unless attachment.nil?
       begin
         DNoticeFile.save_upload(params, current_m_user, board_id, d_notice_body.id)
-        next_page = "alert('アップロードが完了しました');location.href='/notice/main/index';"
+        next_page = "alert('アップロードが完了しました');location.href='#{@base_uri}/notice/main/index';"
       else
         # 保存エラー
       end
     else
-      next_page = "location.href='/notice/main/index'"
+      next_page = "location.href='#{@base_uri}/notice/main/index'"
     end
 
     responds_to_parent do
@@ -319,7 +319,6 @@ class Notice::MainController < ApplicationController
   def edit
     # 編集
     message_id = params[:message_id]
-
     redirect_to :action => "notice_list", :message_id => message_id
   end
 
@@ -328,11 +327,9 @@ class Notice::MainController < ApplicationController
   #
   def delete
     message_id = params[:message_id]
-
     unless message_id.empty?
       DNoticeBody.new.delete_body_by_id message_id, current_m_user.user_cd
     end
-
     redirect_to :action => 'notice_list'
   end
 

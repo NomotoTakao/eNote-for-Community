@@ -62,12 +62,10 @@
         // 「送信先の選択」欄に送信先を表示する処理
         value = $(this).attr("id").replace("org_", "");
         bgChange($(this).children(), $(".org_font"));
-
-		// ユーザー選択エリアにユーザーを表示する処理
+    		// ユーザー選択エリアにユーザーを表示する処理
         var value = $(this).attr("id").replace("org_", "");
-        jQuery("#org_users_area").load("/common/tree/disp_org_user?org_cd=" + value);
-		
-        // ツリーの子要素を取得する処理
+        jQuery("#org_users_area").load(base_uri + "/common/tree/disp_org_user?org_cd=" + value);
+	      // ツリーの子要素を取得する処理
         val_id = $(this).attr("id");
         get_tree(val_id);
       }
@@ -94,12 +92,11 @@
 	 * @param id - クリックされたHTML要素のID 
 	 */
     function get_tree(id){
-		
       if ($("#" + id).next().html() == "") {
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/common/tree/tmp_list",
+            url  : base_uri + "/common/tree/tmp_list",
             data :
               {
                 org_cd : id.replace("org_", "")

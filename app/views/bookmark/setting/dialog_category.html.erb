@@ -35,7 +35,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/bookmark/setting/dialog_category_detail",
+            url  : base_uri + "/bookmark/setting/dialog_category_detail",
             data :
               {
                 id : id
@@ -79,7 +79,7 @@
         jQuery.ajax(
           {
             type : "POST",
-            url  : "/bookmark/setting/dialog_category_register",
+            url  : base_uri + "/bookmark/setting/dialog_category_register",
             data :
               "id=" + id + "&" +
               "title=" + title + "&" +
@@ -114,7 +114,7 @@
           jQuery.ajax(
             {
               type : "GET",
-              url  : "/bookmark/setting/dialog_category_delete",
+              url  : base_uri + "/bookmark/setting/dialog_category_delete",
               data :
                 {
                   id : id
@@ -158,7 +158,7 @@
     $(document).ready(
       function(){
         dialog_select_category();
-        $("#dialog_category_detail").load("/bookmark/setting/dialog_category_detail");
+        $("#dialog_category_detail").load(base_uri + "/bookmark/setting/dialog_category_detail");
       }
     );
 
@@ -169,7 +169,7 @@
       jQuery.ajax(
         {
           type : "GET",
-          url  : "/bookmark/setting/select_category",
+          url  : base_uri + "/bookmark/setting/select_category",
           data :
             {},
           success :

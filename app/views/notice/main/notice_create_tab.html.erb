@@ -7,7 +7,7 @@
     $(document).ready(function(){
 		var message_id = $("#message_id").val();
 		$("#message_id").val("")
-		var url = "/notice/main/notice_create?message_id=";
+		var url = base_uri + "/notice/main/notice_create?message_id=";
 		if(message_id != ""){
           url += message_id
 		}

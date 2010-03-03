@@ -16,14 +16,14 @@
   <table cellpadding="1" cellspacing="0" style="width:100%;">
     <tr>
       <td style="width:15px;">
-        <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "facility_list",
+        <%= link_to_remote(image_tag("icons/icon_arrow_left2.gif"), :update => "facility_list",
         :url => {:action => "month", :month => @current_date.last_month.strftime("%Y%m"), :facility_cd => @select_facility_cd}) %></a>
       </td>
       <td style="width:30px;">
         <%=button_to_remote("今月", :update => "facility_list", :url => {:action => "month", :facility_cd => @select_facility_cd})%>
       </td>
       <td style="width:15px;">
-        <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "facility_list",
+        <%= link_to_remote(image_tag("icons/icon_arrow_right2.gif"), :update => "facility_list",
         :url => {:action => "month", :month => @current_date.next_month.strftime("%Y%m"), :facility_cd => @select_facility_cd}) %></a>
       </td>
       <td style="width:80px;"><%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月</td>
@@ -129,14 +129,14 @@
   <table cellpadding="1" cellspacing="0" style="width:100%;">
     <tr>
       <td style="width:15px;">
-        <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "facility_list",
+        <%= link_to_remote(image_tag("icons/icon_arrow_left2.gif"), :update => "facility_list",
         :url => {:action => "month", :month => @current_date.last_month.strftime("%Y%m"), :facility_cd => @select_facility_cd}) %></a>
       </td>
       <td style="width:30px;">
         <%=button_to_remote("今月", :update => "facility_list", :url => {:action => "month", :facility_cd => @select_facility_cd})%>
       </td>
       <td style="width:15px;">
-        <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "facility_list",
+        <%= link_to_remote(image_tag("icons/icon_arrow_right2.gif"), :update => "facility_list",
         :url => {:action => "month", :month => @current_date.next_month.strftime("%Y%m"), :facility_cd => @select_facility_cd}) %></a>
       </td>
       <td style="width:80px;"><%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月</td>
@@ -187,7 +187,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/facility/reserve/month?&facility_cd=' + facility_cd + "&month=" + <%=@month%>,
+        url:base_uri + '/facility/reserve/month?&facility_cd=' + facility_cd + "&month=" + <%=@month%>,
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。

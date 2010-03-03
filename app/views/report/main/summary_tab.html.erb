@@ -55,7 +55,7 @@
         jQuery.ajax(
           {
             type : "POST",
-            url  : "/report/main/register_summary",
+            url  : base_uri + "/report/main/register_summary",
             data :
               "cmt=" + comment + "&s_cmt=" + superior_comment + "&d=" + report_date + "&authenticity_token=" + authenticity_token,
             success :

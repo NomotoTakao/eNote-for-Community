@@ -9,7 +9,7 @@
         jQuery.ajax(
           {
             type: "GET",
-            url: "/cabinet/public/tmp_list",
+            url: base_uri + "/cabinet/public/tmp_list",
             data: {kbn: 3          },
             success:
               function(data, dataType){
@@ -22,9 +22,9 @@
               },
             complete:
               function(){
-			  	// この画面で独自のイベントを定義するため、以前のイベントを削除する。
+			  	      // この画面で独自のイベントを定義するため、以前のイベントを削除する。
                 $(".cabinet").unbind('click');
-				// この画面で定義する新たなclickイベント
+				        // この画面で定義する新たなclickイベント
                 $(".cabinet").click(
                   function(){
                     id = $(this).attr("id");
@@ -32,12 +32,9 @@
                     bgChange($(this), $(".cabinet"));
                   }
                 );
-
               }
           }
         );
-
-
       }
     );
   -->

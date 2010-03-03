@@ -13,10 +13,10 @@
               {
                 type: "GET",
                 data:{head_id: head_id},
-                url: "/cabinet/public/delete_cabinet",
+                url: base_uri + "/cabinet/public/delete_cabinet",
                 success:
                   function(){
-                    url = "/cabinet/public/sectional_cabinet";
+                    url = base_uri + "/cabinet/public/sectional_cabinet";
                     $('#public_cabinet').load(url);
                     $("#d_cabinet_body_d_cabinet_head_id").val("");
                   },

@@ -20,7 +20,7 @@
       </div>
     </td>
     <td style="height:30px;width:140px;">
-      <img class="enote_title_block" src="/images/widget_ico_on.gif"/>日付：
+      <%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>日付：
     </td>
     <td style="width:400px;">
       <input type="text" id="search_date_from" class="ime_off" size="10" />&nbsp;~&nbsp;<input type="text" id="search_date_to" class="ime_off" size="10" />
@@ -29,7 +29,7 @@
   </tr>
   <tr>
     <td style="height:30px;">
-      <img class="enote_title_block" src="/images/widget_ico_on.gif"/>活動のコメント：
+      <%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>活動のコメント：
     </td>
     <td>
       <input type="text" id="search_comment" class="ime_on" size="40" />
@@ -38,7 +38,7 @@
   </tr>
   <tr>
     <td style="height:30px;">
-      <img class="enote_title_block" src="/images/widget_ico_on.gif"/>対象者：
+      <%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>対象者：
     </td>
     <td>
       <select id="search_action_target_select" size="1" style="width:200px;">
@@ -54,7 +54,7 @@
   </tr>
   <tr>
     <td style="height:30px;">
-      <img class="enote_title_block" src="/images/widget_ico_on.gif"/>活動分類：
+      <%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>活動分類：
     </td>
     <td>
       <select id="search_action_group_select" size="1" style="width:200px;">
@@ -70,7 +70,7 @@
   </tr>
   <tr>
     <td style="height:30px;">
-      <img class="enote_title_block" src="/images/widget_ico_on.gif"/>活動詳細：
+      <%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>活動詳細：
     </td>
     <td>
       <select id="search_action_select" size="1" style="width:200px;">
@@ -121,7 +121,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/report/main/action_list",
+            url  : base_uri + "/report/main/action_list",
             data :
               {
                 action_group_cd : $(this).val()
@@ -166,7 +166,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/report/main/output_csv",
+            url  : base_uri + "/report/main/output_csv",
             data :
               "date_from=" + date_from + "&date_to=" + date_to + "&comment=" + comment + "&target_cd=" + action_target + "&group_cd=" + action_group + "&action_cd=" + action + "&authenticity_token=" + authenticity_token,
             success :
@@ -269,7 +269,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/report/main/search_list",
+            url  : base_uri + "/report/main/search_list",
             data :
               {
                 org_cd        : org_cd,

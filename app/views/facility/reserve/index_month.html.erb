@@ -38,16 +38,16 @@
   * 一覧エリアに月単位の施設一覧を表示
   */
   $("#facility_list").load(
-  "/facility/reserve/month?facility_cd=" + <%=@select_facility_cd%> + "&month=" + <%=@month%>,
-  "",
-  function() {
+    base_uri + "/facility/reserve/month?facility_cd=" + <%=@select_facility_cd%> + "&month=" + <%=@month%>,
+    "",
+    function() {
 /*
     //timer設定
     $.timer(300000, function (timer) {
       // jQueryでの処理
       $.ajax({
           type:'get',
-          url:"/facility/reserve/index_month?facility_cd=" + <%=@select_facility_cd%> + "&month=" + <%=@month%>,
+          url:base_uri + "/facility/reserve/index_month?facility_cd=" + <%=@select_facility_cd%> + "&month=" + <%=@month%>,
           success:
               function(request){
                   // 受信結果を一覧エリアに反映させます。

@@ -25,7 +25,7 @@ function bookmark_search(sword){
   if(sword == ""){
     alert("検索キーワードを指定してください。")
   } else {
-    $("#bookmark_list").load("/bookmark/main/bookmark_search?sword=" + encodeURIComponent(sword));
+    $("#bookmark_list").load(base_uri + "/bookmark/main/bookmark_search?sword=" + encodeURIComponent(sword));
   }
   return false;
 }
@@ -60,7 +60,7 @@ function bookmark_search(sword){
  function dialog_bookmark_open_ins(){
    //画面遷移
    url = space_remove($("#bookmark_url_new").val());
-   jQuery("#dialog_ins").load("/bookmark/setting/new?url=" + url + "&categories=" + $("#categories").val());
+   jQuery("#dialog_ins").load(base_uri + "/bookmark/setting/new?url=" + url + "&categories=" + $("#categories").val());
    jQuery("#dialog_ins").dialog("open");
    return false;
  }
@@ -70,7 +70,7 @@ function bookmark_search(sword){
  */
  function dialog_bookmark_open_upd(id){
    //画面遷移
-   jQuery("#dialog_upd").load("/bookmark/setting/edit?id=" + id);
+   jQuery("#dialog_upd").load(base_uri + "/bookmark/setting/edit?id=" + id);
    jQuery("#dialog_upd").dialog("open");
    return false;
  }
@@ -98,5 +98,5 @@ function space_remove(val){
  * マスタ一覧へ戻る
  */
 function ClickBackToMasterList(){
-  document.location = "/master/maintenance";
+  document.location = base_uri + "/master/maintenance";
 }

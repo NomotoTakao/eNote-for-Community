@@ -19,7 +19,7 @@
   <!-- 検索エリア -->
   <div class="gadget" style="width:240px;">
     <div id="" class="gadget_title" style="">
-      <h3 style=""><img src="/images/icons/icon_notice.gif" align="top" style="margin-right:5px;">対象機能</h3>
+      <h3 style=""><%= image_tag("icons/icon_notice.gif", :align => "top", :style => "margin-right:5px;") %>対象機能</h3>
     </div>
     <%= form_remote_tag(:update => 'search_result', :url => {:action => :search_result}) %>
       <div class="gadget_body">
@@ -69,7 +69,7 @@
   */
   $(document).ready(function(){
     //検索結果を表示する
-    $("#search_result").load("/search/main/search_result?site_search_word=" + encodeURIComponent('<%=@site_search_word%>') + "&from_mode=0");
+    $("#search_result").load(base_uri + "/search/main/search_result?site_search_word=" + encodeURIComponent('<%=@site_search_word%>') + "&from_mode=0");
   });
 -->
 </script>

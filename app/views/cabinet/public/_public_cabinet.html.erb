@@ -179,15 +179,8 @@
             }else {}
           }
 
-          if (site_id != "") {
-            //$("#1_4").parent().click();
-            $("span:contains('営業関係')").click();
-            $("font:contains('翔子ちゃんニュース')").click();
-            $("#cabinet_1_26").click();
-          }
-
           if(auto.length == 3){
-            $("#cabinet_list").load("/cabinet/public/cabinet_detail/" + auto[2]);
+            $("#cabinet_list").load(base_uri + "/cabinet/public/cabinet_detail/" + auto[2]);
           }
         }
       }
@@ -226,7 +219,7 @@
         jQuery.ajax(
           {
             type: "GET",
-            url: "/cabinet/public/cabinet_list",
+            url: base_uri + "/cabinet/public/cabinet_list",
             data:
               {
                 cabinet_id: attr_id[1]

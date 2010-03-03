@@ -60,15 +60,15 @@
       <table style="width:100%;">
         <tr>
           <td valign="top" align="left" style="width:90px;">
-            <img class="enote_title_block" src="/images/widget_ico_on.gif" />コメント：<br>
+            <%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>コメント：<br>
           </td>
           <td valign="top" align="left" style="width:420px;">
             <textarea id="comment" class="ime_on" rows="5" style="width:400px;"></textarea>
           </td>
           <td valign="top">&nbsp;</td>
           <td valign="top" align="left" style="width:250px;">
-            <img src="/images/widget_ico_on.gif" />活動時間：&nbsp;<input type="text" id="action_time" class="ime_off" size="8" style="text-align:right;" />&nbsp;時間<br />
-            <img src="/images/widget_ico_on.gif" />売上金額：&nbsp;<input type="text" id="sale_amount" class="ime_off" size="8" style="text-align:right;" />&nbsp;円
+            <%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>活動時間：&nbsp;<input type="text" id="action_time" class="ime_off" size="8" style="text-align:right;" />&nbsp;時間<br />
+            <%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>売上金額：&nbsp;<input type="text" id="sale_amount" class="ime_off" size="8" style="text-align:right;" />&nbsp;円
           </td>
           <td valign="top" style="width:100px;">
             <input type="button" id="all_delete_button" class="submit" value="一括削除" /><br>
@@ -92,7 +92,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/report/main/action_list",
+            url  : base_uri + "/report/main/action_list",
             data :
               {
                 action_group_cd : action_group_cd
@@ -131,7 +131,7 @@
           jQuery.ajax(
             {
               type : "GET",
-              url  : "/report/main/delete_report",
+              url  : base_uri + "/report/main/delete_report",
               data :
                 {ids : ids},
               success :
@@ -159,7 +159,6 @@
      */
     $("#register_button").click(
       function(){
-
         var action_date = $("#input_report_date").val();
         var selected_report_id = $("#selected_report_id").val();
         var company_cd = $("#customer_list").val();
@@ -174,7 +173,7 @@
         jQuery.ajax(
           {
             type : "POST",
-            url  : "/report/main/register_report",
+            url  : base_uri + "/report/main/register_report",
             data :
               "id=" + selected_report_id + "&date=" + action_date + "&c=" + company_cd + "&t=" + action_target_cd + "&a=" + action_group_cd + "&d=" + action_cd + "&cmt=" + comment + "&time=" + action_time + "&sales=" + sale_amount + "&authenticity_token=" + authenticity_token,
             success :
@@ -198,7 +197,7 @@
       jQuery.ajax(
         {
           type : "GET",
-          url  : "/report/main/report_list",
+          url  : base_uri + "/report/main/report_list",
           data :
             {
               date : $("#input_report_date").val()

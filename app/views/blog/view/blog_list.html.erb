@@ -36,8 +36,7 @@
           <%= link_to_remote blog.send(:title),
                              :update=>"right_pane",
                              :url=>{:action => 'detail',
-                                    :id => blog.send(:id)
-                                   }
+                                    :id => blog.send(:id)}
           %>
         </h3>
         <div class="vblog_atricle_head_meta"><%= disp_meta(blog) %></div>
@@ -46,8 +45,7 @@
       <div class="vblog_article_body" style="width:700px;text-align:left;overflow-x:auto;">
         <%= blog.send(:body) %>
       </div><br />
-      <div class="vblog_article_foot">
-      </div>
+      <div class="vblog_article_foot"></div>
     </div><br />
   <% end %>
 <% end %>
@@ -57,8 +55,7 @@
     <td style="text-align:center;padding-left:10px;">
       <%= will_paginate(@blog_list, :renderer => RemoteLinkRenderer,
                                        :update => 'right_pane',
-                                       :params=> { :action => 'blog_list'
-                                                 },
+                                       :params=> { :action => 'blog_list' },
                                        :prev_label => "<<前へ",
                                        :next_label => "次へ>>",
                                        :method => :get) if @blog_list.size > 0
@@ -69,22 +66,15 @@
 
 <script type="text/javascript">
   <!--
-    $(document).ready(
-      function(){
+    $(document).ready(function(){
 	    // 新着記事一覧を更新します。
-        $("#blog_menu_new_article").load("/blog/view/menu_new_article?uid=<%= @user_cd %>");
-		// パン屑リストを更新します。
-//		$("#breadcrumbs").html($(".vblog_article_subject").html());
-        // 月別アーカイブを更新します
-		$("#monthly_list").load("/blog/view/menu_month_list?uid=<%= @user_cd %>");
-		// タグ一覧を更新します。
-		$("#tag_list").load("/blog/view/tag_list?uid=<%= @user_cd %>");
-		// 検索領域のユーザーコードのユーザーコードを更新
-		$("#user_cd_s").val(<%= @user_cd %>);
-		// ブロガー一覧を更新します。
-// ブロガー一覧を更新してしまうと、ツリーが閉じてしまうので、更新しない。（top.html.erbで呼び出す）
-//        $("#blog_menu_bloger_list").load("/blog/view/menu_bloger_list/");
-      }
-    );
+      $("#blog_menu_new_article").load(base_uri + "/blog/view/menu_new_article?uid=<%= @user_cd %>");
+      // 月別アーカイブを更新します
+  		$("#monthly_list").load(base_uri + "/blog/view/menu_month_list?uid=<%= @user_cd %>");
+  		// タグ一覧を更新します。
+  		$("#tag_list").load(base_uri + "/blog/view/tag_list?uid=<%= @user_cd %>");
+  		// 検索領域のユーザーコードのユーザーコードを更新
+  		$("#user_cd_s").val(<%= @user_cd %>);
+    });
   //-->
 </script>

@@ -651,5 +651,5 @@ function CheckMMDDFormat(date_mmdd){
  * マスタ一覧へ戻る
  */
 function ClickBackToMasterList(){
-  document.location = "/master/maintenance";
+  document.location = base_uri + "/master/maintenance";
 }

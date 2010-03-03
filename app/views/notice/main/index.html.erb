@@ -23,11 +23,8 @@
 <div style="padding:5px;">
   <div class="tabset" id="tabset" style="border:0;text-align:left;">
   <ul>
-    <li><a href="/notice/main/notice_list_tab?id=<%=@id %>&message_id_def=<%=@message_id_def%>">お知らせ</a></li>
-    <li><a href="/notice/main/notice_create_tab">新規投稿</a></li>
-<!--
-    <li><a href="/notice/main/notice_settings_tab">設定</a></li>
--->
+    <li><%= link_to "お知らせ", :controller => "/notice/main", :action => "notice_list_tab", :id => @id, :message_id_def => @message_id_def %></li>
+    <li><%= link_to "新規投稿", :controller => "/notice/main", :action => "notice_create_tab" %></li>
   </ul>
   </div>
 </div>
@@ -37,14 +34,11 @@
 <input type="hidden" id="message_id" name="message_id" value="<%= @message_id %>" />
 <br>
 <script type="text/javascript">
-  <!--
-
+<!--
   var tabs = new Array();
   $(document).ready(function(){
-
     //タブを表示
     $("#tabset").tabs();
-    // class: ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all ui-widget-header
     $("#tabset").find("ul").attr("class", "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all");
 
     // タブの枠線を描く

@@ -35,13 +35,13 @@
       <td class="admin_pages_edit_table_title">添付ファイル</td>
       <td class="admin_pages_edit_table_content" style="text-align:left;">
         <% unless @bulletin_head.d_bulletin_file.nil? %>
-		  <% bulletin_file_reverse = @bulletin_head.d_bulletin_file.reverse %>
-		  <% bulletin_file_reverse.each do |file| %>
+    		  <% bulletin_file_reverse = @bulletin_head.d_bulletin_file.reverse %>
+    		  <% bulletin_file_reverse.each do |file| %>
             <%= link_to file.file_name,
                         :action=>:download,
                         :id=>file.id
             %>&nbsp;
-		  <% end %>
+    		  <% end %>
         <% end %>
       </td>
     </tr>
@@ -54,7 +54,7 @@
     <tr>
       <td class="admin_pages_edit_table_title" style="width:120px;">回答・コメント</td>
       <td class="admin_pages_edit_table_content" style="width:570px;text-align:left;">
-		<%= text_area 'bulletin_body', 'comment', {:cols => 40, :rows => 10, :class => 'enote_blog_body_text' }  %>	  
+		  <%= text_area 'bulletin_body', 'comment', {:cols => 40, :rows => 10, :class => 'enote_blog_body_text' }  %>	  
 	  </td>
     </tr>
   </table>
@@ -68,8 +68,6 @@
 </form>
 <% end %>
 
-<%# p "★@bulletin_head.post_user_cd" + @bulletin_head.post_user_cd %>
-<%# p "★current_m_user.user_cd:" + current_m_user.user_cd %>
 <% if @bulletin_head.answer_public_kbn == 1 or @bulletin_head.post_user_cd == current_m_user.user_cd %>
 <hr>
 <table class="enote_general_table1">

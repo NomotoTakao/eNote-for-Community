@@ -75,7 +75,7 @@
       jQuery.ajax(
         {
           type     : "GET",
-          url      : "/report/main/edit_report",
+          url      : base_uri + "/report/main/edit_report",
           data     :
             {
               id : id
@@ -133,13 +133,11 @@
      * @param {Object} id - 日報ID
      */
     function delete_report(id){
-
       if(confirm("削除してよろしいですか？")){
-
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/report/main/delete_report",
+            url  : base_uri + "/report/main/delete_report",
             data :
               {
                 ids : id

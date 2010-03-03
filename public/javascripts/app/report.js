@@ -131,31 +131,29 @@ function bgChange(element, cls){
   element.css('color', '#FFFFFF');
 }
 
-
-    function get_summary_comment(){
-
-      report_date = $("#input_report_date").val();
-      // 総括コメント・上司確認コメントを取得する。
-      if(report_date!=""){
-        jQuery.ajax(
+function get_summary_comment(){
+  report_date = $("#input_report_date").val();
+  // 総括コメント・上司確認コメントを取得する。
+  if(report_date!=""){
+    jQuery.ajax(
+      {
+        type : "GET",
+        url  : base_uri + "/report/main/summary_comment",
+        data :
           {
-            type : "GET",
-            url  : "/report/main/summary_comment",
-            data :
-              {
-                date : report_date
-              },
-            success :
-              function(data, dataType){
-                $("#summary_comment").parent().after(data);
-              },
-            error :
-              function(){
-                alert("通信エラー");
-              },
-            complete :
-              function(){}
-          }
-        );
+            date : report_date
+          },
+        success :
+          function(data, dataType){
+            $("#summary_comment").parent().after(data);
+          },
+        error :
+          function(){
+            alert("通信エラー");
+          },
+        complete :
+          function(){}
       }
-    }
+    );
+  }
+}

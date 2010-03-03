@@ -246,10 +246,8 @@
     );
 
 
-    $(document).ready(
-      function(){
-
-        $("#public_org_select").load("/common/public_org/index");
+    $(document).ready(function(){
+        $("#public_org_select").load(base_uri +"/common/public_org/index");
         url = "";
         $(document).scrollTop = 0;
 
@@ -260,19 +258,19 @@
         // キャビネット選択
         cabinet_kbn = $("#selectCabinet").val();
         if(cabinet_kbn == 1){
-          url = "/cabinet/public/company_cabinet?select=<%= @d_cabinet_body.d_cabinet_head.id unless @d_cabinet_body.d_cabinet_head.nil? %>";
+          url = base_uri + "/cabinet/public/company_cabinet?select=<%= @d_cabinet_body.d_cabinet_head.id unless @d_cabinet_body.d_cabinet_head.nil? %>";
           $("#public_org_table_title").css("display", "block");
           $("#public_org_table").css("display", "block");
           $("#sectional_folder_edit_title").css("display", "none");
           $("#folder_edit").css("display", "none");
         }else if(cabinet_kbn == 2){
-          url = "/cabinet/public/sectional_cabinet?id=" + cabinet_kbn + "&select=<%= @d_cabinet_body.d_cabinet_head.id unless @d_cabinet_body.d_cabinet_head.nil? %>";
+          url = base_uri + "/cabinet/public/sectional_cabinet?id=" + cabinet_kbn + "&select=<%= @d_cabinet_body.d_cabinet_head.id unless @d_cabinet_body.d_cabinet_head.nil? %>";
           $("#public_org_table_title").css("display", "none");
           $("#public_org_table").css("display", "none");
           $("#sectional_folder_edit_title").css("display", "block");
           $("#folder_edit").css("display", "block");
         }else if(cabinet_kbn == 3){
-          url = "/cabinet/public/project_cabinet?select=<%= @d_cabinet_body.d_cabinet_head.id unless @d_cabinet_body.d_cabinet_head.nil? %>";
+          url = base_uri + "/cabinet/public/project_cabinet?select=<%= @d_cabinet_body.d_cabinet_head.id unless @d_cabinet_body.d_cabinet_head.nil? %>";
           $("#public_org_table_title").css("display", "none");
           $("#public_org_table").css("display", "none");
           $("#sectional_folder_edit_title").css("display", "none");
@@ -291,7 +289,7 @@
             $("#d_cabinet_body_d_cabinet_head_id").val("");
             if(cabinet_kbn == 1){
               // 全社キャビネット
-              url = "/cabinet/public/company_cabinet/";
+              url = base_uri + "/cabinet/public/company_cabinet/";
               // 「公開対象組織の選択｣を表示
               $("#public_org_table_title").css("display", "block");
               $("#public_org_table").css("display", "block");
@@ -299,7 +297,7 @@
               $("#folder_edit").css("display", "none");
             }else if(cabinet_kbn == 3){
               // プロジェクトキャビネット
-              url = "/cabinet/public/project_cabinet/";
+              url = base_uri + "/cabinet/public/project_cabinet/";
               // 「公開対象組織の選択」を非表示
               $("#public_org_table_title").css("display", "none");
               $("#public_org_table").css("display", "none");
@@ -307,7 +305,7 @@
               $("#folder_edit").css("display", "none");
             }else{
               org_cd = $("#selectCabinet").val();
-              url = "/cabinet/public/sectional_cabinet/" + org_cd;
+              url = base_uri + "/cabinet/public/sectional_cabinet/" + org_cd;
               // 「公開対象組織の選択」を非表示
               $("#public_org_table_title").css("display", "none");
               $("#public_org_table").css("display", "none");
@@ -316,7 +314,6 @@
             }
 
             $("#d_cabinet_body_d_cabinet_head_id")
-
             $("#public_cabinet").load(url);
           }
         );
@@ -369,7 +366,7 @@
           jQuery.ajax(
             {
               type: "GET",
-              url: "/cabinet/public/create_cabinet",
+              url: base_uri + "/cabinet/public/create_cabinet",
               data:
                 {
                   parent_id: parent_id,
@@ -377,7 +374,7 @@
                 },
               success:
                 function(){
-                  url = "/cabinet/public/sectional_cabinet";
+                  url = base_uri + "/cabinet/public/sectional_cabinet";
                   $('#public_cabinet').load(url);
                   // キャビネット名入力テキストボックスの内容をクリアする。
                   $("#new_cabinet_name_").val("");
@@ -409,7 +406,7 @@
           jQuery.ajax(
             {
               type: "GET",
-              url: "/cabinet/public/edit_cabinet",
+              url: base_uri + "/cabinet/public/edit_cabinet",
               data:
                 {
                   head_id: head_id,
@@ -417,7 +414,7 @@
                 },
               success:
                 function(){
-                  url = "/cabinet/public/sectional_cabinet";
+                  url = base_uri + "/cabinet/public/sectional_cabinet";
                   $('#public_cabinet').load(url);
                   // キャビネット名入力テキストボックスの内容をクリアする。
                   $("#new_cabinet_name_").val("");
@@ -447,7 +444,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/cabinet/public/confirm_cabinet",
+            url  : base_uri + "/cabinet/public/confirm_cabinet",
             data :
               {
                 head_id : head_id

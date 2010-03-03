@@ -18,14 +18,14 @@
     <% start_day = @week_list[0][0] %>
     <% end_date = start_day + 6 %>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "facility_list",
+      <%= link_to_remote(image_tag("icons/icon_arrow_left2.gif"), :update => "facility_list",
       :url => {:action => "week", :week => (start_day - 7).strftime("%Y%m%d"), :group_checked_id => @group_checked_id}) %></a>
     </td>
     <td style="width:30px;">
       <%=button_to_remote("今週", :update => "facility_list", :url => {:action => "week", :group_checked_id => @group_checked_id})%>
     </td>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "facility_list",
+      <%= link_to_remote(image_tag("icons/icon_arrow_right2.gif"), :update => "facility_list",
       :url => {:action => "week", :week => (start_day + 7).strftime("%Y%m%d"), :group_checked_id => @group_checked_id}) %></a>
     </td>
     <td style="width:250px;">
@@ -143,7 +143,7 @@
                     -<%=Time.parse(reserve.plan_time_to).strftime("%H:%M")%><br>
                   <% end %>
                 <% else %>
-                                           終日<br>
+                   終日<br>
                 <% end %>
                 <%=reserve.title%>(<%=reserve.create_user_name%>)
                 <br>
@@ -155,7 +155,6 @@
           <% if match_count == 0 %>
             &nbsp;
           <% end %>
-
         </div></td>
       <% end %>
     </tr>
@@ -169,14 +168,14 @@
     <% start_day = @week_list[0][0] %>
     <% end_date = start_day + 6 %>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "facility_list",
+      <%= link_to_remote(image_tag("icons/icon_arrow_left2.gif"), :update => "facility_list",
       :url => {:action => "week", :week => (start_day - 7).strftime("%Y%m%d"), :group_checked_id => @group_checked_id}) %></a>
     </td>
     <td style="width:30px;">
       <%=button_to_remote("今週", :update => "facility_list", :url => {:action => "week", :group_checked_id => @group_checked_id})%>
     </td>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "facility_list",
+      <%= link_to_remote(image_tag("icons/icon_arrow_right2.gif"), :update => "facility_list",
       :url => {:action => "week", :week => (start_day + 7).strftime("%Y%m%d"), :group_checked_id => @group_checked_id}) %></a>
     </td>
     <td style="width:250px;">
@@ -230,7 +229,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/facility/reserve/week?&group_checked_id=' + group_checked_id + '&week=' + <%=session[:week_start_date]%>,
+        url:base_uri + '/facility/reserve/week?&group_checked_id=' + group_checked_id + '&week=' + <%=session[:week_start_date]%>,
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。

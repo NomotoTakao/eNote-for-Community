@@ -23,7 +23,7 @@
       file_name = @cabinet_file.file_name
       file_explain = @cabinet_file.memo
       file_size = @cabinet_file.file_size.to_i
-      download_url = "/cabinet/public/download/" + @cabinet_file.id.to_s
+      download_url = base_uri + "/cabinet/public/download/" + @cabinet_file.id.to_s
     end
   end
 %>
@@ -78,16 +78,16 @@
         width: 500,
         buttons: {
           "ダウンロード":
-		  function() {
-		  	if ($("#dialog_download").attr('href') != "") {
-			  $("#dialog_download").click();
-			  open($("#dialog_download").attr('href'));
-			}
+      		  function() {
+      		  	if ($("#dialog_download").attr('href') != "") {
+      			  $("#dialog_download").click();
+      			  open($("#dialog_download").attr('href'));
+      			}
           },
           "閉じる":
-		  function() {
-            $(this).dialog('close');
-          }
+      		  function() {
+              $(this).dialog('close');
+            }
         }
       });
 	});

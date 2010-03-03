@@ -40,7 +40,7 @@ function folderChange(element, prefix, target_value){
  * 回覧板の詳細画面を表示する
  */
 function disp_bulletin_detail(id){
-  $("#bulletin_area").load("/bulletin/main/detail?id=" + id);
+  $("#bulletin_area").load(base_uri + "/bulletin/main/detail?id=" + id);
 }
 
 /*
@@ -48,7 +48,7 @@ function disp_bulletin_detail(id){
  */
 function ClickAddAllUser(){
   $("#org_users option").each(function(){
-        $(this).attr("selected", false);
+    $(this).attr("selected", false);
     $("#decided_users").append($(this));
   });
 }
@@ -78,22 +78,12 @@ function ClickDeleteUser(){
  */
 function ClickDeleteAllUser(){
   $("#decided_users option").each(function(){
-        $(this).attr("selected", false);
+    $(this).attr("selected", false);
     $("#org_users").append($(this));
   });
 }
 
 function SaveBulletin(){
-//	var user_cds = ""
-//	$("#decided_users").each(function(){
-//		if(user_cds == ""){
-//			user_cds = $(this).val();
-//		} else {
-//			user_cds += "-" + $(this).val();
-//		}
-//	});
-//	$("#decided_user_cds").val(user_cds);
-
     //確認ダイアログ
     result = confirm("登録して宜しいですか？");
     if (!result) {
@@ -139,42 +129,42 @@ function SaveAnswerBulletin(){
 * 入力チェック
 */
 function CheckValidate(){
- /*タイトルの必須チェック*/
- if (!inValueChk($("#bulletin_head_title").val(),99,0,1,0,0,"タイトル")) {
-   return false;
- }
- /*回覧先の社員の必須チェック*/
- if (!inValueChk($("#decided_user_cds").val(),99,0,1,0,0,"回覧先の社員")) {
-   return false;
- }
- /*回覧期間(開始日)の必須チェック*/
- if (!inValueChk($("#bulletin_head_bulletin_date_from").val(),99,0,1,0,0,"回覧期間(開始日)")) {
+   /*タイトルの必須チェック*/
+   if (!inValueChk($("#bulletin_head_title").val(),99,0,1,0,0,"タイトル")) {
      return false;
- }
- /*回覧期間(終了日)の必須チェック*/
- if (!inValueChk($("#bulletin_head_bulletin_date_to").val(),99,0,1,0,0,"回覧期間(終了日)")) {
+   }
+   /*回覧先の社員の必須チェック*/
+   if (!inValueChk($("#decided_user_cds").val(),99,0,1,0,0,"回覧先の社員")) {
      return false;
- }
- /*回覧期間(開始日)の妥当性チェック*/
- result = checkDateFormat($("#bulletin_head_bulletin_date_from").val(), "#bulletin_head_bulletin_date_from", "回覧期間(開始日)");
- if (!result) {
-   return result;
- }
- /*回覧期間(終了日)の妥当性チェック*/
- result = checkDateFormat($("#bulletin_head_bulletin_date_to").val(), "#bulletin_head_bulletin_date_to", "回覧期間(終了日)");
- if (!result) {
-   return result;
- }
- /*回覧期間(開始日)と回覧期間(終了日)の大小チェック*/
- result = compareDate(
+   }
+   /*回覧期間(開始日)の必須チェック*/
+   if (!inValueChk($("#bulletin_head_bulletin_date_from").val(),99,0,1,0,0,"回覧期間(開始日)")) {
+       return false;
+   }
+   /*回覧期間(終了日)の必須チェック*/
+   if (!inValueChk($("#bulletin_head_bulletin_date_to").val(),99,0,1,0,0,"回覧期間(終了日)")) {
+       return false;
+   }
+   /*回覧期間(開始日)の妥当性チェック*/
+   result = checkDateFormat($("#bulletin_head_bulletin_date_from").val(), "#bulletin_head_bulletin_date_from", "回覧期間(開始日)");
+   if (!result) {
+     return result;
+   }
+   /*回覧期間(終了日)の妥当性チェック*/
+   result = checkDateFormat($("#bulletin_head_bulletin_date_to").val(), "#bulletin_head_bulletin_date_to", "回覧期間(終了日)");
+   if (!result) {
+     return result;
+   }
+   /*回覧期間(開始日)と回覧期間(終了日)の大小チェック*/
+   result = compareDate(
      true,
      $("#bulletin_head_bulletin_date_from").val(), "", "",
      $("#bulletin_head_bulletin_date_to").val(), "", "",
      "回覧期間");
- if (!result) {
-   return result;
- }
- return true;
+   if (!result) {
+     return result;
+   }
+   return true;
 }
 
 /*
@@ -186,7 +176,7 @@ function bulletin_search(sword){
   if(sword == ""){
     alert("検索キーワードを指定してください。")
   } else {
-    $("#bulletin_area").load("/bulletin/main/bulletin_list?kbn_id=9&sword=" + encodeURIComponent(sword));
+    $("#bulletin_area").load(base_uri + "/bulletin/main/bulletin_list?kbn_id=9&sword=" + encodeURIComponent(sword));
   }
   return false;
 }

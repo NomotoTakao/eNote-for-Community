@@ -11,54 +11,46 @@
       <% end %>
     </ul>
   </div>
-  <div id="tmp_list" style="display: none;">
-  </div>
+  <div id="tmp_list" style="display: none;"></div>
 </div>
 <div id="blog_bloger_list_foot"></div>
 
 <script type="text/javascript">
   <!--
-    $(document).ready(
-      function(){
-        $("#sosiki_browser").treeview();
+    $(document).ready(function(){
+      $("#sosiki_browser").treeview();
 
-    $(".blogger").click(
-          function(){
-            id = $(this).attr("id");
-            // 組織だったら、下の階層を取りに行く。個人だったら、ブログ表示領域を更新する。(組織/個人は、idの接頭辞で判断する。)
-            if (id.indexOf("o_") > -1) {
-              // 直下階層の要素を持っていない場合にのみ、サーバーにとりに行く。
-              if ($(this).next().html() == "") {
-                jQuery.ajax({
-                  type: "GET",
-                  url: "/blog/view/tmp_list",
-                  data: {tmp_id: id},
-                  success: function(data, dataType){
-                               $("#tmp_list").html(data);
-                               id = "#" + id;
-                               $(id).after(data);
-                             },
-                  error: function(){}
-                  }
-                );
-              }
-            }
+      $(".blogger").click(function(){
+        id = $(this).attr("id");
+        // 組織だったら、下の階層を取りに行く。個人だったら、ブログ表示領域を更新する。(組織/個人は、idの接頭辞で判断する。)
+        if (id.indexOf("o_") > -1) {
+          // 直下階層の要素を持っていない場合にのみ、サーバーにとりに行く。
+          if ($(this).next().html() == "") {
+            jQuery.ajax({
+              type: "GET",
+              url: base_uri + "/blog/view/tmp_list",
+              data: {tmp_id: id},
+              success: function(data, dataType){
+                           $("#tmp_list").html(data);
+                           id = "#" + id;
+                           $(id).after(data);
+                         },
+              error: function(){}
+            });
           }
-        );
+        }
+      });
 
-        /*
-         * ツリーの+/-ボタンがクリックされたときに発生するイベントです。
-         */
-        $(".hitarea").click(
-          function(){
-            if ($(this).next().next().html() == "") {
-              $(this).next().click();
-              // ツリーの+/-ボタンの記号を'+'から'-'に変更する。(クラスの属性を置き換える)
-              $(this).attr("class", $(this).attr("class").replace("expandable", "collapsable"));
-            }
-          }
-        );
-      }
-    );
+      /*
+       * ツリーの+/-ボタンがクリックされたときに発生するイベントです。
+       */
+      $(".hitarea").click(function(){
+        if ($(this).next().next().html() == "") {
+          $(this).next().click();
+          // ツリーの+/-ボタンの記号を'+'から'-'に変更する。(クラスの属性を置き換える)
+          $(this).attr("class", $(this).attr("class").replace("expandable", "collapsable"));
+        }
+      });
+    });
   //-->
 </script>

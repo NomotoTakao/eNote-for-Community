@@ -20,7 +20,7 @@
             %>
             <%= org_name %>
           </font>
-		</span>
+		    </span>
         <% unless (children.nil? or children.size == 0) and @user_list_array[i].size == 0 %>
           <ul></ul>
         <% end %>
@@ -68,7 +68,7 @@
     $(".org_folder").click(
       function(){
         id = $(this).attr("id");
-		org_list = "<%= @org_list %>";
+        org_list = "<%= @org_list %>";
         
         cd = $(this).attr("id").replace("org_<%= @count %>_", "").split("_");
         org_lvl = cd[0];
@@ -80,7 +80,7 @@
           jQuery.ajax(
             {
               type : "GET",
-              url  : "/common/sosiki_tree/tmp_tree",
+              url  : base_uri + "/common/sosiki_tree/tmp_tree",
               data :
                 {
                   org_lvl : Number(org_lvl) + 1 ,

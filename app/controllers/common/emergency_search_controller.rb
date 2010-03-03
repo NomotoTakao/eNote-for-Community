@@ -7,7 +7,6 @@ class Common::EmergencySearchController < ApplicationController
     @count = params[:count]
     @cd_field = params[:cd_field]
     @name_field = params[:name_field]
-
   end
 
   #

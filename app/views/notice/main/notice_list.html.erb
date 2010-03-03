@@ -13,8 +13,8 @@
   <tr>
     <td class="notice_table_t" style="width:<%= title_width %>px;padding-left:0px;">
       <h3>
-        <img src="/images/icons/icon_notice.gif" align="top" style="margin-right:5px;">
-    お知らせ&nbsp;ー&nbsp;<%=h @index_name %>
+        <%= image_tag("icons/icon_notice.gif", :align => "top", :style => "margin-right:5px;") %>
+        お知らせ&nbsp;ー&nbsp;<%=h @index_name %>
       </h3>
     </td>
     <td class="notice_table_t_noimg" style="text-align:left;background-image:'';">
@@ -117,7 +117,7 @@
   <% notice_file_reverse.each do |file| %>
     <tr style="height:30px;" class="notice_table_b notice_<%= notice.id %>">
       <td class="enote_general_table1_cell_bordered" style="text-align:center;">
-        <%= link_to "<img src='/images/icons/icon_download_file.gif' />", :action=>:download, :id=>file.id %>
+        <%= link_to image_tag("icons/icon_download_file.gif"), :action=>:download, :id=>file.id %>
       </td>
       <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= file.file_name %></td>
       <td class="enote_general_table1_cell_bordered" style="padding-left:5px;"><%= file_size(file.file_size) %></td>

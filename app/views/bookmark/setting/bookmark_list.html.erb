@@ -2,7 +2,7 @@
 <table style="border:0px;width:100%;margin:10px 0px 0px 10px;">
   <tr>
     <td align="left" valign="top" style="height:22px;">
-      <img src="/images/icons/rss_url_entry.gif" style="margin:0px;" align="middle">
+      <%= image_tag("icons/rss_url_entry.gif", :align => "middle", :style => "margin:0px;") %>
       <%= text_field_tag "bookmark_url_new", "", :style => "margin:0px;width:500px;height:20px;" %><span id="enote_bookmark_setting_msg"></span>
       <%= button_to_function "登録", "dialog_bookmark_open_ins()", :class => 'submit' %>
     </td>
@@ -34,7 +34,7 @@
         </td>
         <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= bookmark.updated_at.strftime("%Y/%m/%d") %></td>
         <td class="enote_general_table1_cell_bordered" style="text-align:center;">
-          <a href="#" onclick="dialog_bookmark_open_upd(<%=bookmark.id%>)" ><img src="/images/icons/icon_entry.gif"></a>
+          <a href="#" onclick="dialog_bookmark_open_upd(<%=bookmark.id%>)" >image_tag("icons/icon_entry.gif")</a>
           <%= link_to(image_tag("icons/icon_trash.gif"), {:action => "delete", :id => bookmark.id}, {:confirm => "削除してよろしいですか？"}) %>
         </td>
       </tr>

@@ -10,16 +10,12 @@ class Cabinet::PublicController < ApplicationController
     #パンくずリストに表示させる
     @pankuzu += "共有キャビネット"
     @auto = params[:auto]
-#    @auths = {}
-#    @auths = DCabinetAuth.new.get_hash_id_and_kbn current_m_user.user_cd, (MUserBelong.new.get_main_org current_m_user.user_cd).org_cd
-
   end
 
   #
   # キャビネットのタブが押下された時のアクション
   #
   def cabinet_list_tab #DEBUG
-
     # 画面左のツリーに必要なデータを取得
     # 全社キャビネット
     @company_cabinet_indices = DCabinetIndex.get_cabinet_indices 1, 0, 1, current_m_user.user_cd
@@ -27,7 +23,6 @@ class Cabinet::PublicController < ApplicationController
     @sectional_cabinet_indices = DCabinetIndex.get_cabinet_indices -1, 0, 1, current_m_user.user_cd
     # プロジェクトキャビネット
     @project_cabinet_indices = DCabinetIndex.get_cabinet_indices 3, 0, 1, current_m_user.user_cd
-#@project_cabinet_indices#DEBUG
   end
 
   #
@@ -97,8 +92,6 @@ class Cabinet::PublicController < ApplicationController
     @orgs = {}
 
     body_id = params[:id]
-
-#    @cabinet_detail = DCabinetBody.new.get_cabinetbody_by_id body_id
     @cabinet_detail = DCabinetBody.find(:first, :conditions=>{:delf=>0, :id=>body_id})
     @cabinet_file = DCabinetFile.new.get_cabinetfile_by_cabinet_body_id body_id
 
@@ -116,7 +109,6 @@ class Cabinet::PublicController < ApplicationController
   # 新規保存タブの表示内容を取得します。
   #
   def cabinet_create
-
     edit_id = params[:edit_id]
 
     if edit_id.empty?
@@ -277,12 +269,12 @@ class Cabinet::PublicController < ApplicationController
     unless attachment.nil?
       begin
         DCabinetFile.save_upload(params, current_m_user, cabinet_body.d_cabinet_head_id, cabinet_body.id, "cabinet_public")
-        next_page = "alert('アップロードが完了しました');location.href='/cabinet/public/index';"
+        next_page = "alert('アップロードが完了しました');location.href='#{@base_uri}/cabinet/public/index';"
       else
         # 保存エラー
       end
     else
-      next_page = "location.href='/cabinet/public/index'"
+      next_page = "location.href='#{@base_uri}/cabinet/public/index'"
     end
 
     responds_to_parent do
@@ -496,7 +488,6 @@ p $!
   # @return ツリー表示するキャビネットのリスト
   #
   def company_cabinet
-
     @select = params[:select]
     @cabinet_list = DCabinetIndex.new.get_cabinet_list_by_kbn 1
   end
@@ -507,8 +498,6 @@ p $!
   # @return ツリーに表示するキャビネットのリスト
   #
   def sectional_cabinet
-
-    #org_cd = params[:id]
     org_cd = (MUserBelong.new.get_main_org current_m_user.user_cd).org_cd
     @select = params[:select]
 
@@ -521,9 +510,7 @@ p $!
   # @return ツリーに表示するキャビネットのリスト
   #
   def project_cabinet
-
     @select = params[:select]
-    #    @cabinet_list = DCabinetIndex.new.get_cabinet_list_by_kbn 3
     @project_cabinet_list = MProject.get_project_all_enable_list Date.today
   end
 

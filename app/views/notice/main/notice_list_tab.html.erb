@@ -6,7 +6,7 @@
     <td class="frame_2pain_left">
       <div class="gadget" style="width:240px;">
         <div id="" class="gadget_title" style="">
-          <h3 style=""><img src="/images/icons/icon_notice.gif" align="top" style="margin-right:5px;">お知らせーIndex</h3>
+          <h3 style=""><%= image_tag("icons/icon_notice.gif", :align => "top", :style => "margin-right:5px;") %>お知らせーIndex</h3>
         </div>
         <%# お知らせINDEX %>
         <div class="tree_box" id="notice_index" style="height:200px;overflow-y:scroll;">
@@ -15,7 +15,7 @@
       </div>
       <div class="gadget" style="width:240px;">
         <div id="" class="gadget_title" style="">
-          <h3 style=""><img src="/images/icons/icon_notice.gif" align="top" style="margin-right:5px;">お知らせ内を検索</h3>
+          <h3 style=""><%= image_tag("icons/icon_notice.gif", :align => "top", :style => "margin-right:5px;") %>お知らせ内を検索</h3>
         </div>
         <% form_remote_tag :update=>"notice_list", :url=>{:action=>:notice_list} do %>
           <div class="gadget_body">登録日の指定：<br>
@@ -37,7 +37,7 @@
             <br>
                                 あいまい検索：<br>
             <%= text_field_tag 'keyword','',{:class=>"ime_on", :size => 20, :style => "height:20px;width:150px;margin:0px;"} %><br />
-			<input type="checkbox" name="owner" />あなた自身の投稿だけを対象にする
+			      <input type="checkbox" name="owner" />あなた自身の投稿だけを対象にする
             <%= submit_tag "検索", :class => "submit_small", :style => "margin:0px;" %>
           </div>
         <% end %>
@@ -59,10 +59,9 @@
   	$("#tab_index").val("");
 	// index.html.erbのhiddenフィールドから、メニューで選択されたお知らせカテゴリの値を取得する。
     id = $("#category").val();
-	
     // お知らせINDEXを読み込む
-    url = "/notice/main/notice_index/";
-	// 選択されているカテゴリがある場合、そのIDをパラメータに加える。
+    url = base_uri + "/notice/main/notice_index/";
+    // 選択されているカテゴリがある場合、そのIDをパラメータに加える。
     url += id;
 
     setCalendar($("#date_from"));
@@ -71,7 +70,7 @@
     // お知らせ一覧を読み込む
 	// 但し、自動遷移の場合はスキップ
 	if($("#auto").val() == ""){
-      url = "/notice/main/notice_list";
+      url = base_uri + "/notice/main/notice_list";
       // 選択されているカテゴリがある場合、そのIDをパラメタに加える。
       url += "?id=" + id;
       m_id = $("#message_id_def").val();

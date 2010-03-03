@@ -6,7 +6,7 @@
         </td>
         <td style="width:180px;">&nbsp;</td>
         <td style="width:70px; text-align:right;">
-          <img class="enote_title_block" src="/images/widget_ico_on.gif"/>日付：
+          <%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>日付：
         </td>
         <td style="width:200px; text-align;left;">
           <div>
@@ -64,15 +64,10 @@
       <td>
         <div class="tabset" id="tabset_c" style="border:0;text-align:left;">
           <ul>
-            <li><a href="/report/main/report_tab">活動内容</a></li>
-            <li><a href="/report/main/summary_tab">総括コメント</a></li>
+            <li><%= link_to "活動内容", :controller => "/report/main", :action => "report_tab" %></li>
+            <li><%= link_to "総括コメント", :controller => "/report/main", :action => "summary_tab" %></li>
           </ul>
         </div>
-<!--
-        <form id="main_form_tag" name="main_form_tag" method="post" style="margin: 0px 5px;">
-          <div id="enote_tab_contents" class="enote_tab_contents"></div>
-        </form>
--->        
       </td>
     </tr>
   </table>
@@ -81,7 +76,6 @@
   <!--
     // タブの名前を格納する配列
     var tabs = new Array();
-
     $("#input_report_date").change(
       function(){
         // 入力された日付が正当なものであれば、一覧を取得する。
@@ -131,7 +125,7 @@
       jQuery.ajax(
         {
           type : "GET",
-          url  : "/report/main/report_list",
+          url  : base_uri + "/report/main/report_list",
           data :
             {
               date : report_date
@@ -154,7 +148,6 @@
     $(document).ready(
       function(){
         setCalendar($("#input_report_date"));
-        //$("#report_list").load("/report/main/report_list");
         get_input_list();
         // リストの項目をタブ化する。
         $("#tabset_c").tabs();

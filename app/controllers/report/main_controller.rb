@@ -62,7 +62,6 @@ class Report::MainController < ApplicationController
   # 日報を登録するアクション
   #
   def register_report
-
     # d_reportsテーブルのレコードは日付ごとに作成されるので、日付をキーにしても一意に検索出来る。
     d_report = DReport.find(:first, :conditions=>{:delf=>0, :user_cd=>current_m_user.user_cd, :action_date=>params[:date]})
 
@@ -195,7 +194,6 @@ class Report::MainController < ApplicationController
     @action_group_cd = params[:group_cd]
     @action_cd = params[:action_cd]
 
-
     # 一覧の昇順/降順に関しては、画面に前回の情報を渡すため、controllerに処理を記述している。
     # モデルで処理すると、インスタンス変数でViewに渡せない。
     # 現在のソート順を取得
@@ -250,7 +248,6 @@ class Report::MainController < ApplicationController
   # 活動詳細の一覧を取得するアクション
   #
   def action_list
-
     action_group_cd = params[:action_group_cd]
     @action_list = MAction.find(:all, :conditions=>{:delf=>0, :action_group_cd=>action_group_cd}, :order=>:sort_no)
   end
@@ -357,7 +354,6 @@ class Report::MainController < ApplicationController
   # 日報入力画面の総括コメントタブの内容を表示するアクション
   #
   def summary_comment
-
     date = params[:date]
     @d_report = DReport.find(:first, :conditions=>{:delf=>0, :action_date=>date, :user_cd=>current_m_user.user_cd})
     if @d_report.nil?

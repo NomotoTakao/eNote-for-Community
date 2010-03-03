@@ -28,7 +28,7 @@
       else
         file_size = sprintf("%10.2f", file_size / 1024.0 / 1024) + " MB"
       end
-      download_url = "/cabinet/mine/download?cabinet_id=" + @cabinet_file.d_cabinet_body_id.to_s
+      download_url = base_uri + "/cabinet/mine/download?cabinet_id=" + @cabinet_file.d_cabinet_body_id.to_s
     end
   end
 %>

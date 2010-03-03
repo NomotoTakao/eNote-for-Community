@@ -113,12 +113,12 @@
         $(".setting_org").click(
           function(){
             id = $(this);
-			name = $(this).text();
-			bgChange($(id), $(".setting_org"));
-			$("#selected_admin").val(name + "," + id.attr("id").replace("setting_org_", ""));
-            url = "/notice/main/search_member?org_cd=:org_cd";
-			url = url.replace(":org_cd", id.attr("id").replace("setting_org_", ""));
-			$("#member_list").load(url);
+            name = $(this).text();
+            bgChange($(id), $(".setting_org"));
+            $("#selected_admin").val(name + "," + id.attr("id").replace("setting_org_", ""));
+            url = base_uri + "/notice/main/search_member?org_cd=:org_cd";
+            url = url.replace(":org_cd", id.attr("id").replace("setting_org_", ""));
+            $("#member_list").load(url);
           }
         );
       }

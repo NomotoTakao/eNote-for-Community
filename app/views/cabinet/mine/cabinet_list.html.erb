@@ -35,13 +35,13 @@
       <%= expiration(@head.default_enable_day, cabinet.post_date) %>
       <td class="enote_general_table1_cell_bordered" style="text-align:center;"><%= format_file_size(cabinet.d_cabinet_files[0].file_size) %></td>
       <td class="enote_general_table1_cell_bordered" style="text-align:center;">
-        <%= link_to_remote '<img src="/images/icons/icon_file.gif">', :update=>'dialog',
-                                                                      :url=>{:action=>:dialog,
-                                                                             :cabinet_id=>cabinet.id},
-                                                                      :complete=>'open_dialog();'
+        <%= link_to_remote image_tag("icons/icon_file.gif"), :update=>'dialog',
+                                                             :url=>{:action=>:dialog,
+                                                                    :cabinet_id=>cabinet.id },
+                                                             :complete=>'open_dialog();'
         %>
         <% unless @cabinet_files[cabinet.id].nil? %>
-          <%= link_to '<img src="/images/icons/icon_attachment.gif" />', :action=>:download, :cabinet_id=>cabinet.id %>
+          <%= link_to image_tag("icons/icon_attachment.gif"), :action=>:download, :cabinet_id=>cabinet.id %>
         <% end %>
         <%= link_to_remote(image_tag("/images/icons/icon_trash.gif"), :update=>'cabinet_list',
                                                                       :url=>{:action=>"delete",
@@ -100,8 +100,8 @@
             order = $(this).attr("order");
             mode = $(this).attr("mode");
 
-            url = "/cabinet/mine/cabinet_list?order=:order&mode=:mode";
-      url = url.replace(":order", order).replace(":mode", mode);
+            url = base_uri + "/cabinet/mine/cabinet_list?order=:order&mode=:mode";
+            url = url.replace(":order", order).replace(":mode", mode);
 
             $("#cabinet_list").load(url);
           }

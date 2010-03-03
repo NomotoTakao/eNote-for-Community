@@ -49,7 +49,7 @@
                 jQuery.ajax(
                   {
                     type: "GET",
-                    url: "/cabinet/public/tmp_list",
+                    url: base_uri + "/cabinet/public/tmp_list",
                     data:
                       {
                         org_cd: id.replace("o_", "")
@@ -78,7 +78,6 @@
             }
           }
         );
-
 
         $("#subtree").attr("id", "");
 
@@ -111,7 +110,7 @@
           function(){
             bgChange($(this), $(".cabinet"));
             id = $(this).attr("id").replace("c_", "");
-            url = "/cabinet/public/cabinet_list/" + id;
+            url = base_uri + "/cabinet/public/cabinet_list/" + id;
             $("#cabinet_list").load(url);
             $("#d_cabinet_body_d_cabinet_head_id").val(id.replace("cabinet_", ""));
             $("#selectedCabinetName").val($("#c_" + id).text().replace(/^\s+|\s+$/g, ""));

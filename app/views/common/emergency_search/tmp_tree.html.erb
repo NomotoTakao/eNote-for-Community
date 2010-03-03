@@ -81,7 +81,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/common/emergency_search/user_list",
+            url  : base_uri + "/common/emergency_search/user_list",
             data :
               {
                 org_cd : org_cd
@@ -111,7 +111,7 @@
       jQuery.ajax(
         {
           type : "GET",
-          url  : "/common/emergency_search/tmp_tree",
+          url  : base_uri + "/common/emergency_search/tmp_tree",
           data :
             {
               org_lvl : Number(org_lvl) + 1 ,

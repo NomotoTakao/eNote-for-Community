@@ -19,7 +19,7 @@
   <!--
   function change_writer(linkLoc){
     if(linkLoc !="") {
-      str = "/blog/view/user/" + linkLoc;
+      str = base_uri + "/blog/view/user/" + linkLoc;
       window.location.href = str;
     }
   }
@@ -39,47 +39,47 @@
       <!-- 投稿者一覧ブロック -->
       <div class="gadget" style="width:240px;">
         <div id="favorite_list" class="gadget_title" style="">
-          <h3 style="color:blue;"><img src="/images/icons/icon_blog.gif" align="top" style="margin-right:5px;">お気に入りブログ</h3>
+          <h3 style="color:blue;"><%= image_tag("icons/icon_blog.gif", :align => "top", :style => "margin-right:5px;") %>お気に入りブログ</h3>
         </div>
-		<!-- お気に入りブログ -->
+        <!-- お気に入りブログ -->
         <div id="blog_menu_favorite_list" class="tree_box"></div>
       </div>
       <!-- 新着記事ブロック -->
       <div class="gadget" style="width:240px;">
         <div id="" class="gadget_title" style="">
-          <h3 style="color:blue;"><img src="/images/icons/icon_blog.gif" align="top" style="margin-right:5px;">新着記事</h3>
+          <h3 style="color:blue;"><%= image_tag("icons/icon_blog.gif", :align => "top", :style => "margin-right:5px;") %>新着記事</h3>
         </div>
         <div id="blog_menu_new_article" class="gadget_body"></div><br />
       </div>
       <!-- 投稿者一覧ブロック -->
       <div class="gadget" style="width:240px;">
         <div id="" class="gadget_title" style="">
-          <h3 style="color:blue;"><img src="/images/icons/icon_blog.gif" align="top" style="margin-right:5px;">投稿者一覧</h3>
+          <h3 style="color:blue;"><%= image_tag("icons/icon_blog.gif", :align => "top", :style => "margin-right:5px;") %>投稿者一覧</h3>
         </div>
         <div id="blog_menu_bloger_list" class="tree_box"></div>
       </div>
       <!-- 月別アーカイブ -->
       <div class ="gadget" style="width:240px;">
         <div class="gadget_title">
-          <h3 style="color:blue;"><img src="/images/icons/icon_blog.gif" align="top" style="margin-right:5px;">月別アーカイブ</h3>
+          <h3 style="color:blue;"><%= image_tag("icons/icon_blog.gif", :align => "top", :style => "margin-right:5px;") %>月別アーカイブ</h3>
         </div>
         <div id="monthly_list" class="gadget_body"></div>
       </div>
       <!-- キーワード一覧ブロック -->
       <div class="gadget" style="width:240px;">
         <div id="" class="gadget_title" style="">
-          <h3 style="color:blue;"><img src="/images/icons/icon_blog.gif" align="top" style="margin-right:5px;">キーワード一覧</h3>
+          <h3 style="color:blue;"><%= image_tag("icons/icon_blog.gif", :align => "top", :style => "margin-right:5px;") %>キーワード一覧</h3>
         </div>
         <div id="tag_list" class="gadget_body"></div>
       </div>
       <!-- ブログ検索ブロック -->
       <div class="gadget" style="width:240px;">
         <div id="" class="gadget_title" style="">
-          <h3 style="color:blue;"><img src="/images/icons/icon_blog.gif" align="top" style="margin-right:5px;">ブログ検索</h3>
+          <h3 style="color:blue;"><%= image_tag("icons/icon_blog.gif", :align => "top", :style => "margin-right:5px;") %>ブログ検索</h3>
         </div>
         <div id="blog_menu_search_list" class="gadget_body"></div><br />
       </div>
-	  <%= button_to_function "新規投稿", "createArticle();", :class => "submit" %>
+	   <%= button_to_function "新規投稿", "createArticle();", :class => "submit" %>
     </td>
     <td class="frame_2pain_right">
       <div id="right_pane"></div>
@@ -88,26 +88,24 @@
 </table>
 
 <script type="text/javascript">
-  <!--
-    $(document).ready(
-      function(){
-        $("#blog_menu_favorite_list").load("/blog/view/menu_favorite_list/");
-        $("#blog_menu_bloger_list").load("/blog/view/menu_bloger_list/");
+<!--
+  $(document).ready(function(){
+    $("#blog_menu_favorite_list").load(base_uri + "/blog/view/menu_favorite_list/");
+    $("#blog_menu_bloger_list").load(base_uri + "/blog/view/menu_bloger_list/");
 		
-		var url = "/blog/view/blog_list";
+		var url = base_uri + "/blog/view/blog_list";
 		var default_user_cd = $("#default_user_cd").val();
-        if(default_user_cd != ""){
-          url += "?user_cd=" + default_user_cd
-        }
-        $("#right_pane").load(url);
+    if(default_user_cd != ""){
+      url += "?user_cd=" + default_user_cd
+    }
+    $("#right_pane").load(url);
 		// あいまい検索
-        $("#blog_menu_search_list").load("/blog/view/menu_search_list?uid=<%= @user_cd%>");
-      }
-    );
+    $("#blog_menu_search_list").load("/blog/view/menu_search_list?uid=<%= @user_cd%>");
+  });
 	
 	function createArticle(){
-      url = "/blog/entry/article_create";
-      $("#right_pane").load(url);
-    }
-  -->
+    url = base_uri + "/blog/entry/article_create";
+    $("#right_pane").load(url);
+  }
+-->
 </script>

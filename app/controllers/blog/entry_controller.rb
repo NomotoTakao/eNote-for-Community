@@ -86,7 +86,6 @@ class Blog::EntryController < ApplicationController
   # 「新規投稿」ボタンが押下された時のアクション
   #
   def article_create
-
     @d_blog_body = DBlogBody.new
   end
 
@@ -102,7 +101,6 @@ class Blog::EntryController < ApplicationController
   # 「お気に入りブログ」を追加するときのアクション
   #
   def favorite_create
-
     head_id = params[:head_id]
 
     DBlogFavorite.new.add_favorite head_id, current_m_user
@@ -114,7 +112,6 @@ class Blog::EntryController < ApplicationController
   # 指定されたお気に入りを削除します(削除フラグを'1'にします)
   #
   def favorite_delete
-
     favorite_id = params[:favorite_id]
 
     DBlogFavorite.new.delete_favorite favorite_id, current_m_user

@@ -56,7 +56,7 @@ function dialog_reserve_open_ins(date, facility_cd){
     }
 
     //画面遷移
-    jQuery("#dialog_ins").load("/facility/reserve/new?date=" + encodeURIComponent(date)
+    jQuery("#dialog_ins").load(base_uri + "/facility/reserve/new?date=" + encodeURIComponent(date)
         + "&select_facility_cd=" + select_facility_cd
         + "&back_facility_cd=" + back_facility_cd + "&back_group_checked_id=" + back_group_checked_id);
     jQuery("#dialog_ins").dialog("open");
@@ -78,7 +78,7 @@ function dialog_reserve_open_edit(id, repeat_flg){
     }
 
     //画面遷移
-    jQuery("#dialog_edit").load("/facility/reserve/" + id + "/edit?repeat_flg=" + repeat_flg
+    jQuery("#dialog_edit").load(base_uri + "/facility/reserve/" + id + "/edit?repeat_flg=" + repeat_flg
         + "&back_facility_cd=" + back_facility_cd + "&back_group_checked_id=" + back_group_checked_id);
     jQuery("#dialog_edit").dialog("open");
     return false;

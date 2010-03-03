@@ -18,12 +18,12 @@
 <div style="padding:5px;">
   <div class="tabset" id="tabset" style="border:0;text-align:left;">
     <ul>
-      <li><a href="/report/main/input_tab">日報入力</a></a></li>
+      <li><%= link_to "日報入力", :controller => "/report/main", :action => "input_tab" %></li>
       <% if @subordinate_count > 0 %>
-        <li><a href="/report/main/comment_tab">上司確認コメント</a></li>
+        <li><%= link_to "上司確認コメント", :controller => "/report/main", :action => "comment_tab" %></li>
       <% end %>
-      <li><a href="/report/main/search_tab">日報検索</a></li>
-      <li><a href="/report/main/setting_tab">設定</a></li>
+      <li><%= link_to "日報検索", :controller => "/report/main", :action => "search_tab" %></li>
+      <li><%= link_to "設定", :controller => "/report/main", :action => "setting_tab" %></li>
     </ul>
   </div>
 </div>
@@ -35,7 +35,6 @@
       function(){
         //タブを表示
         $("#tabset").tabs();
-
         $("#tabset").find("ul").attr("class", "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all");
 
         // タブの枠線を描く

@@ -170,12 +170,12 @@ class Cabinet::MineController < ApplicationController
     unless attachment.nil?
       begin
         DCabinetFile.save_upload(params, current_m_user, cabinet_head_id, cabinet_body.id, "cabinet_mine")
-        next_page = "alert('アップロードが完了しました');location.href='/cabinet/mine/index';"
+        next_page = "alert('アップロードが完了しました');location.href='#{@base_uri}/cabinet/mine/index';"
       else
         # TODO エラー時の処理
       end
     else
-      next_page = "location.href='/cabinet/mine/index'"
+      next_page = "location.href='#{@base_uri}/cabinet/mine/index'"
     end
 
     responds_to_parent do

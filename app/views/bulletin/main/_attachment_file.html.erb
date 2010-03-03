@@ -24,26 +24,26 @@
 <input type="hidden" id="maxindex" value="0" />
 
 <script type="text/javascript">
-  <!--
-    function add_file(position){
-      //id用のインデックスを生成
-      var maxidx = (Number($("#maxindex").val()) + 1).toString();
+<!--
+  function add_file(position){
+    //id用のインデックスを生成
+    var maxidx = (Number($("#maxindex").val()) + 1).toString();
 
-      //挿入するタグの文字列
-      var tag_str = "";
-      tag_str += "<br id='br_" + maxidx + "'>";
-      tag_str += "<input type='file' size='40' id='attachment_" + maxidx + "' name='attachment[" + maxidx + "]'/> ";
-      tag_str += "<input type='button' class='submit_small' id='deleteButton_" + maxidx + "' value='クリア' onClick='delete_file(" + maxidx + ");' /> ";
+    //挿入するタグの文字列
+    var tag_str = "";
+    tag_str += "<br id='br_" + maxidx + "'>";
+    tag_str += "<input type='file' size='40' id='attachment_" + maxidx + "' name='attachment[" + maxidx + "]'/> ";
+    tag_str += "<input type='button' class='submit_small' id='deleteButton_" + maxidx + "' value='クリア' onClick='delete_file(" + maxidx + ");' /> ";
 
-      //追加ボタンの直前にタグを挿入する
-      $("#addButton").before(tag_str);
-      //インデックスをカウントアップ
-      $("#maxindex").val(maxidx);
-    }
+    //追加ボタンの直前にタグを挿入する
+    $("#addButton").before(tag_str);
+    //インデックスをカウントアップ
+    $("#maxindex").val(maxidx);
+  }
 
-    function delete_file(index){
-  //fileフィールドの個数を取得
-  var cnt = $("input[type='file']").length;
+  function delete_file(index){
+    //fileフィールドの個数を取得
+    var cnt = $("input[type='file']").length;
     //引数で指定されたIDを持つ各エレメントを削除
     $("#attachment_" + index).remove();
     $("#deleteButton_" + index).remove();
@@ -53,6 +53,6 @@
     if(cnt == 1){
       add_file();
     }
-    }
+  }
   //-->
 </script>

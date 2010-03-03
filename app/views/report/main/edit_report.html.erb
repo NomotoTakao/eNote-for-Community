@@ -94,7 +94,7 @@
       jQuery.ajax(
         {
           type : "POST",
-          url  : "/report/main/register_report",
+          url  : base_uri + "/report/main/register_report",
           data :
             "id=" + id + "&" +
             "date=" + action_date + "&" +
@@ -193,7 +193,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/report/main/action_list",
+            url  : base_uri + "/report/main/action_list",
             data :
               {
                 action_group_cd : group_cd

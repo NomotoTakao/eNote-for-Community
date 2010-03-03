@@ -20,20 +20,17 @@
       function(){
         // ツリーを構成
         $("#cabinet_tree").treeview();
-
-
-
         // 初期選択させる場合の処理
-　　　　　　parent_id = $("#parent_id_").val();
+        parent_id = $("#parent_id_").val();
         id = "#cabinet_" + parent_id;
         $(id).click();
       }
     );
 
     $(".cabinet_item").mouseover(
-       function(){
-         $(this).css("cursor", "pointer");
-       }
+      function(){
+        $(this).css("cursor", "pointer");
+      }
     );
 
     $(".cabinet_item").mouseout(
@@ -50,7 +47,7 @@
           jQuery.ajax(
             {
               type: "GET",
-              url: "/cabinet/public/tmp_list",
+              url: base_uri + "/cabinet/public/tmp_list",
               data:
                 {
                   kbn: tmp_id[0],
@@ -62,13 +59,10 @@
                     if (id.indexOf("#") == -1) {
                     id = "#" + id
                   }
-
                   $(id).parent().after(data);
                 },
               error:
-                function(){
-                  alert("通信エラー");
-                },
+                function(){ alert("通信エラー"); },
               complete:
                 function(){
                   $(id).attr("data", "1");

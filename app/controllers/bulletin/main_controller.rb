@@ -124,12 +124,12 @@ class Bulletin::MainController < ApplicationController
     unless attachment.nil?
       begin
         DBulletinFile.save_upload(params, current_m_user, @bulletin_head.id)
-        next_page = "alert('アップロードが完了しました');location.href='/bulletin/main';"
+        next_page = "alert('アップロードが完了しました');location.href='#{@base_uri}/bulletin/main';"
       else
         # TODO エラー時の処理
       end
     else
-      next_page = "location.href='/bulletin/main'"
+      next_page = "location.href='#{@base_uri}/bulletin/main'"
     end
 
     responds_to_parent do
@@ -138,8 +138,6 @@ class Bulletin::MainController < ApplicationController
       end
     end
 
-
-#    redirect_to "/bulletin/main"
   end
 
   #回覧板の確認時の更新
@@ -151,20 +149,16 @@ class Bulletin::MainController < ApplicationController
     bulletin_body.created_user_cd = current_m_user.user_cd
     bulletin_body.save
 
-    redirect_to "/bulletin/main"
+    redirect_to :action => "index"
   end
 
   #
   # 添付ファイルのアイコンがクリックされた時のアクション
   #
   def download
-
     file_id = params[:id]
-
     file_rec = DBulletinFile.new.find_by_id file_id
-
     dirname = "#{RAILS_ROOT}/data/bulletin/"
-
     send_file dirname + file_rec.real_file_name, :filename => file_rec.file_name.tosjis
   end
 
@@ -173,7 +167,6 @@ class Bulletin::MainController < ApplicationController
   #
   def edit
     edit_id = params[:id]
-
     redirect_to :action=>:bulletin_list, :kbn_id=>0, :edit_id=>edit_id
   end
 

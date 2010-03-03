@@ -59,7 +59,7 @@
       jQuery.ajax(
         {
           type : "GET",
-          url  : "/bookmark/setting/dialog_category",
+          url  : base_uri + "/bookmark/setting/dialog_category",
           data :
             {},
           success :
@@ -106,7 +106,7 @@
       jQuery.ajax(
         {
            type : "GET",
-          url  : "/bookmark/setting/select_category",
+          url  : base_uri + "/bookmark/setting/select_category",
           data :
             {},
           success :
@@ -120,7 +120,7 @@
           complete :
             function(){
               // セレクトボックスで選択されているカテゴリのブックマークを表示する。
-              $("#bookmark_list").load("/bookmark/setting/bookmark_list?&category_id=" + category);
+              $("#bookmark_list").load(base_uri + "/bookmark/setting/bookmark_list?&category_id=" + category);
             }
         }
       );
@@ -135,7 +135,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/bookmark/setting/bookmark_list?&category_id=' + $("#categories").val(),
+        url:base_uri + '/bookmark/setting/bookmark_list?&category_id=' + $("#categories").val(),
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。
@@ -151,7 +151,7 @@
     jQuery.ajax(
       {
         type : "GET",
-        url  : "/bookmark/setting/select_category",
+        url  : base_uri + "/bookmark/setting/select_category",
         data :
           {},
         success :

@@ -7,8 +7,7 @@
           <%= link_to_remote current_m_user.name + "のブログ",
                              :update=>"right_pane",
                              :url=>{:action=>:blog_list,
-                                    :user_cd=>current_m_user.user_cd
-                                   }
+                                    :user_cd=>current_m_user.user_cd }
           %>
         </span>
       </li>
@@ -18,16 +17,13 @@
             <%= link_to_remote favorite.d_blog_head.title,
                                :update=>"right_pane",
                                :url=>{:action=>:blog_list,
-                                      :user_cd=>favorite.d_blog_head.user_cd
-                                     }
+                                      :user_cd=>favorite.d_blog_head.user_cd }
             %>
-            <%=
-              link_to_remote "[×]",
+            <%= link_to_remote "[×]",
                              :update=>"blog_menu_favorite_list",
                              :url=>{:controller=>"entry",
                                     :action=>:favorite_delete,
-                                    :favorite_id=>favorite.id
-                                   },
+                                    :favorite_id=>favorite.id },
                              :confirm=>"削除してよろしいですか？"
             %>
           </span>

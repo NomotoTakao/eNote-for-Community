@@ -6,9 +6,7 @@ class Common::SosikiTreeController < ApplicationController
     @name_field = params[:name_field]
   end
 
-
   def tmp_tree
-    
     @org_lvl = params[:org_lvl]
     @count = params[:count]
     @target = params[:target]

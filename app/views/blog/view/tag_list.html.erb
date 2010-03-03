@@ -20,20 +20,14 @@
 
 <script type="text/javascript">
   <!--
-    $(document).ready(
-      function(){
-        $(".tag").click(
-          function(){
+    $(document).ready(function(){
+      $(".tag").click(function(){
 		  	type = "tag"
-            keyword = $(this).html();
-			
-			url = "/blog/view/blog_list?keyword=:keyword&type=:type";
-			url = url.replace(":keyword", keyword).replace(":type", type);
-
-            $("#right_pane").load(url);
-          }
-        );
-      }
-    );
+        keyword = $(this).html();
+        url = base_uri + "/blog/view/blog_list?keyword=:keyword&type=:type";
+        url = url.replace(":keyword", keyword).replace(":type", type);
+        $("#right_pane").load(url);
+      });
+    });
   //-->
 </script>

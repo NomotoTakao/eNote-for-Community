@@ -29,7 +29,7 @@
     $(document).ready(
       function(){
         // お知らせ一覧を読み込む
-        url = "/notice/main/notice_list";
+        url = base_uri + "/notice/main/notice_list";
         url += "?hottopic_flg=0"
         $("#notice_list").load(url);
       }

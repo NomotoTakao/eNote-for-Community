@@ -22,11 +22,8 @@
 <div style="padding:5px;">
   <div class="tabset" id="tabset">
     <ul>
-      <li><a href="/cabinet/public/cabinet_list_tab">キャビネット</a></li>
-      <li><a href="/cabinet/public/cabinet_create_tab">新規保存</a></li>
-<!-- 暫定画面：共有キャビネットの作成を許可する組織にチェックを入れて実行すると、d_cabinet_headsテーブル、d_cabinet_indicesテーブルにレコードを作成する。
-      <li><a href="/cabinet/public/settings">設定</a></li>
--->
+      <li><%= link_to "キャビネット", :controller => "/cabinet/public", :action => "cabinet_list_tab" %></li>
+      <li><%= link_to "新規保存", :controller => "/cabinet/public", :action => "cabinet_create_tab" %></li>
     </ul>
   </div>
 </div>

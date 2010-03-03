@@ -6,7 +6,7 @@
           </td>
           <td style="width:180px;">&nbsp;</td>
           <td style="width:70px; text-align:right;">
-            <img class="enote_title_block" src="/images/widget_ico_on.gif"/>日付：
+            <%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>日付：
           </td>
           <td style="width:200px; text-align;left;">
               <%#= exec_validate("enote_boss_inputdate", "/^([12][0-9]{3})-(0?0[1-9]|1[0-2])-(0?0[1-9]|[12][0-9]|3[01])$/", "") %>
@@ -125,8 +125,7 @@
   </table>
 
 <input type="hidden" id="comment_authenticity_token" value="<%=form_authenticity_token %>" />
-<div id="next_confirmed_date" style="display:none;" />
-</div>
+<div id="next_confirmed_date" style="display:none;" /></div>
   
 <script type="text/javascript">
   <!--
@@ -167,7 +166,7 @@
       jQuery.ajax(
         {
           type : "GET",
-          url  : "/report/main/comment_list",
+          url  : base_uri + "/report/main/comment_list",
           data :
             {
               date   : comment_report_date,
@@ -199,7 +198,7 @@
         jQuery.ajax(
           {
             type : "POST",
-            url  : "/report/main/register_superior_comment",
+            url  : base_uri + "/report/main/register_superior_comment",
             data : "date=" + report_date + "&p=" + person + "&cmt=" + superior_comment + "&authenticity_token=" + authenticity_token,
             success :
               function(data, dataType){
@@ -229,7 +228,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/report/main/get_next_unconfirmed_date",
+            url  : base_uri + "/report/main/get_next_unconfirmed_date",
             data :
               {
                 date : report_date,

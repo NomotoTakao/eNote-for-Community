@@ -7,8 +7,8 @@
     $(document).ready(
       function(){
         var edit_id = $("#edit_id").val();
-		$("#cabinet_id").val("");
-        var url = "/cabinet/public/cabinet_create?edit_id=";
+		    $("#cabinet_id").val("");
+        var url = base_uri +"/cabinet/public/cabinet_create?edit_id=";
         if(edit_id != ""){
           url += edit_id
         }

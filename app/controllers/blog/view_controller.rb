@@ -10,9 +10,7 @@ class Blog::ViewController < ApplicationController
   end
 
   def header
-
   end
-
 
   #
   # ブログ記事一覧を取得するアクション
@@ -23,7 +21,6 @@ class Blog::ViewController < ApplicationController
   # これは、非公開の記事も編集可能とするための処置です。
   #
   def blog_list
-
     user_cd = params[:user_cd]
     year = params[:year]
     month = params[:month]
@@ -32,7 +29,6 @@ class Blog::ViewController < ApplicationController
     @favorite_flg = false
 
     if @keyword.nil? and type.nil?
-
       @favorite_flg = true
     end
 
@@ -108,21 +104,14 @@ class Blog::ViewController < ApplicationController
       end
       @title = title.gsub(":keyword", @keyword);
     end
-@user_cd = user_cd
+    @user_cd = user_cd
     @blog_list = DBlogBody.paginate(:page => params[:page], :per_page => @setting.page_max_count, :select=>select_sql, :joins=>joins_sql, :conditions=>[conditions_sql, conditions_param], :order=>order_sql)
   end
 
-
   #記事を単独で表示
   def detail
-
     @blog = DBlogBody.find(params[:id])
-
     @writer_id = @blog.d_blog_head.user_cd
-
-    #usr = EnMUser.find(@writer_id)
-#    user = MUser.new.get_user @writer_id
-#    @title = user.sname.to_s + "のブログ"
     head = DBlogHead.new.get_head_by_user_cd @writer_id
     @title = head.title
   end
@@ -190,35 +179,25 @@ class Blog::ViewController < ApplicationController
   # ツリーはajaxで取得します。このメソッドでは、最上位の組織だけを取得しています。
   #
   def menu_bloger_list
-
-
-#    @org_list = MOrg.new.get_blogger_org_list 1, ""
     @org_list = MOrg.get_org_list 1, ""
   end
 
   #書き手一人分のブログ表示
   def user
-
     @writer_id = params[:id]
-
     usr = EnMUser.find(@writer_id)
     @title = usr.sname.to_s + "のブログ"
-
     @blog_article = EnDBlogArticle.paginate :conditions => ["delf = '0' AND post_user_cd = ? AND (published_flg = '1' OR post_user_cd = ?)", @writer_id, session[:uid]], :order => "post_date desc", :page => params[:page], :per_page => 10
-
   end
 
   #月ごとの件数リスト
   def menu_month_list
-
     @user_cd = params[:uid]
-
     @monthly_count_list = DBlogBody.new.get_monthly_count @user_cd
   end
 
   #ひと月分のブログ
   def month
-
     sql = ["delf = '0' AND to_char(post_date,'YYYYMM') = ? AND post_user_cd = ? AND (published_flg = '1' OR post_user_cd = ?)", params[:id], params[:uid], session[:uid]]
 
     @writer_id = params[:uid]
@@ -280,7 +259,6 @@ class Blog::ViewController < ApplicationController
       @tmp_u_list = DBlogHead.new.get_blogger_list_by_org_cd m_org.org_cd
 
       @tmp_o_list.each do |org|
-
         @tmp_u_hash[org.org_cd] = DBlogHead.new.get_blogger_list_by_org_cd org.org_cd
       end
     end

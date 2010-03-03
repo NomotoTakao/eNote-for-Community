@@ -32,16 +32,16 @@
   * 一覧エリアに週単位の施設一覧を表示
   */
   $("#facility_list").load(
-  "/facility/reserve/week?group_checked_id=" + <%=@group_checked_id%> + "&week=" + <%=session[:week_start_date]%>,
-  "",
-  function() {
+    base_uri + "/facility/reserve/week?group_checked_id=" + <%=@group_checked_id%> + "&week=" + <%=session[:week_start_date]%>,
+    "",
+    function() {
 /*
     //timer設定
     $.timer(300000, function (timer) {
       // jQueryでの処理
       $.ajax({
           type:'get',
-          url:"/facility/reserve/index_week?group_checked_id=" + <%=@group_checked_id%> + "&week=" + <%=session[:week_start_date]%>,
+          url:base_uri + "/facility/reserve/index_week?group_checked_id=" + <%=@group_checked_id%> + "&week=" + <%=session[:week_start_date]%>,
           success:
               function(request){
                   // 受信結果を一覧エリアに反映させます。
