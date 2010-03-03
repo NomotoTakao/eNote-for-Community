@@ -183,7 +183,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url : base_uri + "/address/main/tmp_list",
+            url : "<%= @base_uri %>/address/main/tmp_list",
             data :
               {
                 org_cd: id.replace("org_", ""),
@@ -197,7 +197,7 @@
               },
             error :
               function(){
-                alert("通信エラー");
+                alert("通信エラー00");
               },
             complete :
               function(){
