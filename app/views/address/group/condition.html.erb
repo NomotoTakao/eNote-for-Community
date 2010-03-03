@@ -83,7 +83,7 @@
         // jQueryでの処理
         $.ajax({
             type:'get',
-            url:'/address/group/undecided_member?gid=0&gkbn=' + <%=@address_kbn%> + '&proid=' + $("#address_condition").val(),
+            url:base_uri + '/address/group/undecided_member?gid=0&gkbn=' + <%=@address_kbn%> + '&proid=' + $("#address_condition").val(),
             success:
                 function(request){
                     // 受信結果を選択候補領エリアに反映させます。
@@ -99,7 +99,7 @@
         // jQueryでの処理
         $.ajax({
             type:'get',
-            url:'/address/group/undecided_member?&gid=' + $("#address_condition").val() + '&gkbn=' + <%=@address_kbn%>,
+            url:base_uri + '/address/group/undecided_member?&gid=' + $("#address_condition").val() + '&gkbn=' + <%=@address_kbn%>,
             success:
                 function(request){
                     // 受信結果を右領域に反映させます。
@@ -115,7 +115,7 @@
         // jQueryでの処理
         $.ajax({
             type:'get',
-            url:'/address/group/undecided_member?&gid=' + $("#address_condition").val() + '&gkbn=' + <%=@address_kbn%>,
+            url:base_uri + '/address/group/undecided_member?&gid=' + $("#address_condition").val() + '&gkbn=' + <%=@address_kbn%>,
             success:
                 function(request){
                     // 受信結果を選択候補領エリアに反映させます。
@@ -131,7 +131,6 @@
       function(){
         val_id = $(this).attr("id");
         bgChange($("#" + val_id).children(), $(".org_font"));
-		
         get_tree(val_id);
       }
     );
@@ -159,7 +158,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url : "/address/group/tmp_list",
+            url : base_uri + "/address/group/tmp_list",
             data :
               {
                 org_cd: id.replace("org_", "")

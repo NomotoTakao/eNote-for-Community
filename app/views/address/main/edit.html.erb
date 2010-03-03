@@ -66,7 +66,7 @@
     // jQueryでの処理
     $.ajax({
       type: 'get',
-      url: '/address/main/addrs_list?gid=' + gid + '&gkbn=' + gkbn + '&orgcd=' + orgcd + '&proid=' + proid + '&sword=' + encodeURIComponent(sword),
+      url: base_uri + '/address/main/addrs_list?gid=' + gid + '&gkbn=' + gkbn + '&orgcd=' + orgcd + '&proid=' + proid + '&sword=' + encodeURIComponent(sword),
       success: function(request){
         // 受信結果を一覧エリアに反映させます。
         $('#enote_address_main').html(request);

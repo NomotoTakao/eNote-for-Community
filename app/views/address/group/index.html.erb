@@ -64,7 +64,7 @@
     <td style="width:35%;">
       <div class="gadget" style="width:240px;">
         <div id="" class="gadget_title" style="">
-          <h3 style=""><img src="/images/icons/icon_address.gif" align="top" style="margin-right:5px;">アドレス帳</h3>
+          <h3 style=""><%= image_tag("icons/icon_address.gif", :align => "top", :style => "margin-right:5px;") %>アドレス帳</h3>
         </div>
         <!-- 条件選択エリア -->
         <div class="gadget_body">
@@ -82,7 +82,7 @@
       <!-- 検索エリア -->
       <div class="gadget" style="width:240px;">
         <div id="" class="gadget_title" style="">
-          <h3 style=""><img src="/images/icons/icon_address.gif" align="top" style="margin-right:5px;">アドレス帳を検索</h3>
+          <h3 style=""><%= image_tag("icons/icon_address.gif", :align => "top", :style => "margin-right:5px;") %>アドレス帳を検索</h3>
         </div>
         <div class="gadget_body">あいまい検索：<br>
           <%= text_field_tag 'sword','',{:size => 20, :class => "ime_on", :style => "height:20px;width:150px;margin:0px;"} %>
@@ -121,27 +121,26 @@
   * ページロード時に右領域に選択決定リストを表示します。
   * (グループ更新時に、特定のグループが選択されていた場合のみ)
   */
-  $("#enote_address_group_decide").load("/address/group/decided_member?mode=" + <%=params[:mode]%> + "&gid=" + <%=params[:gid]%>, function() {
-    //グループ名を更新
-    $("#d_address_group_title").val($("#title").val());
-
-    //選択決定エリアのデータを全て取得
-    var dBox = document.getElementById("decided_member_");
-    var member = new Array(dBox.length);
-    for (var i = 0; i < dBox.options.length; i++) {
-      member[i] = dBox.options[i].value;
-    }
-    document.getElementById("decided_member_old").value = member;    //初期状態を保持
-    document.getElementById("decided_member_new").value = member;    //更新時のメンバーを格納
-
-    //グループ名を取得
-    $("#title_old").val($("#d_address_group_title").val());          //初期状態を保持
-  });
+  $("#enote_address_group_decide").load("<%= @base_uri %>/address/group/decided_member?mode=<%=params[:mode]%>&gid=<%=params[:gid]%>", 
+    function() {
+      //グループ名を更新
+      $("#d_address_group_title").val($("#title").val());
+      //選択決定エリアのデータを全て取得
+      var dBox = document.getElementById("decided_member_");
+      var member = new Array(dBox.length);
+      for (var i = 0; i < dBox.options.length; i++) {
+        member[i] = dBox.options[i].value;
+      }
+      document.getElementById("decided_member_old").value = member;    //初期状態を保持
+      document.getElementById("decided_member_new").value = member;    //更新時のメンバーを格納
+      //グループ名を取得
+      $("#title_old").val($("#d_address_group_title").val());          //初期状態を保持
+    });
 
   /*
   * ページロード時にグループ領域にリスト(メーカー/社員/プロジェクト/共用グループ/個人)を表示します。
   */
-  $("#enote_address_group_condition").load("/address/group/condition?&gkbn=" + $("#gkbn").val());
+  $("#enote_address_group_condition").load("<%= @base_uri %>/address/group/condition?&gkbn=" + $("#gkbn").val());
 
   /*
    * グループ(メーカー/社員/プロジェクト/共用グループ/個人)選択時の処理
@@ -150,7 +149,7 @@
     // jQueryでの処理
     $.ajax({
       type:'get',
-      url:'/address/group/condition?&gkbn=' + $("#gkbn").val(),
+      url:base_uri + '/address/group/condition?&gkbn=' + $("#gkbn").val(),
       success:
         function(request){
           // 受信結果を一覧エリアに反映させます。
@@ -163,7 +162,7 @@
    * アドレス帳に戻る
    */
   function ClickBackToAddress(){
-    document.location = "/address/main";
+    document.location = base_uri + "/address/main";
   }
 
   /*
@@ -214,8 +213,8 @@
   function ClickSelectWord(){
     // jQueryでの処理
     $.ajax({
-      type:'get',
-      url:'/address/group/undecided_member?&sword=' + encodeURIComponent($("#sword").val()),
+      type: 'get',
+      url: base_uri + '/address/group/undecided_member?&sword=' + encodeURIComponent($("#sword").val()),
       success:
         function(request){
             // 受信結果を一覧エリアに反映させます。

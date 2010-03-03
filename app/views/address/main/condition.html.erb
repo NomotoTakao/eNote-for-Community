@@ -75,7 +75,7 @@
         <div style="width:240px;text-align:left;">
           <%= form_remote_tag(:update => 'enote_address_main',
             :url => {:action => :new}, :loading => "$('app_title').innerHTML ='アドレス帳 > 連絡先の追加'") %>
-          <%= submit_tag(h('連絡先を追加'), { :class => 'submit_large' }) %>
+            <%= submit_tag(h('連絡先を追加'), { :class => 'submit_large' }) %>
           </form>
         </div>
       </td>
@@ -100,7 +100,7 @@
         // jQueryでの処理
         $.ajax({
             type:'get',
-            url:'/address/main/addrs_list?gid=0&gkbn=' + <%=@address_kbn%> + '&proid=' + $("#address_condition").val(),
+            url: base_uri + '/address/main/addrs_list?gid=0&gkbn=<%= @address_kbn %>&proid=' + $("#address_condition").val(),
             success:
                 function(request){
                     // 受信結果を右領域に反映させます。
@@ -116,11 +116,11 @@
         // jQueryでの処理
         $.ajax({
             type:'get',
-            url:'/address/main/addrs_list?&gid=' + $("#address_condition").val() + '&gkbn=' + <%=@address_kbn%>,
+            url: base_uri + '/address/main/addrs_list?&gid=' + $("#address_condition").val() + '&gkbn=<%= @address_kbn %>',
             success:
                 function(request){
-                    // 受信結果を右領域に反映させます。
-                    $('#enote_address_main').html(request);
+                  // 受信結果を右領域に反映させます。
+                  $('#enote_address_main').html(request);
                 }
         });
     }
@@ -138,7 +138,7 @@
         // jQueryでの処理
         $.ajax({
             type:'get',
-            url:'/address/main/addrs_list?&gid=' + $("#address_condition").val() + '&gkbn=' + <%=@address_kbn%>
+            url: base_uri + '/address/main/addrs_list?&gid=' + $("#address_condition").val() + '&gkbn=<%= @address_kbn %>'
                 + '&gnm=' + encodeURIComponent(name),
             success:
                 function(request){
@@ -183,7 +183,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url : "/address/main/tmp_list",
+            url : base_uri + "/address/main/tmp_list",
             data :
               {
                 org_cd: id.replace("org_", ""),
@@ -220,7 +220,7 @@
       sword = "";
       orgnm = name;
 
-      url = "/address/main/addrs_list?orgcd=:orgcd" + "&gid=0" + "&sword=" + sword + "&gkbn=<%=@address_kbn%>" + "&orgnm=" + encodeURIComponent(orgnm);
+      url = base_uri + "/address/main/addrs_list?orgcd=:orgcd" + "&gid=0" + "&sword=" + sword + "&gkbn=<%=@address_kbn%>" + "&orgnm=" + encodeURIComponent(orgnm);
       url = url.replace(":orgcd", id.attr("id").replace("org_", ""));
       $("#enote_address_main").load(url);
     }

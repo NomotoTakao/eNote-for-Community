@@ -95,7 +95,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url : "/address/group/tmp_list",
+            url : base_uri + "/address/group/tmp_list",
             data :
               {
                 org_cd: id.replace("org_", "")
@@ -131,7 +131,7 @@
       sword = "";
       orgnm = name;
 
-      url = "/address/group/undecided_member?orgcd=:orgcd" + "&gid=0" + "&sword=" + sword + "&gkbn=<%=@address_kbn%>" + "&orgnm=" + encodeURIComponent(orgnm);
+      url = base_uri + "/address/group/undecided_member?orgcd=:orgcd" + "&gid=0" + "&sword=" + sword + "&gkbn=<%=@address_kbn%>" + "&orgnm=" + encodeURIComponent(orgnm);
       url = url.replace(":orgcd", $("#" + id).attr("id").replace("org_", ""));
       $("#enote_address_group_undecide").load(url);
     }
