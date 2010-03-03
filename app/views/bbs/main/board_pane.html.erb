@@ -1,19 +1,14 @@
 <%# 掲示板一覧ペイン %>
-
 <div class="tabset" id="tabset">
   <ul>
-    <li><a href="/bbs/main/bbs_tab" >掲示板</a></li>
-<!--
-    <li><a href="/bbs/main/bbs_create_tab" >掲示板を新規作成</a></li>
--->
+    <li><%= link_to "掲示板", :controller => "/bbs/main", :action => "bbs_tab" %></li>
   </ul>
 </div>
 
 <script type="text/javascript">
   <!--
     var tabs = new Array();
-    $(document).ready(
-      function(){
+    $(document).ready(function(){
 	    $("#tabset").tabs();
         // タブ部分のスタイル(クラス)を設定
         $("#tabset").find("ul").attr("class", "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all");

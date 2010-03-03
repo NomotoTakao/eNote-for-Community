@@ -1,15 +1,10 @@
 <!-- 「掲示板タブ」 -->
-
-<div id="bbs">
-</div>
-
+<div id="bbs"></div>
 <script type="text/javascript">
   <!--
-    $(document).ready(
-      function(){
-	    url = "/bbs/main/board_list";
-		$("#bbs").load(url);
-      }
-    );
+    $(document).ready(function(){
+	    url = base_uri + "/bbs/main/board_list";
+  		$("#bbs").load(url);
+    });
   //-->
 </script>

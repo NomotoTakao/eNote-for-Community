@@ -56,8 +56,7 @@
                                       :update => 'thread_list',
                                       :params=> { :action => 'thread_list',
                                                   :board_id=>@thread_list[0].d_bbs_board_id,
-                                                  :mode=>@mode
-                                                },
+                                                  :mode=>@mode},
                                       :prev_label => "<<前へ",
                                       :next_label => "次へ>>",
                                       :method => :get %>
@@ -68,8 +67,7 @@
 
 <script type="text/javascript">
   <!--
-    $(document).ready(
-      function(){
+    $(document).ready(function(){
         $(document).scrollTop = 0;
         $("input[name='btnDisp']").val("開く");
         $("input[name='btnDisp']").click(

@@ -15,21 +15,18 @@ class Bbs::MainController < ApplicationController
   # 掲示板領域を表示するアクション
   #
   def board_pane
-
   end
 
   #
   # 「掲示板」タブを表示するときのアクション
   #
   def bbs_tab
-
   end
 
   #
   # 「掲示板を新規作成」タブを表示するときのアクション
   #
   def bbs_create_tab
-
     @orgs = MOrg.new.get_orgs
   end
 
@@ -37,9 +34,7 @@ class Bbs::MainController < ApplicationController
   # 掲示板を新規作成するときのアクション
   #
   def bbs_create
-
     params[:d_bbs_boards][:created_user_cd] = current_m_user.user_cd
-    #params[:d_bbs_boards][:updated_user_cd] = current_m_user.org_cd
     params[:d_bbs_boards][:updated_user_cd] = (MUserBelong.new.get_main_org current_m_user.user_cd).org_cd
 
     d_bbs_boards = DBbsBoard.new(params[:d_bbs_boards])
@@ -59,7 +54,6 @@ class Bbs::MainController < ApplicationController
       #TODO 例外発生時の処理
     end
 
-#    redirect_to :action=>:board_pane
     redirect_to :action=>:bbs_tab
   end
 
@@ -264,10 +258,8 @@ class Bbs::MainController < ApplicationController
   # 新規記事一覧に表示する情報を取得します。
   #
   def newly_list
-
     board_id = params[:board_id]
     thread_id = params[:thread_id]
-
     @newly_list = DBbsComment.new.get_newly_list board_id, thread_id, current_m_user.user_cd, (MUserBelong.new.get_main_org current_m_user.user_cd).org_cd
   end
 
@@ -305,7 +297,6 @@ class Bbs::MainController < ApplicationController
   # コメント検索結果一覧を取得するアクション 
   #
   def comment_search_list
-
     @board_list = []
     @thread_list = []
     @board_id = params[:board_id]

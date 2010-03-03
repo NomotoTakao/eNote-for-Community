@@ -29,7 +29,7 @@
     <tr>
       <td colspan="3" style="text-align: left;">このスレッドへのリンクURL：
         <%= link_to "",
-                    {:controller => "bbs/main",
+                    {:controller => "/bbs/main",
                      :action => "index",
                      :board_id=>@board.id,
                      :thread_id=>@thread.id},
@@ -75,22 +75,20 @@
   <hr>
   <br>
   <br>
-  <div id="comment_list">
-  </div>
+  <div id="comment_list"></div>
 
 <% end %>
 
 <script type="text/javascript">
   <!--
-    $(document).ready(
-      function(){
+    $(document).ready(function(){
         board_id = $("#board_id_").val();
         thread_id = $("#thread_id_").val();
         // 左領域の"form_board_id"、"form_thread_id"に値を設定する
         $("#form_board_id").val(board_id);
         $("#form_thread_id").val(thread_id);
 
-        url = "/bbs/main/comment_list?board_id=:board_id&thread_id=:thread_id";
+        url = base_uri + "/bbs/main/comment_list?board_id=:board_id&thread_id=:thread_id";
         url = url.replace(":board_id", board_id).replace(":thread_id", thread_id);
         $("#comment_list").load(url);
 

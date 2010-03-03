@@ -1,4 +1,3 @@
-
 <ul id="sosiki_browser" class="filetree">
   <li>
     <span class="file">全社</span>
@@ -7,10 +6,8 @@
     prev_org = nil
     clsSpan = ""
     clsLi = ""
-
   %>
-  <% @orgs.each do |org| %>
-    
+  <% @orgs.each do |org| %>    
     <% unless prev_org.nil? %>
 	  <%
         if prev_org.org_lvl < org.org_lvl
@@ -88,19 +85,13 @@
 		  
 <script type="text/javascript">
    <!--
-    $(document).ready(
-      function(){
+    $(document).ready(function(){
 	  	$("#sosiki_browser").treeview();
-		
-		$(".public_org").click(
-          function(){
-            bgChange($(this), $(".public_org"));
-			org_cd = $(this).attr("code");
-
-            $("#d_bbs_auths_org_cd").val(org_cd);
-          }
-        );
-	  }
-    );
+  		$(".public_org").click(function(){
+        bgChange($(this), $(".public_org"));
+        org_cd = $(this).attr("code");
+        $("#d_bbs_auths_org_cd").val(org_cd);
+      });
+	  });
   //-->
 </script>

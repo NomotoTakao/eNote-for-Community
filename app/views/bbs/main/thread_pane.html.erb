@@ -1,5 +1,4 @@
 <!-- スレッド一覧ペイン -->
-
 <table class="bbs_head_table" style="width:660px; text-align:left;">
   <tr>
     <td class="bbs_head_table_t" style="width:520px;padding-left:10px;text-align:left;">
@@ -21,7 +20,7 @@
   </tr>
   <tr>
     <td colspan="2" class="bbs_head_table_b" style="text-align:left;">
-    <%= display(@board.memo) %>
+      <%= display(@board.memo) %>
     </td>
   </tr>
 </table >
@@ -56,7 +55,7 @@
         <td align="center">
           <%= submit_tag '投稿する',{:class => 'submit', :onclick => 'return ClickContributeButton()'} %>
       &nbsp;&nbsp;&nbsp;
-      <%= button_to_remote '一覧に戻る', {:update=>"right_pane", :url=>{:action =>'bbs_tab'}}, {:class =>'submit'} %>
+          <%= button_to_remote '一覧に戻る', {:update=>"right_pane", :url=>{:action =>'bbs_tab'}}, {:class =>'submit'} %>
         </td>
       </tr>
     </table>
@@ -69,28 +68,20 @@
 
 <script type="text/javascript">
   <!--
-
-    $(document).ready(
-      function(){
+    $(document).ready(function(){
       board_id = $("#d_bbs_threads_d_bbs_board_id").val();
-    // 左領域にある、"form_board_id"に掲示板IDを設定
-    $("#form_board_id").val(board_id);
-    $("#form_thread_id").val("");
-    // 新着記事一覧を表示
-    url = "/bbs/main/newly_list?board_id=:board_id"
-    url = url.replace(":board_id", board_id);
-    $("#newly_list").load(url);
-
-    // スレッド一覧を表示
-      url = "/bbs/main/thread_list?board_id=:board_id"
-    url = url.replace(":board_id", board_id);
-    $("#thread_list").load(url);
-
-//		if($("#btnCreateTopic").val() == "閉じる"){
-//          $("#btnCreateTopic").click();
-//		}
-    }
-    );
+      // 左領域にある、"form_board_id"に掲示板IDを設定
+      $("#form_board_id").val(board_id);
+      $("#form_thread_id").val("");
+      // 新着記事一覧を表示
+      url = base_uri + "/bbs/main/newly_list?board_id=:board_id"
+      url = url.replace(":board_id", board_id);
+      $("#newly_list").load(url);
+      // スレッド一覧を表示
+      url = base_uri + "/bbs/main/thread_list?board_id=:board_id"
+      url = url.replace(":board_id", board_id);
+      $("#thread_list").load(url);
+    });
 
     $("#btnCreateTopic").click(
       function(){
@@ -98,8 +89,6 @@
         $("#div_topic_create").show();
       }
     );
-
-
 
     /*
      * 「投稿」ボタンが押下された時の処理。

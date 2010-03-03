@@ -67,21 +67,16 @@
 
 <script type="text/javascript">
   <!--
-    $(document).ready(
-      function(){
-
-        board_id = $("#board_id_").val();
-//alert("comment_search_list-board_id:" + board_id);
-		thread_id = $("#thread_id_").val();
-//alert("comment_search_list-thrad_id:" + thread_id);
-        date_from = $("#condition_date_from").val();
-		date_to = $("#condition_date_to").val();
-		keyword = encodeURI($("#condition_keyword").val());
-		url = "/bbs/main/comment_search_list?board_id=:board_id&thread_id=:thread_id&date_from=:date_from&date_to=:date_to&keyword=:keyword";
-		url = url.replace(":board_id", board_id).replace(":thread_id", thread_id).replace(":date_from", date_from).replace(":date_to", date_to).replace(":keyword", keyword);
+    $(document).ready(function(){
+      board_id = $("#board_id_").val();
+      thread_id = $("#thread_id_").val();
+      date_from = $("#condition_date_from").val();
+		  date_to = $("#condition_date_to").val();
+		  keyword = encodeURI($("#condition_keyword").val());
+		  url = base_uri + "/bbs/main/comment_search_list?board_id=:board_id&thread_id=:thread_id&date_from=:date_from&date_to=:date_to&keyword=:keyword";
+		  url = url.replace(":board_id", board_id).replace(":thread_id", thread_id).replace(":date_from", date_from).replace(":date_to", date_to).replace(":keyword", keyword);
         
-		$("#comment_search_list").load(url);
-      }
-    );
+		  $("#comment_search_list").load(url);
+    });
   //-->
 </script>

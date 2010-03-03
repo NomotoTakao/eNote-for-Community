@@ -55,18 +55,17 @@
 
 <script type="text/javascript">
   <!--
-    $(document).ready(
-      function(){
+    $(document).ready(function(){
         $(document).scrollTop = 0;
         // コメント一覧を更新
         $("#d_bbs_comments_body").val("");
-    var lastpost_date = $("#comment_lastpost_date_").val();
+        var lastpost_date = $("#comment_lastpost_date_").val();
         // 最終投稿日を更新
         if(lastpost_date != ""){
           $("#lastpost_date").html("最終投稿日<br>" + lastpost_date);
         }
         // 新規投稿記事一覧を更新
-        url = "/bbs/main/newly_list?board_id=:board_id&thread_id=:thread_id";
+        url = base_uri + "/bbs/main/newly_list?board_id=:board_id&thread_id=:thread_id";
         url = url.replace(":board_id", board_id).replace(":thread_id", thread_id);
         $("#newly_list").load(url);
       }

@@ -40,8 +40,7 @@
       <%= will_paginate @board_list, :renderer => RemoteLinkRenderer,
                                      :update => 'bbs',
                                      :params=> { :action => 'board_list',
-                                                 :mode=>@mode
-                                               },
+                                                 :mode=>@mode },
                                      :prev_label => "<<前へ",
                                      :next_label => "次へ>>",
                                      :method => :get %>
@@ -51,18 +50,13 @@
 <% end %>
 
 <script type="text/javascript">
-  <!--
-    $(document).ready(
-      function(){
-		
+<!--
+  $(document).ready(function(){
 		$("#form_board_id").val("");
 		$("#form_thread_id").val("");
-		
-        url = "/bbs/main/newly_list/"
-        $("#newly_list").load(url);
-		
-	    $("#newly_list").css("display", "block");
-	  }
-    );
-  //-->
+    url = base_uri + "/bbs/main/newly_list/"
+    $("#newly_list").load(url);
+    $("#newly_list").css("display", "block");
+  });
+//-->
 </script>

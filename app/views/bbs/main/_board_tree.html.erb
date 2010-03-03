@@ -1,6 +1,6 @@
 <!-- ボード一覧 -->
 <div class="gadget_title">
-  <h3 style=""><img src="/images/icons/icon_freetalk.gif" align="top" style="margin-right:5px;">ボード一覧</h3>
+  <h3 style=""><%= image_tag("icons/icon_freetalk.gif", :align => "top", :style => "margin-right:5px;") %>ボード一覧</h3>
 </div>
 <div style="height:170px;overflow-y:scroll;">
 <ul id="board_inex" class="filetree">
@@ -19,7 +19,6 @@
 <script type="text/javascript">
   <!--
     $(document).ready(function(){
-
       $(".board_index").mouseover(
         function(){
           $(this).css("cursor", "pointer");
@@ -36,7 +35,7 @@
       function(){
           board_id = $(this).attr("id");
           bgChange2($(this), $(".board_index"));
-          url = "/bbs/main/thread_pane?board_id=" + board_id;
+          url = base_uri + "/bbs/main/thread_pane?board_id=" + board_id;
           $("#right_pane").load(url);
       }
       );
