@@ -86,7 +86,7 @@ $(document).ready(function(){
     name = $(this).text();
     bgChange($(id), $(".setting_org"));
     orgnm = name
-    url = "/master/cabinet/undecided_member?orgcd=:orgcd" + "&orgnm=" + encodeURIComponent(orgnm);
+    url = base_uri + "/master/cabinet/undecided_member?orgcd=:orgcd" + "&orgnm=" + encodeURIComponent(orgnm);
     url = url.replace(":orgcd", id.attr("id").replace("setting_org_", ""));
     $("#undecided").load(url);
   });

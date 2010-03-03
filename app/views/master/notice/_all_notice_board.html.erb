@@ -72,7 +72,7 @@ function ClickFirstNotice(){
   //2階層目を表示
   $.ajax({
     type: 'get',
-    url: '/master/notice/notice_board_list?parent_id=' + $("#decided_first_notice").val() + '&target_level=2',
+    url: base_uri + '/master/notice/notice_board_list?parent_id=' + $("#decided_first_notice").val() + '&target_level=2',
     success:
       function(request){
         //2階層目にデータ表示
@@ -88,7 +88,7 @@ function ClickSecondNotice(){
   //3階層目を表示
   $.ajax({
     type: 'get',
-    url: '/master/notice/notice_board_list?parent_id=' + $("#decided_second_notice").val() + '&target_level=3',
+    url: base_uri + '/master/notice/notice_board_list?parent_id=' + $("#decided_second_notice").val() + '&target_level=3',
     success:
       function(request){
         //3階層目にデータ表示
@@ -123,7 +123,7 @@ function ClickEditNoticeSelect(select_level){
   //編集エリアを表示
   $.ajax({
     type: 'get',
-    url: '/master/notice/edit_notice_board?parent_id=' + parent_id,
+    url: base_uri + '/master/notice/edit_notice_board?parent_id=' + parent_id,
     success:
       function(request){
         $('#edit_notice_board').html(request);

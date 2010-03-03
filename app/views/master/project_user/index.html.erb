@@ -66,7 +66,7 @@
   */
   $(document).ready(function(){
     //一覧を表示
-    $("#master_list").load("/master/project_user/master_list?project_id=" + $("#project_id").val());
+    $("#master_list").load(base_uri + "/master/project_user/master_list?project_id=" + $("#project_id").val());
   });
 
   /*
@@ -76,7 +76,7 @@
     //jQueryでの処理
     $.ajax({
       type:'get',
-      url:"/master/project_user/master_list?project_id=" + $("#project_id").val(),
+      url:base_uri + "/master/project_user/master_list?project_id=" + $("#project_id").val(),
       success:
         function(request){
           $('#master_list').html(request);

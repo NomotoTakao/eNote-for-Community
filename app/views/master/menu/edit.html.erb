@@ -63,7 +63,7 @@
    */
   $(document).ready(function(){
     //空の詳細エリアを表示
-    $("#detail").load("/master/menu/detail?id=0");
+    $("#detail").load(base_uri + "/master/menu/detail?id=0");
   });
 
   /*
@@ -76,7 +76,7 @@
     //該当データを表示
     $.ajax({
       type: 'get',
-      url: '/master/menu/detail?id=' + id + '&target_level=' + $("#target_level").val(),
+      url: base_uri + '/master/menu/detail?id=' + id + '&target_level=' + $("#target_level").val(),
       success:
         function(request){
           $('#detail').html(request);

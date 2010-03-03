@@ -25,7 +25,7 @@
       <td class="master_table1_cell_bordered" style="text-align:left;"><%= place.name %></td>
       <td class="master_table1_cell_bordered" style="text-align:center;"><%= place.updated_at.strftime("%Y/%m/%d") %></td>
       <td class="master_table1_cell_bordered" style="text-align:center;">
-        <a href="#" onclick="ClickEditButton(<%=place.id%>)" ><img src="/images/icons/icon_entry.gif"></a>
+        <a href="#" onclick="ClickEditButton(<%=place.id%>)" ><%= image_tag("icons/icon_entry.gif") %></a>
         <%= link_to(image_tag("icons/icon_trash.gif"), {:action => "delete", :id => place.id}, {:confirm => "削除してよろしいですか？"}) %>
       </td>
     </tr>
@@ -56,14 +56,14 @@
    * 新規
    */
   function ClickNewButton(){
-    document.location = "/master/place/new";
+    document.location = base_uri + "/master/place/new";
   }
 
   /*
    * 編集
    */
   function ClickEditButton(id){
-    document.location = "/master/place/edit?id=" + id;
+    document.location = base_uri + "/master/place/edit?id=" + id;
   }
 -->
 </script>

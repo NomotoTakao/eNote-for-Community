@@ -184,7 +184,7 @@
     // カレンダー
     setCalendar(jQuery("#m_users_joined_date"));
     // 所属エリアを表示
-    $("#belong").load("/master/user/belong?user_cd=" + $("#m_users_user_cd").val());
+    $("#belong").load(base_uri + "/master/user/belong?user_cd=" + $("#m_users_user_cd").val());
 
     $("#m_users_login").focus();
   });

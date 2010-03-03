@@ -72,7 +72,7 @@ function ClickFirstCabinet(){
   //2階層目を表示
   $.ajax({
     type: 'get',
-    url: '/master/cabinet/company_cabinet_list?parent_id=' + $("#decided_first_cabinet").val() + '&target_level=2',
+    url: base_uri + '/master/cabinet/company_cabinet_list?parent_id=' + $("#decided_first_cabinet").val() + '&target_level=2',
     success:
       function(request){
         //2階層目にデータ表示
@@ -88,7 +88,7 @@ function ClickSecondCabinet(){
   //3階層目を表示
   $.ajax({
     type: 'get',
-    url: '/master/cabinet/company_cabinet_list?parent_id=' + $("#decided_second_cabinet").val() + '&target_level=3',
+    url: base_uri + '/master/cabinet/company_cabinet_list?parent_id=' + $("#decided_second_cabinet").val() + '&target_level=3',
     success:
       function(request){
         //3階層目にデータ表示
@@ -123,7 +123,7 @@ function ClickEditCabinetSelect(select_level){
   //編集エリアを表示
   $.ajax({
     type: 'get',
-    url: '/master/cabinet/edit_company_cabinet?parent_id=' + parent_id,
+    url: base_uri + '/master/cabinet/edit_company_cabinet?parent_id=' + parent_id,
     success:
       function(request){
         $('#edit_company_cabinet').html(request);

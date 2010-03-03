@@ -54,26 +54,26 @@
           <td valign="top" align="left">
             <table border="0" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="text-align:left;height:30px;width:130px;"><img class="enote_title_block" src="/images/widget_ico_on.gif"/>得意先コード：</td>
+                <td style="text-align:left;height:30px;width:130px;"><%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>得意先コード：</td>
                 <td style="text-align:left;width:300px;">
                   <input type="text" id="condition_company_cd" value="" size="12" class="ime_off" />&nbsp;&nbsp;
                   <input type="checkbox" id="check_deleted" value="1" style="margin:0;border:0;" />&nbsp;削除済を含める
                 </td>
               </tr>
               <tr>
-                <td style="text-align:left;height:30px;"><img class="enote_title_block" src="/images/widget_ico_on.gif"/>得意先名：</td>
+                <td style="text-align:left;height:30px;"><%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>得意先名：</td>
                 <td style="text-align:left;">
                   <input type="text" id="condition_customer_name" value="" size="25" class="ime_on" />
                 </td>
               </tr>
               <tr>
-                <td style="text-align:left;height:30px;"><img class="enote_title_block" src="/images/widget_ico_on.gif"/>得意先名(カナ)：</td>
+                <td style="text-align:left;height:30px;"><%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>得意先名(カナ)：</td>
                 <td style="text-align:left;">
                   <input type="text" id="condition_customer_name_kana" value="" size="25" class="ime_on" />
                 </td>
               </tr>
               <tr>
-                <td style="text-align:left;height:30px;"><img class="enote_title_block" src="/images/widget_ico_on.gif"/>得意先電話番号：</td>
+                <td style="text-align:left;height:30px;"><%= image_tag("widget_ico_on.gif", :class => "enote_title_block") %>得意先電話番号：</td>
                 <td style="text-align:left;">
                   <input type="text" id="condition_customer_tel" value="" size="18" class="ime_off" />
                 </td>
@@ -138,7 +138,7 @@
       jQuery.ajax(
         {
           type : "GET",
-          url  : "/master/customer/customer_info",
+          url  : base_uri + "/master/customer/customer_info",
           data :
             {
               company_cd : arg,
@@ -218,7 +218,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/master/customer/customer_list",
+            url  : base_uri + "/master/customer/customer_list",
             data :
               {
                 org_cd             : org_cd,
@@ -253,7 +253,7 @@ alert("CSV出力");
     $(document).ready(
       function(){
         $("#search_type_0").attr("checked", "checked");
-        $("#customer_list").load("/master/customer/customer_list");
+        $("#customer_list").load(base_uri + "/master/customer/customer_list");
       }
     );
   //-->

@@ -32,7 +32,7 @@
       <td class="master_table1_cell_bordered" style="text-align:center;"><%= @enable_hash[project.enable_flg] %></td>
       <td class="master_table1_cell_bordered" style="text-align:center;"><%= project.updated_at.strftime("%Y/%m/%d") %></td>
       <td class="master_table1_cell_bordered" style="text-align:center;">
-        <a href="#" onclick="ClickEditButton(<%=project.id%>)" ><img src="/images/icons/icon_entry.gif"></a>
+        <a href="#" onclick="ClickEditButton(<%=project.id%>)" ><%= image_tag("icons/icon_entry.gif") %></a>
         <%= link_to(image_tag("icons/icon_trash.gif"), {:action => "delete", :id => project.id}, {:confirm => "削除してよろしいですか？"}) %>
       </td>
     </tr>
@@ -63,14 +63,14 @@
    * 新規
    */
   function ClickNewButton(){
-    document.location = "/master/project/new";
+    document.location = base_uri + "/master/project/new";
   }
 
   /*
    * 編集
    */
   function ClickEditButton(id){
-    document.location = "/master/project/edit?id=" + id;
+    document.location = base_uri + "/master/project/edit?id=" + id;
   }
 -->
 </script>

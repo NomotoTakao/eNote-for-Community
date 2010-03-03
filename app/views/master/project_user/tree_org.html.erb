@@ -89,7 +89,7 @@ $(document).ready(function(){
     name = $(this).text();
     bgChange($(id), $(".setting_org"));
     orgnm = name
-    url = "/master/project_user/undecided_member?orgcd=:orgcd";
+    url = base_uri + "/master/project_user/undecided_member?orgcd=:orgcd";
     url = url.replace(":orgcd", id.attr("id").replace("setting_org_", ""));
     $("#undecided").load(url);
   });

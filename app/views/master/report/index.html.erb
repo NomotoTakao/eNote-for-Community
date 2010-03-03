@@ -87,7 +87,7 @@
           jQuery.ajax(
             {
               type: "GET",
-              url: "/master/report/action_list",
+              url: base_uri + "/master/report/action_list",
               data: {
                 action_group_cd: action_group_cd
               },
@@ -115,7 +115,7 @@
           jQuery.ajax(
             {
               type: "GET",
-              url: "/master/report/input_action_group",
+              url: base_uri + "/master/report/input_action_group",
               data: {
                 action_group_cd: action_group_cd
               },
@@ -144,7 +144,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/master/report/input_action",
+            url  : base_uri + "/master/report/input_action",
             data :
               {
                 action_group_cd : action_group_cd,
@@ -174,7 +174,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/master/report/action_group_list",
+            url  : base_uri + "/master/report/action_group_list",
             data :
               {},
             success :

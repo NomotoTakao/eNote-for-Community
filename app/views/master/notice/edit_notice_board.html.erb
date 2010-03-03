@@ -39,7 +39,7 @@
 */
 $(document).ready(function(){
   //空の詳細エリアを表示
-  $("#detail_notice_board").load("/master/notice/detail_notice_board?head_id=0");
+  $("#detail_notice_board").load(base_uri + "/master/notice/detail_notice_board?head_id=0");
 });
 
 /*
@@ -52,7 +52,7 @@ function ClickTargetNotice(){
   //該当データを表示
   $.ajax({
     type: 'get',
-    url: '/master/notice/detail_notice_board?head_id=' + head_id,
+    url: base_uri + '/master/notice/detail_notice_board?head_id=' + head_id,
     success:
       function(request){
         $('#detail_notice_board').html(request);

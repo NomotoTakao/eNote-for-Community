@@ -31,7 +31,7 @@
         </td>
         <td class="master_table1_cell_bordered" style="text-align:center;"><%= user.updated_at.strftime("%Y/%m/%d") %></td>
         <td class="master_table1_cell_bordered" style="text-align:center;">
-          <a href="#" onclick="ClickEditButton('<%=user.user_cd%>')" ><img src="/images/icons/icon_entry.gif"></a>
+          <a href="#" onclick="ClickEditButton('<%=user.user_cd%>')" ><%= image_tag("icons/icon_entry.gif") %></a>
           <%= link_to(image_tag("icons/icon_trash.gif"), {:action => "delete", :user_cd => user.user_cd}, {:confirm => "削除してよろしいですか？"}) %>
         </td>
       </tr>
@@ -52,7 +52,7 @@
    * 編集
    */
   function ClickEditButton(user_cd){
-    document.location = "/master/user/edit?user_cd=" + user_cd;
+    document.location = base_uri + "/master/user/edit?user_cd=" + user_cd;
   }
 -->
 </script>

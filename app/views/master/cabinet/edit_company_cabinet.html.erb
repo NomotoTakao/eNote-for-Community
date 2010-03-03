@@ -39,7 +39,7 @@
 */
 $(document).ready(function(){
   //空の詳細エリアを表示
-  $("#detail_company_cabinet").load("/master/cabinet/detail_company_cabinet?head_id=0");
+  $("#detail_company_cabinet").load(base_uri + "/master/cabinet/detail_company_cabinet?head_id=0");
 });
 
 /*
@@ -52,7 +52,7 @@ function ClickTargetCabinet(){
   //該当データを表示
   $.ajax({
     type: 'get',
-    url: '/master/cabinet/detail_company_cabinet?head_id=' + head_id,
+    url: base_uri + '/master/cabinet/detail_company_cabinet?head_id=' + head_id,
     success:
       function(request){
         $('#detail_company_cabinet').html(request);

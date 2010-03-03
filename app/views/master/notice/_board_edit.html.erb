@@ -67,14 +67,14 @@
         jQuery.ajax(
           {
             type: "GET",
-            url:  "/master/notice/delete_board",
+            url:  base_uri + "/master/notice/delete_board",
             data:
               {
                 id : id
               },
             success:
               function(data, dataType){
-                $(".layout_table").load("/master/notice/index");
+                $(".layout_table").load(base_uri + "/master/notice/index");
               },
             error:
               function(){

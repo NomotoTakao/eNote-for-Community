@@ -102,7 +102,7 @@ class Master::MenuController < ApplicationController
           flash[:menu_err_msg] = err_msg
           responds_to_parent do
             render :update do |page|
-              page << "location.href='/master/menu/index'"
+              page << "location.href='#{@base_uri}/master/menu/index'"
             end
           end
           return
@@ -181,7 +181,7 @@ class Master::MenuController < ApplicationController
       logger.error "MMenu Err => #{ex}"
       responds_to_parent do
         render :update do |page|
-          page << "location.href='/master/menu/index'"
+          page << "location.href='#{@base_uri}/master/menu/index'"
         end
       end
       return
@@ -189,7 +189,7 @@ class Master::MenuController < ApplicationController
 
     responds_to_parent do
       render :update do |page|
-        page << "location.href='/master/menu/index'"
+        page << "location.href='#{@base_uri}/master/menu/index'"
       end
     end
   end

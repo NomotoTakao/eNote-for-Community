@@ -25,7 +25,7 @@
       <td class="master_table1_cell_bordered" style="text-align:left;"><%= facility_group.name %></td>
       <td class="master_table1_cell_bordered" style="text-align:center;"><%= facility_group.updated_at.strftime("%Y/%m/%d") %></td>
       <td class="master_table1_cell_bordered" style="text-align:center;">
-        <a href="#" onclick="ClickEditButton(<%=facility_group.id%>)" ><img src="/images/icons/icon_entry.gif"></a>
+        <a href="#" onclick="ClickEditButton(<%=facility_group.id%>)" ><%= image_tag("icons/icon_entry.gif") %></a>
         <%= link_to(image_tag("icons/icon_trash.gif"), {:action => "delete", :id => facility_group.id}, {:confirm => "削除してよろしいですか？"}) %>
       </td>
     </tr>
@@ -56,14 +56,14 @@
    * 新規
    */
   function ClickNewButton(){
-    document.location = "/master/facility_group/new";
+    document.location = base_uri + "/master/facility_group/new";
   }
 
   /*
    * 編集
    */
   function ClickEditButton(id){
-    document.location = "/master/facility_group/edit?id=" + id;
+    document.location = base_uri + "/master/facility_group/edit?id=" + id;
   }
 -->
 </script>

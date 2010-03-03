@@ -29,7 +29,7 @@
       <td class="master_table1_cell_bordered" style="text-align:center;"><%= position.rank %></td>
       <td class="master_table1_cell_bordered" style="text-align:center;"><%= position.updated_at.strftime("%Y/%m/%d") %></td>
       <td class="master_table1_cell_bordered" style="text-align:center;">
-        <a href="#" onclick="ClickEditButton(<%=position.id%>)" ><img src="/images/icons/icon_entry.gif"></a>
+        <a href="#" onclick="ClickEditButton(<%=position.id%>)" ><%= image_tag("icons/icon_entry.gif") %></a>
         <%= link_to(image_tag("icons/icon_trash.gif"), {:action => "delete", :id => position.id}, {:confirm => "削除してよろしいですか？"}) %>
       </td>
     </tr>
@@ -60,14 +60,14 @@
    * 新規
    */
   function ClickNewButton(){
-    document.location = "/master/position/new";
+    document.location = base_uri + "/master/position/new";
   }
 
   /*
    * 編集
    */
   function ClickEditButton(id){
-    document.location = "/master/position/edit?id=" + id;
+    document.location = base_uri + "/master/position/edit?id=" + id;
   }
 -->
 </script>

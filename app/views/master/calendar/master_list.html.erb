@@ -27,7 +27,7 @@
       <td class="master_table1_cell_bordered" style="text-align:left;"><%= calendar.name %></td>
       <td class="master_table1_cell_bordered" style="text-align:center;"><%= calendar.updated_at.strftime("%Y/%m/%d") %></td>
       <td class="master_table1_cell_bordered" style="text-align:center;">
-        <a href="#" onclick="ClickEditButton(<%=calendar.id%>)" ><img src="/images/icons/icon_entry.gif"></a>
+        <a href="#" onclick="ClickEditButton(<%=calendar.id%>)" ><%= image_tag("icons/icon_entry.gif") %></a>
         <%= link_to(image_tag("icons/icon_trash.gif"), {:action => "delete", :id => calendar.id}, {:confirm => "削除してよろしいですか？"}) %>
       </td>
     </tr>
@@ -58,14 +58,14 @@
    * 新規
    */
   function ClickNewButton(){
-    document.location = "/master/calendar/new";
+    document.location = base_uri + "/master/calendar/new";
   }
 
   /*
    * 編集
    */
   function ClickEditButton(id){
-    document.location = "/master/calendar/edit?id=" + id;
+    document.location = base_uri + "/master/calendar/edit?id=" + id;
   }
 -->
 </script>

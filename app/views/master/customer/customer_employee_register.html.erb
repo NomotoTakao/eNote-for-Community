@@ -195,7 +195,7 @@
         jQuery.ajax(
           {
             type : "POST",
-            url  : "/master/customer/register_employee",
+            url  : base_uri + "/master/customer/register_employee",
             data :
               "id=" + id + "&" +
               "company_cd=" + company_cd + "&" +
@@ -211,7 +211,7 @@
             success :
               function(data, dataType){
                 alert("登録しました。");
-                $("#customer_employee").load("/master/customer/customer_employee");
+                $("#customer_employee").load(base_uri + "/master/customer/customer_employee");
               },
             error :
               function(){
@@ -229,7 +229,7 @@
      */
     $("input[name='button_customer_employee_cancel']").click(
       function(){
-        $("#customer_employee").load("/master/customer/customer_employee");
+        $("#customer_employee").load(base_uri + "/master/customer/customer_employee");
       }
     );
   //-->

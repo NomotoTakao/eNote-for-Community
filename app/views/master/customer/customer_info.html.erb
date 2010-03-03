@@ -16,16 +16,10 @@
       <div class="tabset" id="edit_tabs">
         <input type="hidden" id="info_company_cd" value="<%= @m_customer.company_cd %>" />
         <ul>
-          <li>
-            <a href="/master/customer/basic_info_tab">基本情報</a>
-          </li>
+          <li><%= link_to "基本情報", :controller => "/master/customer", :action => "basic_info_tab" %></li>
           <% unless @m_customer.nil? or @m_customer.company_cd.nil? or @m_customer.company_cd.empty? %>
-            <li>
-              <a href="/master/customer/activity_reference_tab">活動内容参照</a>
-            </li>
-            <li>
-              <a href="/master/customer/customer_employee_tab">得意先社員</a>
-            </li>
+            <li><%= link_to "活動内容参照", :controller => "/master/customer", :action => "activity_reference_tab" %></li>
+            <li><%= link_to "得意先社員", :controller => "/master/customer", :action => "customer_employee_tab" %></li>
           <% end %>
         </ul>
       </div>
@@ -38,7 +32,7 @@
     var tabs = new Array();
     $("#button_close").click(
       function(){
-        $("#contents").load("/master/customer/search_index");
+        $("#contents").load(base_uri + "/master/customer/search_index");
       }
     );
     /**

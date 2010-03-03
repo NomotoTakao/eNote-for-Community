@@ -30,9 +30,9 @@
   */
   $(document).ready(function(){
     //選択メンバーエリアを表示
-    $("#select_member").load("/master/project_user/select_member", function() {
+    $("#select_member").load(base_uri + "/master/project_user/select_member", function() {
       //社員ツリーエリアを表示
-      $("#tree_org").load("/master/project_user/tree_org");
+      $("#tree_org").load(base_uri + "/master/project_user/tree_org");
     });
   });
 

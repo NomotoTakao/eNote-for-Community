@@ -40,10 +40,10 @@
       <div style="padding:5px;">
         <div class="tabset" id="tabset">
           <ul>
-            <li><a href="/master/cabinet/common_tab">共通</a></li>
-            <li><a href="/master/cabinet/mine_tab">Webメモリ</a></li>
-            <li><a href="/master/cabinet/sectional_tab">部内キャビネット</a></li>
-            <li><a href="/master/cabinet/company_tab">全社キャビネット</a></li>
+            <li><%= link_to "共通", :controller => "/master/cabinet", :action => "common_tab" %></li>
+            <li><%= link_to "Webメモリ", :controller => "/master/cabinet", :action => "mine_tab" %></li>
+            <li><%= link_to "部内キャビネット", :controller => "/master/cabinet", :action => "sectional_tab" %></li>
+            <li><%= link_to "全社キャビネット", :controller => "/master/cabinet", :action => "company_tab" %></li>
           </ul>
         </div>
       </div>
@@ -57,9 +57,7 @@
     $(document).ready(
       function(){
         $("#tabset").tabs();
-
         $("#tabset").find("ul").attr("class", "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all");
-
         // タブの枠線を描く
         cls = "ui-widget-content ui-corner-bottom mbTabsetContainer";
         hide = " ui-tabs-hide";

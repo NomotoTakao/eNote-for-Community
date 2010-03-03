@@ -14,10 +14,10 @@ class Master::PasswordController < ApplicationController
   def update
     begin
       #ユーザーマスタのupdate処理
-        update_table()
+      update_table()
 
       #画面遷移(TOP画面へ)
-      redirect_to('/')
+      redirect_to(:controller => "/home/mypage")
 
     rescue => ex
       flash[:password_err_msg] = "更新処理中に異常が発生しました。"

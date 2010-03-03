@@ -55,7 +55,6 @@ class Master::ReportController < ApplicationController
   #
   def action_group_add
     MActionGroup.create_action_group params, current_m_user.user_cd
-
     redirect_to :action=>:action_group_list
   end
 
@@ -64,7 +63,6 @@ class Master::ReportController < ApplicationController
   #
   def action_group_update
     MActionGroup.update_action_group params, current_m_user.user_cd
-
     redirect_to :action=>:action_group_list
   end
 
@@ -73,7 +71,6 @@ class Master::ReportController < ApplicationController
   #
   def action_group_delete
     MActionGroup.delete_action_group params, current_m_user.user_cd
-
     redirect_to :action=>:action_group_list
   end
 
@@ -104,12 +101,10 @@ class Master::ReportController < ApplicationController
   # 活動内容詳細を追加するアクション
   #
   def action_add
-
     m_action = MAction.find(:first, :conditions=>{:delf=>0, :action_group_cd=>params[:action_group_cd], :action_cd=>params[:action_cd]})
     if m_action.nil?
       MAction.create_action params, current_m_user.user_cd
     end
-
     redirect_to :action=>:action_list, :action_group_cd=>params[:action_group_cd]
   end
 
@@ -118,7 +113,6 @@ class Master::ReportController < ApplicationController
   #
   def action_update
     MAction.update_action params, current_m_user.user_cd
-
     redirect_to :action=>:action_list, :action_group_cd=>params[:action_group_cd]
   end
 
@@ -127,7 +121,6 @@ class Master::ReportController < ApplicationController
   #
   def action_delete
     MAction.delete_action params, current_m_user.user_cd
-
     redirect_to :action=>:action_list, :action_group_cd=>params[:action_group_cd]
   end
 
@@ -135,7 +128,6 @@ class Master::ReportController < ApplicationController
   # 活動内容グループCDを自動採番するアクション
   #
   def action_group_cd_auto_number
-
     @next_action_group_cd = MActionGroup.get_space_action_group_cd
   end
 
@@ -143,7 +135,6 @@ class Master::ReportController < ApplicationController
   # 活動内容詳細CDを自動採番するアクション
   #
   def action_cd_auto_number
-
     @next_action_cd = MAction.get_space_action_cd params[:action_group_cd]
   end
 end

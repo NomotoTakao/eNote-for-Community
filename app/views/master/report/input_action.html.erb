@@ -65,7 +65,7 @@
           jQuery.ajax(
             {
               type : "GET",
-              url  : "/master/report/action_exists",
+              url  : base_uri + "/master/report/action_exists",
               data :
                 {
                   action_group_cd : $("#m_actions_action_group_cd").val(),
@@ -86,7 +86,7 @@
                     jQuery.ajax(
                       {
                         type : "POST",
-                        url  : "/master/report/action_add",
+                        url  : base_uri + "/master/report/action_add",
                         data : get_formdata(),
                         success :
                           function(data, dataType){
@@ -120,7 +120,7 @@
           jQuery.ajax(
             {
               type : "POST",
-              url  : "/master/report/action_update",
+              url  : base_uri + "/master/report/action_update",
               data : get_formdata(),
               success :
                 function(data, dataType){
@@ -149,7 +149,7 @@
         jQuery.ajax(
           {
             type : "POST",
-            url  : "/master/report/action_delete",
+            url  : base_uri + "/master/report/action_delete",
             data : get_formdata(),
             success :
               function(data, dataType){
@@ -193,7 +193,7 @@
           jQuery.ajax(
             {
               type : "GET",
-              url  : "/master/report/action_cd_auto_number",
+              url  : base_uri + "/master/report/action_cd_auto_number",
               data :
                 {
                   action_group_cd : action_group_cd
@@ -231,7 +231,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/master/report/action_group_list",
+            url  : base_uri + "/master/report/action_group_list",
             data : {},
             success :
               function(data, dataType){

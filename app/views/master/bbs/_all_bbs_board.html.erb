@@ -37,7 +37,7 @@
  */
 $(document).ready(function(){
   //空の詳細エリアを表示
-  $("#detail_bbs_board").load("/master/bbs/detail_bbs_board?board_id=0");
+  $("#detail_bbs_board").load(base_uri + "/master/bbs/detail_bbs_board?board_id=0");
 });
 
 /*
@@ -50,7 +50,7 @@ function ClickBbsBoard(){
   //該当データを表示
   $.ajax({
     type: 'get',
-    url: '/master/bbs/detail_bbs_board?board_id=' + board_id,
+    url: base_uri + '/master/bbs/detail_bbs_board?board_id=' + board_id,
     success:
       function(request){
         $('#detail_bbs_board').html(request);

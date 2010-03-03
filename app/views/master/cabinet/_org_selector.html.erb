@@ -140,7 +140,6 @@
 
     $("#org_add").click(
       function(){
-
             element = $("#selected_org").val().split(",");
             // すでに同じものがあれば追加はしない。
             if($("#selected_org_list_").val().indexOf("_" + element[1] + "_,") == -1){
@@ -151,7 +150,6 @@
               // 削除する組織CDの要素に追加するものと同じ値がある場合は空白と置き換える。
               $("#deleted_org_list_").val($("#deleted_org_list_").val().replace("_" + element[1] + "_,", ""));
             }
-
       }
     );
 
@@ -192,7 +190,6 @@
             $("#deleted_org_list_").val($("#deleted_org_list_").val() + txtDeletedTxt);
             $("#selected_org_list_").val(txtSelectedTxt);
             $("#org_list option:selected").remove();
-
       }
     );
 

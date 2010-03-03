@@ -30,8 +30,8 @@
       <div style="padding:5px;">
         <div class="tabset" id="tabset">
           <ul>
-            <li><a href="/master/notice/master_tab">共通</a></li>
-            <li><a href="/master/notice/board_tab">お知らせ編集</a></li>
+            <li><%= link_to "共通", :controller => "/master/notice", :action => "master_tab" %></li>
+            <li><%= link_to "お知らせ編集", :controller => "/master/notice", :action => "board_tab" %></li>
           </ul>
         </div>
       </div>

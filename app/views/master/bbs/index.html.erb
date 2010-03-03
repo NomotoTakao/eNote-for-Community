@@ -32,8 +32,8 @@
       <div style="padding:5px;">
         <div class="tabset" id="tabset">
           <ul>
-            <li><a href="/master/bbs/master_tab">共通</a></li>
-            <li><a href="/master/bbs/board_tab">掲示板編集</a></li>
+            <li><%= link_to "共通", :controller => "/master/bbs", :action => "master_tab" %></li>
+            <li><%= link_to "掲示板編集", :controller => "/master/bbs", :action => "board_tab" %></li>
           </ul>
         </div>
       </div>
@@ -47,7 +47,6 @@
     $(document).ready(
       function(){
         $("#tabset").tabs();
-
         $("#tabset").find("ul").attr("class", "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all");
 
         // タブの枠線を描く

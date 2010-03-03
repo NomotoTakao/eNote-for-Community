@@ -63,14 +63,14 @@
   */
   $(document).ready(function(){
     //組織ツリーを表示
-    $("#tree_org").load("/master/user/tree_org");
+    $("#tree_org").load(base_uri + "/master/user/tree_org");
   });
 
   /*
    * 新規
    */
   function ClickNewButton(){
-    document.location = "/master/user/new";
+    document.location = base_uri + "/master/user/new";
   }
 
   /*

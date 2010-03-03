@@ -67,7 +67,7 @@
     //jQueryでの処理
     $.ajax({
       type:'get',
-      url:"/master/facility/master_list?facility_group_cd=" + $("#facility_group_cd").val()
+      url:base_uri + "/master/facility/master_list?facility_group_cd=" + $("#facility_group_cd").val()
         + "&place_cd=" + $("#select_place_cd").val() + "&org_cd=" + $("#select_org_cd").val(),
       success:
         function(request){

@@ -85,7 +85,7 @@
         jQuery.ajax(
           {
             type : "GET",
-            url  : "/master/customer/action_list",
+            url  : base_uri + "/master/customer/action_list",
             data :
               {
                 action_group_cd : action_group_cd
@@ -111,7 +111,7 @@
      */
     $("#button_reference_csv").click(
       function(){
-alert("CSV出力");
+        alert("CSV出力");
       }
     );
 
@@ -143,7 +143,6 @@ alert("CSV出力");
      */
     $("#activity_date").click(
       function(){
-
         search_activity("action_date");
       }
     );
@@ -166,7 +165,6 @@ alert("CSV出力");
      */
     $("#activity_user_cd").click(
       function(){
-
         search_activity("user_cd");
       }
     );
@@ -187,7 +185,6 @@ alert("CSV出力");
      * @param {Object} order - 一覧の並び順
      */
     function search_activity(order){
-
       var company_cd = $("#m_customer_company_cd").val();
       var date_from = $("#date_from").val();
       var date_to = $("#date_to").val();
@@ -200,7 +197,7 @@ alert("CSV出力");
       jQuery.ajax(
         {
           type : "GET",
-          url  : "/master/customer/activity_reference_list",
+          url  : base_uri + "/master/customer/activity_reference_list",
           data :
             {
               company_cd : company_cd,

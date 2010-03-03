@@ -1,5 +1,3 @@
-
-
 <table class="enote_general_table1" style="width:800px;">
   <tr class="enote_general_table1_title">
     <th class="enote_general_table1_cell_bordered header" order="created_at" mode="<%= @next_mode_created_at %>">日時<%=h order_mark(@next_mode_created_at) %></th>
@@ -34,8 +32,7 @@
     <td style="text-align:center;padding-left:10px;">
       <%= will_paginate @log_list, :renderer => RemoteLinkRenderer,
                                        :update => 'log_list',
-                                       :url=> {
-                                                   :action => 'log_list',
+                                       :url=> {    :action => 'log_list',
                                                    :date_from            => @date_from,
                                                    :date_to              => @date_to,
                                                    :manipulate_user_name => @manipulate_user_name,
@@ -43,8 +40,7 @@
                                                    :manipulate_id        => @manipulate_id,
                                                    :manipulate_name      => @manipulate_name,
                                                    :order => @order,
-                                                   :mode  => @mode
-                                                 },
+                                                   :mode  => @mode },
                                        :prev_label => "<<前へ",
                                        :next_label => "次へ>>",
                                        :method => :get
@@ -86,7 +82,7 @@
         jQuery.ajax(
           {
             type     : "GET",
-            url      : "/master/log/log_list",
+            url      : base_uri + "/master/log/log_list",
             data     :
               {
                 date_from            : $("#date_from_h").val(),

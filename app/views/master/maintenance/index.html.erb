@@ -17,7 +17,7 @@
   <table cellpadding="0" cellspacing="0" border="0" style="width:100%;">
   	<tr><td valign="top" style="height:25px;text-align:left;">
 	  <div id="" class="master_gadget_title" style="">
-	    <h3 style=""><img src="/images/icons/icon_notice.gif" align="top" style="margin-right:5px;"><%= menu.title %></h3>
+	    <h3 style=""><%= image_tag("icons/icon_notice.gif", :align => "top", :style => "margin-right:5px;") %><%= menu.title %></h3>
 	  </div>	
   	</td></tr>
   	<tr><td valign="top" style="height:100px;text-align:left;">
@@ -26,7 +26,7 @@
 	  </div>
   	</td></tr>
   	<tr><td valign="top" align="right" style="height:30px;">
-	  <%= link_to "設定を変更する", menu.url, :target => menu.target %>
+	  <%= link_to "設定を変更する", @base_uri + menu.url, :target => menu.target %>
   	</td></tr>
   </table>
 </div>
@@ -39,8 +39,6 @@
   * 初期化
   */
   $(document).ready(function(){
-    //一覧を表示
-    //$("#master_list").load("/master/place/master_list");
   });
 -->
 </script>

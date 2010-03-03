@@ -100,7 +100,7 @@
     }
     $("#right_pane").load(url);
 		// あいまい検索
-    $("#blog_menu_search_list").load("/blog/view/menu_search_list?uid=<%= @user_cd%>");
+    $("#blog_menu_search_list").load(base_uri + "/blog/view/menu_search_list?uid=<%= @user_cd%>");
   });
 	
 	function createArticle(){

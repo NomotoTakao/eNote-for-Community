@@ -60,7 +60,7 @@
         jQuery.ajax(
           {
             type: "GET",
-            url : "/master/cabinet/user_list",
+            url : base_uri + "/master/cabinet/user_list",
             data:
               {
                 keyword : keyword
@@ -97,7 +97,7 @@
         jQuery.ajax(
           {
             type: "GET",
-            url:  "/master/cabinet/_mine_info",
+            url:  base_uri + "/master/cabinet/_mine_info",
             data:
               {
                 user_cd : user_cd

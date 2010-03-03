@@ -86,7 +86,7 @@ function ClickFirstMenu(){
   //2階層目を表示
   $.ajax({
     type: 'get',
-    url: '/master/menu/master_click_list?menu_kbn=' + $("#decided_first_menu").val() + '&parent_id=0' + '&target_level=2',
+    url: base_uri + '/master/menu/master_click_list?menu_kbn=' + $("#decided_first_menu").val() + '&parent_id=0' + '&target_level=2',
     success:
       function(request){
         //2階層目にデータ表示
@@ -102,7 +102,7 @@ function ClickSecondMenu(){
   //3階層目を表示
   $.ajax({
     type: 'get',
-    url: '/master/menu/master_click_list?menu_kbn=' + $("#decided_first_menu").val() + '&parent_id=' + $("#decided_second_menu").val() + '&target_level=3',
+    url: base_uri + '/master/menu/master_click_list?menu_kbn=' + $("#decided_first_menu").val() + '&parent_id=' + $("#decided_second_menu").val() + '&target_level=3',
     success:
       function(request){
         //3階層目にデータ表示
@@ -118,7 +118,7 @@ function ClickThirdMenu(){
   //4階層目を表示
   $.ajax({
     type: 'get',
-    url: '/master/menu/master_click_list?menu_kbn=' + $("#decided_first_menu").val() + '&parent_id=' + $("#decided_third_menu").val() + '&target_level=4',
+    url: base_uri + '/master/menu/master_click_list?menu_kbn=' + $("#decided_first_menu").val() + '&parent_id=' + $("#decided_third_menu").val() + '&target_level=4',
     success:
       function(request){
         //4階層目にデータ表示
@@ -134,7 +134,7 @@ function ClickFourthMenu(){
   //5階層目を表示
   $.ajax({
     type: 'get',
-    url: '/master/menu/master_click_list?menu_kbn=' + $("#decided_first_menu").val() + '&parent_id=' + $("#decided_fourth_menu").val() + '&target_level=5',
+    url: base_uri + '/master/menu/master_click_list?menu_kbn=' + $("#decided_first_menu").val() + '&parent_id=' + $("#decided_fourth_menu").val() + '&target_level=5',
     success:
       function(request){
         //5階層目にデータ表示
@@ -188,7 +188,7 @@ function ClickEditMenuSelect(target_level){
   }
 
   //編集エリアを表示
-  document.location = '/master/menu/edit?menu_kbn=' + menu_kbn + '&parent_id=' + parent_id + '&target_level=' + target_level;
+  document.location = base_uri + '/master/menu/edit?menu_kbn=' + menu_kbn + '&parent_id=' + parent_id + '&target_level=' + target_level;
 }
 -->
 </script>
