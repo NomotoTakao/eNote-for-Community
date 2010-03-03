@@ -1,9 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
-  map.register '/register', :controller => 'm_users', :action => 'create'
-  map.signup '/signup', :controller => 'm_users', :action => 'new'
-  map.resources :m_users
 
   map.resource :session
 
@@ -61,11 +58,9 @@ ActionController::Routing::Routes.draw do |map|
   end
 
 
-
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 
   map.connect '', :controller => 'home/mypage', :action => 'index'
-#  map.connect '', :controller => 'sample', :action => 'bbs_entry'
 
 end

@@ -4,7 +4,7 @@
       <table cellpadding="0" cellspacing="0" style="width:100%;margin:0px;padding:0px;"><tr>
         <td style="text-align:left;">&nbsp;<%= @pankuzu if @pankuzu %></td>
         <td style="width:40px;"></td>
-        <td style="width:80px;"><%= link_to("ログアウト", "/logout") %></td>
+        <td style="width:80px;"><%= link_to("ログアウト", :controller => "/logout") %></td>
       </tr></table>
     </div>    
   </td></tr>
@@ -59,7 +59,7 @@
       </table>
     </td>
     <td class="header_right" align="center" style="width:50px;">
-      <%= link_to(image_tag("header/exit.gif", :border => "0", :alt => "ログアウト"), "/logout") %>
+      <%= link_to(image_tag("header/exit.gif", :border => "0", :alt => "ログアウト"), :controller => "/logout") %>
     </td>
   </tr>
   <tr>
