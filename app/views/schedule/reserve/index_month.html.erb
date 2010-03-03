@@ -31,7 +31,7 @@
   * 一覧エリアに月単位のスケジュール一覧を表示
   */
   $("#schedule_list").load(
-    "/schedule/reserve/month?month=<%=@month%>&secretaries_user_cd=<%=@select_secretaries_user_cd%>",
+    base_uri + "/schedule/reserve/month?month=<%=@month%>&secretaries_user_cd=<%=@select_secretaries_user_cd%>",
     "",
     function() {
       //timer設定

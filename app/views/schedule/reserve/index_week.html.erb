@@ -30,12 +30,12 @@
   * 一覧エリアに週単位のスケジュール一覧を表示
   */
   $("#schedule_list").load(
-    "/schedule/reserve/week?other_checked_id=<%=@other_checked_id%>&week=<%=session[:week_start_date]%>",
+    base_uri + "/schedule/reserve/week?other_checked_id=<%=@other_checked_id%>&week=<%=session[:week_start_date]%>",
     "",
-  function() {
-    //timer設定
-    timerStart();
-  });
+    function() {
+      //timer設定
+      timerStart();
+    });
 
   /*
   * 初期化

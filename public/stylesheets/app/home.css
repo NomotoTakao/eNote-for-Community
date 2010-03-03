@@ -118,7 +118,7 @@ div#home_right {
   padding:                      0px;
 }
 .enote_general_table1_title {
-  background-image:             url('../../../images/titleback01.gif');
+  background-image:             url('/images/titleback01.gif');
   background-repeat:            repeat-x;
   border-collapse:              collapse;
   color:                        #000000;
@@ -151,7 +151,7 @@ div#home_right {
   padding:                      1px 0px;
 }
 .enote_general_table1_cell_header {
-  background-image:             url("../../../images/titleback01.gif");
+  background-image:             url("/images/titleback01.gif");
   background-repeat:            repeat-x;
   padding:                      0px 3px 0px 3px;
   color:                        #000000;

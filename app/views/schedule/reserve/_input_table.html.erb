@@ -396,23 +396,23 @@
   * ページロード時に同時登録選択決定リストを表示
   */
   $("#other_member_list").load(
-  "/schedule/reserve/other_member_list?id=" + $("#reserve_id").val()
-  + "&invite_id=" + $("#invite_id").val() + "&select_proxy_user_cd=" + $("#select_proxy_user_cd").val()
-  + "&plan_date_from=" + $("#d_schedule_plan_date_from").val(),
-  "",
-  function() {
-  });
+    base_uri + "/schedule/reserve/other_member_list?id=" + $("#reserve_id").val()
+    + "&invite_id=" + $("#invite_id").val() + "&select_proxy_user_cd=" + $("#select_proxy_user_cd").val()
+    + "&plan_date_from=" + $("#d_schedule_plan_date_from").val(),
+    "",
+    function() {}
+  );
 
   /*
   * ページロード時に施設選択決定リストを表示
   */
   $("#facility_list").load(
-  "/schedule/reserve/facility_list?id=" + $("#reserve_id").val()
-  + "&invite_id=" + $("#invite_id").val() + "&select_proxy_user_cd=" + $("#select_proxy_user_cd").val()
-  + "&plan_date_from=" + $("#d_schedule_plan_date_from").val(),
-  "",
-  function() {
-  });
+    base_uri + "/schedule/reserve/facility_list?id=" + $("#reserve_id").val()
+    + "&invite_id=" + $("#invite_id").val() + "&select_proxy_user_cd=" + $("#select_proxy_user_cd").val()
+    + "&plan_date_from=" + $("#d_schedule_plan_date_from").val(),
+    "",
+    function() {
+    });
 
   /*
   * 初期設定
@@ -433,7 +433,7 @@
    */
   function SelectSecretariesUserList(){
     //画面遷移
-    document.location = "/schedule/reserve/new?&select_proxy_user_cd=" + $("#select_proxy_user_cd").val()
+    document.location = base_uri + "/schedule/reserve/new?&select_proxy_user_cd=" + $("#select_proxy_user_cd").val()
           + "&date=" + $("#select_date").val() + "&from_mode=" + $("#from_mode").val()
           + "&back_secretaries_user_cd=" + $("#back_secretaries_user_cd").val()
           + "&back_belong_index=" + $("#back_belong_index").val()
@@ -459,7 +459,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/schedule/reserve/undecided_member?&other_checked_id=' + other_checked_id + "&select_proxy_user_cd=" + $("#select_proxy_user_cd").val(),
+        url: base_uri + '/schedule/reserve/undecided_member?&other_checked_id=' + other_checked_id + "&select_proxy_user_cd=" + $("#select_proxy_user_cd").val(),
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。

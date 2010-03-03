@@ -15,14 +15,14 @@
 <table cellpadding="1" cellspacing="0" style="width:100%;">
   <tr>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "schedule_list",
+      <%= link_to_remote(image_tag("icons/icon_arrow_left2.gif"), :update => "schedule_list",
       :url => {:action => "day", :day => (@current_date - 1).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
     </td>
     <td style="width:30px;">
       <%=button_to_remote("今日", :update => "schedule_list", :url => {:action => "day", :other_checked_id => @other_checked_id})%>
     </td>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "schedule_list",
+      <%= link_to_remote(image_tag("icons/icon_arrow_right2.gif"), :update => "schedule_list",
       :url => {:action => "day", :day => (@current_date + 1).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
     </td>
     <td style="width:100px;"><%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月<%= @current_date.day.to_s %>日</td>
@@ -56,7 +56,7 @@
     <td style="width:70px;">
       <!-- 秘書機能を持つ人が秘書機能を選択した場合 -->
       <% if @secretaries_flg == 1 && @other_checked_id == 0 %>
-        <a href="/schedule/reserve/secretary_print?start_day=<%=@current_date.strftime("%Y%m%d")%>" target="_blank">印刷画面へ</a>
+        <%= link_to "印刷画面へ", :controller => "/schedule/reserve", :action => "secretary_print", :start_day => @current_date.strftime("%Y%m%d"), :target => "_blank" %>
       <% end %>
     </td>
     <td style="width:100px;">&nbsp;</td>
@@ -328,14 +328,14 @@
 <table cellpadding="1" cellspacing="0" style="width:100%;">
   <tr>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "schedule_list",
+      <%= link_to_remote(image_tag("icons/icon_arrow_left2.gif"), :update => "schedule_list",
       :url => {:action => "day", :day => (@current_date - 1).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
     </td>
     <td style="width:30px;">
       <%=button_to_remote("今日", :update => "schedule_list", :url => {:action => "day", :other_checked_id => @other_checked_id})%>
     </td>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "schedule_list",
+      <%= link_to_remote(image_tag("icons/icon_arrow_right2.gif"), :update => "schedule_list",
       :url => {:action => "day", :day => (@current_date + 1).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
     </td>
     <td style="width:100px;"><%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月<%= @current_date.day.to_s %>日</td>
@@ -369,7 +369,8 @@
     <td style="width:70px;">
       <!-- 秘書機能を持つ人が秘書機能を選択した場合 -->
       <% if @secretaries_flg == 1 && @other_checked_id == 0 %>
-        <a href="/schedule/reserve/secretary_print?start_day=<%=@current_date.strftime("%Y%m%d")%>" target="_blank">印刷画面へ</a>
+        <!--<a href="/schedule/reserve/secretary_print?start_day=<%=@current_date.strftime("%Y%m%d")%>" target="_blank">印刷画面へ</a>-->
+        <%= link_to "印刷画面へ", :controller => "/schedule/reserve", :action => "secretary_print", :start_day => @current_date.strftime("%Y%m%d"), :target => "_blank" %>
       <% end %>
     </td>
     <td style="width:100px;">&nbsp;</td>
@@ -395,7 +396,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:"/schedule/reserve/day?other_checked_id=<%=@other_checked_id%>&day=<%=@day%>",
+        url: base_uri + "/schedule/reserve/day?other_checked_id=<%=@other_checked_id%>&day=<%=@day%>",
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。
@@ -419,7 +420,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/schedule/reserve/day?&other_checked_id=' + other_checked_id + '&day=<%=@day%>',
+        url: base_uri + '/schedule/reserve/day?&other_checked_id=' + other_checked_id + '&day=<%=@day%>',
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。

@@ -18,15 +18,15 @@
     <% start_day = @week_list[0][0] %>
     <% end_date = start_day + 6 %>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "schedule_list",
-      :url => {:action => "week", :week => (start_day - 7).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
+      <%= link_to_remote(image_tag("icons/icon_arrow_left2.gif"), :update => "schedule_list",
+        :url => {:action => "week", :week => (start_day - 7).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
     </td>
     <td style="width:30px;">
       <%=button_to_remote("今週", :update => "schedule_list", :url => {:action => "week", :other_checked_id => @other_checked_id})%>
     </td>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "schedule_list",
-      :url => {:action => "week", :week => (start_day + 7).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
+      <%= link_to_remote(image_tag("icons/icon_arrow_right2.gif"), :update => "schedule_list",
+        :url => {:action => "week", :week => (start_day + 7).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
     </td>
     <td style="width:250px;">
       <%= start_day.year.to_s %>年<%= start_day.month.to_s %>月<%= start_day.day.to_s %>日
@@ -52,7 +52,8 @@
     <td style="width:70px;">
       <!-- 秘書機能を持つ人が秘書機能を選択した場合 -->
       <% if @secretaries_flg == 1 && @other_checked_id == 0 %>
-        <a href="/schedule/reserve/secretary_print?start_day=<%=start_day.strftime("%Y%m%d")%>" target="_blank">印刷画面へ</a>
+        <!--<a href="/schedule/reserve/secretary_print?start_day=<%=start_day.strftime("%Y%m%d")%>" target="_blank">印刷画面へ</a>-->
+        <%= link_to "印刷画面へ", :controller => "/schedule/reserve", :action => "secretary_print", :start_day => start_day.strftime("%Y%m%d"), :target => "_blank" %>
       <% end %>
     </td>
     <td>&nbsp;</td>
@@ -208,14 +209,14 @@
     <% start_day = @week_list[0][0] %>
     <% end_date = start_day + 6 %>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "schedule_list",
+      <%= link_to_remote(image_tag("icons/icon_arrow_left2.gif"), :update => "schedule_list",
       :url => {:action => "week", :week => (start_day - 7).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
     </td>
     <td style="width:30px;">
       <%=button_to_remote("今週", :update => "schedule_list", :url => {:action => "week", :other_checked_id => @other_checked_id})%>
     </td>
     <td style="width:15px;">
-      <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "schedule_list",
+      <%= link_to_remote(image_tag("icons/icon_arrow_right2.gif"), :update => "schedule_list",
       :url => {:action => "week", :week => (start_day + 7).strftime("%Y%m%d"), :other_checked_id => @other_checked_id}) %></a>
     </td>
     <td style="width:250px;">
@@ -242,7 +243,8 @@
     <td style="width:70px;">
       <!-- 秘書機能を持つ人が秘書機能を選択した場合 -->
       <% if @secretaries_flg == 1 && @other_checked_id == 0 %>
-        <a href="/schedule/reserve/secretary_print?start_day=<%=start_day.strftime("%Y%m%d")%>" target="_blank">印刷画面へ</a>
+        <!--<a href="/schedule/reserve/secretary_print?start_day=<%=start_day.strftime("%Y%m%d")%>" target="_blank">印刷画面へ</a>-->
+        <%= link_to "印刷画面へ", :controller => "/schedule/reserve", :action => "secretary_print", :start_day => start_day.strftime("%Y%m%d"), :target => "_blank" %>
       <% end %>
     </td>
     <td>&nbsp;</td>
@@ -268,7 +270,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:"/schedule/reserve/week?other_checked_id=<%=@other_checked_id%>&week=<%=session[:week_start_date]%>",
+        url:base_uri + "/schedule/reserve/week?other_checked_id=<%=@other_checked_id%>&week=<%=session[:week_start_date]%>",
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。
@@ -292,7 +294,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/schedule/reserve/week?&other_checked_id=' + other_checked_id + '&week=<%=session[:week_start_date]%>',
+        url:base_uri + '/schedule/reserve/week?&other_checked_id=' + other_checked_id + '&week=<%=session[:week_start_date]%>',
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。

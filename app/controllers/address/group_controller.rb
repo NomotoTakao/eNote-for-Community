@@ -121,14 +121,14 @@ class Address::GroupController < ApplicationController
 
     #処理が正常に終了した場合
     if seccess_flg == 1
-      redirect_to '/address/main/'
+      redirect_to :controller => "/address/main/"
     end
   end
 
   def delete  #削除ボタン
     #アドレス帳グループ/アドレス帳グループリストのdelete処理
     delete_table()
-    redirect_to '/address/main/'
+      redirect_to :controller => "/address/main/"
   end
 
   def create  #追加ボタン
@@ -137,7 +137,7 @@ class Address::GroupController < ApplicationController
 
     #処理が正常に終了した場合
     if seccess_flg == 1
-      redirect_to '/address/main/'
+      redirect_to :controller => "/address/main/"
     end
   end
 

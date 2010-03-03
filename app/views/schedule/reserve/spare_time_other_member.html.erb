@@ -7,8 +7,8 @@
   <table cellpadding="1" cellspacing="0" style="width:100%;">
     <tr>
       <td style="width:15px;">
-        <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "spare_time_other_member_list",
-        :url => {:action => "spare_time_other_member", :day => (@current_date - 1).strftime("%Y%m%d"), :select_proxy_user_cd => @proxy_user_cd,
+        <%= link_to_remote(image_tag("icons/icon_arrow_left2.gif"), :update => "spare_time_other_member_list",
+          :url => {:action => "spare_time_other_member", :day => (@current_date - 1).strftime("%Y%m%d"), :select_proxy_user_cd => @proxy_user_cd,
                  :member => @member}) %></a>
       </td>
       <td style="width:30px;">
@@ -16,8 +16,8 @@
                                     :member => @member})%>
       </td>
       <td style="width:15px;">
-        <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "spare_time_other_member_list",
-        :url => {:action => "spare_time_other_member", :day => (@current_date + 1).strftime("%Y%m%d"), :select_proxy_user_cd => @proxy_user_cd,
+        <%= link_to_remote(image_tag("icons/icon_arrow_right2.gif"), :update => "spare_time_other_member_list",
+          :url => {:action => "spare_time_other_member", :day => (@current_date + 1).strftime("%Y%m%d"), :select_proxy_user_cd => @proxy_user_cd,
                  :member => @member}) %></a>
       </td>
       <td style="width:120px;"><%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月<%= @current_date.day.to_s %>日</td>
@@ -236,7 +236,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/schedule/reserve/spare_time_other_member?&day=' + $("#select_date_other_member").val()
+        url:base_uri + '/schedule/reserve/spare_time_other_member?&day=' + $("#select_date_other_member").val()
               + "&select_proxy_user_cd=<%=@proxy_user_cd%>&member=" + $("#member").val(),
         success:
             function(request){

@@ -30,12 +30,12 @@
   * 一覧エリアに日単位のスケジュール一覧を表示
   */
   $("#schedule_list").load(
-    "/schedule/reserve/day?other_checked_id=<%=@other_checked_id%>&day=<%=@day%>",
+    base_uri + "/schedule/reserve/day?other_checked_id=<%=@other_checked_id%>&day=<%=@day%>",
     "",
-  function() {
-    //timer設定
-    timerStart();
-  });
+    function() {
+      //timer設定
+      timerStart();
+    });
 
   /*
   * 初期化

@@ -16,15 +16,15 @@
   <table cellpadding="1" cellspacing="0" style="width:100%;">
     <tr>
       <td style="width:15px;">
-        <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "schedule_list",
-        :url => {:action => "month", :month => @current_date.last_month.strftime("%Y%m"), :secretaries_user_cd => @select_secretaries_user_cd}) %></a>
+        <%= link_to_remote(image_tag("icons/icon_arrow_left2.gif"), :update => "schedule_list",
+          :url => {:action => "month", :month => @current_date.last_month.strftime("%Y%m"), :secretaries_user_cd => @select_secretaries_user_cd}) %></a>
       </td>
       <td style="width:30px;">
         <%=button_to_remote("今月", :update => "schedule_list", :url => {:action => "month", :secretaries_user_cd => @select_secretaries_user_cd})%>
       </td>
       <td style="width:15px;">
-        <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "schedule_list",
-        :url => {:action => "month", :month => @current_date.next_month.strftime("%Y%m"), :secretaries_user_cd => @select_secretaries_user_cd}) %></a>
+        <%= link_to_remote(image_tag("icons/icon_arrow_right2.gif"), :update => "schedule_list",
+          :url => {:action => "month", :month => @current_date.next_month.strftime("%Y%m"), :secretaries_user_cd => @select_secretaries_user_cd}) %></a>
       </td>
       <td style="width:80px;"><%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月</td>
       <td>&nbsp;</td>
@@ -92,7 +92,6 @@
           #対象日のデータを処理する
           if d == schedule[0]
             reserve = schedule[1]
-
             #時間+タイトルの文字列を作成
             str = ""
             #時間指定の場合
@@ -143,15 +142,15 @@
   <table cellpadding="1" cellspacing="0" style="width:100%;">
     <tr>
       <td style="width:15px;">
-        <%= link_to_remote("<img src='/images/icons/icon_arrow_left2.gif'>", :update => "schedule_list",
-        :url => {:action => "month", :month => @current_date.last_month.strftime("%Y%m"), :secretaries_user_cd => @select_secretaries_user_cd}) %></a>
+        <%= link_to_remote(image_tag("icons/icon_arrow_left2.gif"), :update => "schedule_list",
+          :url => {:action => "month", :month => @current_date.last_month.strftime("%Y%m"), :secretaries_user_cd => @select_secretaries_user_cd}) %></a>
       </td>
       <td style="width:30px;">
         <%=button_to_remote("今月", :update => "schedule_list", :url => {:action => "month", :secretaries_user_cd => @select_secretaries_user_cd})%>
       </td>
       <td style="width:15px;">
-        <%= link_to_remote("<img src='/images/icons/icon_arrow_right2.gif'>", :update => "schedule_list",
-        :url => {:action => "month", :month => @current_date.next_month.strftime("%Y%m"), :secretaries_user_cd => @select_secretaries_user_cd}) %></a>
+        <%= link_to_remote(image_tag("icons/icon_arrow_right2.gif"), :update => "schedule_list",
+          :url => {:action => "month", :month => @current_date.next_month.strftime("%Y%m"), :secretaries_user_cd => @select_secretaries_user_cd}) %></a>
       </td>
       <td style="width:80px;"><%= @current_date.year.to_s %>年<%= @current_date.month.to_s %>月</td>
       <td>&nbsp;</td>
@@ -203,7 +202,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/schedule/reserve/month?month=<%=@month%>&secretaries_user_cd=<%=@select_secretaries_user_cd%>',
+        url:base_uri + '/schedule/reserve/month?month=<%=@month%>&secretaries_user_cd=<%=@select_secretaries_user_cd%>',
         success:
           function(request){
               // 受信結果を一覧エリアに反映させます。
@@ -227,7 +226,7 @@
     // jQueryでの処理
     $.ajax({
         type:'get',
-        url:'/schedule/reserve/month?&secretaries_user_cd=' + secretaries_user_cd + "&month=<%=@month%>",
+        url:base_uri + '/schedule/reserve/month?&secretaries_user_cd=' + secretaries_user_cd + "&month=<%=@month%>",
         success:
             function(request){
                 // 受信結果を一覧エリアに反映させます。
