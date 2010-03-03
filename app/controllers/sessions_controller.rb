@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
                       :last_change_passwd_at => Time.now,
                       :updated_user_cd => current_m_user.user_cd}
     if @m_users.update_attributes(m_users_update)
-      redirect_back_or_default('/')
+      redirect_back_or_default(:controller => "/home/mypage")
     else
       @message = "パスワードの変更に失敗しました。"
       render :action => 'change_passwd'
@@ -52,7 +52,7 @@ class SessionsController < ApplicationController
       if last_change_passwd_at.nil? || last_change_passwd_at == ""  || ((last_change_passwd_at.to_date >> 6) < Date.today)
         render :action => 'change_passwd'
       else
-        redirect_back_or_default('/')
+        redirect_back_or_default(:controller => "/home/mypage")
       end
     else
       note_failed_signin
@@ -66,7 +66,7 @@ class SessionsController < ApplicationController
   def destroy
     logout_killing_session!
     flash[:notice] = "You have been logged out."
-    redirect_back_or_default('/')
+    redirect_back_or_default(:controller => "/home/mypage")
   end
 
 protected

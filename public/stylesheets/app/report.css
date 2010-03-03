@@ -53,9 +53,8 @@
   padding:                      3px 0px;
 }
 .enote_general_table1_cell_header {
-  background-image:             url("../../../images/titleback01.gif");
+  background-image:             url("/images/titleback01.gif");
   background-repeat:            repeat-x;
-/*  width:                        100px;*/
   padding:                      0px 3px 0px 3px;
   color:                        #000000;
   text-align:                   left;
@@ -93,7 +92,7 @@
 }
 
 .e_note_content_title {
-  background-image:             url('../../../images/arrow_blue.gif');
+  background-image:             url('/images/arrow_blue.gif');
   background-repeat:            no-repeat;
   font-size:                    18px;
   font-weight:                  bold;
@@ -104,13 +103,13 @@
 }
 
 .enote_icon_arrow_left {
-  background-image:             url('../../../images/triangle_left.gif');
+  background-image:             url('/images/triangle_left.gif');
   background-repeat:            no-repeat;
   cursor:                       pointer;
   padding:                      2px 0px 14px 16px;
 }
 .enote_icon_arrow_right {
-  background-image:             url('../../../images/triangle_right.gif');
+  background-image:             url('/images/triangle_right.gif');
   background-repeat:            no-repeat;
   cursor:                       pointer;
   padding:                      2px 0px 14px 16px;

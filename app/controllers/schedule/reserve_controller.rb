@@ -459,7 +459,6 @@ class Schedule::ReserveController < ApplicationController
           if @secretaries_user_hash[data.user_cd][0].nil?
             #該当データに対するスケジュール権限データを取得
             auth_list = get_other_schedule_list(@current_date, data.user_cd, data.id)
-
             #公開データか判断
             public_flg = check_public(visible_member_hash, project_list, auth_list)
             if public_flg == 0
@@ -520,9 +519,9 @@ class Schedule::ReserveController < ApplicationController
     #**選択されたユーザのスケジュール取得**
     end_date = @current_date >> 2
     @reserves = DSchedule.find(:all, :conditions =>
-      ["(plan_date_from >= ? or (plan_date_from < ? and plan_date_to >= ?)) and plan_date_from <= ? and user_cd = ?",
-      @current_date, @current_date, @current_date, end_date, @select_secretaries_user_cd],
-      :order => "plan_date_from, plan_time_from, id")
+          ["(plan_date_from >= ? or (plan_date_from < ? and plan_date_to >= ?)) and plan_date_from <= ? and user_cd = ?",
+          @current_date, @current_date, @current_date, end_date, @select_secretaries_user_cd],
+          :order => "plan_date_from, plan_time_from, id")
 
     #**表示用のデータ作成**
     #日付に紐付くスケジュールリスト作成
@@ -1442,7 +1441,6 @@ class Schedule::ReserveController < ApplicationController
 
       #追加する場合
       if member[0] == 2 || member[0] == 3
-
         #**招待情報の設定**
         #招待画面選択インデックス/招待画面選択CDの設定
         #ログインユーザの場合

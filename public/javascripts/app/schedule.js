@@ -55,7 +55,7 @@ function dialog_spare_time_facility(){
           select_facility_list_old = document.getElementById("decided_facility_new").value
 
           //画面遷移
-          jQuery("#facility_list").load("/schedule/reserve/facility_list?return_mode=1&facility_cd_colon=" + facility_cd_colon
+          jQuery("#facility_list").load(base_uri + "/schedule/reserve/facility_list?return_mode=1&facility_cd_colon=" + facility_cd_colon
               + "&facility_all_list_colon=" + $("#facility_all_list_colon").val()
               + "&select_facility_list_old=" + select_facility_list_old);
           jQuery(this).dialog("close");
@@ -91,7 +91,7 @@ function dialog_reserve_open_ins(date, user_cd){
   }
 
   //画面遷移
-  document.location = "/schedule/reserve/new?date=" + encodeURIComponent(date)
+  document.location = base_uri + "/schedule/reserve/new?date=" + encodeURIComponent(date)
         + "&select_proxy_user_cd=" + select_proxy_user_cd
         + "&back_secretaries_user_cd=" + back_secretaries_user_cd
         + "&back_belong_index=" + back_belong_index;
@@ -116,7 +116,7 @@ function dialog_reserve_open_edit(id, repeat_flg, user_cd){
   }
 
   //画面遷移
-  document.location = "/schedule/reserve/" + id + "/edit?repeat_flg=" + repeat_flg
+  document.location = base_uri + "/schedule/reserve/" + id + "/edit?repeat_flg=" + repeat_flg
       + "&back_secretaries_user_cd=" + back_secretaries_user_cd
       + "&back_belong_index=" + back_belong_index
       + "&select_proxy_user_cd=" + user_cd;
@@ -144,7 +144,7 @@ function dialog_spare_time_other_member_open(){
   member = document.getElementById("decided_member_new").value;
 
   //画面遷移
-  jQuery("#dialog_spare_time_other_member").load("/schedule/reserve/spare_time_other_member?day=" + date
+  jQuery("#dialog_spare_time_other_member").load(base_uri + "/schedule/reserve/spare_time_other_member?day=" + date
       + "&select_proxy_user_cd=" + select_proxy_user_cd + "&member=" + member);
   jQuery("#dialog_spare_time_other_member").dialog("open");
   return false;
@@ -173,7 +173,7 @@ function dialog_spare_time_facility_open(){
   select_facility_list = document.getElementById("decided_facility_new").value
 
   //画面遷移
-  jQuery("#dialog_spare_time_facility").load("/schedule/reserve/spare_time_facility?day=" + date
+  jQuery("#dialog_spare_time_facility").load(base_uri + "/schedule/reserve/spare_time_facility?day=" + date
       + "&select_proxy_user_cd=" + select_proxy_user_cd + "&facility_group_cd=" + facility_group_cd
       + "&select_facility_list=" + select_facility_list);
   jQuery("#dialog_spare_time_facility").dialog("open");
