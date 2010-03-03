@@ -19,7 +19,7 @@
         </td>
         <td>
           <%= link_to cut_off("【#{bbs_thread.d_bbs_board.title}】#{bbs_thread.title}", 34)+ "&nbsp;<#{datetime_strftime(bbs_thread.post_date)}>",
-                      {:controller => "bbs/main", :action => "index", :board_id=>bbs_thread.d_bbs_board_id, :thread_id => bbs_thread.id} %>
+                      {:controller => "/bbs/main", :action => "index", :board_id=>bbs_thread.d_bbs_board_id, :thread_id => bbs_thread.id} %>
         </td>
       </tr>
     <% end %>

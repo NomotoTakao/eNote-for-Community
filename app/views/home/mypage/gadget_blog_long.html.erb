@@ -13,7 +13,7 @@
           <% end %>
         </td>
         <td>
-          <%= link_to cut_off("【#{blog.d_blog_head.title}】#{blog.title}", 34)+ "&nbsp;<#{datetime_strftime(blog.post_date)}>", {:controller => "blog/view", :action => "top", :user_cd => blog.d_blog_head.user_cd} %>
+          <%= link_to cut_off("【#{blog.d_blog_head.title}】#{blog.title}", 34)+ "&nbsp;<#{datetime_strftime(blog.post_date)}>", {:controller => "/blog/view", :action => "top", :user_cd => blog.d_blog_head.user_cd} %>
         </td>
       </tr>
     <% end %>

@@ -5,7 +5,6 @@
   <table cellpadding="0" cellspacing="0" style="width:100%;">
     <!-- データを取り出す -->
     <% @target_data.each do |target| %>
-
       <!-- スケジュールの表示(当日データ) -->
       <% if target[0] == 2 %>
         <% reserve = target[1] %>
@@ -35,8 +34,7 @@
 
             <!-- 内容表示 -->
             <img src="<%= image_path('icons/icon_balloon.gif') %>" align="top" class="gadget_table_icon">
-            <%= link_to "<今日の予定>[#{(disp_time)}]#{reserve.title}",
-            {:controller => "schedule/reserve/", :action => "index_day"} %>
+            <%= link_to "<今日の予定>[#{(disp_time)}]#{reserve.title}", {:controller => "/schedule/reserve/", :action => "index_day"} %>
           </td>
         </tr>
 
@@ -49,16 +47,10 @@
             <img src="<%= image_path('icons/icon_balloon.gif') %>" align="top" class="gadget_table_icon">
             <!-- スケジュールへの遷移 -->
             <% if message.etcint1 == 1 %>
-              <%= link_to "<スケジュール>#{message.title}",
-              {:controller => "schedule/reserve/", :action => "index_day", :day => message.etctxt1} %>
+              <%= link_to "<スケジュール>#{message.title}", {:controller => "/schedule/reserve/", :action => "index_day", :day => message.etctxt1} %>
             <!-- 施設への遷移 -->
             <% elsif message.etcint1 == 2 %>
-              <%= link_to "<施設予約>#{message.title}",
-              {:controller => "facility/reserve/", :action => "index_day", :day => message.etctxt1} %>
-            <!-- 窓への遷移 -->
-            <% elsif message.etcint1 == 3 %>
-              <%= link_to "#{message.title}",
-              {:controller => "questionnaire/main/", :action => "edit", :head_id => message.etctxt1, :body_id => message.etctxt2} %>
+              <%= link_to "<施設予約>#{message.title}", {:controller => "/facility/reserve/", :action => "index_day", :day => message.etctxt1} %>
             <% elsif message.etcint1 == 0 %>
               <%
                 message_body = ""
@@ -73,9 +65,8 @@
             <%= link_to_remote "[×]",
               :confirm=>"削除してよろしいですか？",
               :update=>"mypage_new_message",
-              :url=>{:action=>:gadget_new_message,
-              :delete_id=>message.id
-             } %>
+              :url => {:controller => "/home/mypage", :action => :gadget_new_message, :delete_id => message.id}
+            %>
           </td>
         </tr>
 
@@ -85,7 +76,7 @@
         <tr>
           <td colspan=2>
             <img src="<%= image_path('icons/icon_balloon.gif') %>" align="top" class="gadget_table_icon">
-            <%= link_to "&lt;Webメモリー&gt;[#{memory.d_cabinet_files[0].file_name unless memory.d_cabinet_files.length == 0}]の有効期限を確認してください。", {:controller=>"cabinet/mine/", :action=>"index"} %>
+            <%= link_to "&lt;Webメモリー&gt;[#{memory.d_cabinet_files[0].file_name unless memory.d_cabinet_files.length == 0}]の有効期限を確認してください。", {:controller=>"/cabinet/mine/", :action=>"index"} %>
           </td>
         </tr>
       <% end %>
@@ -146,7 +137,7 @@
   function PageControl(target_page){
     $.ajax({
         type:'get',
-        url:'gadget_new_message?page=' + target_page,
+        url:base_uri + '/home/mypage/gadget_new_message?page=' + target_page,
         success:
             function(request){
                 $('#mypage_new_message').html(request);

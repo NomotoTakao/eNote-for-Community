@@ -6,14 +6,14 @@
     <% end_date = start_day + 6 %>
     <td style="width:15px;">
       <%= link_to_remote(image_tag("icons/icon_arrow_left2.gif"), :update => "mypage_schedule",
-      :url => {:action => "gadget_schedule", :week => (start_day - 7).strftime("%Y%m%d")}) %></a>
+                :url => {:controller => "/home/mypage", :action => "gadget_schedule", :week => (start_day - 7).strftime("%Y%m%d")}) %></a>
     </td>
     <td style="width:30px;">
-      <%=button_to_remote("今週", :update => "mypage_schedule", :url => {:action => "gadget_schedule"})%>
+      <%=button_to_remote("今週", :update => "mypage_schedule", :url => {:controller => "/home/mypage", :action => "gadget_schedule"})%>
     </td>
     <td style="width:15px;">
       <%= link_to_remote(image_tag("icons/icon_arrow_right2.gif"), :update => "mypage_schedule",
-      :url => {:action => "gadget_schedule", :week => (start_day + 7).strftime("%Y%m%d")}) %></a>
+                :url => {:controller => "/home/mypage", :action => "gadget_schedule", :week => (start_day + 7).strftime("%Y%m%d")}) %></a>
     </td>
     <td style="width:250px;">
       <%= start_day.year.to_s %>年<%= start_day.month.to_s %>月<%= start_day.day.to_s %>日
@@ -84,7 +84,7 @@
                   <% repeat_flg = '1' %>
                 <% end %>
                 <a href="#" class="memo_disp" title="<%=reserve.memo%>" style="text-decoration:none;"
-                onclick="dialog_reserve_open_edit('<%=reserve.id%>', '<%=repeat_flg%>'); return false;">
+                    onclick="dialog_reserve_open_edit('<%=reserve.id%>', '<%=repeat_flg%>'); return false;">
                   <span>◆</span>
                   <!-- 色指定 -->
                   <% if !@plan_color_list[reserve.plan_kbn][0].nil? %>

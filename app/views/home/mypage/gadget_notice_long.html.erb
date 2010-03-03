@@ -11,7 +11,7 @@
           <% else %>
             <img src="<%= image_path('icons/icon_balloon.gif') %>" align="top" class="gadget_table_icon">
           <% end %>
-          <%= link_to "#{cut_off(notice.title, 50)}", {:controller => "notice/main", :action => "index", :id => notice.d_notice_head_id, :message_id_def=>notice.id} %>
+          <%= link_to "#{cut_off(notice.title, 50)}", {:controller => "/notice/main", :action => "index", :id => notice.d_notice_head_id, :message_id_def=>notice.id} %>
         </td>
         <td style="text-align:right;" nowrap>
           <%= datetime_strftime(notice.post_date) %>&nbsp;&nbsp;

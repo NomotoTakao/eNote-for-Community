@@ -14,7 +14,8 @@
            <% end %>
         </td>
         <td>
-          <%= link_to cut_off("【#{notice_new.d_notice_head.title}】#{notice_new.title}",34) + "&nbsp;<#{datetime_strftime(notice_new.post_date)}>", {:controller => "notice/main", :action => "index", :id => notice_new.d_notice_head_id, :message_id_def=>notice_new.id} %>
+          <%= link_to cut_off("【#{notice_new.d_notice_head.title}】#{notice_new.title}",34) + "&nbsp;<#{datetime_strftime(notice_new.post_date)}>", 
+                   {:controller => "/notice/main", :action => "index", :id => notice_new.d_notice_head_id, :message_id_def=>notice_new.id} %>
         </td>
       </tr>
     <% end %>
@@ -25,9 +26,8 @@
       <% if @notice_new_list.size > 0 %>
         <%= will_paginate @notice_new_list, :renderer => RemoteLinkRenderer,
                                        :update =>"mypage_notice_new",
-                                       :params=> {
-                                                   :action => 'gadget_notice_new'
-                                                 },
+                                       :params=> {:controller => "/home/mypage",
+                                                  :action => 'gadget_notice_new'},
                                        :prev_label => "<<前へ",
                                        :next_label => "次へ>>",
                                        :method => :get

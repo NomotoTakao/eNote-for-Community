@@ -11,9 +11,10 @@
             <% else %>
               <img src="<%= image_path('icons/icon_balloon.gif') %>" align="top" class="gadget_table_icon">
             <% end %>
-            <%= link_to  "【#{cabinet.d_cabinet_head.title}】" + cut_off("#{cabinet.title}", 50), {:controller => "/cabinet/public",
-                                                          :action => "index",
-                                                          :auto =>cabinet.d_cabinet_head.cabinet_kbn.to_s + "_" + cabinet.d_cabinet_head.id.to_s + "_" + cabinet.id.to_s} %>
+            <%= link_to "【#{cabinet.d_cabinet_head.title}】" + cut_off("#{cabinet.title}", 50), 
+                     {:controller => "/cabinet/public",
+                      :action => "index",
+                      :auto =>cabinet.d_cabinet_head.cabinet_kbn.to_s + "_" + cabinet.d_cabinet_head.id.to_s + "_" + cabinet.id.to_s} %>
           </td>
           <td align="right" class="" style="width:12%;">
             <%= datetime_strftime(cabinet.post_date) %>&nbsp;&nbsp;

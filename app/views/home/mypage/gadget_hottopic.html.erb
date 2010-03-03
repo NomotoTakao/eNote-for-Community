@@ -7,7 +7,7 @@
       <td class="" style="width:90px;text-align:right;">
       </td>
       <td class="" style="width:100px;text-align:right;">
-        <%= link_to "一覧表示", {:controller=>"/notice/main", :action=>"hottopic"}%>&nbsp;
+        <%= link_to "一覧表示", {:controller=>"/notice/main", :action=>"hottopic"} %>&nbsp;
       </td>
     </tr>
   </table>
@@ -28,7 +28,7 @@
             <img src="<%= image_path('icons/icon_balloon.gif') %>" align="top" class="gadget_table_icon">
           <% end %>
           <%=h "＜#{notice.d_notice_head.title}＞" %>
-          <%= link_to "#{notice.title}", {:controller => "notice/main", :action => "index", :id => notice.d_notice_head_id} %>
+          <%= link_to "#{notice.title}", {:controller => "/notice/main", :action => "index", :id => notice.d_notice_head_id} %>
         </td>
         <td style="text-align:right;" nowrap>
           <%= datetime_strftime(notice.post_date) %>&nbsp;&nbsp;
