@@ -2,7 +2,7 @@
   <table cellpadding="0" cellspacing="0" class="" style="width:100%;">
     <tr>
       <td style="text-indent:6px;">
-        <h3 style=""><img src="../../images/icons/icon_rss.gif" align="top" style="margin-right:5px;">RSSリーダー</h3>
+        <h3 style=""><img src="<%= image_path('icons/icon_rss.gif') %>" align="top" style="margin-right:5px;">RSSリーダー</h3>
       </td>
       <td class="" style="width:230px;text-align:right;">
         <select name="trunk_id" id="trunk_id" style="width:220px" onchange="GetRSSReader();">
@@ -16,7 +16,7 @@
         </select>
       </td>
       <td class="" style="width:47px;text-align:right;">
-        <%= link_to h("設定"), :controller => "home/rss", :action => "setting" %>&nbsp;
+        <%= link_to h("設定"), :controller => "/home/rss", :action => "setting" %>&nbsp;
       </td>
     </tr>
   </table>
@@ -27,12 +27,12 @@
     <% @leaves.each do |leaf| %>
       <tr>
         <td class="" style="width: 88%">
-          <img src="../../images/icons/icon_balloon.gif" align="top" class="gadget_table_icon">
+          <img src="<%= image_path('icons/icon_balloon.gif') %>" align="top" class="gadget_table_icon">
           <%
             adapted = ""
             adapted = "..." if leaf.title.jsize > 30
             trunk_name = DRssTrunk.find(:first, :conditions => ["id = ?", leaf.d_rss_trunk_id ]).name
-			trunk_name = jslice(trunk_name, 0, 15) + "..." if trunk_name.jsize > 15
+            trunk_name = jslice(trunk_name, 0, 15) + "..." if trunk_name.jsize > 15
           %>
           <%= link_to h(jslice(leaf.title, 0, 30) + adapted), leaf.url, :title => leaf.title, :popup => true, :class => "enote_home_list_item"%>&nbsp;[<%= trunk_name %>]
         </td>
@@ -45,10 +45,10 @@
       <td style="text-align:center;">
       <%= will_paginate(@leaves, :renderer => RemoteLinkRenderer,
                                       :update => 'mypage_rss',
-                                      :params=> { :action => 'rss_reader',
+                                      :params=> { :controller => "/home/rss",
+                                                  :action => 'rss_reader',
                                                   :trunks_id => @trunk_id,
-                                                  :trunks_date => @trunk_date
-                                                },
+                                                  :trunks_date => @trunk_date},
                                       :prev_label => "<<前へ",
                                       :next_label => "次へ>>",
                                       :method => :get) if @leaves.size > 0

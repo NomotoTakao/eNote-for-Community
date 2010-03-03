@@ -1,7 +1,6 @@
 <div id="" class="gadget_title" style="">
-    <h3 style=""><img src="../../images/icons/icon_notice.gif" align="top" style="margin-right:5px;"><%= @gadget_title %></h3>
+    <h3 style=""><img src="<%= image_path('icons/icon_notice.gif') %>" align="top" style="margin-right:5px;"><%= @gadget_title %></h3>
 </div>
-
 
 <div id="" class="gadget_body" style="">
   <table cellpadding="0" cellspacing="0" style="width:100%;">
@@ -9,9 +8,9 @@
       <tr>
         <td style="text-align:left;height:20px;width:30px;">
            <% if notice_new.post_date.to_date >= (Date.today - 5) %>
-             <img src="../../images/icons/icon_balloon_new.gif" align="top" class="gadget_table_icon">
+             <img src="<%= image_path('icons/icon_balloon_new.gif') %>" align="top" class="gadget_table_icon">
            <% else %>
-             <img src="../../images/icons/icon_balloon.gif" align="top" class="gadget_table_icon">
+             <img src="<%= image_path('icons/icon_balloon.gif') %>" align="top" class="gadget_table_icon">
            <% end %>
         </td>
         <td>
