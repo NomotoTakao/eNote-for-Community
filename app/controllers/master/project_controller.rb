@@ -62,6 +62,17 @@ class Master::ProjectController < ApplicationController
       data.updated_user_cd = current_m_user.user_cd
       data.update_attributes(params[:m_projects])
 
+      # キャビネット
+      d_cabinet_head = DCabinetHead.find(:first, :conditions=>{:private_project_id=>data.id})
+      d_cabinet_head.d_cabinet_index.title = data.name
+      d_cabinet_head.d_cabinet_index.updated_user_cd = current_m_user.user_cd
+      d_cabinet_head.d_cabinet_index.updated_at = Time.now
+      d_cabinet_head.d_cabinet_index.save!
+      d_cabinet_head.title = data.name
+      d_cabinet_head.updated_user_cd = current_m_user.user_cd
+      d_cabinet_head.updated_at = Time.now
+      d_cabinet_head.save!
+      
     rescue => ex
       flash[:project_err_msg] = "更新処理中に異常が発生しました。"
       logger.error "MProject Err => #{ex}"
@@ -74,6 +85,19 @@ class Master::ProjectController < ApplicationController
     begin
       #プロジェクトマスタ
       MProject.update(params[:id], {:delf=>1, :deleted_user_cd=>current_m_user.user_cd, :deleted_at=>Time.now})
+      # キャビネット
+      # d_cabinet_headを求める。
+      d_cabinet_head = DCabinetHead.find(:first, :conditions=>{:private_project_id=>params[:id]})
+      # d_cabinet_indexを削除
+      d_cabinet_head.d_cabinet_index.delf = "1"
+      d_cabinet_head.d_cabinet_index.deleted_user_cd = current_m_user.user_cd
+      d_cabinet_head.d_cabinet_index.deleted_at = Time.now
+      d_cabinet_head.d_cabinet_index.save!
+      # d_cabinet_headを削除
+      d_cabinet_head.delf = "1"
+      d_cabinet_head.deleted_user_cd = current_m_user.user_cd
+      d_cabinet_head.deleted_at = Time.now
+      d_cabinet_head.save!
 
     rescue => ex
       flash[:project_err_msg] = "削除処理中に異常が発生しました。"
